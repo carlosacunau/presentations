@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Code — Your AI Partner in the Terminal</title>
+
+  <!-- Google Fonts - Autonomee Style -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+
+  <!-- Reveal.js -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/monokai.css">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+/*
+ * Autonomee.ai Presentation Theme
+ * Editorial, minimal, serif headlines
+ * For use with Reveal.js 4.5+
+ */
+
+/* ===== CSS VARIABLES - AUTONOMEE PALETTE ===== */
+:root {
+  /* Backgrounds */
+  --bg-dark: #0a0a0a;
+  --bg-card: #111111;
+  --bg-card-hover: #1a1a1a;
+
+  /* Accent - Muted Steel Blue */
+  --accent: #7b8fa8;
+  --accent-light: #9bb0c9;
+  --accent-glow: rgba(123, 143, 168, 0.15);
+
+  /* Semantic Colors - Muted */
+  --success: #7b9a7b;
+  --warning: #c9a85b;
+  --error: #c97b7b;
+
+  /* Text Colors */
+  --text-primary: #f5f4f0;
+  --text-secondary: #a8a8a8;
+  --text-muted: #666666;
+
+  /* Borders */
+  --border: #2a2a2a;
+
+  /* Typography */
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Spacing */
+  --spacing-xs: 8px;
+  --spacing-sm: 16px;
+  --spacing-md: 24px;
+  --spacing-lg: 40px;
+  --spacing-xl: 60px;
+}
+
+/* ===== BASE STYLES ===== */
+html, body {
+  background: var(--bg-dark) !important;
+  color: var(--text-primary);
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.reveal-viewport {
+  background: var(--bg-dark) !important;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px) !important;
+  background-size: 60px 60px !important;
+}
+
+.reveal {
+  background: var(--bg-dark);
+  font-family: var(--font-sans);
+  font-size: 22px;
+  color: var(--text-primary);
+}
+
+.reveal .slides {
+  text-align: left;
+}
+
+.reveal .slides section {
+  padding: 0;
+  background: var(--bg-dark);
+}
+
+/* ===== SLIDE BASE ===== */
+.slide {
+  height: 100%;
+  width: 100%;
+  padding: var(--spacing-xl);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  position: relative;
+}
+
+.slide > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== SLIDE VARIANTS ===== */
+.slide--center {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.slide--section {
+  background: transparent;
+}
+
+.slide--section::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ===== HEADER BAR ===== */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.header__logo {
+  font-family: var(--font-serif);
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: 0.02em;
+}
+
+.header__logo svg {
+  width: 18px;
+  height: 18px;
+  color: var(--accent);
+}
+
+.header__nav {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: center;
+}
+
+.header__nav-item {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+.header__cta {
+  background: transparent;
+  border: 1px solid var(--text-primary);
+  color: var(--text-primary);
+  padding: 8px 16px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+}
+
+/* ===== TYPOGRAPHY ===== */
+.kicker {
+  font-size: 0.7rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  margin-bottom: var(--spacing-sm);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.kicker::after {
+  content: '';
+  width: 40px;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.5;
+}
+
+h1, .h1 {
+  font-family: var(--font-serif);
+  font-size: 4rem;
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.1;
+  margin: 0 0 var(--spacing-md) 0;
+  color: var(--text-primary);
+}
+
+h2, .h2 {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  font-weight: 400;
+  line-height: 1.15;
+  margin: 0 0 var(--spacing-md) 0;
+}
+
+h3, .h3 {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 1.3;
+  margin: 0 0 var(--spacing-sm) 0;
+}
+
+h4, .h4 {
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0 0 var(--spacing-xs) 0;
+  letter-spacing: 0.02em;
+}
+
+.lead {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 600px;
+}
+
+.muted {
+  color: var(--text-muted);
+}
+
+.highlight, .accent-text {
+  color: var(--accent);
+}
+
+/* ===== CODE STYLING ===== */
+code, .code {
+  font-family: var(--font-mono);
+  background: rgba(123, 143, 168, 0.1);
+  padding: 2px 8px;
+  font-size: 0.85em;
+  color: var(--accent-light);
+  border: 1px solid var(--border);
+}
+
+pre {
+  background: #0d0d0d;
+  border: 1px solid var(--border);
+  padding: var(--spacing-md);
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  line-height: 1.6;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  border: none;
+  color: var(--text-secondary);
+}
+
+.command {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  padding: 12px 16px;
+  margin: 8px 0;
+  transition: all 0.3s ease;
+}
+
+.command:hover {
+  background: var(--bg-card);
+}
+
+.command__prompt {
+  color: var(--accent);
+  font-family: var(--font-mono);
+}
+
+.command__text {
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+}
+
+.command__desc {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  margin-left: auto;
+  font-style: italic;
+}
+
+/* ===== LAYOUT UTILITIES ===== */
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-xl);
+  align-items: center;
+  flex: 1;
+}
+
+.split--60-40 {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: var(--spacing-xl);
+  align-items: center;
+  flex: 1;
+}
+
+.split--40-60 {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: var(--spacing-xl);
+  align-items: center;
+  flex: 1;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-md);
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-md);
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-md);
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gap-sm { gap: var(--spacing-sm); }
+.gap-md { gap: var(--spacing-md); }
+.gap-lg { gap: var(--spacing-lg); }
+
+/* ===== CARDS ===== */
+.card {
+  background: transparent;
+  border: 1px solid var(--border);
+  padding: var(--spacing-md);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  background: var(--bg-card);
+  border-color: var(--accent);
+}
+
+.card--featured {
+  border-color: var(--accent);
+}
+
+.card__icon {
+  width: 40px;
+  height: 40px;
+  margin-bottom: var(--spacing-sm);
+  color: var(--accent);
+}
+
+.card__icon svg {
+  width: 100%;
+  height: 100%;
+  stroke-width: 1.5;
+}
+
+.card__title {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: var(--spacing-xs);
+}
+
+.card__text {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ===== METRICS ===== */
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.metric {
+  text-align: center;
+  padding: var(--spacing-md);
+  border: 1px solid var(--border);
+  transition: all 0.3s ease;
+}
+
+.metric:hover {
+  border-color: var(--accent);
+}
+
+.metric__value {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: var(--spacing-xs);
+}
+
+.metric__label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ===== LISTS ===== */
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.list li {
+  padding: var(--spacing-sm) 0;
+  padding-left: var(--spacing-lg);
+  position: relative;
+  border-bottom: 1px solid var(--border);
+}
+
+.list li:last-child {
+  border-bottom: none;
+}
+
+.list li::before {
+  content: '\2014';
+  position: absolute;
+  left: 0;
+  top: var(--spacing-sm);
+  color: var(--accent);
+  font-weight: 400;
+}
+
+.list--check li::before {
+  content: '\2713';
+  color: var(--success);
+}
+
+.list--numbered {
+  counter-reset: list-counter;
+}
+
+.list--numbered li {
+  counter-increment: list-counter;
+}
+
+.list--numbered li::before {
+  content: counter(list-counter, decimal-leading-zero);
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+/* ===== BADGES ===== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+
+.badge--success {
+  color: var(--success);
+  border-color: var(--success);
+}
+
+/* ===== WORKFLOW ===== */
+.workflow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+.workflow__step {
+  flex: 1;
+}
+
+.workflow__box {
+  border: 1px solid var(--border);
+  padding: var(--spacing-md) var(--spacing-lg);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.workflow__box:hover {
+  border-color: var(--accent);
+  background: var(--bg-card);
+}
+
+.workflow__label {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+.workflow__sublabel {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.workflow__arrow {
+  font-size: 1.5rem;
+  color: var(--accent);
+  padding: 0 var(--spacing-sm);
+  flex-shrink: 0;
+}
+
+/* ===== BUTTONS ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 28px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid var(--text-primary);
+  background: transparent;
+  color: var(--text-primary);
+}
+
+.btn:hover {
+  background: var(--text-primary);
+  color: var(--bg-dark);
+}
+
+.btn--accent {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn--accent:hover {
+  background: var(--accent);
+  color: var(--bg-dark);
+}
+
+/* ===== CONTACT/CTA ===== */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-xl);
+}
+
+.contact-item {
+  text-align: center;
+}
+
+.contact-item__label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: var(--spacing-xs);
+}
+
+.contact-item__value {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+/* ===== TERMINAL MOCKUP (custom) ===== */
+.terminal {
+  background: #0d0d0d;
+  border: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.7;
+  overflow: hidden;
+}
+
+.terminal__bar {
+  background: #161616;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.terminal__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--border);
+}
+
+.terminal__dot--red { background: var(--error); }
+.terminal__dot--yellow { background: var(--warning); }
+.terminal__dot--green { background: var(--success); }
+
+.terminal__title {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-left: 8px;
+}
+
+.terminal__body {
+  padding: var(--spacing-md);
+}
+
+.terminal__line {
+  margin: 4px 0;
+}
+
+.terminal__line--prompt {
+  color: var(--accent);
+}
+
+.terminal__line--output {
+  color: var(--text-muted);
+}
+
+.terminal__line--highlight {
+  color: var(--success);
+}
+
+.terminal__line--user {
+  color: var(--text-secondary);
+}
+
+/* ===== REVEAL.JS OVERRIDES ===== */
+.reveal .controls {
+  color: var(--accent);
+}
+
+.reveal .progress {
+  background: var(--border);
+  height: 2px;
+}
+
+.reveal .progress span {
+  background: var(--accent);
+}
+
+.reveal .slide-number {
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-family: var(--font-mono);
+  right: 20px;
+  bottom: 20px;
+}
+
+/* ===== FRAGMENT ANIMATIONS ===== */
+.reveal .slides section .fragment {
+  opacity: 0;
+  transition: all 0.4s ease;
+}
+
+.reveal .slides section .fragment.visible {
+  opacity: 1;
+}
+
+.reveal .slides section .fragment.fade-up {
+  transform: translateY(20px);
+}
+
+.reveal .slides section .fragment.fade-up.visible {
+  transform: translateY(0);
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg-dark);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  h1 { font-size: 2.5rem; }
+  h2 { font-size: 2rem; }
+
+  .split {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+
+  .grid-4, .grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ============================================ -->
+      <!-- SLIDE 1: TITLE / COVER                       -->
+      <!-- ============================================ -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <div class="content flex-center" style="flex-direction: column; text-align: center;">
+            <p class="kicker" style="justify-content: center;">Anthropic CLI</p>
+            <h1>Claude Code<br><span class="accent-text">in Your Terminal</span></h1>
+            <p class="lead" style="max-width: 640px; margin: 0 auto;">
+              An agentic coding assistant that lives where you already work &mdash; your IDE's integrated terminal.
+            </p>
+            <div style="margin-top: 40px;">
+              <div class="command" style="display: inline-flex; border: 1px solid var(--accent);">
+                <span class="command__prompt">$</span>
+                <span class="command__text">claude</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 2: WHAT IS CLAUDE CODE                 -->
+      <!-- ============================================ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="terminal"></i>
+              Claude Code
+            </div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">01 // Introduction</p>
+              <h2>What Is<br>Claude Code?</h2>
+              <p class="lead">
+                Claude Code is Anthropic's official agentic coding tool. It operates directly inside your terminal, understanding your entire codebase and executing real actions &mdash; editing files, running commands, and managing git &mdash; all through natural language.
+              </p>
+            </div>
+            <div>
+              <div class="terminal">
+                <div class="terminal__bar">
+                  <div class="terminal__dot terminal__dot--red"></div>
+                  <div class="terminal__dot terminal__dot--yellow"></div>
+                  <div class="terminal__dot terminal__dot--green"></div>
+                  <div class="terminal__title">Terminal &mdash; claude</div>
+                </div>
+                <div class="terminal__body">
+                  <div class="terminal__line terminal__line--prompt">$ claude</div>
+                  <div class="terminal__line terminal__line--output">  Claude Code v1.0</div>
+                  <div class="terminal__line terminal__line--output">  Type your request...</div>
+                  <div class="terminal__line" style="margin-top: 12px;"></div>
+                  <div class="terminal__line terminal__line--user">&gt; Refactor the auth module</div>
+                  <div class="terminal__line terminal__line--user">&nbsp; to use JWT tokens</div>
+                  <div class="terminal__line" style="margin-top: 8px;"></div>
+                  <div class="terminal__line terminal__line--highlight">  Reading src/auth/...</div>
+                  <div class="terminal__line terminal__line--highlight">  Editing 3 files...</div>
+                  <div class="terminal__line terminal__line--highlight">  Running tests... All passed</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 3: THE PROBLEM                         -->
+      <!-- ============================================ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="alert-triangle"></i>
+              Claude Code
+            </div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">02 // The Problem</p>
+              <h2>Context Switching<br>Kills Flow</h2>
+              <p class="lead">Traditional AI coding tools pull you out of your environment. Claude Code meets you where you are.</p>
+            </div>
+            <div>
+              <ul class="list list--numbered">
+                <li class="fragment">
+                  <strong>Copy-paste workflows</strong><br>
+                  <span class="muted">Manually moving code between chat windows and your editor breaks concentration.</span>
+                </li>
+                <li class="fragment">
+                  <strong>No codebase awareness</strong><br>
+                  <span class="muted">Generic AI tools lack project context &mdash; you explain the same architecture repeatedly.</span>
+                </li>
+                <li class="fragment">
+                  <strong>Can't take action</strong><br>
+                  <span class="muted">Chat-based tools suggest code but never run tests, commit, or fix errors for you.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 4: IDE INTEGRATION                     -->
+      <!-- ============================================ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="monitor"></i>
+              Claude Code
+            </div>
+          </div>
+          <div class="content">
+            <p class="kicker">03 // IDE Integration</p>
+            <h2>Right Inside Your IDE</h2>
+            <div class="grid-3" style="margin-top: 32px;">
+              <div class="card card--featured fragment fade-up">
+                <div class="card__icon"><i data-lucide="code"></i></div>
+                <h4 class="card__title">VS Code</h4>
+                <p class="card__text">Open the integrated terminal and run <code>claude</code>. Full access to your workspace, extensions, and file tree.</p>
+              </div>
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="terminal"></i></div>
+                <h4 class="card__title">JetBrains IDEs</h4>
+                <p class="card__text">Works in IntelliJ, WebStorm, PyCharm &mdash; any JetBrains IDE with a terminal panel.</p>
+              </div>
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="layout"></i></div>
+                <h4 class="card__title">Any Terminal</h4>
+                <p class="card__text">iTerm, Warp, Alacritty, the default macOS Terminal &mdash; Claude Code runs everywhere.</p>
+              </div>
+            </div>
+            <div style="margin-top: 32px;">
+              <div class="command fragment">
+                <span class="command__prompt">$</span>
+                <span class="command__text">npm install -g @anthropic-ai/claude-code</span>
+                <span class="command__desc">One command to install</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 5: CORE FEATURES (2x2 CARDS)           -->
+      <!-- ============================================ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="zap"></i>
+              Claude Code
+            </div>
+          </div>
+          <div class="content">
+            <p class="kicker">04 // Core Capabilities</p>
+            <h2>What It Can Do</h2>
+            <div class="grid-2" style="margin-top: 32px;">
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="file-code"></i></div>
+                <h4 class="card__title">Code Generation</h4>
+                <p class="card__text">Generate functions, components, and entire modules. Claude reads your existing patterns and matches your style.</p>
+              </div>
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="bug"></i></div>
+                <h4 class="card__title">Debugging</h4>
+                <p class="card__text">Describe a bug in plain English. Claude traces the issue through your codebase, proposes a fix, and applies it.</p>
+              </div>
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="git-branch"></i></div>
+                <h4 class="card__title">Git Operations</h4>
+                <p class="card__text">Stage, commit, create branches, and open pull requests. Smart commit messages that describe the "why."</p>
+              </div>
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="folder-tree"></i></div>
+                <h4 class="card__title">File Management</h4>
+                <p class="card__text">Search, read, create, and edit files across your project. Understands directory structure and naming conventions.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 6: MORE CAPABILITIES                   -->
+      <!-- ============================================ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="sparkles"></i>
+              Claude Code
+            </div>
+          </div>
+          <div class="content">
+            <p class="kicker">05 // Extended Features</p>
+            <h2>Beyond the Basics</h2>
+            <div class="grid-2" style="margin-top: 32px;">
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="repeat"></i></div>
+                <h4 class="card__title">Refactoring</h4>
+                <p class="card__text">Rename variables across files, extract functions, restructure modules &mdash; with full dependency awareness.</p>
+              </div>
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="test-tubes"></i></div>
+                <h4 class="card__title">Test Writing</h4>
+                <p class="card__text">Generates unit and integration tests that match your test framework and assertion style.</p>
+              </div>
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="search"></i></div>
+                <h4 class="card__title">Codebase Exploration</h4>
+                <p class="card__text">Ask questions about unfamiliar code. Claude navigates the project and explains architecture.</p>
+              </div>
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="shield-check"></i></div>
+                <h4 class="card__title">Security Review</h4>
+                <p class="card__text">Identifies potential vulnerabilities, suggests secure patterns, and flags OWASP top-10 risks.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 7: PRACTICAL WORKFLOW                  -->
+      <!-- ============================================ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="git-branch"></i>
+              Claude Code
+            </div>
+          </div>
+          <div class="content">
+            <p class="kicker">06 // Workflow</p>
+            <h2>A Real-World Workflow</h2>
+            <div class="workflow" style="margin-top: 48px;">
+              <div class="workflow__step fragment">
+                <div class="workflow__box">
+                  <div class="workflow__label">Describe</div>
+                  <div class="workflow__sublabel">Tell Claude what to build</div>
+                </div>
+              </div>
+              <div class="workflow__arrow">&rarr;</div>
+              <div class="workflow__step fragment">
+                <div class="workflow__box">
+                  <div class="workflow__label">Review</div>
+                  <div class="workflow__sublabel">Approve file edits</div>
+                </div>
+              </div>
+              <div class="workflow__arrow">&rarr;</div>
+              <div class="workflow__step fragment">
+                <div class="workflow__box">
+                  <div class="workflow__label">Test</div>
+                  <div class="workflow__sublabel">Claude runs your tests</div>
+                </div>
+              </div>
+              <div class="workflow__arrow">&rarr;</div>
+              <div class="workflow__step fragment">
+                <div class="workflow__box">
+                  <div class="workflow__label">Commit</div>
+                  <div class="workflow__sublabel">Push with /commit</div>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top: 48px;">
+              <div class="terminal fragment">
+                <div class="terminal__bar">
+                  <div class="terminal__dot terminal__dot--red"></div>
+                  <div class="terminal__dot terminal__dot--yellow"></div>
+                  <div class="terminal__dot terminal__dot--green"></div>
+                  <div class="terminal__title">VS Code &mdash; Terminal</div>
+                </div>
+                <div class="terminal__body" style="padding: 12px 16px;">
+                  <div class="terminal__line terminal__line--user">&gt; Add pagination to the /users API endpoint and write tests</div>
+                  <div class="terminal__line terminal__line--highlight" style="margin-top: 6px;">  Edited src/routes/users.ts &mdash; added offset &amp; limit params</div>
+                  <div class="terminal__line terminal__line--highlight">  Created tests/users.pagination.test.ts &mdash; 8 test cases</div>
+                  <div class="terminal__line terminal__line--highlight">  All tests passed (8/8)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 8: KEY COMMANDS                        -->
+      <!-- ============================================ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="terminal"></i>
+              Claude Code
+            </div>
+          </div>
+          <div class="split--60-40">
+            <div>
+              <p class="kicker">07 // Essential Commands</p>
+              <h2>Commands to Know</h2>
+              <div style="margin-top: 24px;">
+                <div class="command fragment">
+                  <span class="command__prompt">$</span>
+                  <span class="command__text">claude</span>
+                  <span class="command__desc">Start interactive session</span>
+                </div>
+                <div class="command fragment">
+                  <span class="command__prompt">/</span>
+                  <span class="command__text">commit</span>
+                  <span class="command__desc">Smart git commit</span>
+                </div>
+                <div class="command fragment">
+                  <span class="command__prompt">/</span>
+                  <span class="command__text">review-pr</span>
+                  <span class="command__desc">Review a pull request</span>
+                </div>
+                <div class="command fragment">
+                  <span class="command__prompt">/</span>
+                  <span class="command__text">help</span>
+                  <span class="command__desc">See all options</span>
+                </div>
+                <div class="command fragment">
+                  <span class="command__prompt">$</span>
+                  <span class="command__text">claude "fix the login bug"</span>
+                  <span class="command__desc">One-shot mode</span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <pre><code class="language-bash"># CLAUDE.md at project root
+# Gives Claude persistent context
+
+Tech stack:
+- TypeScript, React, Node
+- PostgreSQL with Prisma
+
+Conventions:
+- Use functional components
+- camelCase for variables
+- PascalCase for components
+- Tests in __tests__ folders</code></pre>
+              <p class="muted" style="font-size: 0.8rem; margin-top: 12px;">Add a CLAUDE.md file to give Claude project-specific instructions.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 9: METRICS / IMPACT                    -->
+      <!-- ============================================ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="trending-up"></i>
+              Claude Code
+            </div>
+          </div>
+          <div class="content">
+            <p class="kicker">08 // Impact</p>
+            <h2>Developer Productivity, Amplified</h2>
+            <div class="metrics" style="margin-top: 48px;">
+              <div class="metric fragment">
+                <div class="metric__value">10x</div>
+                <div class="metric__label">Faster Prototyping</div>
+              </div>
+              <div class="metric fragment">
+                <div class="metric__value">0</div>
+                <div class="metric__label">Context Switches</div>
+              </div>
+              <div class="metric fragment">
+                <div class="metric__value">100%</div>
+                <div class="metric__label">Codebase Aware</div>
+              </div>
+              <div class="metric fragment">
+                <div class="metric__value">&infin;</div>
+                <div class="metric__label">Languages Supported</div>
+              </div>
+            </div>
+            <div style="margin-top: 48px;">
+              <ul class="list list--check">
+                <li class="fragment"><strong>No context switching</strong> &mdash; stays in your terminal, in your IDE</li>
+                <li class="fragment"><strong>Full project awareness</strong> &mdash; reads your files, tests, and git history</li>
+                <li class="fragment"><strong>Real actions</strong> &mdash; edits files, runs commands, creates commits</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 10: TIPS & BEST PRACTICES              -->
+      <!-- ============================================ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="lightbulb"></i>
+              Claude Code
+            </div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">09 // Best Practices</p>
+              <h2>Tips for<br>Power Users</h2>
+              <p class="lead">Get the most out of Claude Code with these proven patterns.</p>
+            </div>
+            <div>
+              <ul class="list list--numbered">
+                <li class="fragment">
+                  <strong>Start with CLAUDE.md</strong><br>
+                  <span class="muted">Define your stack, conventions, and preferences once. Claude remembers.</span>
+                </li>
+                <li class="fragment">
+                  <strong>Be specific with requests</strong><br>
+                  <span class="muted">"Add input validation to the signup form using Zod" beats "make it better."</span>
+                </li>
+                <li class="fragment">
+                  <strong>Let Claude iterate</strong><br>
+                  <span class="muted">If tests fail, Claude can read the errors and fix them automatically.</span>
+                </li>
+                <li class="fragment">
+                  <strong>Use plan mode for big tasks</strong><br>
+                  <span class="muted">For large features, let Claude explore the codebase and propose a plan before coding.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 11: CTA / CLOSING                      -->
+      <!-- ============================================ -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <div class="content flex-center" style="flex-direction: column;">
+            <h1>Start Building<br><span class="accent-text">Faster Today</span></h1>
+            <p class="lead" style="margin-bottom: 40px;">Open your terminal. Type <code>claude</code>. Ship more.</p>
+            <div style="display: flex; gap: 16px; margin-bottom: 48px;">
+              <div class="command" style="border-color: var(--accent);">
+                <span class="command__prompt">$</span>
+                <span class="command__text">npm install -g @anthropic-ai/claude-code && claude</span>
+              </div>
+            </div>
+            <div class="contact-grid" style="width: 100%; max-width: 600px;">
+              <div class="contact-item">
+                <div class="contact-item__label">Docs</div>
+                <div class="contact-item__value">docs.anthropic.com</div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-item__label">GitHub</div>
+                <div class="contact-item__value">anthropics/claude-code</div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-item__label">Community</div>
+                <div class="contact-item__value">discord.gg/anthropic</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Reveal.js Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.js"></script>
+
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: true,
+      controls: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      center: false,
+      transition: 'slide',
+      backgroundTransition: 'fade',
+      width: 1280,
+      height: 720,
+      margin: 0,
+      minScale: 0.2,
+      maxScale: 2,
+      autoAnimate: true,
+      autoAnimateDuration: 0.7,
+      plugins: [RevealHighlight]
+    });
+
+    // Initialize Lucide icons
+    lucide.createIcons();
+  </script>
+
+</body>
+</html>
