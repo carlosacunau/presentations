@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cinepolis Proposal Generator</title>
+
+  <!-- Google Fonts - Autonomee Style -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+
+  <!-- Reveal.js -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/monokai.css">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+/*
+ * Autonomee.ai Presentation Theme
+ * Editorial, minimal, serif headlines
+ * For use with Reveal.js 4.5+
+ */
+
+/* ===== CSS VARIABLES - AUTONOMEE PALETTE ===== */
+:root {
+  /* Backgrounds */
+  --bg-dark: #0a0a0a;
+  --bg-card: #111111;
+  --bg-card-hover: #1a1a1a;
+
+  /* Accent - Muted Steel Blue */
+  --accent: #7b8fa8;
+  --accent-light: #9bb0c9;
+  --accent-glow: rgba(123, 143, 168, 0.15);
+
+  /* Semantic Colors - Muted */
+  --success: #7b9a7b;
+  --warning: #c9a85b;
+  --error: #c97b7b;
+
+  /* Text Colors */
+  --text-primary: #f5f4f0;
+  --text-secondary: #a8a8a8;
+  --text-muted: #666666;
+
+  /* Borders */
+  --border: #2a2a2a;
+
+  /* Typography */
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Spacing */
+  --spacing-xs: 8px;
+  --spacing-sm: 16px;
+  --spacing-md: 24px;
+  --spacing-lg: 40px;
+  --spacing-xl: 60px;
+}
+
+/* ===== BASE STYLES ===== */
+html, body {
+  background: var(--bg-dark) !important;
+  color: var(--text-primary);
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.reveal-viewport {
+  background: var(--bg-dark) !important;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px) !important;
+  background-size: 60px 60px !important;
+}
+
+.reveal {
+  background: var(--bg-dark);
+  font-family: var(--font-sans);
+  font-size: 22px;
+  color: var(--text-primary);
+}
+
+.reveal .slides {
+  text-align: left;
+}
+
+.reveal .slides section {
+  padding: 0;
+  background: var(--bg-dark);
+}
+
+/* ===== SLIDE BASE ===== */
+.slide {
+  height: 100%;
+  width: 100%;
+  padding: var(--spacing-xl);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  position: relative;
+}
+
+.slide > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== SLIDE VARIANTS ===== */
+.slide--center {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.slide--section {
+  background: transparent;
+}
+
+.slide--section::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ===== HEADER BAR ===== */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.header__logo {
+  font-family: var(--font-serif);
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: 0.02em;
+}
+
+.header__logo svg {
+  width: 18px;
+  height: 18px;
+  color: var(--accent);
+}
+
+/* ===== TYPOGRAPHY ===== */
+.kicker {
+  font-size: 0.7rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  margin-bottom: var(--spacing-sm);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.kicker::after {
+  content: '';
+  width: 40px;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.5;
+}
+
+h1, .h1 {
+  font-family: var(--font-serif);
+  font-size: 4rem;
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.1;
+  margin: 0 0 var(--spacing-md) 0;
+  color: var(--text-primary);
+}
+
+h2, .h2 {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  font-weight: 400;
+  line-height: 1.15;
+  margin: 0 0 var(--spacing-md) 0;
+}
+
+h3, .h3 {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 1.3;
+  margin: 0 0 var(--spacing-sm) 0;
+}
+
+h4, .h4 {
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0 0 var(--spacing-xs) 0;
+  letter-spacing: 0.02em;
+}
+
+.lead {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 600px;
+}
+
+.muted {
+  color: var(--text-muted);
+}
+
+.highlight, .accent-text {
+  color: var(--accent);
+}
+
+/* ===== CODE STYLING ===== */
+code, .code {
+  font-family: var(--font-mono);
+  background: rgba(123, 143, 168, 0.1);
+  padding: 2px 8px;
+  font-size: 0.85em;
+  color: var(--accent-light);
+  border: 1px solid var(--border);
+}
+
+pre {
+  background: #0d0d0d;
+  border: 1px solid var(--border);
+  padding: var(--spacing-md);
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  line-height: 1.6;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  border: none;
+  color: var(--text-secondary);
+}
+
+.command {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  padding: 12px 16px;
+  margin: 8px 0;
+  transition: all 0.3s ease;
+}
+
+.command:hover {
+  background: var(--bg-card);
+}
+
+.command__prompt {
+  color: var(--accent);
+  font-family: var(--font-mono);
+}
+
+.command__text {
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+}
+
+.command__desc {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  margin-left: auto;
+  font-style: italic;
+}
+
+/* ===== LAYOUT ===== */
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-xl);
+  align-items: center;
+  flex: 1;
+}
+
+.split--60-40 {
+  grid-template-columns: 1.5fr 1fr;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-md);
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-md);
+}
+
+.grid-5 {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--spacing-sm);
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===== CARDS ===== */
+.card {
+  background: transparent;
+  border: 1px solid var(--border);
+  padding: var(--spacing-md);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  background: var(--bg-card);
+  border-color: var(--accent);
+}
+
+.card--featured {
+  border-color: var(--accent);
+}
+
+.card__icon {
+  width: 40px;
+  height: 40px;
+  margin-bottom: var(--spacing-sm);
+  color: var(--accent);
+}
+
+.card__icon svg {
+  width: 100%;
+  height: 100%;
+  stroke-width: 1.5;
+}
+
+.card__title {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: var(--spacing-xs);
+}
+
+.card__text {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ===== METRICS ===== */
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.metric {
+  text-align: center;
+  padding: var(--spacing-md);
+  border: 1px solid var(--border);
+  transition: all 0.3s ease;
+}
+
+.metric:hover {
+  border-color: var(--accent);
+}
+
+.metric__value {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: var(--spacing-xs);
+}
+
+.metric__label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ===== LISTS ===== */
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.list li {
+  padding: var(--spacing-sm) 0;
+  padding-left: var(--spacing-lg);
+  position: relative;
+  border-bottom: 1px solid var(--border);
+}
+
+.list li:last-child {
+  border-bottom: none;
+}
+
+.list li::before {
+  content: '\2014';
+  position: absolute;
+  left: 0;
+  top: var(--spacing-sm);
+  color: var(--accent);
+  font-weight: 400;
+}
+
+.list--check li::before {
+  content: '\2713';
+  color: var(--success);
+}
+
+.list--numbered {
+  counter-reset: list-counter;
+}
+
+.list--numbered li {
+  counter-increment: list-counter;
+}
+
+.list--numbered li::before {
+  content: counter(list-counter, decimal-leading-zero);
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+/* ===== BADGES ===== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+
+/* ===== WORKFLOW ===== */
+.workflow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  flex-wrap: nowrap;
+}
+
+.workflow__step {
+  flex: 1;
+  min-width: 0;
+}
+
+.workflow__box {
+  border: 1px solid var(--border);
+  padding: 20px 16px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.workflow__box:hover {
+  border-color: var(--accent);
+  background: var(--bg-card);
+}
+
+.workflow__label {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.workflow__sublabel {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.workflow__arrow {
+  color: var(--accent);
+  font-size: 1.2rem;
+  padding: 0 8px;
+  flex-shrink: 0;
+}
+
+/* ===== BUTTONS ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 28px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid var(--text-primary);
+  background: transparent;
+  color: var(--text-primary);
+}
+
+.btn:hover {
+  background: var(--text-primary);
+  color: var(--bg-dark);
+}
+
+.btn--accent {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn--accent:hover {
+  background: var(--accent);
+  color: var(--bg-dark);
+}
+
+/* ===== CONTACT/CTA ===== */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-xl);
+}
+
+.contact-item {
+  text-align: center;
+}
+
+.contact-item__label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: var(--spacing-xs);
+}
+
+.contact-item__value {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+/* ===== REVEAL.JS OVERRIDES ===== */
+.reveal .controls {
+  color: var(--accent);
+}
+
+.reveal .progress {
+  background: var(--border);
+  height: 2px;
+}
+
+.reveal .progress span {
+  background: var(--accent);
+}
+
+.reveal .slide-number {
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-family: var(--font-mono);
+  right: 20px;
+  bottom: 20px;
+}
+
+/* ===== FRAGMENT ANIMATIONS ===== */
+.reveal .slides section .fragment {
+  opacity: 0;
+  transition: all 0.4s ease;
+}
+
+.reveal .slides section .fragment.visible {
+  opacity: 1;
+}
+
+.reveal .slides section .fragment.fade-up {
+  transform: translateY(20px);
+}
+
+.reveal .slides section .fragment.fade-up.visible {
+  transform: translateY(0);
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg-dark);
+}
+
+/* ===== CUSTOM: TECH STACK ICONS ===== */
+.tech-icon {
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  margin: 0 auto var(--spacing-xs);
+}
+
+.tech-icon svg {
+  width: 24px;
+  height: 24px;
+  stroke-width: 1.5;
+}
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ============ SLIDE 1: TITLE ============ -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <div class="content flex-center" style="flex-direction: column; text-align: center;">
+            <p class="kicker" style="justify-content: center;">Cinepolis</p>
+            <h1>Proposal Generator<br><span class="accent-text">Transcript to Proposal in Seconds</span></h1>
+            <p class="lead" style="max-width: 640px; margin: 0 auto;">
+              A serverless app that converts meeting transcripts into polished .docx business proposals and emails them automatically.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ SLIDE 2: THE PROBLEM ============ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="alert-triangle"></i>
+              Cinepolis Proposal Generator
+            </div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">01 // The Problem</p>
+              <h2>Writing Proposals<br>is Painful</h2>
+              <p class="lead">After every client meeting, someone has to manually turn notes into a formatted document. It takes hours and no one wants to do it.</p>
+            </div>
+            <div>
+              <ul class="list list--numbered">
+                <li class="fragment">
+                  <strong>Time-consuming</strong><br>
+                  <span class="muted">Each proposal takes 1-3 hours to write, format, and review manually.</span>
+                </li>
+                <li class="fragment">
+                  <strong>Repetitive</strong><br>
+                  <span class="muted">Same structure every time — scope, pricing, timeline — yet rebuilt from scratch.</span>
+                </li>
+                <li class="fragment">
+                  <strong>Error-prone</strong><br>
+                  <span class="muted">Copy-paste mistakes, inconsistent formatting, forgotten details from the meeting.</span>
+                </li>
+                <li class="fragment">
+                  <strong>Delayed delivery</strong><br>
+                  <span class="muted">Proposals sent days later lose momentum. Speed wins deals.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ SLIDE 3: HOW IT WORKS ============ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="git-branch"></i>
+              Cinepolis Proposal Generator
+            </div>
+          </div>
+          <div class="content">
+            <p class="kicker">02 // How It Works</p>
+            <h2>How It Works</h2>
+            <p class="lead" style="margin-bottom: 32px;">Five steps from raw audio to delivered proposal — fully automated.</p>
+            <div class="workflow" style="margin-top: 24px;">
+              <div class="workflow__step fragment">
+                <div class="workflow__box">
+                  <div class="workflow__label">Upload</div>
+                  <div class="workflow__sublabel">Audio or text</div>
+                </div>
+              </div>
+              <div class="workflow__arrow">&rarr;</div>
+              <div class="workflow__step fragment">
+                <div class="workflow__box">
+                  <div class="workflow__label">Transcribe</div>
+                  <div class="workflow__sublabel">Audio to text</div>
+                </div>
+              </div>
+              <div class="workflow__arrow">&rarr;</div>
+              <div class="workflow__step fragment">
+                <div class="workflow__box">
+                  <div class="workflow__label">AI Writes</div>
+                  <div class="workflow__sublabel">Proposal draft</div>
+                </div>
+              </div>
+              <div class="workflow__arrow">&rarr;</div>
+              <div class="workflow__step fragment">
+                <div class="workflow__box">
+                  <div class="workflow__label">Format</div>
+                  <div class="workflow__sublabel">Word document</div>
+                </div>
+              </div>
+              <div class="workflow__arrow">&rarr;</div>
+              <div class="workflow__step fragment">
+                <div class="workflow__box">
+                  <div class="workflow__label">Email</div>
+                  <div class="workflow__sublabel">Sent to client</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ SLIDE 4: TECH STACK ============ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="cpu"></i>
+              Cinepolis Proposal Generator
+            </div>
+          </div>
+          <div class="content">
+            <p class="kicker">03 // What Powers It</p>
+            <h2>Built With</h2>
+            <div class="grid-2" style="margin-top: 32px;">
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="cloud"></i></div>
+                <h4 class="card__title">Cloud Hosting</h4>
+                <p class="card__text">Runs entirely in the cloud. No servers to manage, no maintenance — it just works, always available when you need it.</p>
+              </div>
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="brain"></i></div>
+                <h4 class="card__title">AI Writing Engine</h4>
+                <p class="card__text">Uses the latest AI models to read your transcript and write a structured proposal — scope, pricing, and timelines included.</p>
+              </div>
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="mic"></i></div>
+                <h4 class="card__title">Voice Transcription</h4>
+                <p class="card__text">Upload an audio recording from the meeting and get accurate text in seconds. No manual note-taking needed.</p>
+              </div>
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="mail"></i></div>
+                <h4 class="card__title">Document + Email Delivery</h4>
+                <p class="card__text">Generates a professionally formatted Word document and delivers it directly to the client's inbox.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ SLIDE 5: FRONTEND ============ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="monitor"></i>
+              Cinepolis Proposal Generator
+            </div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">04 // Frontend</p>
+              <h2>Dead Simple<br>Interface</h2>
+              <p class="lead">No onboarding, no learning curve. A single page with everything you need.</p>
+            </div>
+            <div>
+              <ul class="list list--check">
+                <li class="fragment">
+                  <strong>Drag-and-drop upload</strong><br>
+                  <span class="muted">Drop an MP3 recording or paste a transcript directly.</span>
+                </li>
+                <li class="fragment">
+                  <strong>Pick your AI model</strong><br>
+                  <span class="muted">Choose between different AI engines depending on your preference.</span>
+                </li>
+                <li class="fragment">
+                  <strong>One-click generate</strong><br>
+                  <span class="muted">Hit the button — proposal is built and emailed in under a minute.</span>
+                </li>
+                <li class="fragment">
+                  <strong>Nothing to install</strong><br>
+                  <span class="muted">Works in your browser — no downloads, no setup, no IT department needed.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ SLIDE 6: COST ============ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="dollar-sign"></i>
+              Cinepolis Proposal Generator
+            </div>
+          </div>
+          <div class="content">
+            <p class="kicker">05 // Cost</p>
+            <h2>Practically Free</h2>
+            <p class="lead" style="margin-bottom: 32px;">Each proposal costs less than a cup of coffee. Most months cost nothing at all.</p>
+            <div class="metrics" style="margin-top: 24px;">
+              <div class="metric fragment">
+                <div class="metric__value">$0.01</div>
+                <div class="metric__label">Min per Proposal</div>
+              </div>
+              <div class="metric fragment">
+                <div class="metric__value">$0.15</div>
+                <div class="metric__label">Max per Proposal</div>
+              </div>
+              <div class="metric fragment">
+                <div class="metric__value">$0</div>
+                <div class="metric__label">Monthly Hosting</div>
+              </div>
+              <div class="metric fragment">
+                <div class="metric__value">&lt;60s</div>
+                <div class="metric__label">Generation Time</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ SLIDE 7: ARCHITECTURE (SIMPLIFIED) ============ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="box"></i>
+              Cinepolis Proposal Generator
+            </div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">06 // Setup</p>
+              <h2>Nothing to<br>Maintain</h2>
+              <p class="lead">No servers, no IT team, no monthly maintenance. The entire tool lives in the cloud and runs itself.</p>
+            </div>
+            <div>
+              <ul class="list list--check">
+                <li class="fragment">
+                  <strong>No servers to manage</strong><br>
+                  <span class="muted">Everything runs in the cloud — no hardware, no updates, no downtime.</span>
+                </li>
+                <li class="fragment">
+                  <strong>No software to install</strong><br>
+                  <span class="muted">Your team accesses it through any web browser, from anywhere.</span>
+                </li>
+                <li class="fragment">
+                  <strong>Ready in 5 minutes</strong><br>
+                  <span class="muted">One-time setup. After that, it just works — every time.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ SLIDE 8: WHAT I NEED FROM YOU ============ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="clipboard-list"></i>
+              Cinepolis Proposal Generator
+            </div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">07 // Next Step</p>
+              <h2>What I Need<br><span class="accent-text">From You</span></h2>
+              <p class="lead">To build a generator that sounds like you, I need to learn how you write. Send me these three things and I'll handle the rest.</p>
+            </div>
+            <div>
+              <ul class="list list--numbered">
+                <li class="fragment">
+                  <strong>Example proposals</strong><br>
+                  <span class="muted">A few past proposals so I can see your structure — sections, tone, level of detail.</span>
+                </li>
+                <li class="fragment">
+                  <strong>Audio walkthrough</strong><br>
+                  <span class="muted">Walk me through a proposal in audio so I can understand how you think about them.</span>
+                </li>
+                <li class="fragment">
+                  <strong>Sample emails</strong><br>
+                  <span class="muted">Emails you've sent to clients with proposals attached — so I can mimic your style and voice.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ SLIDE 9: CTA / CLOSING ============ -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <div class="content flex-center" style="flex-direction: column;">
+            <p class="kicker" style="justify-content: center;">08 // Let's Go</p>
+            <h1>Ready in<br><span class="accent-text">5 Minutes</span></h1>
+            <p class="lead" style="margin-bottom: 40px; max-width: 520px; margin-left: auto; margin-right: auto;">
+              Send me your examples, and I'll build a proposal generator that writes exactly like your team — ready to use in minutes.
+            </p>
+            <div class="contact-grid" style="width: 100%; max-width: 500px;">
+              <div class="contact-item">
+                <div class="contact-item__label">Setup</div>
+                <div class="contact-item__value">5 minutes</div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-item__label">Maintenance</div>
+                <div class="contact-item__value">Zero</div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-item__label">Cost</div>
+                <div class="contact-item__value">~$0/mo</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Reveal.js Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.js"></script>
+
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: true,
+      controls: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      center: false,
+      transition: 'slide',
+      backgroundTransition: 'fade',
+      width: 1280,
+      height: 720,
+      margin: 0,
+      minScale: 0.2,
+      maxScale: 2,
+      autoAnimate: true,
+      autoAnimateDuration: 0.7,
+      plugins: [RevealHighlight]
+    });
+
+    // Initialize Lucide icons
+    lucide.createIcons();
+  </script>
+
+</body>
+</html>
