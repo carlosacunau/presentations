@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Presentations Index</title>
+  <title>Presentations</title>
   <meta name="robots" content="noindex, nofollow">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet">
   <style>
@@ -38,20 +38,116 @@
     a:hover { background: #111; border-color: #7b8fa8; }
     .title { font-weight: 500; margin-bottom: 4px; }
     .desc { font-size: 0.85rem; color: #666; }
+    /* Lock screen */
+    #lock {
+      text-align: center;
+    }
+    #lock input {
+      background: transparent;
+      border: 1px solid #2a2a2a;
+      color: #f5f4f0;
+      padding: 12px 20px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      width: 100%;
+      max-width: 300px;
+      margin-bottom: 16px;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+    #lock input:focus {
+      border-color: #7b8fa8;
+    }
+    #lock button {
+      display: block;
+      width: 100%;
+      max-width: 300px;
+      margin: 0 auto;
+      padding: 12px 28px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      border: 1px solid #f5f4f0;
+      background: transparent;
+      color: #f5f4f0;
+      transition: all 0.3s ease;
+    }
+    #lock button:hover {
+      background: #f5f4f0;
+      color: #0a0a0a;
+    }
+    .error { color: #c97b7b; font-size: 0.85rem; margin-top: 12px; display: none; }
+    #content { display: none; }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Presentations</h1>
-    <p class="subtitle">Private index — all slide decks.</p>
-    <a href="../claude-code-terminal/">
-      <div class="title">Claude Code in Your Terminal</div>
-      <div class="desc">An agentic coding assistant that lives in your IDE's integrated terminal.</div>
-    </a>
-    <a href="../cinepolis-proposal-generator/">
-      <div class="title">Cinepolis Proposal Generator</div>
-      <div class="desc">From transcript to proposal in seconds — a serverless proposal automation tool.</div>
-    </a>
+    <div id="lock">
+      <h1>Locked</h1>
+      <p class="subtitle">Enter password to view presentations.</p>
+      <input type="password" id="pwd" placeholder="Password" autofocus>
+      <button onclick="unlock()">Unlock</button>
+      <p class="error" id="err">Incorrect password.</p>
+    </div>
+    <div id="content"></div>
   </div>
+
+  <script>
+    const encrypted = {
+      salt: "neXMq6tanlw73urZI0IFog==",
+      iv: "SlsFc2rx4HPqBYeu",
+      ct: "B4R5FbJ3OFUxdzBMicFQpa6onQgusRXHICBbjN2QCeXgYDXZo7qslxNY9zY/olhKlmo874D6RcU1xvN56O5TzoAJKjXFj3RyjH4TEDJWa8+VmoPzRET5yGGp2gAxsm8aSMMfgy7L59F+BprTdb8Rw1xkI0/hbiiueuOoO79VoZKXMk+FVsOkcev8ypP9+fFsMZHbE8OLG3SUBSsDHIq8lPnnsn0PdyRFsGcKfPi58fi32e8KNsK9gPgKd4IdoY90cURiuMxIfTs482xQv0gLEnoC4Jp99ie8U8jvs8PR3y/XzozAIjaLafNRYV12HmE79GF/9cAJrul1y6yZ4DkmKWTrfY8BOOjXpPw3zyzB4oO0FwFwMlkOldM8kwTcUnTJ/aFxSZjpIr7LZ5Dekix8jC3t7lEyjiRla7ZTBUMIqVxcA2JHUUQFdmDhVlRlUUDbNXZJvpKsUZQisEMmcEULJg7p0kqvwXW8P67xlRUbVWe4qUUIILBMY3iJym9e/BNn/pdFknvoItisGSDMpYTsZHY8kcw+7NkfA5nqtL5wMnUZUyOgQPJuo5QGlLVaaL9oq5EMxXJDvAbBepbt/JsIM1imvBpsEIlQ7xR7qDnCAbGdH98owIFB2Dav+RS4++OYjEUlGcNU793d7+7PXOcG6PJq3IIEx6Ken8S5"
+    };
+
+    function b64ToArr(b64) {
+      const bin = atob(b64);
+      const arr = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+      return arr;
+    }
+
+    async function unlock() {
+      const pwd = document.getElementById('pwd').value;
+      const errEl = document.getElementById('err');
+      errEl.style.display = 'none';
+
+      try {
+        const salt = b64ToArr(encrypted.salt);
+        const iv = b64ToArr(encrypted.iv);
+        const ct = b64ToArr(encrypted.ct);
+
+        const keyMaterial = await crypto.subtle.importKey(
+          'raw', new TextEncoder().encode(pwd), 'PBKDF2', false, ['deriveKey']
+        );
+
+        const key = await crypto.subtle.deriveKey(
+          { name: 'PBKDF2', salt, iterations: 100000, hash: 'SHA-256' },
+          keyMaterial,
+          { name: 'AES-GCM', length: 256 },
+          false,
+          ['decrypt']
+        );
+
+        const decrypted = await crypto.subtle.decrypt(
+          { name: 'AES-GCM', iv },
+          key,
+          ct
+        );
+
+        const html = new TextDecoder().decode(decrypted);
+        document.getElementById('lock').style.display = 'none';
+        document.getElementById('content').style.display = 'block';
+        document.getElementById('content').innerHTML = html;
+      } catch (e) {
+        errEl.style.display = 'block';
+      }
+    }
+
+    document.getElementById('pwd').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') unlock();
+    });
+  </script>
 </body>
 </html>
