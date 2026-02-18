@@ -1,5 +1,5 @@
 ---
-name: Presentations
+name: presentations
 description: Generate interactive HTML presentations with Reveal.js. USE WHEN user wants to create pitch decks, slide presentations, or interactive HTML slides.
 ---
 
@@ -248,7 +248,8 @@ open index.html
 1. Create GitHub repo
 2. Push presentation files
 3. Enable GitHub Pages in repo settings
-4. Share URL: `https://username.github.io/repo-name/`
+4. Public index (password-protected): `https://carlosacunau.github.io/presentations/pres_index/`
+5. After publishing, add new card to `pres_index/index.html` (re-encrypt with password)
 
 ### Vercel
 ```bash
