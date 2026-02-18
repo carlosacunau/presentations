@@ -22,7 +22,7 @@ Generate elegant, minimal HTML presentations using Reveal.js with the Autonomee.
 
 All presentations save to:
 ```
-~/Documents/Presentations/
+~/OS/presentations/
 ```
 
 ### File Naming
@@ -84,11 +84,11 @@ const presentation = baseTemplate
 
 ```bash
 # Create project folder
-mkdir -p ~/Documents/Presentations/{project}/
+mkdir -p ~/OS/presentations/{project}/
 
 # Save HTML file
 # Open in browser
-open ~/Documents/Presentations/{project}/index.html
+open ~/OS/presentations/{project}/index.html
 ```
 
 ---
