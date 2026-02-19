@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4 Levels of AI Leverage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #050505;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* ── Slide canvas ── */
+    .slide {
+      width: 1200px;
+      height: 675px;
+      background: #0a0a0a;
+      position: relative;
+      overflow: hidden;
+      padding: 40px 64px 36px;
+      border: 1px solid #1c1c1c;
+    }
+
+    /* ── Subtle grid texture ── */
+    .slide::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+
+    /* ── Header ── */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 24px;
+    }
+
+    .headline {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 38px;
+      font-weight: 600;
+      color: #e8e8e8;
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+    }
+
+    .progression {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .prog-item {
+      font-size: 13px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .prog-arrow {
+      font-size: 13px;
+      color: #3a3a3a;
+    }
+
+    /* Progression colors — clearly readable */
+    .prog-1 { color: #686868; }
+    .prog-2 { color: #6e8fae; }
+    .prog-3 { color: #8fb0cc; }
+    .prog-4 { color: #c9a84c; }
+
+    .tagline-header {
+      text-align: right;
+      font-size: 14px;
+      color: #444;
+      letter-spacing: 0.3px;
+      line-height: 1.8;
+      font-style: italic;
+    }
+
+    /* ── Staircase ── */
+    .staircase {
+      display: flex;
+      align-items: flex-end;
+      gap: 4px;
+      height: 390px;
+      margin-bottom: 16px;
+    }
+
+    .step {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      padding: 16px 15px 14px;
+      position: relative;
+      overflow: hidden;   /* prevents text from escaping the box */
+    }
+
+    /* Heights — ASK is now tall enough to show all bullets */
+    .step-1 { height: 52%; border: 1px solid #484848; background: rgba(72,72,72,0.07); }
+    .step-2 { height: 68%; border: 1px solid #4e7090; background: rgba(78,112,144,0.07); }
+    .step-3 { height: 84%; border: 1px solid #6b8faa; background: rgba(107,143,170,0.07); }
+    .step-4 { height: 100%; border: 1px solid #c9a84c; background: rgba(201,168,76,0.06); }
+
+    /* Top accent bar */
+    .step::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+    }
+    .step-1::before { background: #585858; }
+    .step-2::before { background: #5a82a0; }
+    .step-3::before { background: #7b8fa8; }
+    .step-4::before { background: #c9a84c; }
+
+    /* Level number */
+    .step-num {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+    .step-1 .step-num { color: #686868; }
+    .step-2 .step-num { color: #6888a4; }
+    .step-3 .step-num { color: #7898b4; }
+    .step-4 .step-num { color: #a08538; }
+
+    /* Level name */
+    .step-name {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 28px;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .step-1 .step-name { color: #888888; }
+    .step-2 .step-name { color: #7a9aba; }
+    .step-3 .step-name { color: #96b4ce; }
+    .step-4 .step-name { color: #d4b050; }
+
+    /* Tool label */
+    .step-tool {
+      font-size: 12px;
+      letter-spacing: 0.3px;
+      margin-bottom: 10px;
+      line-height: 1.5;
+      font-weight: 400;
+    }
+    .step-1 .step-tool { color: #5a5a5a; }
+    .step-2 .step-tool { color: #527090; }
+    .step-3 .step-tool { color: #608aaa; }
+    .step-4 .step-tool { color: #907030; }
+
+    /* Divider */
+    .step-divider {
+      height: 1px;
+      margin-bottom: 10px;
+    }
+    .step-1 .step-divider { background: #2e2e2e; }
+    .step-2 .step-divider { background: #2e4458; }
+    .step-3 .step-divider { background: #304e68; }
+    .step-4 .step-divider { background: #503e18; }
+
+    /* Bullets */
+    .step-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .step-bullets li {
+      font-size: 12px;
+      line-height: 1.4;
+      display: flex;
+      gap: 6px;
+    }
+
+    .step-bullets li::before {
+      content: '—';
+      flex-shrink: 0;
+    }
+
+    .step-1 .step-bullets li       { color: #6a6a6a; }
+    .step-1 .step-bullets li::before { color: #505050; }
+
+    .step-2 .step-bullets li       { color: #6a8aaa; }
+    .step-2 .step-bullets li::before { color: #507090; }
+
+    .step-3 .step-bullets li       { color: #88a8c4; }
+    .step-3 .step-bullets li::before { color: #6a90b0; }
+
+    .step-4 .step-bullets li       { color: #c4a040; }
+    .step-4 .step-bullets li::before { color: #a08030; }
+
+    /* ── Population row ── */
+    .population {
+      display: flex;
+      gap: 4px;
+    }
+
+    .pop-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .pop-bar { height: 2px; }
+    .pop-item:nth-child(1) .pop-bar { background: #585858; }
+    .pop-item:nth-child(2) .pop-bar { background: #5a82a0; }
+    .pop-item:nth-child(3) .pop-bar { background: #7b8fa8; }
+    .pop-item:nth-child(4) .pop-bar { background: #c9a84c; }
+
+    .pop-label {
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    .pop-item:nth-child(1) .pop-label { color: #585858; }
+    .pop-item:nth-child(2) .pop-label { color: #5a82a0; }
+    .pop-item:nth-child(3) .pop-label { color: #7b8fa8; }
+    .pop-item:nth-child(4) .pop-label { color: #c9a84c; }
+
+    /* ── Bottom tagline ── */
+    .bottom-tagline {
+      position: absolute;
+      bottom: 36px;
+      right: 64px;
+      text-align: right;
+    }
+
+    .bottom-tagline p {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 16px;
+      color: #444;
+      line-height: 1.8;
+    }
+
+    .bottom-tagline strong {
+      color: #8fb0cc;
+      font-style: normal;
+      font-weight: 600;
+    }
+
+    /* ── Corner mark ── */
+    .corner-mark {
+      position: absolute;
+      bottom: 36px;
+      left: 64px;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #282828;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide">
+
+    <!-- Header -->
+    <div class="header">
+      <div>
+        <div class="headline">4 Levels of AI Leverage</div>
+        <div class="progression">
+          <span class="prog-item prog-1">ASK</span>
+          <span class="prog-arrow">›</span>
+          <span class="prog-item prog-2">CONFIGURE</span>
+          <span class="prog-arrow">›</span>
+          <span class="prog-item prog-3">EMBED</span>
+          <span class="prog-arrow">›</span>
+          <span class="prog-item prog-4">ARCHITECT</span>
+        </div>
+      </div>
+      <div class="tagline-header">
+        AI maturity is not about the best model.<br>It's about control.
+      </div>
+    </div>
+
+    <!-- Staircase -->
+    <div class="staircase">
+
+      <div class="step step-1">
+        <div class="step-num">Level 01</div>
+        <div class="step-name">ASK</div>
+        <div class="step-tool">ChatGPT · Claude · Gemini · Grok</div>
+        <div class="step-divider"></div>
+        <ul class="step-bullets">
+          <li>Faster thinking</li>
+          <li>Context resets</li>
+          <li>Not building</li>
+        </ul>
+      </div>
+
+      <div class="step step-2">
+        <div class="step-num">Level 02</div>
+        <div class="step-name">CONFIGURE</div>
+        <div class="step-tool">Custom GPTs · Claude Projects · Gems</div>
+        <div class="step-divider"></div>
+        <ul class="step-bullets">
+          <li>Repeatable outputs</li>
+          <li>Sounds like you</li>
+          <li>Platform-bound</li>
+          <li>Not your infrastructure</li>
+        </ul>
+      </div>
+
+      <div class="step step-3">
+        <div class="step-num">Level 03</div>
+        <div class="step-name">EMBED</div>
+        <div class="step-tool">Claude Cowork · Structured Workspace</div>
+        <div class="step-divider"></div>
+        <ul class="step-bullets">
+          <li>Real folders &amp; files</li>
+          <li>Collaborating not chatting</li>
+          <li>Connected workspace</li>
+          <li>Still not your OS</li>
+        </ul>
+      </div>
+
+      <div class="step step-4">
+        <div class="step-num">Level 04</div>
+        <div class="step-name">ARCHITECT</div>
+        <div class="step-tool">Claude Code</div>
+        <div class="step-divider"></div>
+        <ul class="step-bullets">
+          <li>API integrations</li>
+          <li>Workflow orchestration</li>
+          <li>Internal tools built</li>
+          <li>Version controlled</li>
+          <li>Your operating system</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Population -->
+    <div class="population">
+      <div class="pop-item">
+        <div class="pop-bar"></div>
+        <div class="pop-label">Almost everyone</div>
+      </div>
+      <div class="pop-item">
+        <div class="pop-bar"></div>
+        <div class="pop-label">Some</div>
+      </div>
+      <div class="pop-item">
+        <div class="pop-bar"></div>
+        <div class="pop-label">Few</div>
+      </div>
+      <div class="pop-item">
+        <div class="pop-bar"></div>
+        <div class="pop-label">Very few</div>
+      </div>
+    </div>
+
+    <!-- Bottom tagline -->
+    <div class="bottom-tagline">
+      <p>The difference isn't features.<br>It's <strong>ownership.</strong></p>
+    </div>
+
+    <!-- Corner mark -->
+    <div class="corner-mark">AI Leverage Framework</div>
+
+  </div>
+</body>
+</html>
