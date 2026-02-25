@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PO Automation — Onyx Armor</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/monokai.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+:root {
+  --bg-dark: #0a0a0a;
+  --bg-card: #111111;
+  --bg-card-hover: #1a1a1a;
+  --accent: #7b8fa8;
+  --accent-light: #9bb0c9;
+  --accent-glow: rgba(123, 143, 168, 0.15);
+  --success: #7b9a7b;
+  --warning: #c9a85b;
+  --error: #c97b7b;
+  --text-primary: #f5f4f0;
+  --text-secondary: #a8a8a8;
+  --text-muted: #666666;
+  --border: #2a2a2a;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --spacing-xs: 8px;
+  --spacing-sm: 16px;
+  --spacing-md: 24px;
+  --spacing-lg: 40px;
+  --spacing-xl: 60px;
+}
+
+html, body {
+  background: var(--bg-dark) !important;
+  color: var(--text-primary);
+  margin: 0;
+  height: 100%;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.reveal-viewport {
+  background: var(--bg-dark) !important;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px) !important;
+  background-size: 60px 60px !important;
+}
+
+.reveal {
+  background: var(--bg-dark);
+  font-family: var(--font-sans);
+  font-size: 22px;
+  color: var(--text-primary);
+}
+
+.reveal .slides { text-align: left; }
+.reveal .slides section { padding: 0; background: var(--bg-dark); }
+
+.slide {
+  height: 100%;
+  width: 100%;
+  padding: var(--spacing-xl);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  position: relative;
+}
+
+.slide > * { position: relative; z-index: 1; }
+
+.slide--center {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.slide--section { background: transparent; }
+
+.slide--section::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.header__logo {
+  font-family: var(--font-serif);
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: 0.02em;
+}
+
+.header__logo svg { width: 18px; height: 18px; color: var(--accent); }
+
+.kicker {
+  font-size: 0.7rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  margin-bottom: var(--spacing-sm);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.kicker::after {
+  content: '';
+  width: 40px;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.5;
+}
+
+h1 {
+  font-family: var(--font-serif);
+  font-size: 4rem;
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.1;
+  margin: 0 0 var(--spacing-md) 0;
+}
+
+h2 {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  font-weight: 400;
+  line-height: 1.15;
+  margin: 0 0 var(--spacing-md) 0;
+}
+
+h4 {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0 0 var(--spacing-xs) 0;
+  letter-spacing: 0.02em;
+}
+
+.lead {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 620px;
+}
+
+.muted { color: var(--text-muted); }
+.accent-text { color: var(--accent); }
+.success-text { color: var(--success); }
+
+.content { flex: 1; display: flex; flex-direction: column; }
+
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-xl);
+  align-items: center;
+  flex: 1;
+}
+
+.split--60-40 { grid-template-columns: 1.5fr 1fr; }
+
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-md); }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-md); }
+
+.flex-center { display: flex; align-items: center; justify-content: center; }
+
+.card {
+  background: transparent;
+  border: 1px solid var(--border);
+  padding: var(--spacing-md);
+  transition: all 0.3s ease;
+}
+
+.card:hover { background: var(--bg-card); border-color: var(--accent); }
+.card--featured { border-color: var(--accent); }
+
+.card__icon { width: 36px; height: 36px; margin-bottom: var(--spacing-sm); color: var(--accent); }
+.card__icon svg { width: 100%; height: 100%; stroke-width: 1.5; }
+.card__title { font-size: 0.95rem; font-weight: 500; margin-bottom: 6px; }
+.card__text { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-md);
+}
+
+.metric {
+  text-align: center;
+  padding: var(--spacing-md);
+  border: 1px solid var(--border);
+}
+
+.metric__value {
+  font-family: var(--font-serif);
+  font-size: 2.2rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.metric__label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  line-height: 1.4;
+}
+
+.list { list-style: none; padding: 0; margin: 0; }
+
+.list li {
+  padding: var(--spacing-sm) 0;
+  padding-left: var(--spacing-lg);
+  position: relative;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.95rem;
+}
+
+.list li:last-child { border-bottom: none; }
+
+.list li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  top: var(--spacing-sm);
+  color: var(--accent);
+}
+
+.list--numbered { counter-reset: list-counter; }
+.list--numbered li { counter-increment: list-counter; }
+.list--numbered li::before {
+  content: counter(list-counter, decimal-leading-zero);
+  color: var(--accent);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  top: 18px;
+}
+
+/* Workflow arrow diagram */
+.workflow {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-top: var(--spacing-lg);
+  flex: 1;
+}
+
+.workflow__step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.workflow__box {
+  border: 1px solid var(--border);
+  padding: 14px 10px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+
+.workflow__box:hover { border-color: var(--accent); }
+
+.workflow__icon {
+  color: var(--accent);
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: center;
+}
+
+.workflow__icon svg { width: 22px; height: 22px; stroke-width: 1.5; }
+.workflow__label { font-size: 0.8rem; font-weight: 500; color: var(--text-primary); }
+.workflow__sublabel { font-size: 0.7rem; color: var(--text-muted); margin-top: 4px; line-height: 1.3; }
+
+.workflow__arrow {
+  color: var(--accent);
+  font-size: 1.2rem;
+  padding: 0 8px;
+  flex-shrink: 0;
+  margin-bottom: 30px;
+}
+
+/* Timeline */
+.timeline {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: var(--spacing-lg) 0;
+  position: relative;
+  flex: 1;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  bottom: 66px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--border);
+}
+
+.timeline__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  flex: 1;
+}
+
+.timeline__label {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--accent);
+  margin-bottom: var(--spacing-sm);
+  line-height: 1.2;
+}
+
+.timeline__dot {
+  width: 10px;
+  height: 10px;
+  background: var(--accent);
+  border-radius: 50%;
+  margin-bottom: var(--spacing-sm);
+  position: relative;
+  z-index: 1;
+}
+
+.timeline__content {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  max-width: 140px;
+  line-height: 1.4;
+}
+
+/* Contact */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-xl);
+}
+
+.contact-item { text-align: center; }
+
+.contact-item__label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: var(--spacing-xs);
+}
+
+.contact-item__value { font-size: 0.95rem; color: var(--text-secondary); }
+
+/* Badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  font-size: 0.65rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  margin-bottom: 8px;
+}
+
+.badge--success { color: var(--success); border-color: var(--success); }
+.badge--warning { color: var(--warning); border-color: var(--warning); }
+
+/* Reveal */
+.reveal .controls { color: var(--accent); }
+.reveal .progress { background: var(--border); height: 2px; }
+.reveal .progress span { background: var(--accent); }
+.reveal .slide-number {
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-family: var(--font-mono);
+}
+
+.reveal .slides section .fragment { opacity: 0; transition: all 0.4s ease; }
+.reveal .slides section .fragment.visible { opacity: 1; }
+.reveal .slides section .fragment.fade-up { transform: translateY(20px); }
+.reveal .slides section .fragment.fade-up.visible { transform: translateY(0); }
+
+/* Format pills */
+.format-tag {
+  display: inline-block;
+  border: 1px solid var(--border);
+  padding: 3px 10px;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  margin: 3px 3px 3px 0;
+}
+
+.format-tag--active {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+  </style>
+</head>
+<body>
+<div class="reveal">
+  <div class="slides">
+
+    <!-- SLIDE 1: COVER -->
+    <section>
+      <div class="slide slide--section slide--center">
+        <div class="content flex-center" style="flex-direction: column; text-align: center;">
+          <p class="kicker" style="justify-content: center;">Onyx Armor · Propuesta Feb 2026</p>
+          <h1>Automatización<br><span class="accent-text">de Órdenes de Compra</span></h1>
+          <p class="lead" style="max-width: 580px; margin: 0 auto;">
+            De correos manuales revisados de 8 a 10pm — a un sistema que lee, parsea, y entrega listas para carga en Odoo.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 2: SECTION — EL PROBLEMA -->
+    <section>
+      <div class="slide slide--section slide--center">
+        <p class="kicker" style="justify-content: center;">01 // El estado actual</p>
+        <h2>El proceso hoy<br>cuesta tiempo y gente</h2>
+        <p class="lead muted">Un proceso esencial del negocio — que todavía es completamente manual.</p>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: DOLOR — PROBLEMAS ACTUALES -->
+    <section>
+      <div class="slide">
+        <div class="header">
+          <div class="header__logo">
+            <i data-lucide="alert-circle"></i>
+            El proceso hoy
+          </div>
+        </div>
+        <div class="split">
+          <div>
+            <p class="kicker">01 // El estado actual</p>
+            <h2>Cuatro formatos,<br>un proceso manual</h2>
+            <p class="lead">Cada cliente tiene su propio sistema. Ninguno habla el mismo idioma que Odoo.</p>
+          </div>
+          <div>
+            <ul class="list list--numbered">
+              <li class="fragment">
+                <strong>Revisión manual de 8 a 10pm</strong><br>
+                <span class="muted">Un agente filtra todos los correos entrantes con POs y los distribuye a Customer Service.</span>
+              </li>
+              <li class="fragment">
+                <strong>4+ formatos distintos de PO</strong><br>
+                <span class="muted">QuickBooks, Unifirst Solutions, correo manual, Excel. Cada cliente escribe diferente.</span>
+              </li>
+              <li class="fragment">
+                <strong>Códigos de producto no coinciden</strong><br>
+                <span class="muted">El nombre del cliente para el producto ≠ el código interno de Onyx. Traducción manual.</span>
+              </li>
+              <li class="fragment">
+                <strong>Tallas a veces escritas a mano</strong><br>
+                <span class="muted">Algunos sizing forms llegan en papel. OCR + validación humana requeridos.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: MÉTRICAS DEL PROBLEMA -->
+    <section>
+      <div class="slide">
+        <div class="header">
+          <div class="header__logo">
+            <i data-lucide="bar-chart-2"></i>
+            La concentración del problema
+          </div>
+        </div>
+        <div class="content">
+          <p class="kicker">01 // El estado actual</p>
+          <h2>El 90% está concentrado<br>en 3 formatos</h2>
+          <div class="metrics" style="margin-top: 48px;">
+            <div class="metric fragment">
+              <div class="metric__value">3–4</div>
+              <div class="metric__label">clientes = ~80% del revenue</div>
+            </div>
+            <div class="metric fragment">
+              <div class="metric__value">3</div>
+              <div class="metric__label">formatos PDF = 90% de facturación</div>
+            </div>
+            <div class="metric fragment">
+              <div class="metric__value">2h</div>
+              <div class="metric__label">diarias de trabajo manual de revisión</div>
+            </div>
+            <div class="metric fragment">
+              <div class="metric__value">0</div>
+              <div class="metric__label">integración directa con Odoo hoy</div>
+            </div>
+          </div>
+          <p class="lead muted" style="margin-top: 40px; text-align: center;">
+            Automatizar los 3 formatos principales = automatizar el 70% de la operación.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: SECTION — LA SOLUCIÓN -->
+    <section>
+      <div class="slide slide--section slide--center">
+        <p class="kicker" style="justify-content: center;">02 // La solución</p>
+        <h2>Un sistema que lee,<br>entiende y entrega</h2>
+        <p class="lead muted">IA conectada al correo de órdenes — con un humano que aprueba antes de subir.</p>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: FLUJO — CÓMO FUNCIONA -->
+    <section>
+      <div class="slide">
+        <div class="header">
+          <div class="header__logo">
+            <i data-lucide="git-branch"></i>
+            El flujo automatizado
+          </div>
+        </div>
+        <div class="content">
+          <p class="kicker">02 // La solución</p>
+          <h2>De correo entrante<br>a Odoo — en minutos</h2>
+          <div class="workflow">
+            <div class="workflow__step fragment fade-up">
+              <div class="workflow__box">
+                <div class="workflow__icon"><i data-lucide="mail"></i></div>
+                <div class="workflow__label">Correo entra</div>
+                <div class="workflow__sublabel">orders@ detecta PO adjunta o en cuerpo</div>
+              </div>
+            </div>
+            <div class="workflow__arrow">→</div>
+            <div class="workflow__step fragment fade-up">
+              <div class="workflow__box">
+                <div class="workflow__icon"><i data-lucide="scan-text"></i></div>
+                <div class="workflow__label">AI parsea</div>
+                <div class="workflow__sublabel">Lee PDF, Excel, o texto — extrae campos clave</div>
+              </div>
+            </div>
+            <div class="workflow__arrow">→</div>
+            <div class="workflow__step fragment fade-up">
+              <div class="workflow__box">
+                <div class="workflow__icon"><i data-lucide="arrow-left-right"></i></div>
+                <div class="workflow__label">Mapeo de códigos</div>
+                <div class="workflow__sublabel">Código cliente → código Onyx interno</div>
+              </div>
+            </div>
+            <div class="workflow__arrow">→</div>
+            <div class="workflow__step fragment fade-up">
+              <div class="workflow__box">
+                <div class="workflow__icon"><i data-lucide="table"></i></div>
+                <div class="workflow__label">Excel listo</div>
+                <div class="workflow__sublabel">En formato de carga masiva de Odoo</div>
+              </div>
+            </div>
+            <div class="workflow__arrow">→</div>
+            <div class="workflow__step fragment fade-up">
+              <div class="workflow__box card--featured">
+                <div class="workflow__icon" style="color: var(--success);"><i data-lucide="user-check"></i></div>
+                <div class="workflow__label">Javier aprueba</div>
+                <div class="workflow__sublabel">Digest diario — 5 min de revisión</div>
+              </div>
+            </div>
+            <div class="workflow__arrow">→</div>
+            <div class="workflow__step fragment fade-up">
+              <div class="workflow__box">
+                <div class="workflow__icon"><i data-lucide="upload-cloud"></i></div>
+                <div class="workflow__label">Carga a Odoo</div>
+                <div class="workflow__sublabel">Masiva o directa vía MCP</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 7: LO QUE HACE EL SISTEMA -->
+    <section>
+      <div class="slide">
+        <div class="header">
+          <div class="header__logo">
+            <i data-lucide="cpu"></i>
+            Capacidades del sistema
+          </div>
+        </div>
+        <div class="content">
+          <p class="kicker">02 // La solución</p>
+          <h2>Lo que hace el sistema</h2>
+          <div class="grid-2" style="margin-top: 28px;">
+            <div class="card fragment fade-up">
+              <div class="card__icon"><i data-lucide="file-scan"></i></div>
+              <h4 class="card__title">Lectura multi-formato</h4>
+              <p class="card__text">PDFs de QuickBooks, Unifirst Solutions, correos de texto, Excel. Si lo puede leer un humano, lo puede leer el sistema.</p>
+              <div style="margin-top: 12px;">
+                <span class="format-tag format-tag--active">QuickBooks PDF</span>
+                <span class="format-tag format-tag--active">Unifirst</span>
+                <span class="format-tag">Manual text</span>
+                <span class="format-tag">Excel</span>
+              </div>
+            </div>
+            <div class="card fragment fade-up card--featured">
+              <div class="card__icon"><i data-lucide="tag"></i></div>
+              <h4 class="card__title">Mapeo de códigos de cliente</h4>
+              <p class="card__text">El sistema aprende la equivalencia entre el código del cliente y el SKU interno de Onyx. Se actualiza cuando cambian.</p>
+            </div>
+            <div class="card fragment fade-up">
+              <div class="card__icon"><i data-lucide="eye"></i></div>
+              <h4 class="card__title">OCR + validación de tallas</h4>
+              <p class="card__text">Si las tallas vienen escritas a mano o en imagen, el sistema intenta leerlas. Si no puede, alerta a Javier para revisión manual de ese ítem.</p>
+            </div>
+            <div class="card fragment fade-up">
+              <div class="card__icon"><i data-lucide="bell"></i></div>
+              <h4 class="card__title">Digest diario de aprobación</h4>
+              <p class="card__text">Cada mañana llega un correo con todas las órdenes parseadas, clasificadas y listas. Javier revisa, aprueba, y se cargan en masa.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 8: INTEGRACIÓN ODOO -->
+    <section>
+      <div class="slide">
+        <div class="header">
+          <div class="header__logo">
+            <i data-lucide="plug"></i>
+            Integración con Odoo
+          </div>
+        </div>
+        <div class="split">
+          <div>
+            <p class="kicker">03 // Integración</p>
+            <h2>Conectado directo<br>a Odoo vía MCP</h2>
+            <p class="lead">Existe un MCP oficial de Odoo. Eso significa que el sistema puede crear, leer, actualizar y eliminar registros en Odoo hablándole en lenguaje natural.</p>
+            <p class="lead muted" style="margin-top: var(--spacing-md);">
+              Hoy: Excel para carga masiva manual.<br>
+              Fase 2: carga directa automática con aprobación de un click.
+            </p>
+          </div>
+          <div>
+            <ul class="list">
+              <li class="fragment">
+                <strong>Create</strong> — Crear órdenes de compra en Odoo
+              </li>
+              <li class="fragment">
+                <strong>Read</strong> — Consultar stock, precios pactados, estatus
+              </li>
+              <li class="fragment">
+                <strong>Update</strong> — Modificar una orden si hay cambio del cliente
+              </li>
+              <li class="fragment">
+                <strong>Bulk upload</strong> — Cargar N órdenes en una sola operación
+              </li>
+              <li class="fragment">
+                <strong>Alertas</strong> — Notificar si una orden tiene inconsistencias vs. precios pactados
+              </li>
+            </ul>
+            <p style="margin-top: var(--spacing-md); font-size: 0.8rem; color: var(--text-muted);">
+              MCP disponible en apps.odoo.com · avalado por Odoo
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 9: HUMAN IN THE LOOP -->
+    <section>
+      <div class="slide">
+        <div class="header">
+          <div class="header__logo">
+            <i data-lucide="shield-check"></i>
+            Human in the loop
+          </div>
+        </div>
+        <div class="split">
+          <div>
+            <p class="kicker">04 // Control y confianza</p>
+            <h2>El sistema automatiza.<br>Javier aprueba.</h2>
+            <p class="lead">La IA no sube nada a Odoo sin revisión humana. La idea no es reemplazar al equipo — es que el equipo no pierda tiempo en lo que la máquina puede hacer mejor.</p>
+          </div>
+          <div>
+            <div class="card card--featured" style="margin-bottom: var(--spacing-md);">
+              <div class="card__icon" style="color: var(--success);"><i data-lucide="check-circle"></i></div>
+              <h4 class="card__title">Lo que hace la IA</h4>
+              <p class="card__text">Lee, parsea, mapea códigos, organiza por prioridad, genera el Excel de carga. Sin errores tipográficos, 24/7, en segundos.</p>
+            </div>
+            <div class="card">
+              <div class="card__icon" style="color: var(--warning);"><i data-lucide="user"></i></div>
+              <h4 class="card__title">Lo que hace Javier</h4>
+              <p class="card__text">Revisa el digest de 5 minutos. Si todo está bien, aprueba. Si algo se ve raro, lo corrige antes de subir. Punto.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 10: SECTION — ROADMAP -->
+    <section>
+      <div class="slide slide--section slide--center">
+        <p class="kicker" style="justify-content: center;">05 // El plan</p>
+        <h2>Cómo arrancamos</h2>
+        <p class="lead muted">Sin quote. Se entrega funcionando. Javier decide qué vale.</p>
+      </div>
+    </section>
+
+    <!-- SLIDE 11: ROADMAP -->
+    <section>
+      <div class="slide">
+        <div class="header">
+          <div class="header__logo">
+            <i data-lucide="map"></i>
+            Fases de implementación
+          </div>
+        </div>
+        <div class="content">
+          <p class="kicker">05 // El plan</p>
+          <h2>De los 3 formatos principales<br>a la integración completa</h2>
+          <div class="timeline">
+            <div class="timeline__item fragment">
+              <div class="timeline__label">Fase 1<br>Sem 1–2</div>
+              <div class="timeline__dot"></div>
+              <div class="timeline__content">Mapear los 3 formatos principales. Construir el parser con correos reales.</div>
+            </div>
+            <div class="timeline__item fragment">
+              <div class="timeline__label">Fase 2<br>Sem 3</div>
+              <div class="timeline__dot"></div>
+              <div class="timeline__content">Digest diario funcionando. Javier recibe resumen cada mañana para aprobar.</div>
+            </div>
+            <div class="timeline__item fragment">
+              <div class="timeline__label">Fase 3<br>Sem 4</div>
+              <div class="timeline__dot"></div>
+              <div class="timeline__content">Excel de carga masiva automático. Reducción del 70–90% del trabajo manual.</div>
+            </div>
+            <div class="timeline__item fragment">
+              <div class="timeline__label">Fase 4<br>Mes 2+</div>
+              <div class="timeline__dot" style="background: var(--success);"></div>
+              <div class="timeline__content">MCP Odoo activo. Carga directa al sistema con un click de aprobación.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 12: LA PROPUESTA -->
+    <section>
+      <div class="slide">
+        <div class="header">
+          <div class="header__logo">
+            <i data-lucide="handshake"></i>
+            La propuesta
+          </div>
+        </div>
+        <div class="split">
+          <div>
+            <p class="kicker">06 // Cómo trabajamos</p>
+            <h2>Sin quote.<br>Por resultado.</h2>
+            <p class="lead">Lo armo funcionando. Cuando esté corriendo y Javier vea el valor, él decide qué pagar.</p>
+            <p class="lead muted" style="margin-top: var(--spacing-md);">
+              Si no funciona, no se cobra nada. El riesgo lo toma Carlos.
+            </p>
+          </div>
+          <div>
+            <ul class="list">
+              <li class="fragment">
+                <strong>Acceso al correo orders@</strong><br>
+                <span class="muted">Solo lectura del mailbox de órdenes. No se toca nada más.</span>
+              </li>
+              <li class="fragment">
+                <strong>Ejemplos de los 3 formatos principales</strong><br>
+                <span class="muted">Unos 5–10 correos reales de cada formato para entrenar el parser.</span>
+              </li>
+              <li class="fragment">
+                <strong>Tabla de equivalencia de códigos</strong><br>
+                <span class="muted">SKU cliente → SKU Onyx para los 3–4 clientes grandes.</span>
+              </li>
+              <li class="fragment">
+                <strong>30–60 min de sesión de diagnóstico</strong><br>
+                <span class="muted">Ver el proceso end-to-end en pantalla. Nada más.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 13: CIERRE CTA -->
+    <section>
+      <div class="slide slide--section slide--center">
+        <div class="content flex-center" style="flex-direction: column;">
+          <p class="kicker" style="justify-content: center;">Onyx Armor · Javier Rocha · Carlos Acuña</p>
+          <h1>¿Arrancamos con<br><span class="accent-text">los 3 formatos?</span></h1>
+          <p class="lead" style="margin-bottom: 40px; text-align: center; max-width: 560px;">
+            Comparte unos correos de ejemplo de cada formato y nos ponemos a trabajar.<br>
+            Sin burocracia. Sin quote. Entregamos y medimos.
+          </p>
+          <div class="contact-grid" style="width: 100%; max-width: 480px;">
+            <div class="contact-item">
+              <div class="contact-item__label">WhatsApp</div>
+              <div class="contact-item__value">Carlos Acuña</div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-item__label">LinkedIn</div>
+              <div class="contact-item__value">Carlos Acuña</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    slideNumber: true,
+    controls: true,
+    controlsLayout: 'bottom-right',
+    controlsBackArrows: 'faded',
+    progress: true,
+    center: false,
+    transition: 'slide',
+    backgroundTransition: 'fade',
+    width: 1280,
+    height: 720,
+    margin: 0,
+    minScale: 0.2,
+    maxScale: 2,
+    autoAnimate: true,
+    autoAnimateDuration: 0.7,
+    plugins: [RevealHighlight]
+  });
+  lucide.createIcons();
+</script>
+</body>
+</html>
