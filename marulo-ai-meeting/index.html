@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IA para tu empresa — Marulo</title>
+
+  <!-- Google Fonts - Autonomee Style -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+
+  <!-- Reveal.js -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/monokai.css">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+/*
+ * Autonomee.ai Presentation Theme
+ * Editorial, minimal, serif headlines
+ */
+
+:root {
+  --bg-dark: #0a0a0a;
+  --bg-card: #111111;
+  --bg-card-hover: #1a1a1a;
+  --accent: #7b8fa8;
+  --accent-light: #9bb0c9;
+  --accent-glow: rgba(123, 143, 168, 0.15);
+  --success: #7b9a7b;
+  --warning: #c9a85b;
+  --error: #c97b7b;
+  --text-primary: #f5f4f0;
+  --text-secondary: #a8a8a8;
+  --text-muted: #666666;
+  --border: #2a2a2a;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --spacing-xs: 8px;
+  --spacing-sm: 16px;
+  --spacing-md: 24px;
+  --spacing-lg: 40px;
+  --spacing-xl: 60px;
+}
+
+html, body {
+  background: var(--bg-dark) !important;
+  color: var(--text-primary);
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.reveal-viewport {
+  background: var(--bg-dark) !important;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px) !important;
+  background-size: 60px 60px !important;
+}
+
+.reveal {
+  background: var(--bg-dark);
+  font-family: var(--font-sans);
+  font-size: 22px;
+  color: var(--text-primary);
+}
+
+.reveal .slides { text-align: left; }
+.reveal .slides section { padding: 0; background: var(--bg-dark); }
+
+.slide {
+  height: 100%;
+  width: 100%;
+  padding: var(--spacing-xl);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  position: relative;
+}
+
+.slide > * { position: relative; z-index: 1; }
+
+.slide--center {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.slide--section { background: transparent; }
+
+.slide--section::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.header__logo {
+  font-family: var(--font-serif);
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: 0.02em;
+}
+
+.header__logo svg {
+  width: 18px;
+  height: 18px;
+  color: var(--accent);
+}
+
+.kicker {
+  font-size: 0.7rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  margin-bottom: var(--spacing-sm);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.kicker::after {
+  content: '';
+  width: 40px;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.5;
+}
+
+h1, .h1 {
+  font-family: var(--font-serif);
+  font-size: 4rem;
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.1;
+  margin: 0 0 var(--spacing-md) 0;
+  color: var(--text-primary);
+}
+
+h2, .h2 {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  font-weight: 400;
+  line-height: 1.15;
+  margin: 0 0 var(--spacing-md) 0;
+}
+
+h4, .h4 {
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0 0 var(--spacing-xs) 0;
+  letter-spacing: 0.02em;
+}
+
+.lead {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 600px;
+}
+
+.muted { color: var(--text-muted); }
+.accent-text { color: var(--accent); }
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-xl);
+  align-items: center;
+  flex: 1;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-md);
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-md);
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card {
+  background: transparent;
+  border: 1px solid var(--border);
+  padding: var(--spacing-md);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  background: var(--bg-card);
+  border-color: var(--accent);
+}
+
+.card--featured { border-color: var(--accent); }
+
+.card__icon {
+  width: 40px;
+  height: 40px;
+  margin-bottom: var(--spacing-sm);
+  color: var(--accent);
+}
+
+.card__icon svg {
+  width: 100%;
+  height: 100%;
+  stroke-width: 1.5;
+}
+
+.card__title {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: var(--spacing-xs);
+}
+
+.card__text {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.metric {
+  text-align: center;
+  padding: var(--spacing-md);
+  border: 1px solid var(--border);
+  transition: all 0.3s ease;
+}
+
+.metric:hover { border-color: var(--accent); }
+
+.metric__value {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: var(--spacing-xs);
+}
+
+.metric__label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.list li {
+  padding: var(--spacing-sm) 0;
+  padding-left: var(--spacing-lg);
+  position: relative;
+  border-bottom: 1px solid var(--border);
+}
+
+.list li:last-child { border-bottom: none; }
+
+.list li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  top: var(--spacing-sm);
+  color: var(--accent);
+}
+
+.list--numbered { counter-reset: list-counter; }
+
+.list--numbered li { counter-increment: list-counter; }
+
+.list--numbered li::before {
+  content: counter(list-counter, decimal-leading-zero);
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-xl);
+}
+
+.contact-item { text-align: center; }
+
+.contact-item__label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: var(--spacing-xs);
+}
+
+.contact-item__value {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+/* Nivel badge pills */
+.nivel-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  border: 1px solid var(--border);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+
+.nivel-pill--active {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Reveal overrides */
+.reveal .controls { color: var(--accent); }
+.reveal .progress { background: var(--border); height: 2px; }
+.reveal .progress span { background: var(--accent); }
+.reveal .slide-number {
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-family: var(--font-mono);
+  right: 20px;
+  bottom: 20px;
+}
+
+.reveal .slides section .fragment {
+  opacity: 0;
+  transition: all 0.4s ease;
+}
+
+.reveal .slides section .fragment.visible { opacity: 1; }
+
+.reveal .slides section .fragment.fade-up {
+  transform: translateY(20px);
+}
+
+.reveal .slides section .fragment.fade-up.visible {
+  transform: translateY(0);
+}
+
+/* LLM brand colors */
+.brand-openai { color: #10a37f; }
+.brand-claude  { color: #cc785c; }
+.brand-gemini  { color: #4285f4; }
+.brand-grok    { color: #e7e7e7; }
+
+/* Big number for nivel */
+.nivel-num {
+  font-family: var(--font-serif);
+  font-size: 5rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--accent);
+  opacity: 0.15;
+  position: absolute;
+  top: 50px;
+  right: 60px;
+  line-height: 1;
+}
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ====== SLIDE 1: COVER ====== -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <div class="content flex-center" style="flex-direction: column; text-align: center;">
+            <p class="kicker" style="justify-content: center;">Carlos Marulanda · Feb 25, 2026</p>
+            <h1>IA para<br><span class="accent-text">tu empresa</span></h1>
+            <p class="lead" style="max-width: 560px; margin: 0 auto;">
+              Resumen de nuestra llamada — de qué hablamos, qué existe hoy, y por qué te puede cambiar el negocio.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== SLIDE 2: SECTION — LOS JUGADORES ====== -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <p class="kicker" style="justify-content: center;">01 // El ecosistema</p>
+          <h2>Los 4 grandes<br>modelos de IA</h2>
+          <p class="lead muted">No es uno solo — hay varios, y cada uno tiene su fortaleza.</p>
+        </div>
+      </section>
+
+      <!-- ====== SLIDE 3: LOS 4 LLMs ====== -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="cpu"></i>
+              Los modelos que importan
+            </div>
+          </div>
+          <div class="content">
+            <p class="kicker">01 // El ecosistema</p>
+            <h2>Los cuatro grandes</h2>
+            <div class="grid-2" style="margin-top: 28px;">
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="message-square"></i></div>
+                <h4 class="card__title" style="color: #10a37f;">ChatGPT — OpenAI</h4>
+                <p class="card__text">El más conocido. OpenAI es la empresa, ChatGPT el producto. El que todo el mundo usa como Google.</p>
+              </div>
+              <div class="card fragment fade-up card--featured">
+                <div class="card__icon"><i data-lucide="zap"></i></div>
+                <h4 class="card__title" style="color: #cc785c;">Claude — Anthropic</h4>
+                <p class="card__text">El que Carlos usa a diario. Más preciso para código y razonamiento largo. Haiku, Sonnet, Opus.</p>
+              </div>
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="globe"></i></div>
+                <h4 class="card__title" style="color: #4285f4;">Gemini — Google</h4>
+                <p class="card__text">El de Google. Integrado con Drive, Docs, Sheets. Crea Gems (custom GPTs). Genera imágenes con Imagen.</p>
+              </div>
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="twitter"></i></div>
+                <h4 class="card__title">Grok — xAI (Elon)</h4>
+                <p class="card__text">El de Elon Musk. Integrado con X. Más irreverente. Crece rápido.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== SLIDE 4: SECTION — NIVELES ====== -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <p class="kicker" style="justify-content: center;">02 // Cómo se usa</p>
+          <h2>Los 4 niveles<br>de uso de IA</h2>
+          <p class="lead muted">La mayoría está en el nivel 1. Los que generan ventaja competitiva están en el 3 y 4.</p>
+        </div>
+      </section>
+
+      <!-- ====== SLIDE 5: 4 NIVELES ====== -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="bar-chart-2"></i>
+              Escalera de adopción
+            </div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">02 // Cómo se usa</p>
+              <h2>Del chat<br>al agente</h2>
+              <p class="lead">El nivel determina cuánto tiempo liberas y cuánto impacto generas.</p>
+            </div>
+            <div>
+              <ul class="list list--numbered">
+                <li class="fragment">
+                  <strong>Chatear</strong><br>
+                  <span class="muted">ChatGPT como Google avanzado. Útil, pero el historial queda ahí y no hace nada solo.</span>
+                </li>
+                <li class="fragment">
+                  <strong>Custom GPTs / Gems</strong><br>
+                  <span class="muted">Le metes tus PDFs, tu tono, tus procesos. Ya sabe de tu empresa.</span>
+                </li>
+                <li class="fragment">
+                  <strong>Apps de escritorio</strong><br>
+                  <span class="muted">Claude Desktop, ChatGPT Desktop. Ve tus carpetas, navega la web, analiza documentos.</span>
+                </li>
+                <li class="fragment">
+                  <strong>Automatización &amp; agentes</strong><br>
+                  <span class="muted">Hace tareas solas, conecta sistemas, entrega resultados sin que tú estés.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== SLIDE 6: SECTION — DEMOS ====== -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <p class="kicker" style="justify-content: center;">03 // Ejemplos reales</p>
+          <h2>Lo que ya<br>existe hecho</h2>
+          <p class="lead muted">No teoría. Cosas que Carlos construyó en horas hablándole a la IA.</p>
+        </div>
+      </section>
+
+      <!-- ====== SLIDE 7: DEMOS ====== -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="rocket"></i>
+              Demos en producción
+            </div>
+          </div>
+          <div class="content">
+            <p class="kicker">03 // Ejemplos reales</p>
+            <h2>Tres demos construidos<br>en horas, no semanas</h2>
+            <div class="grid-3" style="margin-top: 28px;">
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="file-text"></i></div>
+                <h4 class="card__title">Generador de propuestas</h4>
+                <p class="card__text">Cinépolis. Se pega el transcript de la llamada → sale la propuesta en Word formateada con estándares de la empresa.</p>
+                <p style="margin-top: 12px; font-size: 0.8rem; color: var(--accent);">5 min por propuesta · antes era horas</p>
+              </div>
+              <div class="card fragment fade-up card--featured">
+                <div class="card__icon"><i data-lucide="search"></i></div>
+                <h4 class="card__title">Scraper Mercado Libre</h4>
+                <p class="card__text">Un amigo necesitaba detectar vendedores ilegales de suplementos. 50 listados con links y precios en 5 minutos.</p>
+                <p style="margin-top: 12px; font-size: 0.8rem; color: var(--accent);">5 min · antes 2 horas de un empleado</p>
+              </div>
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="message-circle"></i></div>
+                <h4 class="card__title">Resumen WhatsApp</h4>
+                <p class="card__text">Bot que monitorea el grupo del colegio (431 miembros), agrupa ofertas laborales y CVs, y manda un digest diario.</p>
+                <p style="margin-top: 12px; font-size: 0.8rem; color: var(--accent);">Construido en 3 horas · corre solo</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== SLIDE 8: SECTION — TU EMPRESA ====== -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <p class="kicker" style="justify-content: center;">04 // Tu contexto</p>
+          <h2>Tu empresa,<br>tus números</h2>
+          <p class="lead muted">Ya tienes tracción. La pregunta es: ¿cuánto más con IA?</p>
+        </div>
+      </section>
+
+      <!-- ====== SLIDE 9: MÉTRICAS MARULO ====== -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="trending-up"></i>
+              El punto de partida
+            </div>
+          </div>
+          <div class="content">
+            <p class="kicker">04 // Tu contexto</p>
+            <h2>2025 — Un buen año</h2>
+            <div class="metrics" style="margin-top: 48px;">
+              <div class="metric fragment">
+                <div class="metric__value">$4.6B</div>
+                <div class="metric__label">COP en ventas</div>
+              </div>
+              <div class="metric fragment">
+                <div class="metric__value">€1M</div>
+                <div class="metric__label">Equivalente euros</div>
+              </div>
+              <div class="metric fragment">
+                <div class="metric__value">37%</div>
+                <div class="metric__label">Margen bruto</div>
+              </div>
+              <div class="metric fragment">
+                <div class="metric__value">$300M</div>
+                <div class="metric__label">COP ganancia neta</div>
+              </div>
+            </div>
+            <p class="lead muted" style="margin-top: 40px; text-align: center;">
+              Con IA bien implementada, el mismo equipo puede hacer el doble — sin contratar.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== SLIDE 10: LA PROPUESTA ====== -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="briefcase"></i>
+              La propuesta
+            </div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">05 // Cómo trabajar juntos</p>
+              <h2>Fractional<br>AI Officer</h2>
+              <p class="lead">Carlos se mete a tu empresa, mapea los procesos más lentos, los automatiza, y te los entrega funcionando.</p>
+            </div>
+            <div>
+              <ul class="list">
+                <li class="fragment">
+                  <strong>No te cambio el backend</strong><br>
+                  <span class="muted">Tu hosting, tu CRM, tus herramientas siguen igual — le agrego una capa de IA encima.</span>
+                </li>
+                <li class="fragment">
+                  <strong>Cobro por resultado</strong><br>
+                  <span class="muted">Arranque low-risk. Cuando hay casos de éxito claros, subimos ticket.</span>
+                </li>
+                <li class="fragment">
+                  <strong>El equipo puede operar solo</strong><br>
+                  <span class="muted">Lo que se construye queda en tus manos. Cualquiera de tu equipo lo puede ajustar.</span>
+                </li>
+                <li class="fragment">
+                  <strong>Asesoría continua opcional</strong><br>
+                  <span class="muted">Retainer mensual para seguir encontrando oportunidades de automatización.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== SLIDE 11: PRÓXIMOS PASOS ====== -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="arrow-right"></i>
+              Próximos pasos
+            </div>
+          </div>
+          <div class="content">
+            <p class="kicker">06 // ¿Cómo arrancamos?</p>
+            <h2>El plan para<br>la semana que viene</h2>
+            <div class="grid-3" style="margin-top: 36px;">
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="mic"></i></div>
+                <h4 class="card__title">01 — Sesión de diagnóstico</h4>
+                <p class="card__text">Marulo le cuenta a Carlos cómo funciona la empresa: procesos, herramientas, dolores del día a día.</p>
+              </div>
+              <div class="card fragment fade-up card--featured">
+                <div class="card__icon"><i data-lucide="map"></i></div>
+                <h4 class="card__title">02 — Mapa de oportunidades</h4>
+                <p class="card__text">Carlos identifica los 3 procesos con más potencial de automatización y los prioriza por impacto.</p>
+              </div>
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="play"></i></div>
+                <h4 class="card__title">03 — Primera automatización</h4>
+                <p class="card__text">Se construye el primer bot o herramienta. Marulo lo usa, lo evalúa, y decide si seguimos.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== SLIDE 12: CTA CIERRE ====== -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <div class="content flex-center" style="flex-direction: column;">
+            <p class="kicker" style="justify-content: center;">Marulo &amp; Carlos · Feb 25</p>
+            <h1>¿Arrancamos<br><span class="accent-text">la semana que viene?</span></h1>
+            <p class="lead" style="margin-bottom: 40px; text-align: center;">
+              Mándale un audio a ChatGPT contándole tu empresa — y se lo mandas a Carlos.<br>
+              Con eso ya tenemos el diagnóstico inicial.
+            </p>
+            <div class="contact-grid" style="width: 100%; max-width: 500px;">
+              <div class="contact-item">
+                <div class="contact-item__label">WhatsApp</div>
+                <div class="contact-item__value">Carlos Acuña</div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-item__label">LinkedIn</div>
+                <div class="contact-item__value">Carlos Acuña</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Reveal.js Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.js"></script>
+
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: true,
+      controls: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      center: false,
+      transition: 'slide',
+      backgroundTransition: 'fade',
+      width: 1280,
+      height: 720,
+      margin: 0,
+      minScale: 0.2,
+      maxScale: 2,
+      autoAnimate: true,
+      autoAnimateDuration: 0.7,
+      plugins: [RevealHighlight]
+    });
+
+    lucide.createIcons();
+  </script>
+
+</body>
+</html>
