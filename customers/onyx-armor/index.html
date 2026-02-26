@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Onyx Armor — Order Processing Automation</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/monokai.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    /* ===== CSS VARIABLES ===== */
+    :root {
+      --bg-dark: #0a0a0a;
+      --bg-card: #111111;
+      --bg-card-hover: #1a1a1a;
+      --accent: #7b8fa8;
+      --accent-light: #9bb0c9;
+      --accent-glow: rgba(123, 143, 168, 0.15);
+      --success: #7b9a7b;
+      --warning: #c9a85b;
+      --error: #c97b7b;
+      --text-primary: #f5f4f0;
+      --text-secondary: #a8a8a8;
+      --text-muted: #666666;
+      --border: #2a2a2a;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --spacing-xs: 8px;
+      --spacing-sm: 16px;
+      --spacing-md: 24px;
+      --spacing-lg: 40px;
+      --spacing-xl: 60px;
+    }
+
+    html, body {
+      background: var(--bg-dark) !important;
+      color: var(--text-primary);
+      margin: 0;
+      height: 100%;
+    }
+    body { font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+
+    .reveal-viewport {
+      background: var(--bg-dark) !important;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px) !important;
+      background-size: 60px 60px !important;
+    }
+
+    .reveal { background: var(--bg-dark); font-family: var(--font-sans); font-size: 22px; color: var(--text-primary); }
+    .reveal .slides { text-align: left; }
+    .reveal .slides section { padding: 0; background: var(--bg-dark); }
+
+    /* ===== SLIDE BASE ===== */
+    .slide {
+      height: 100%; width: 100%;
+      padding: var(--spacing-xl);
+      box-sizing: border-box;
+      display: flex; flex-direction: column;
+      background: transparent; position: relative;
+    }
+    .slide > * { position: relative; z-index: 1; }
+
+    .slide--center { align-items: center; justify-content: center; text-align: center; }
+
+    .slide--section { background: transparent; }
+    .slide--section::before {
+      content: '';
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+      pointer-events: none; z-index: 0;
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-bottom: var(--spacing-md); margin-bottom: var(--spacing-lg);
+      border-bottom: 1px solid var(--border); flex-shrink: 0;
+    }
+    .header__logo {
+      font-family: var(--font-serif); font-size: 0.9rem; font-weight: 400;
+      color: var(--text-secondary);
+      display: flex; align-items: center; gap: 10px; letter-spacing: 0.02em;
+    }
+    .header__logo svg { width: 18px; height: 18px; color: var(--accent); }
+
+    /* ===== TYPOGRAPHY ===== */
+    .kicker {
+      font-size: 0.7rem; color: var(--accent);
+      text-transform: uppercase; letter-spacing: 0.25em;
+      margin-bottom: var(--spacing-sm); font-weight: 500;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .kicker::after { content: ''; width: 40px; height: 1px; background: var(--accent); opacity: 0.5; }
+
+    h1, .h1 {
+      font-family: var(--font-serif); font-size: 4rem; font-weight: 400;
+      font-style: italic; line-height: 1.1; margin: 0 0 var(--spacing-md) 0; color: var(--text-primary);
+    }
+    h2, .h2 {
+      font-family: var(--font-serif); font-size: 2.5rem; font-weight: 400;
+      line-height: 1.15; margin: 0 0 var(--spacing-md) 0;
+    }
+    h3, .h3 {
+      font-family: var(--font-serif); font-size: 1.5rem; font-weight: 400;
+      line-height: 1.3; margin: 0 0 var(--spacing-sm) 0;
+    }
+    h4, .h4 {
+      font-family: var(--font-sans); font-size: 1.05rem; font-weight: 500;
+      margin: 0 0 var(--spacing-xs) 0; letter-spacing: 0.02em;
+    }
+    .lead { font-size: 1.1rem; color: var(--text-secondary); line-height: 1.7; max-width: 600px; }
+    .muted { color: var(--text-muted); }
+    .accent-text { color: var(--accent); }
+
+    /* ===== LAYOUT ===== */
+    .content { flex: 1; display: flex; flex-direction: column; }
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-xl); align-items: center; flex: 1; }
+    .split--60-40 { grid-template-columns: 1.5fr 1fr; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-md); }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-md); }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--spacing-md); }
+    .flex-center { display: flex; align-items: center; justify-content: center; }
+
+    /* ===== CARDS ===== */
+    .card { background: transparent; border: 1px solid var(--border); padding: var(--spacing-md); transition: all 0.3s ease; }
+    .card:hover { background: var(--bg-card); border-color: var(--accent); }
+    .card--featured { border-color: var(--accent); }
+    .card__icon { width: 36px; height: 36px; margin-bottom: var(--spacing-sm); color: var(--accent); }
+    .card__icon svg { width: 100%; height: 100%; stroke-width: 1.5; }
+    .card__title { font-family: var(--font-sans); font-size: 0.95rem; font-weight: 500; margin-bottom: 6px; }
+    .card__text { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
+
+    /* ===== METRICS ===== */
+    .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--spacing-md); }
+    .metric { text-align: center; padding: var(--spacing-md); border: 1px solid var(--border); }
+    .metric:hover { border-color: var(--accent); }
+    .metric__value { font-family: var(--font-serif); font-size: 2.5rem; font-weight: 400; font-style: italic; color: var(--accent); line-height: 1; margin-bottom: var(--spacing-xs); }
+    .metric__label { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
+
+    /* ===== LISTS ===== */
+    .list { list-style: none; padding: 0; margin: 0; }
+    .list li { padding: var(--spacing-sm) 0; padding-left: var(--spacing-lg); position: relative; border-bottom: 1px solid var(--border); }
+    .list li:last-child { border-bottom: none; }
+    .list li::before { content: '—'; position: absolute; left: 0; top: var(--spacing-sm); color: var(--accent); }
+    .list--check li::before { content: '✓'; color: var(--success); }
+    .list--numbered { counter-reset: list-counter; }
+    .list--numbered li { counter-increment: list-counter; }
+    .list--numbered li::before { content: counter(list-counter, decimal-leading-zero); color: var(--accent); font-size: 0.8rem; font-weight: 500; }
+
+    /* ===== BADGES ===== */
+    .badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; font-size: 0.7rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+    .badge--success { color: var(--success); border-color: var(--success); }
+    .badge--warning { color: var(--warning); border-color: var(--warning); }
+
+    /* ===== TIMELINE ===== */
+    .timeline { display: flex; justify-content: space-between; align-items: flex-end; padding: var(--spacing-lg) 0; position: relative; }
+    .timeline::before { content: ''; position: absolute; bottom: 60px; left: 0; right: 0; height: 1px; background: var(--border); }
+    .timeline__item { display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; flex: 1; }
+    .timeline__year { font-family: var(--font-serif); font-size: 1.1rem; font-style: italic; color: var(--accent); margin-bottom: var(--spacing-sm); }
+    .timeline__dot { width: 10px; height: 10px; background: var(--accent); border-radius: 50%; margin-bottom: var(--spacing-sm); position: relative; z-index: 1; }
+    .timeline__content { font-size: 0.8rem; color: var(--text-secondary); max-width: 130px; line-height: 1.4; }
+
+    /* ===== WORKFLOW ===== */
+    .workflow { display: flex; align-items: center; gap: 0; }
+    .workflow__step { flex: 1; }
+    .workflow__box {
+      border: 1px solid var(--border); padding: 16px 12px; text-align: center;
+      transition: border-color 0.3s ease;
+    }
+    .workflow__box:hover { border-color: var(--accent); }
+    .workflow__label { font-size: 0.85rem; font-weight: 500; color: var(--text-primary); margin-bottom: 4px; }
+    .workflow__sublabel { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+    .workflow__arrow { color: var(--accent); font-size: 1.4rem; padding: 0 8px; flex-shrink: 0; }
+
+    /* ===== BUTTONS ===== */
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 12px 28px; font-size: 0.8rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; cursor: pointer; transition: all 0.3s ease; border: 1px solid var(--text-primary); background: transparent; color: var(--text-primary); }
+    .btn:hover { background: var(--text-primary); color: var(--bg-dark); }
+    .btn--accent { border-color: var(--accent); color: var(--accent); }
+    .btn--accent:hover { background: var(--accent); color: var(--bg-dark); }
+
+    /* ===== CONTACT / CTA ===== */
+    .contact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-lg); margin-top: var(--spacing-xl); }
+    .contact-item { text-align: center; }
+    .contact-item__label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: var(--spacing-xs); }
+    .contact-item__value { font-size: 0.95rem; color: var(--text-secondary); }
+
+    /* ===== REVEAL OVERRIDES ===== */
+    .reveal .controls { color: var(--accent); }
+    .reveal .progress { background: var(--border); height: 2px; }
+    .reveal .progress span { background: var(--accent); }
+    .reveal .slide-number { background: transparent; color: var(--text-muted); font-size: 12px; font-family: var(--font-mono); right: 20px; bottom: 20px; }
+
+    /* ===== FRAGMENTS ===== */
+    .reveal .slides section .fragment { opacity: 0; transition: all 0.4s ease; }
+    .reveal .slides section .fragment.visible { opacity: 1; }
+    .reveal .slides section .fragment.fade-up { transform: translateY(20px); }
+    .reveal .slides section .fragment.fade-up.visible { transform: translateY(0); }
+
+    /* ===== SCROLLBAR ===== */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-dark); }
+    ::-webkit-scrollbar-thumb { background: var(--border); }
+    ::selection { background: var(--accent); color: var(--bg-dark); }
+
+    /* ===== TABLE ===== */
+    .tbl { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    .tbl th { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--accent); color: var(--accent); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.12em; font-weight: 500; }
+    .tbl td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--text-secondary); vertical-align: top; }
+    .tbl tr:last-child td { border-bottom: none; }
+    .tbl tr:hover td { background: var(--bg-card); }
+
+    /* ===== BEFORE/AFTER ===== */
+    .compare { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md); margin-top: var(--spacing-md); }
+    .compare__col { border: 1px solid var(--border); padding: var(--spacing-md); }
+    .compare__col--after { border-color: var(--accent); }
+    .compare__label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: var(--spacing-sm); color: var(--text-muted); }
+    .compare__col--after .compare__label { color: var(--accent); }
+
+    /* ===== PIPELINE ===== */
+    .pipeline { display: flex; flex-direction: column; gap: 6px; margin-top: var(--spacing-md); }
+    .pipeline__row { display: flex; align-items: stretch; gap: 6px; }
+    .pipeline__source { flex: 0 0 160px; border: 1px solid var(--border); padding: 10px 14px; font-size: 0.78rem; color: var(--text-secondary); display: flex; align-items: center; }
+    .pipeline__step { flex: 1; border: 1px solid var(--border); padding: 10px 14px; font-size: 0.78rem; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; }
+    .pipeline__step--accent { border-color: var(--accent); color: var(--text-primary); }
+    .pipeline__arrow { color: var(--accent); font-size: 1rem; display: flex; align-items: center; padding: 0 2px; }
+    .pipeline__step svg { width: 14px; height: 14px; color: var(--accent); flex-shrink: 0; }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE 1 — COVER
+      ══════════════════════════════════════════════ -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <div class="content flex-center" style="flex-direction: column; text-align: center;">
+            <p class="kicker" style="justify-content: center;">Onyx Armor &nbsp;×&nbsp; Automation</p>
+            <h1>Order Processing<br><span class="accent-text">Automation</span></h1>
+            <p class="lead" style="max-width: 580px; margin: 0 auto;">
+              An AI-powered pipeline that turns nightly manual PO entry into a supervised, 15-minute review.
+            </p>
+            <p style="margin-top: 32px; font-size: 0.75rem; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase;">February 2026 &nbsp;·&nbsp; Phase 1 Overview</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE 2 — ABOUT ONYX ARMOR (metrics)
+      ══════════════════════════════════════════════ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><i data-lucide="shield"></i> Onyx Armor</div>
+          </div>
+          <div class="content">
+            <p class="kicker">01 // Company</p>
+            <h2>Ballistic Armor<br>at Scale</h2>
+            <p class="lead" style="margin-bottom: 32px;">B2B manufacturer serving law enforcement. Products ship to agencies through uniform dealer networks.</p>
+            <div class="metrics">
+              <div class="metric fragment">
+                <div class="metric__value">8,250</div>
+                <div class="metric__label">Sales Orders</div>
+              </div>
+              <div class="metric fragment">
+                <div class="metric__value">104K</div>
+                <div class="metric__label">MOs Ever</div>
+              </div>
+              <div class="metric fragment">
+                <div class="metric__value">2,300</div>
+                <div class="metric__label">Active MOs</div>
+              </div>
+              <div class="metric fragment">
+                <div class="metric__value">1,132</div>
+                <div class="metric__label">SKUs</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE 3 — HOW THEY OPERATE
+      ══════════════════════════════════════════════ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><i data-lucide="shield"></i> Onyx Armor</div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">01 // Operations</p>
+              <h2>Odoo 18<br>Enterprise</h2>
+              <p class="lead">Every sale auto-generates a draft Manufacturing Order via custom module. Each order line is one piece of armor, fully spec'd through product variant attributes.</p>
+            </div>
+            <div>
+              <table class="tbl">
+                <thead>
+                  <tr><th>Order Line Field</th><th>What It Stores</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Product + Variant</td><td>Carrier/panel type + size + color</td></tr>
+                  <tr><td><code style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-light);">size</code> field</td><td>Officer name + dealer + fit date</td></tr>
+                  <tr><td>Front/Back Size</td><td>Torso size: SM → 3XL</td></tr>
+                  <tr><td>Front/Back Length</td><td>Height adj: +0 → +3 in</td></tr>
+                  <tr><td>Width</td><td>Lateral adj: 0 → +2 in</td></tr>
+                  <tr><td><code style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-light);">is_mto</code></td><td>Always True — Make to Order</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE 4 — THE PROBLEM
+      ══════════════════════════════════════════════ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><i data-lucide="shield"></i> Onyx Armor</div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">02 // The Problem</p>
+              <h2>2 Hours.<br>Every Night.</h2>
+              <p class="lead">Javier Rocha reads POs from emails at 8–10 PM, manually translating each dealer's format into Odoo line items. Recently lost 4 staff, replaced 1.</p>
+            </div>
+            <div>
+              <ul class="list list--numbered">
+                <li class="fragment">
+                  <strong>Three incompatible formats</strong><br>
+                  <span class="muted">Premier, T&T, and Read's each send POs in a completely different format with different measurement conventions.</span>
+                </li>
+                <li class="fragment">
+                  <strong>Manual SKU translation</strong><br>
+                  <span class="muted">Dealer product names don't match Onyx's internal Odoo SKUs. Javier maps them from memory.</span>
+                </li>
+                <li class="fragment">
+                  <strong>No buffer, no audit trail</strong><br>
+                  <span class="muted">One missed line item means a wrong order ships. No history of what was entered, when, or by whom.</span>
+                </li>
+                <li class="fragment">
+                  <strong>Error risk compounds at volume</strong><br>
+                  <span class="muted">~90% of orders flow through 3 dealers. Batch POs (13+ officers) are entirely manual today.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE 5 — THREE DEALER CHANNELS
+      ══════════════════════════════════════════════ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><i data-lucide="shield"></i> Onyx Armor</div>
+          </div>
+          <div class="content">
+            <p class="kicker">02 // Dealers</p>
+            <h2>Three Channels,<br>Three Formats</h2>
+            <div class="grid-3" style="margin-top: 28px;">
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="file-text"></i></div>
+                <h4 class="card__title">Premier Body Armor</h4>
+                <p class="card__text" style="margin-bottom: 10px;">Fishbowl Inventory — structured PO PDF. Two types: bulk stock replenishment and custom per-officer orders.</p>
+                <p class="card__text"><span style="color: var(--accent);">Sizes:</span> Native Onyx notation embedded (XL +2 Long). Ships to Premier's Gastonia NC warehouse.</p>
+              </div>
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="mail"></i></div>
+                <h4 class="card__title">T&T Uniforms</h4>
+                <p class="card__text" style="margin-bottom: 10px;">SendGrid HTML email — free-text per officer. One PO per officer, measurements inline.</p>
+                <p class="card__text"><span style="color: var(--accent);">Sizes:</span> Raw standing inches. Always drop-ships directly to the agency.</p>
+              </div>
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="layers"></i></div>
+                <h4 class="card__title">Read's Uniforms</h4>
+                <p class="card__text" style="margin-bottom: 10px;">The Uniform Solution — multi-page PDF, one section per officer. Agency-level spec sheets on file.</p>
+                <p class="card__text"><span style="color: var(--accent);">Sizes:</span> Sitting front + standing back in inches. Ships via UPS #8R60F3.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE 6 — MEASUREMENT COMPLEXITY
+      ══════════════════════════════════════════════ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><i data-lucide="shield"></i> Onyx Armor</div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">02 // Complexity</p>
+              <h2>Every Dealer<br>Speaks a Different<br>Language</h2>
+              <p class="lead">Same piece of armor, three measurement systems. Javier carries the conversion logic entirely in his head.</p>
+            </div>
+            <div>
+              <table class="tbl">
+                <thead>
+                  <tr><th>Dealer</th><th>Front</th><th>Back</th><th>Waist</th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="color: var(--text-primary); font-weight: 500;">Premier</td>
+                    <td>Size name<br><span class="muted" style="font-size:0.78rem;">XL +2 Long</span></td>
+                    <td>Size name</td>
+                    <td class="muted">Not given</td>
+                  </tr>
+                  <tr>
+                    <td style="color: var(--text-primary); font-weight: 500;">T&T</td>
+                    <td>Standing in.<br><span class="muted" style="font-size:0.78rem;">16 (standing)</span></td>
+                    <td>Standing in.</td>
+                    <td>Waist in.</td>
+                  </tr>
+                  <tr>
+                    <td style="color: var(--text-primary); font-weight: 500;">Read's</td>
+                    <td>Sitting in.<br><span class="muted" style="font-size:0.78rem;">14 (sitting)</span></td>
+                    <td>Standing in.</td>
+                    <td>Girth + overlap</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div style="margin-top: 16px; padding: 12px 16px; border: 1px solid var(--border); border-left: 3px solid var(--warning);">
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0;">Panel sizing math varies too: T&T panel = seated − 1"; back = standing × 0.80. Premier provides computed Onyx sizes directly when available.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE 7 — THE SOLUTION (section divider)
+      ══════════════════════════════════════════════ -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <p class="kicker" style="justify-content: center;">03 // Solution</p>
+          <h2>What We're Building</h2>
+          <p class="lead muted" style="max-width: 560px; margin: 0 auto;">An end-to-end pipeline: ingest emails, parse PDFs, map SKUs, queue for human review, export to Odoo.</p>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE 8 — BEFORE / AFTER
+      ══════════════════════════════════════════════ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><i data-lucide="shield"></i> Onyx Armor</div>
+          </div>
+          <div class="content">
+            <p class="kicker">03 // Impact</p>
+            <h2>Before & After</h2>
+            <div class="compare" style="margin-top: 20px;">
+              <div class="compare__col">
+                <div class="compare__label">Today</div>
+                <ul class="list" style="font-size: 0.88rem;">
+                  <li>Javier reads emails 8–10 PM nightly</li>
+                  <li>Manually opens each PDF, decodes format</li>
+                  <li>Translates dealer SKUs from memory</li>
+                  <li>Converts raw measurements per dealer logic</li>
+                  <li>Types each line item into Odoo manually</li>
+                  <li style="color: var(--warning);">~2 hours every working day</li>
+                </ul>
+              </div>
+              <div class="compare__col compare__col--after">
+                <div class="compare__label">With Automation</div>
+                <ul class="list" style="font-size: 0.88rem;">
+                  <li>Email arrives → pipeline triggers instantly</li>
+                  <li>PDF parsed + structured by Claude Haiku</li>
+                  <li>SKUs mapped automatically (85%+ confidence)</li>
+                  <li>Raw measurements stored alongside parsed data</li>
+                  <li>Javier reviews queue, approves, CSV ready</li>
+                  <li style="color: var(--success);">~15 min Day 1 → ~5 min over time</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE 9 — PIPELINE ARCHITECTURE
+      ══════════════════════════════════════════════ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><i data-lucide="shield"></i> Onyx Armor</div>
+          </div>
+          <div class="content">
+            <p class="kicker">03 // Architecture</p>
+            <h2>Pipeline Flow</h2>
+            <div class="pipeline" style="margin-top: 20px;">
+              <div class="pipeline__row fragment">
+                <div class="pipeline__source"><i data-lucide="mail" style="width:14px;height:14px;color:var(--accent);margin-right:8px;"></i> orders@onyxarmor.com</div>
+                <div class="pipeline__arrow">→</div>
+                <div class="pipeline__step pipeline__step--accent"><i data-lucide="zap"></i> Gmail Pub/Sub Webhook — real-time push, no polling</div>
+              </div>
+              <div class="pipeline__row fragment">
+                <div class="pipeline__source"><i data-lucide="filter" style="width:14px;height:14px;color:var(--accent);margin-right:8px;"></i> Classifier</div>
+                <div class="pipeline__arrow">→</div>
+                <div class="pipeline__step"><i data-lucide="check-circle"></i> Domain whitelist → ORDER / NOISE / UNKNOWN</div>
+              </div>
+              <div class="pipeline__row fragment">
+                <div class="pipeline__source"><i data-lucide="file" style="width:14px;height:14px;color:var(--accent);margin-right:8px;"></i> PDF Extractor</div>
+                <div class="pipeline__arrow">→</div>
+                <div class="pipeline__step"><i data-lucide="cpu"></i> pdfplumber (digital) or Mistral OCR (scanned fallback)</div>
+              </div>
+              <div class="pipeline__row fragment">
+                <div class="pipeline__source"><i data-lucide="brain" style="width:14px;height:14px;color:var(--accent);margin-right:8px;"></i> LLM Structurer</div>
+                <div class="pipeline__arrow">→</div>
+                <div class="pipeline__step pipeline__step--accent"><i data-lucide="sparkles"></i> Claude Haiku 3.5 → structured OrderRaw JSON via instructor</div>
+              </div>
+              <div class="pipeline__row fragment">
+                <div class="pipeline__source"><i data-lucide="tag" style="width:14px;height:14px;color:var(--accent);margin-right:8px;"></i> SKU Mapper</div>
+                <div class="pipeline__arrow">→</div>
+                <div class="pipeline__step"><i data-lucide="search"></i> Exact → RapidFuzz (≥85 auto, 60–84 suggest) → resolution queue</div>
+              </div>
+              <div class="pipeline__row fragment">
+                <div class="pipeline__source"><i data-lucide="user-check" style="width:14px;height:14px;color:var(--accent);margin-right:8px;"></i> Review Queue</div>
+                <div class="pipeline__arrow">→</div>
+                <div class="pipeline__step pipeline__step--accent"><i data-lucide="layout"></i> Javier approves → Odoo-compatible CSV exported</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE 10 — OCR STRATEGY
+      ══════════════════════════════════════════════ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><i data-lucide="shield"></i> Onyx Armor</div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">03 // OCR Strategy</p>
+              <h2>Hybrid PDF<br>Routing</h2>
+              <p class="lead">All current dealer PDFs are digital (text-layer). Mistral OCR is wired in as a fallback — triggered only when no text layer is detected.</p>
+              <div style="margin-top: 24px; padding: 14px 18px; border: 1px solid var(--border); border-left: 3px solid var(--accent);">
+                <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0 0 6px 0;"><strong style="color: var(--text-primary);">Cost at current volume:</strong></p>
+                <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0;">pdfplumber — <span style="color: var(--success);">free, local</span><br>Mistral OCR — <span style="color: var(--accent);">~$1–2 / 1K pages</span> (fallback only)</p>
+              </div>
+            </div>
+            <div>
+              <div style="margin-bottom: 16px;">
+                <div style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); margin-bottom: 10px;">Routing Logic</div>
+                <div style="border: 1px solid var(--border); padding: 14px 18px; margin-bottom: 8px; display: flex; align-items: flex-start; gap: 12px;">
+                  <span style="color: var(--success); font-size: 1rem; flex-shrink: 0;">✓</span>
+                  <div>
+                    <div style="font-size: 0.85rem; font-weight: 500; color: var(--text-primary);">Text layer detected</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted);">pdfplumber extracts text + tables → Claude Haiku structures output</div>
+                  </div>
+                </div>
+                <div style="border: 1px solid var(--border); padding: 14px 18px; display: flex; align-items: flex-start; gap: 12px;">
+                  <span style="color: var(--warning); font-size: 1rem; flex-shrink: 0;">⤷</span>
+                  <div>
+                    <div style="font-size: 0.85rem; font-weight: 500; color: var(--text-primary);">No text layer (scanned)</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted);">Mistral OCR API preserves table structure as markdown → Claude Haiku structures output</div>
+                  </div>
+                </div>
+              </div>
+              <div style="margin-top: 16px;">
+                <div style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); margin-bottom: 10px;">Why Mistral OCR over Claude Vision</div>
+                <ul class="list" style="font-size: 0.82rem;">
+                  <li>Purpose-built for documents — preserves column layout and table structure as markdown</li>
+                  <li>Flat per-page rate vs. per-token cost (cheaper on dense scanned pages)</li>
+                  <li>Better upstream structure = less correction work for Claude downstream</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE 11 — KEY CAPABILITIES
+      ══════════════════════════════════════════════ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><i data-lucide="shield"></i> Onyx Armor</div>
+          </div>
+          <div class="content">
+            <p class="kicker">03 // Capabilities</p>
+            <h2>What the System Does</h2>
+            <div class="grid-2" style="margin-top: 28px;">
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="cpu"></i></div>
+                <h4 class="card__title">AI-Powered Parsing</h4>
+                <p class="card__text">Claude Haiku reads raw PDF text and outputs a structured JSON order — PO number, officer names, products, measurements, shipping address.</p>
+              </div>
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="search"></i></div>
+                <h4 class="card__title">Automatic SKU Mapping</h4>
+                <p class="card__text">Fuzzy-matches dealer product names to Onyx's Odoo SKUs. High-confidence matches apply automatically; low-confidence go to Javier for one-time resolution — and learn from each answer.</p>
+              </div>
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="layout"></i></div>
+                <h4 class="card__title">Human Review UI</h4>
+                <p class="card__text">HTMX queue shows parsed orders alongside the original PDF. Javier edits any field, approves with one click. No Odoo data entry until he signs off.</p>
+              </div>
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="download"></i></div>
+                <h4 class="card__title">Odoo-Ready CSV</h4>
+                <p class="card__text">Approved orders export as CSV mapped to Onyx's exact Odoo column headers. Daily digest email summarizes processed orders and flags any failures.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE 11 — TECH STACK
+      ══════════════════════════════════════════════ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><i data-lucide="shield"></i> Onyx Armor</div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">04 // Stack</p>
+              <h2>Technology<br>Choices</h2>
+              <p class="lead">Everything is customer-owned, self-hosted, and transferable. No vendor lock-in beyond commodity API keys.</p>
+              <div style="margin-top: 24px; padding: 14px 18px; border: 1px solid var(--border); border-left: 3px solid var(--accent);">
+                <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0;"><strong style="color: var(--text-primary);">Total monthly cost post-handover:</strong><br>Hetzner CX32 (~€7) + Claude Haiku (~$4) + Mistral OCR fallback (~$0–3) = <span style="color: var(--accent);">~€11–14/month</span></p>
+              </div>
+            </div>
+            <div>
+              <table class="tbl">
+                <thead>
+                  <tr><th>Layer</th><th>Choice</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>API + UI</td><td>FastAPI + HTMX + Jinja2</td></tr>
+                  <tr><td>Scheduling</td><td>APScheduler v4 + PostgreSQL</td></tr>
+                  <tr><td>PDF (digital)</td><td>pdfplumber — free, local</td></tr>
+                  <tr><td>PDF (scanned)</td><td>Mistral OCR API — fallback only</td></tr>
+                  <tr><td>LLM</td><td>Claude Haiku 3.5 + instructor</td></tr>
+                  <tr><td>SKU matching</td><td>RapidFuzz</td></tr>
+                  <tr><td>Database</td><td>PostgreSQL (Docker)</td></tr>
+                  <tr><td>Hosting</td><td>Hetzner CX32 — customer-owned</td></tr>
+                  <tr><td>Deployment</td><td>Coolify — GUI, auto SSL</td></tr>
+                  <tr><td>Email trigger</td><td>Gmail Pub/Sub webhook</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE 12 — IMPLEMENTATION TIMELINE
+      ══════════════════════════════════════════════ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><i data-lucide="shield"></i> Onyx Armor</div>
+          </div>
+          <div class="content">
+            <p class="kicker">05 // Roadmap</p>
+            <h2>Six Sprints to Production</h2>
+            <div class="timeline" style="margin-top: 32px;">
+              <div class="timeline__item fragment">
+                <div class="timeline__year">Sprint 0</div>
+                <div class="timeline__dot"></div>
+                <div class="timeline__content">Foundation — Docker stack, DB migrations, seed data</div>
+              </div>
+              <div class="timeline__item fragment">
+                <div class="timeline__year">Sprint 1</div>
+                <div class="timeline__dot" style="background: var(--warning);"></div>
+                <div class="timeline__content">PDF Parsing + LLM <span style="color: var(--warning);">Demo target</span></div>
+              </div>
+              <div class="timeline__item fragment">
+                <div class="timeline__year">Sprint 2</div>
+                <div class="timeline__dot"></div>
+                <div class="timeline__content">SKU Mapping — fuzzy match + resolution queue</div>
+              </div>
+              <div class="timeline__item fragment">
+                <div class="timeline__year">Sprint 3</div>
+                <div class="timeline__dot"></div>
+                <div class="timeline__content">Review UI — PDF viewer + editable form + HTMX</div>
+              </div>
+              <div class="timeline__item fragment">
+                <div class="timeline__year">Sprint 4</div>
+                <div class="timeline__dot"></div>
+                <div class="timeline__content">Gmail Pub/Sub — full end-to-end pipeline live</div>
+              </div>
+              <div class="timeline__item fragment">
+                <div class="timeline__year">Sprint 5</div>
+                <div class="timeline__dot"></div>
+                <div class="timeline__content">CSV Export + daily digest email to Javier</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE 13 — PHASE 2 ROADMAP
+      ══════════════════════════════════════════════ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><i data-lucide="shield"></i> Onyx Armor</div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">06 // Phase 2</p>
+              <h2>Designed In,<br>Not Built Yet</h2>
+              <p class="lead">The schema and abstractions for Phase 2 are wired into Phase 1 from day one — no rework needed to activate them.</p>
+            </div>
+            <div>
+              <ul class="list">
+                <li class="fragment">
+                  <strong>Odoo Direct API Push</strong><br>
+                  <span class="muted">Replace CSV export with XMLRPC/REST push directly into Odoo. <code style="font-family:var(--font-mono);font-size:0.8rem;color:var(--accent-light);">odoo_sync_log</code> table already in schema.</span>
+                </li>
+                <li class="fragment">
+                  <strong>Sizing Pipeline</strong><br>
+                  <span class="muted">Route sizing form attachments (separate PDFs) through a dedicated path. Pattern match on filename.</span>
+                </li>
+                <li class="fragment">
+                  <strong>Multi-User Auth</strong><br>
+                  <span class="muted"><code style="font-family:var(--font-mono);font-size:0.8rem;color:var(--accent-light);">approved_by</code> is freetext in Phase 1 — swap in a users FK when staff expands.</span>
+                </li>
+                <li class="fragment">
+                  <strong>Per-Client LLM Model</strong><br>
+                  <span class="muted">Abstraction in <code style="font-family:var(--font-mono);font-size:0.8rem;color:var(--accent-light);">extract_order()</code> allows swapping vision models for clients who send scanned PDFs.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE 14 — HANDOVER
+      ══════════════════════════════════════════════ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><i data-lucide="shield"></i> Onyx Armor</div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">07 // Handover</p>
+              <h2>Fully<br>Customer-Owned</h2>
+              <p class="lead">On final payment, every key, account, and credential transfers to Onyx Armor. No ongoing dependency on the builder.</p>
+              <div style="margin-top: 20px; padding: 14px 18px; border: 1px solid var(--border); border-left: 3px solid var(--accent);">
+                <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0;">Path B available: service access only while on payment plan. All Path A transfers trigger on final payment.</p>
+              </div>
+            </div>
+            <div>
+              <ul class="list list--check">
+                <li class="fragment"><strong>Hetzner VPS</strong> — transferred to Onyx Armor's account</li>
+                <li class="fragment"><strong>Anthropic API key</strong> — Onyx Armor's own account</li>
+                <li class="fragment"><strong>Google Cloud Pub/Sub</strong> — transferred, Gmail OAuth re-authed</li>
+                <li class="fragment"><strong>Coolify</strong> — Javier redeploys from Git via browser</li>
+                <li class="fragment"><strong>Portainer</strong> — Javier restarts containers, views logs</li>
+                <li class="fragment"><strong>RUNBOOK.md</strong> — start/stop, backup restore, migration steps</li>
+                <li class="fragment"><strong>Sign-off test</strong> — real PO email → parsed → approved → CSV in Odoo</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════
+           SLIDE 15 — CLOSING CTA
+      ══════════════════════════════════════════════ -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <div class="content flex-center" style="flex-direction: column;">
+            <p class="kicker" style="justify-content: center;">Let's Build This</p>
+            <h1>From 2 Hours<br><span class="accent-text">to 15 Minutes</span></h1>
+            <p class="lead" style="margin-bottom: 40px; max-width: 520px; margin-left: auto; margin-right: auto;">Phase 1 puts Javier in the reviewer seat, not the data-entry seat. Phase 2 puts Odoo on autopilot.</p>
+            <div class="contact-grid" style="max-width: 580px; margin-top: 0;">
+              <div class="contact-item">
+                <div class="contact-item__label">Contact</div>
+                <div class="contact-item__value">carlos@autonomee.ai</div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-item__label">Ops Lead</div>
+                <div class="contact-item__value">jrocha@onyxarmor.com</div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-item__label">Monthly Cost</div>
+                <div class="contact-item__value" style="color: var(--accent);">~€11–14 / mo</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: true,
+      controls: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      center: false,
+      transition: 'slide',
+      backgroundTransition: 'fade',
+      width: 1280,
+      height: 720,
+      margin: 0,
+      minScale: 0.2,
+      maxScale: 2,
+      autoAnimate: true,
+      autoAnimateDuration: 0.7,
+      plugins: [RevealHighlight]
+    });
+    lucide.createIcons();
+  </script>
+</body>
+</html>
