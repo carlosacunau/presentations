@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Con J Consulting &times; AI Strategy</title>
+
+  <!-- Google Fonts - Autonomee Style -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+
+  <!-- Reveal.js -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/monokai.css">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+/*
+ * Autonomee.ai Presentation Theme
+ * Editorial, minimal, serif headlines
+ * For use with Reveal.js 4.5+
+ */
+
+/* ===== CSS VARIABLES - AUTONOMEE PALETTE ===== */
+:root {
+  /* Backgrounds */
+  --bg-dark: #0a0a0a;
+  --bg-card: #111111;
+  --bg-card-hover: #1a1a1a;
+
+  /* Accent - Muted Steel Blue */
+  --accent: #7b8fa8;
+  --accent-light: #9bb0c9;
+  --accent-glow: rgba(123, 143, 168, 0.15);
+
+  /* Semantic Colors - Muted */
+  --success: #7b9a7b;
+  --warning: #c9a85b;
+  --error: #c97b7b;
+
+  /* Text Colors */
+  --text-primary: #f5f4f0;
+  --text-secondary: #a8a8a8;
+  --text-muted: #666666;
+
+  /* Borders */
+  --border: #2a2a2a;
+
+  /* Typography */
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Spacing */
+  --spacing-xs: 8px;
+  --spacing-sm: 16px;
+  --spacing-md: 24px;
+  --spacing-lg: 40px;
+  --spacing-xl: 60px;
+}
+
+/* ===== BASE STYLES ===== */
+html, body {
+  background: var(--bg-dark) !important;
+  color: var(--text-primary);
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.reveal-viewport {
+  background: var(--bg-dark) !important;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px) !important;
+  background-size: 60px 60px !important;
+}
+
+.reveal {
+  background: var(--bg-dark);
+  font-family: var(--font-sans);
+  font-size: 22px;
+  color: var(--text-primary);
+}
+
+.reveal .slides {
+  text-align: left;
+}
+
+.reveal .slides section {
+  padding: 0;
+  background: var(--bg-dark);
+}
+
+/* ===== SLIDE BASE ===== */
+.slide {
+  height: 100%;
+  width: 100%;
+  padding: var(--spacing-xl);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  position: relative;
+}
+
+.slide > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== SLIDE VARIANTS ===== */
+.slide--center {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.slide--section {
+  background: transparent;
+}
+
+.slide--section::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ===== HEADER BAR ===== */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.header__logo {
+  font-family: var(--font-serif);
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: 0.02em;
+}
+
+.header__logo svg {
+  width: 18px;
+  height: 18px;
+  color: var(--accent);
+}
+
+.header__nav {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: center;
+}
+
+.header__nav-item {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+/* ===== TYPOGRAPHY ===== */
+.kicker {
+  font-size: 0.7rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  margin-bottom: var(--spacing-sm);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.kicker::after {
+  content: '';
+  width: 40px;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.5;
+}
+
+h1, .h1 {
+  font-family: var(--font-serif);
+  font-size: 4rem;
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.1;
+  margin: 0 0 var(--spacing-md) 0;
+  color: var(--text-primary);
+}
+
+h2, .h2 {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  font-weight: 400;
+  line-height: 1.15;
+  margin: 0 0 var(--spacing-md) 0;
+}
+
+h3, .h3 {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 1.3;
+  margin: 0 0 var(--spacing-sm) 0;
+}
+
+h4, .h4 {
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0 0 var(--spacing-xs) 0;
+  letter-spacing: 0.02em;
+}
+
+.lead {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 600px;
+}
+
+.muted {
+  color: var(--text-muted);
+}
+
+.highlight, .accent-text {
+  color: var(--accent);
+}
+
+/* ===== LAYOUT UTILITIES ===== */
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-xl);
+  align-items: center;
+  flex: 1;
+}
+
+.split--60-40 {
+  grid-template-columns: 1.5fr 1fr;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-md);
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-md);
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-md);
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gap-sm { gap: var(--spacing-sm); }
+.gap-md { gap: var(--spacing-md); }
+.gap-lg { gap: var(--spacing-lg); }
+
+/* ===== CARDS ===== */
+.card {
+  background: transparent;
+  border: 1px solid var(--border);
+  padding: var(--spacing-md);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  background: var(--bg-card);
+  border-color: var(--accent);
+}
+
+.card--featured {
+  border-color: var(--accent);
+}
+
+.card__icon {
+  width: 40px;
+  height: 40px;
+  margin-bottom: var(--spacing-sm);
+  color: var(--accent);
+}
+
+.card__icon svg {
+  width: 100%;
+  height: 100%;
+  stroke-width: 1.5;
+}
+
+.card__title {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: var(--spacing-xs);
+}
+
+.card__text {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ===== METRICS ===== */
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.metric {
+  text-align: center;
+  padding: var(--spacing-md);
+  border: 1px solid var(--border);
+  transition: all 0.3s ease;
+}
+
+.metric:hover {
+  border-color: var(--accent);
+}
+
+.metric__value {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: var(--spacing-xs);
+}
+
+.metric__label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ===== LISTS ===== */
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.list li {
+  padding: var(--spacing-sm) 0;
+  padding-left: var(--spacing-lg);
+  position: relative;
+  border-bottom: 1px solid var(--border);
+}
+
+.list li:last-child {
+  border-bottom: none;
+}
+
+.list li::before {
+  content: '\2014';
+  position: absolute;
+  left: 0;
+  top: var(--spacing-sm);
+  color: var(--accent);
+  font-weight: 400;
+}
+
+.list--check li::before {
+  content: '\2713';
+  color: var(--success);
+}
+
+.list--numbered {
+  counter-reset: list-counter;
+}
+
+.list--numbered li {
+  counter-increment: list-counter;
+}
+
+.list--numbered li::before {
+  content: counter(list-counter, decimal-leading-zero);
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+/* ===== BADGES ===== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+
+.badge--success {
+  color: var(--success);
+  border-color: var(--success);
+}
+
+.badge--warning {
+  color: var(--warning);
+  border-color: var(--warning);
+}
+
+/* ===== TIMELINE ===== */
+.timeline {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: var(--spacing-lg) 0;
+  position: relative;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  bottom: 60px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--border);
+}
+
+.timeline__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  flex: 1;
+}
+
+.timeline__year {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-style: italic;
+  color: var(--accent);
+  margin-bottom: var(--spacing-sm);
+}
+
+.timeline__dot {
+  width: 10px;
+  height: 10px;
+  background: var(--accent);
+  border-radius: 50%;
+  margin-bottom: var(--spacing-sm);
+  position: relative;
+  z-index: 1;
+}
+
+.timeline__content {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  max-width: 150px;
+}
+
+/* ===== BUTTONS ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 28px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid var(--text-primary);
+  background: transparent;
+  color: var(--text-primary);
+}
+
+.btn:hover {
+  background: var(--text-primary);
+  color: var(--bg-dark);
+}
+
+.btn--accent {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn--accent:hover {
+  background: var(--accent);
+  color: var(--bg-dark);
+}
+
+/* ===== CONTACT/CTA ===== */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-xl);
+}
+
+.contact-item {
+  text-align: center;
+}
+
+.contact-item__label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: var(--spacing-xs);
+}
+
+.contact-item__value {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+/* ===== WORKFLOW ===== */
+.workflow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.workflow__step {
+  flex: 1;
+  min-width: 160px;
+}
+
+.workflow__box {
+  border: 1px solid var(--border);
+  padding: var(--spacing-md);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.workflow__box:hover {
+  border-color: var(--accent);
+  background: var(--bg-card);
+}
+
+.workflow__label {
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.workflow__sublabel {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.workflow__arrow {
+  font-size: 1.5rem;
+  color: var(--accent);
+}
+
+/* ===== REVEAL.JS OVERRIDES ===== */
+.reveal .controls {
+  color: var(--accent);
+}
+
+.reveal .progress {
+  background: var(--border);
+  height: 2px;
+}
+
+.reveal .progress span {
+  background: var(--accent);
+}
+
+.reveal .slide-number {
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-family: var(--font-mono);
+  right: 20px;
+  bottom: 20px;
+}
+
+/* ===== FRAGMENT ANIMATIONS ===== */
+.reveal .slides section .fragment {
+  opacity: 0;
+  transition: all 0.4s ease;
+}
+
+.reveal .slides section .fragment.visible {
+  opacity: 1;
+}
+
+.reveal .slides section .fragment.fade-up {
+  transform: translateY(20px);
+}
+
+.reveal .slides section .fragment.fade-up.visible {
+  transform: translateY(0);
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg-dark);
+}
+
+@media (max-width: 1024px) {
+  h1 { font-size: 2.5rem; }
+  h2 { font-size: 2rem; }
+
+  .split {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+
+  .grid-4, .grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- SLIDE 1: Title -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <div class="content flex-center" style="flex-direction: column; text-align: center;">
+            <p class="kicker" style="justify-content: center;">Strategic Consulting &times; Artificial Intelligence</p>
+            <h1>Con J Consulting<br><span class="accent-text">AI Strategy</span></h1>
+            <p class="lead" style="max-width: 600px; margin: 0 auto;">
+              Private AI solutions for premium consulting firms. Protect proprietary knowledge. Multiply trainer capacity.
+            </p>
+            <div style="margin-top: 40px; display: flex; gap: 16px; align-items: center;">
+              <span class="badge">Maria &amp; Carlos</span>
+              <span class="badge">2026</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 2: The Vision -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="briefcase"></i>
+              Con J Consulting
+            </div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">01 // The Vision</p>
+              <h2>A Post-Corporate<br>Second Act</h2>
+              <p class="lead">Two sisters building a consulting firm designed for life, not burnout. Part-time, high-impact, lifestyle-friendly.</p>
+            </div>
+            <div>
+              <div class="card" style="margin-bottom: 16px;">
+                <div class="card__icon"><i data-lucide="shield"></i></div>
+                <h4 class="card__title">Crisis Management</h4>
+                <p class="card__text">Sister's domain. Helping organizations navigate and recover from critical moments.</p>
+              </div>
+              <div class="card">
+                <div class="card__icon"><i data-lucide="target"></i></div>
+                <h4 class="card__title">Strategy &amp; Leadership</h4>
+                <p class="card__text">Maria's focus. Executive coaching, organizational design, and strategic planning.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 3: The Market Shift -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="trending-up"></i>
+              Con J Consulting
+            </div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">02 // Market Shift</p>
+              <h2>AI Is Reshaping<br>Consulting</h2>
+              <p class="lead">Big consultancies are under pressure. The McKinsey/Deloitte model is being disrupted by smaller, nimble teams that combine domain expertise with AI automation.</p>
+            </div>
+            <div>
+              <ul class="list list--numbered">
+                <li class="fragment">
+                  <strong>Speed beats scale</strong><br>
+                  <span class="muted">Small teams with AI deliver in days what large firms take months to produce.</span>
+                </li>
+                <li class="fragment">
+                  <strong>Personalization wins</strong><br>
+                  <span class="muted">AI enables hyper-customized deliverables without the overhead of large teams.</span>
+                </li>
+                <li class="fragment">
+                  <strong>Trust is the moat</strong><br>
+                  <span class="muted">Personal relationships and referrals outperform brand prestige in the new landscape.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 4: The Opportunity -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="lock"></i>
+              Con J Consulting
+            </div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">03 // The Opportunity</p>
+              <h2>Dale Carnegie<br>Colombia</h2>
+              <p class="lead">Maria is getting certified through Monica's firm. During this process, a critical pain point emerged.</p>
+            </div>
+            <div>
+              <div class="card card--featured" style="margin-bottom: 16px;">
+                <span class="badge--warning badge" style="margin-bottom: 12px;">The Problem</span>
+                <h4 class="card__title">Proprietary Content at Risk</h4>
+                <p class="card__text">All training manuals, methodologies, and program structures are proprietary intellectual property. They cannot be exposed to public AI tools like ChatGPT, Claude, or Gemini. Yet trainers desperately need AI assistance.</p>
+              </div>
+              <div class="card">
+                <h4 class="card__title">The Constraint</h4>
+                <p class="card__text">Any AI solution must guarantee zero data leakage. No proprietary material can ever leave the client's environment.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 5: The Solution -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="cpu"></i>
+              Con J Consulting
+            </div>
+          </div>
+          <div class="content">
+            <p class="kicker">04 // The Solution</p>
+            <h2>Private AI Agents</h2>
+            <div class="grid-3" style="margin-top: 32px;">
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="repeat"></i></div>
+                <h4 class="card__title">Program Reconfiguration</h4>
+                <p class="card__text">Transform standard 8-session programs into custom 6-session versions (or any variant) while preserving pedagogical logic and learning outcomes.</p>
+              </div>
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="file-text"></i></div>
+                <h4 class="card__title">Trainer Support</h4>
+                <p class="card__text">Summarize sessions, reorganize content, and generate tailored agendas. Give every trainer an AI co-pilot that knows the entire methodology.</p>
+              </div>
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="shield-check"></i></div>
+                <h4 class="card__title">Zero Leakage Guarantee</h4>
+                <p class="card__text">All processing happens locally on the client's infrastructure. No data touches external servers. Can work fully offline once configured.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 6: Technical Architecture -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="server"></i>
+              Con J Consulting
+            </div>
+          </div>
+          <div class="content">
+            <p class="kicker">05 // Architecture</p>
+            <h2>Local AI OS</h2>
+            <div class="workflow" style="margin-top: 48px;">
+              <div class="workflow__step fragment">
+                <div class="workflow__box">
+                  <div class="workflow__label">Proprietary Content</div>
+                  <div class="workflow__sublabel">Manuals, programs, methodology</div>
+                </div>
+              </div>
+              <div class="workflow__arrow">&#8594;</div>
+              <div class="workflow__step fragment">
+                <div class="workflow__box" style="border-color: var(--accent);">
+                  <div class="workflow__label">Local AI Engine</div>
+                  <div class="workflow__sublabel">On-device processing</div>
+                </div>
+              </div>
+              <div class="workflow__arrow">&#8594;</div>
+              <div class="workflow__step fragment">
+                <div class="workflow__box">
+                  <div class="workflow__label">Custom Output</div>
+                  <div class="workflow__sublabel">Programs, agendas, summaries</div>
+                </div>
+              </div>
+            </div>
+            <div class="grid-3" style="margin-top: 40px;">
+              <div class="metric fragment">
+                <div class="metric__value" style="font-size: 1.8rem;">Local</div>
+                <div class="metric__label">Models run on-premise</div>
+              </div>
+              <div class="metric fragment">
+                <div class="metric__value" style="font-size: 1.8rem;">Offline</div>
+                <div class="metric__label">Works without internet</div>
+              </div>
+              <div class="metric fragment">
+                <div class="metric__value" style="font-size: 1.8rem;">Private</div>
+                <div class="metric__label">Zero external exposure</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 7: Business Model -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="dollar-sign"></i>
+              Con J Consulting
+            </div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">06 // Business Model</p>
+              <h2>Value-Based<br>Pricing</h2>
+              <p class="lead">Not hourly billing. Pricing tied directly to measurable business impact and ROI.</p>
+            </div>
+            <div>
+              <ul class="list list--numbered">
+                <li class="fragment">
+                  <strong>Time saved for trainers</strong><br>
+                  <span class="muted">Hours reclaimed per week on content preparation, summarization, and agenda creation.</span>
+                </li>
+                <li class="fragment">
+                  <strong>Extra billable courses</strong><br>
+                  <span class="muted">More program variants = more offerings = more revenue for the client.</span>
+                </li>
+                <li class="fragment">
+                  <strong>Milestone-based payments</strong><br>
+                  <span class="muted">Pay as value is delivered. Clear ROI metrics at each stage.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 8: Next Steps -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="calendar"></i>
+              Con J Consulting
+            </div>
+          </div>
+          <div class="content">
+            <p class="kicker">07 // Next Steps</p>
+            <h2>The Path Forward</h2>
+            <div class="timeline" style="margin-top: 48px;">
+              <div class="timeline__item fragment">
+                <div class="timeline__year">Easter</div>
+                <div class="timeline__dot"></div>
+                <div class="timeline__content">Maria's certification period. Immerse in Dale Carnegie's internal world.</div>
+              </div>
+              <div class="timeline__item fragment">
+                <div class="timeline__year">Discovery</div>
+                <div class="timeline__dot"></div>
+                <div class="timeline__content">Map constraints, decision-makers (Monica, marketing lead), and internal setup.</div>
+              </div>
+              <div class="timeline__item fragment">
+                <div class="timeline__year">Evaluate</div>
+                <div class="timeline__dot"></div>
+                <div class="timeline__content">Assess feasibility and attractiveness of the AI project for Dale Carnegie.</div>
+              </div>
+              <div class="timeline__item fragment">
+                <div class="timeline__year">Scope</div>
+                <div class="timeline__dot"></div>
+                <div class="timeline__content">Reconnect with Carlos to define scope, deliverables, and pricing.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 9: The Referral Play -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="users"></i>
+              Con J Consulting
+            </div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">08 // Growth Channel</p>
+              <h2>The Referral<br>Network</h2>
+              <p class="lead">Beyond Dale Carnegie, Maria's network of business owners is a pipeline of AI implementation opportunities.</p>
+            </div>
+            <div>
+              <div class="card" style="margin-bottom: 16px;">
+                <div class="card__icon"><i data-lucide="heart-handshake"></i></div>
+                <h4 class="card__title">Trust Lowers Risk</h4>
+                <p class="card__text">Personal referrals from a trusted advisor eliminate the "who is this tech person?" objection. Maria's credibility is the bridge.</p>
+              </div>
+              <div class="card">
+                <div class="card__icon"><i data-lucide="git-branch"></i></div>
+                <h4 class="card__title">Every Referral = New Project</h4>
+                <p class="card__text">Each business owner Maria connects needs some form of automation or AI implementation. The pipeline builds organically.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 10: CTA -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <div class="content flex-center" style="flex-direction: column;">
+            <p class="kicker" style="justify-content: center;">The Future of Consulting</p>
+            <h1>Small Teams.<br><span class="accent-text">Powerful AI.</span></h1>
+            <p class="lead" style="margin-bottom: 40px;">The future belongs to consultants who combine deep expertise with intelligent automation. Let's build this together.</p>
+            <div class="contact-grid" style="width: 100%; max-width: 600px;">
+              <div class="contact-item">
+                <div class="contact-item__label">Maria</div>
+                <div class="contact-item__value">Strategy &amp; Leadership</div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-item__label">Carlos</div>
+                <div class="contact-item__value">AI &amp; Automation</div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-item__label">Status</div>
+                <div class="contact-item__value">Discovery Phase</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Reveal.js Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.js"></script>
+
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: true,
+      controls: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      center: false,
+      transition: 'slide',
+      backgroundTransition: 'fade',
+      width: 1280,
+      height: 720,
+      margin: 0,
+      minScale: 0.2,
+      maxScale: 2,
+      autoAnimate: true,
+      autoAnimateDuration: 0.7,
+      plugins: [RevealHighlight]
+    });
+
+    // Initialize Lucide icons
+    lucide.createIcons();
+  </script>
+
+</body>
+</html>
