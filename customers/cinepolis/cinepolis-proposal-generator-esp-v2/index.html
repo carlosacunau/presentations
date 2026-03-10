@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cinepolis Generador de Propuestas</title>
 
-  <!-- Google Fonts - Autonomee Style -->
+  <!-- Google Fonts - FibaLabs Style -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
 
   <!-- Reveal.js -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
@@ -19,42 +19,29 @@
 
   <style>
 /*
- * Autonomee.ai Presentation Theme
- * Editorial, minimal, serif headlines
- * For use with Reveal.js 4.5+
+ * FibaLabs Presentation Theme
+ * HUD-style, geometric, Electric Violet accent
  */
 
-/* ===== CSS VARIABLES - AUTONOMEE PALETTE ===== */
 :root {
-  /* Backgrounds */
-  --bg-dark: #0a0a0a;
-  --bg-card: #111111;
-  --bg-card-hover: #1a1a1a;
-
-  /* Accent - Muted Steel Blue */
-  --accent: #7b8fa8;
-  --accent-light: #9bb0c9;
-  --accent-glow: rgba(123, 143, 168, 0.15);
-
-  /* Semantic Colors - Muted */
-  --success: #7b9a7b;
-  --warning: #c9a85b;
-  --error: #c97b7b;
-
-  /* Text Colors */
-  --text-primary: #f5f4f0;
-  --text-secondary: #a8a8a8;
-  --text-muted: #666666;
-
-  /* Borders */
-  --border: #2a2a2a;
-
-  /* Typography */
-  --font-serif: 'Playfair Display', Georgia, serif;
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
-
-  /* Spacing */
+  --bg-dark: #0A0A14;
+  --bg-card: #12121E;
+  --bg-card-hover: #1A1A2A;
+  --accent: #8B5CF6;
+  --accent-light: #A78BFA;
+  --accent-glow: rgba(139, 92, 246, 0.15);
+  --secondary: #4C2D91;
+  --secondary-light: #6D4DB8;
+  --success: #34D399;
+  --warning: #FBBF24;
+  --error: #F87171;
+  --text-primary: #E8E4F0;
+  --text-secondary: #9B95A8;
+  --text-muted: #5C5670;
+  --border: #2A2A3A;
+  --font-serif: 'Instrument Serif', Georgia, serif;
+  --font-sans: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Fira Code', monospace;
   --spacing-xs: 8px;
   --spacing-sm: 16px;
   --spacing-md: 24px;
@@ -62,7 +49,6 @@
   --spacing-xl: 60px;
 }
 
-/* ===== BASE STYLES ===== */
 html, body {
   background: var(--bg-dark) !important;
   color: var(--text-primary);
@@ -78,8 +64,8 @@ body {
 .reveal-viewport {
   background: var(--bg-dark) !important;
   background-image:
-    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px) !important;
+    linear-gradient(rgba(139, 92, 246, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139, 92, 246, 0.03) 1px, transparent 1px) !important;
   background-size: 60px 60px !important;
 }
 
@@ -90,16 +76,9 @@ body {
   color: var(--text-primary);
 }
 
-.reveal .slides {
-  text-align: left;
-}
+.reveal .slides { text-align: left; }
+.reveal .slides section { padding: 0; background: var(--bg-dark); }
 
-.reveal .slides section {
-  padding: 0;
-  background: var(--bg-dark);
-}
-
-/* ===== SLIDE BASE ===== */
 .slide {
   height: 100%;
   width: 100%;
@@ -111,21 +90,15 @@ body {
   position: relative;
 }
 
-.slide > * {
-  position: relative;
-  z-index: 1;
-}
+.slide > * { position: relative; z-index: 1; }
 
-/* ===== SLIDE VARIANTS ===== */
 .slide--center {
   align-items: center;
   justify-content: center;
   text-align: center;
 }
 
-.slide--section {
-  background: transparent;
-}
+.slide--section { background: transparent; }
 
 .slide--section::before {
   content: '';
@@ -140,7 +113,6 @@ body {
   z-index: 0;
 }
 
-/* ===== HEADER BAR ===== */
 .header {
   display: flex;
   justify-content: space-between;
@@ -152,23 +124,23 @@ body {
 }
 
 .header__logo {
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
   font-size: 0.9rem;
-  font-weight: 400;
+  font-weight: 500;
   color: var(--text-secondary);
   display: flex;
   align-items: center;
   gap: 10px;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.1em;
+  text-transform: lowercase;
 }
 
-.header__logo svg {
-  width: 18px;
-  height: 18px;
-  color: var(--accent);
+.header__logo img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
 }
 
-/* ===== TYPOGRAPHY ===== */
 .kicker {
   font-size: 0.7rem;
   color: var(--accent);
@@ -208,11 +180,12 @@ h2, .h2 {
 }
 
 h3, .h3 {
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
   font-size: 1.5rem;
-  font-weight: 400;
+  font-weight: 500;
   line-height: 1.3;
   margin: 0 0 var(--spacing-sm) 0;
+  letter-spacing: 0.05em;
 }
 
 h4, .h4 {
@@ -220,7 +193,7 @@ h4, .h4 {
   font-size: 1.1rem;
   font-weight: 500;
   margin: 0 0 var(--spacing-xs) 0;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.05em;
 }
 
 .lead {
@@ -228,77 +201,12 @@ h4, .h4 {
   color: var(--text-secondary);
   line-height: 1.7;
   max-width: 600px;
+  letter-spacing: 0.02em;
 }
 
-.muted {
-  color: var(--text-muted);
-}
+.muted { color: var(--text-muted); }
+.highlight, .accent-text { color: var(--accent); }
 
-.highlight, .accent-text {
-  color: var(--accent);
-}
-
-/* ===== CODE STYLING ===== */
-code, .code {
-  font-family: var(--font-mono);
-  background: rgba(123, 143, 168, 0.1);
-  padding: 2px 8px;
-  font-size: 0.85em;
-  color: var(--accent-light);
-  border: 1px solid var(--border);
-}
-
-pre {
-  background: #0d0d0d;
-  border: 1px solid var(--border);
-  padding: var(--spacing-md);
-  overflow-x: auto;
-  font-family: var(--font-mono);
-  font-size: 0.85em;
-  line-height: 1.6;
-}
-
-pre code {
-  background: none;
-  padding: 0;
-  border: none;
-  color: var(--text-secondary);
-}
-
-.command {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: transparent;
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--accent);
-  padding: 12px 16px;
-  margin: 8px 0;
-  transition: all 0.3s ease;
-}
-
-.command:hover {
-  background: var(--bg-card);
-}
-
-.command__prompt {
-  color: var(--accent);
-  font-family: var(--font-mono);
-}
-
-.command__text {
-  color: var(--text-secondary);
-  font-family: var(--font-mono);
-}
-
-.command__desc {
-  color: var(--text-muted);
-  font-size: 0.8rem;
-  margin-left: auto;
-  font-style: italic;
-}
-
-/* ===== LAYOUT ===== */
 .content {
   flex: 1;
   display: flex;
@@ -313,26 +221,12 @@ pre code {
   flex: 1;
 }
 
-.split--60-40 {
-  grid-template-columns: 1.5fr 1fr;
-}
+.split--60-40 { grid-template-columns: 1.5fr 1fr; }
 
 .grid-2 {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--spacing-md);
-}
-
-.grid-3 {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--spacing-md);
-}
-
-.grid-5 {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: var(--spacing-sm);
 }
 
 .flex-center {
@@ -341,20 +235,16 @@ pre code {
   justify-content: center;
 }
 
-/* ===== CARDS ===== */
 .card {
   background: transparent;
   border: 1px solid var(--border);
   padding: var(--spacing-md);
   transition: all 0.3s ease;
+  border-radius: 2px;
 }
 
 .card:hover {
   background: var(--bg-card);
-  border-color: var(--accent);
-}
-
-.card--featured {
   border-color: var(--accent);
 }
 
@@ -376,6 +266,7 @@ pre code {
   font-size: 1rem;
   font-weight: 500;
   margin-bottom: var(--spacing-xs);
+  letter-spacing: 0.03em;
 }
 
 .card__text {
@@ -384,7 +275,6 @@ pre code {
   line-height: 1.5;
 }
 
-/* ===== METRICS ===== */
 .metrics {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -396,30 +286,28 @@ pre code {
   padding: var(--spacing-md);
   border: 1px solid var(--border);
   transition: all 0.3s ease;
+  border-radius: 2px;
 }
 
-.metric:hover {
-  border-color: var(--accent);
-}
+.metric:hover { border-color: var(--accent); }
 
 .metric__value {
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
   font-size: 2.5rem;
-  font-weight: 400;
-  font-style: italic;
+  font-weight: 500;
   color: var(--accent);
   line-height: 1;
   margin-bottom: var(--spacing-xs);
+  letter-spacing: -0.02em;
 }
 
 .metric__label {
   font-size: 0.75rem;
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.15em;
 }
 
-/* ===== LISTS ===== */
 .list {
   list-style: none;
   padding: 0;
@@ -433,9 +321,7 @@ pre code {
   border-bottom: 1px solid var(--border);
 }
 
-.list li:last-child {
-  border-bottom: none;
-}
+.list li:last-child { border-bottom: none; }
 
 .list li::before {
   content: '\2014';
@@ -451,13 +337,8 @@ pre code {
   color: var(--success);
 }
 
-.list--numbered {
-  counter-reset: list-counter;
-}
-
-.list--numbered li {
-  counter-increment: list-counter;
-}
+.list--numbered { counter-reset: list-counter; }
+.list--numbered li { counter-increment: list-counter; }
 
 .list--numbered li::before {
   content: counter(list-counter, decimal-leading-zero);
@@ -467,22 +348,40 @@ pre code {
   letter-spacing: 0.05em;
 }
 
-/* ===== BADGES ===== */
-.badge {
+.btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 14px;
-  font-size: 0.7rem;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 28px;
+  font-size: 0.8rem;
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid var(--text-primary);
   background: transparent;
-  color: var(--accent);
-  border: 1px solid var(--accent);
+  color: var(--text-primary);
+  border-radius: 2px;
 }
 
-/* ===== WORKFLOW ===== */
+.btn:hover {
+  background: var(--text-primary);
+  color: var(--bg-dark);
+}
+
+.btn--accent {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn--accent:hover {
+  background: var(--accent);
+  color: var(--bg-dark);
+}
+
 .workflow {
   display: flex;
   align-items: center;
@@ -501,6 +400,7 @@ pre code {
   padding: 20px 16px;
   text-align: center;
   transition: all 0.3s ease;
+  border-radius: 2px;
 }
 
 .workflow__box:hover {
@@ -514,6 +414,7 @@ pre code {
   font-weight: 500;
   color: var(--text-primary);
   margin-bottom: 4px;
+  letter-spacing: 0.03em;
 }
 
 .workflow__sublabel {
@@ -528,41 +429,6 @@ pre code {
   flex-shrink: 0;
 }
 
-/* ===== BUTTONS ===== */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 12px 28px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: 1px solid var(--text-primary);
-  background: transparent;
-  color: var(--text-primary);
-}
-
-.btn:hover {
-  background: var(--text-primary);
-  color: var(--bg-dark);
-}
-
-.btn--accent {
-  border-color: var(--accent);
-  color: var(--accent);
-}
-
-.btn--accent:hover {
-  background: var(--accent);
-  color: var(--bg-dark);
-}
-
-/* ===== CONTACT/CTA ===== */
 .contact-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -570,15 +436,13 @@ pre code {
   margin-top: var(--spacing-xl);
 }
 
-.contact-item {
-  text-align: center;
-}
+.contact-item { text-align: center; }
 
 .contact-item__label {
   font-size: 0.7rem;
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.15em;
   margin-bottom: var(--spacing-xs);
 }
 
@@ -587,19 +451,9 @@ pre code {
   color: var(--text-secondary);
 }
 
-/* ===== REVEAL.JS OVERRIDES ===== */
-.reveal .controls {
-  color: var(--accent);
-}
-
-.reveal .progress {
-  background: var(--border);
-  height: 2px;
-}
-
-.reveal .progress span {
-  background: var(--accent);
-}
+.reveal .controls { color: var(--accent); }
+.reveal .progress { background: var(--border); height: 2px; }
+.reveal .progress span { background: var(--accent); }
 
 .reveal .slide-number {
   background: transparent;
@@ -610,15 +464,12 @@ pre code {
   bottom: 20px;
 }
 
-/* ===== FRAGMENT ANIMATIONS ===== */
 .reveal .slides section .fragment {
   opacity: 0;
   transition: all 0.4s ease;
 }
 
-.reveal .slides section .fragment.visible {
-  opacity: 1;
-}
+.reveal .slides section .fragment.visible { opacity: 1; }
 
 .reveal .slides section .fragment.fade-up {
   transform: translateY(20px);
@@ -628,41 +479,9 @@ pre code {
   transform: translateY(0);
 }
 
-/* ===== SCROLLBAR ===== */
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--bg-dark);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 3px;
-}
-
 ::selection {
   background: var(--accent);
   color: var(--bg-dark);
-}
-
-/* ===== CUSTOM: TECH STACK ICONS ===== */
-.tech-icon {
-  width: 48px;
-  height: 48px;
-  border: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--accent);
-  margin: 0 auto var(--spacing-xs);
-}
-
-.tech-icon svg {
-  width: 24px;
-  height: 24px;
-  stroke-width: 1.5;
 }
   </style>
 </head>
@@ -674,6 +493,7 @@ pre code {
       <section>
         <div class="slide slide--section slide--center">
           <div class="content flex-center" style="flex-direction: column; text-align: center;">
+            <img src="assets/fiba_labs_monogram.png" alt="FibaLabs" style="width: 60px; height: 60px; object-fit: contain; margin-bottom: 24px;">
             <p class="kicker" style="justify-content: center;">Cinepolis</p>
             <h1>Generador de Propuestas<br><span class="accent-text">De Transcripcion a Propuesta en Segundos</span></h1>
             <p class="lead" style="max-width: 640px; margin: 0 auto;">
@@ -688,8 +508,8 @@ pre code {
         <div class="slide">
           <div class="header">
             <div class="header__logo">
-              <i data-lucide="alert-triangle"></i>
-              Cinepolis Generador de Propuestas
+              <img src="assets/fiba_labs_monogram.png" alt="FibaLabs">
+              fiba labs
             </div>
           </div>
           <div class="split">
@@ -727,8 +547,8 @@ pre code {
         <div class="slide">
           <div class="header">
             <div class="header__logo">
-              <i data-lucide="git-branch"></i>
-              Cinepolis Generador de Propuestas
+              <img src="assets/fiba_labs_monogram.png" alt="FibaLabs">
+              fiba labs
             </div>
           </div>
           <div class="content">
@@ -780,8 +600,8 @@ pre code {
         <div class="slide">
           <div class="header">
             <div class="header__logo">
-              <i data-lucide="cpu"></i>
-              Cinepolis Generador de Propuestas
+              <img src="assets/fiba_labs_monogram.png" alt="FibaLabs">
+              fiba labs
             </div>
           </div>
           <div class="content">
@@ -818,8 +638,8 @@ pre code {
         <div class="slide">
           <div class="header">
             <div class="header__logo">
-              <i data-lucide="monitor"></i>
-              Cinepolis Generador de Propuestas
+              <img src="assets/fiba_labs_monogram.png" alt="FibaLabs">
+              fiba labs
             </div>
           </div>
           <div class="split">
@@ -857,8 +677,8 @@ pre code {
         <div class="slide">
           <div class="header">
             <div class="header__logo">
-              <i data-lucide="dollar-sign"></i>
-              Cinepolis Generador de Propuestas
+              <img src="assets/fiba_labs_monogram.png" alt="FibaLabs">
+              fiba labs
             </div>
           </div>
           <div class="content">
@@ -892,8 +712,8 @@ pre code {
         <div class="slide">
           <div class="header">
             <div class="header__logo">
-              <i data-lucide="box"></i>
-              Cinepolis Generador de Propuestas
+              <img src="assets/fiba_labs_monogram.png" alt="FibaLabs">
+              fiba labs
             </div>
           </div>
           <div class="split">
@@ -927,8 +747,8 @@ pre code {
         <div class="slide">
           <div class="header">
             <div class="header__logo">
-              <i data-lucide="clipboard-list"></i>
-              Cinepolis Generador de Propuestas
+              <img src="assets/fiba_labs_monogram.png" alt="FibaLabs">
+              fiba labs
             </div>
           </div>
           <div class="split">
@@ -961,6 +781,7 @@ pre code {
       <section>
         <div class="slide slide--section slide--center">
           <div class="content flex-center" style="flex-direction: column;">
+            <img src="assets/fiba_labs_monogram.png" alt="FibaLabs" style="width: 48px; height: 48px; object-fit: contain; margin-bottom: 24px;">
             <p class="kicker" style="justify-content: center;">08 // Empecemos</p>
             <h1>Listo en<br><span class="accent-text">5 Minutos</span></h1>
             <p class="lead" style="margin-bottom: 40px; max-width: 520px; margin-left: auto; margin-right: auto;">
@@ -1012,9 +833,18 @@ pre code {
       plugins: [RevealHighlight]
     });
 
-    // Initialize Lucide icons
     lucide.createIcons();
   </script>
 
+  <!-- CTA Button - outside reveal for clickability -->
+  <div style="position: fixed; top: 20px; right: 20px; display: flex; gap: 12px; z-index: 999999;">
+    <a href="https://fibalabs.com" target="_blank"
+       style="padding: 8px 16px; font-size: 12px; text-decoration: none;
+              border: 1px solid #8B5CF6; color: #8B5CF6;
+              text-transform: uppercase; letter-spacing: 0.1em;
+              font-family: 'Space Grotesk', sans-serif; border-radius: 2px;">
+      fibalabs.com
+    </a>
+  </div>
 </body>
 </html>
