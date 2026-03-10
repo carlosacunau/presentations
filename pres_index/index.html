@@ -5,86 +5,208 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Presentations</title>
   <meta name="robots" content="noindex, nofollow">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg-dark: #0A0A14;
+      --bg-card: #12121E;
+      --accent: #8B5CF6;
+      --accent-light: #A78BFA;
+      --accent-glow: rgba(139, 92, 246, 0.15);
+      --text-primary: #E8E4F0;
+      --text-secondary: #9B95A8;
+      --text-muted: #5C5670;
+      --border: #2A2A3A;
+    }
+
     body {
-      background: #0a0a0a;
-      color: #f5f4f0;
-      font-family: 'Inter', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
+      background-image:
+        linear-gradient(rgba(139, 92, 246, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(139, 92, 246, 0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
     }
-    .container { max-width: 640px; padding: 60px 24px; }
+
+    .container {
+      max-width: 680px;
+      width: 100%;
+      padding: 60px 24px;
+    }
+
     h1 {
-      font-family: 'Playfair Display', serif;
+      font-family: 'Instrument Serif', Georgia, serif;
       font-style: italic;
       font-weight: 400;
       font-size: 3rem;
       margin-bottom: 12px;
     }
-    .subtitle { color: #666; font-size: 0.9rem; margin-bottom: 48px; }
+
+    h2 {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-weight: 400;
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 48px;
+      letter-spacing: 0.05em;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      color: var(--accent);
+      margin-top: 32px;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
     a {
       display: block;
       padding: 20px 24px;
-      border: 1px solid #2a2a2a;
-      color: #f5f4f0;
+      border: 1px solid var(--border);
+      color: var(--text-primary);
       text-decoration: none;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
       transition: all 0.3s ease;
+      border-radius: 2px;
+      position: relative;
     }
-    a:hover { background: #111; border-color: #7b8fa8; }
-    .title { font-weight: 500; margin-bottom: 4px; }
-    .desc { font-size: 0.85rem; color: #666; }
+
+    a:hover {
+      background: var(--bg-card);
+      border-color: var(--accent);
+    }
+
+    .title {
+      font-weight: 500;
+      margin-bottom: 4px;
+      letter-spacing: 0.02em;
+    }
+
+    .desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .tag {
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      font-size: 0.65rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent-light);
+      opacity: 0.6;
+    }
+
     /* Lock screen */
-    #lock {
-      text-align: center;
-    }
+    #lock { text-align: center; }
+
     #lock input {
       background: transparent;
-      border: 1px solid #2a2a2a;
-      color: #f5f4f0;
-      padding: 12px 20px;
-      font-family: 'Inter', sans-serif;
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      padding: 14px 20px;
+      font-family: 'Space Grotesk', sans-serif;
       font-size: 0.95rem;
       width: 100%;
       max-width: 300px;
       margin-bottom: 16px;
       outline: none;
       transition: border-color 0.3s ease;
+      border-radius: 2px;
+      letter-spacing: 0.05em;
     }
+
     #lock input:focus {
-      border-color: #7b8fa8;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent-glow);
     }
+
+    #lock input::placeholder {
+      color: var(--text-muted);
+    }
+
     #lock button {
       display: block;
       width: 100%;
       max-width: 300px;
       margin: 0 auto;
-      padding: 12px 28px;
+      padding: 14px 28px;
       font-size: 0.8rem;
       font-weight: 500;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.15em;
       cursor: pointer;
-      border: 1px solid #f5f4f0;
+      border: 1px solid var(--accent);
       background: transparent;
-      color: #f5f4f0;
+      color: var(--accent);
       transition: all 0.3s ease;
+      border-radius: 2px;
+      font-family: 'Space Grotesk', sans-serif;
     }
+
     #lock button:hover {
-      background: #f5f4f0;
-      color: #0a0a0a;
+      background: var(--accent);
+      color: var(--bg-dark);
     }
-    .error { color: #c97b7b; font-size: 0.85rem; margin-top: 12px; display: none; }
+
+    .error {
+      color: #F87171;
+      font-size: 0.85rem;
+      margin-top: 12px;
+      display: none;
+      letter-spacing: 0.02em;
+    }
+
     #content { display: none; }
+
+    .lock-icon {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 24px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <div id="lock">
+      <div class="lock-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
       <h1>Locked</h1>
       <p class="subtitle">Enter password to view presentations.</p>
       <input type="password" id="pwd" placeholder="Password" autofocus>
@@ -98,7 +220,7 @@
     const encrypted = {
       salt: "03fppmE+noyd+G6tAVPRbw==",
       iv: "VMgb2+OW+NjpArmx",
-      ct: "w8Es26irnjl5e6DD8xbHPrX9UrKGwb2/gd+7I84ExMQKknBqdfxpPJNE+lKGcyl3fL3dXoOdc656NozHwjPX+5OlVFWvFsnlL5kwIZhYRAqmcbf5OqnvnSLQAJ/VYujGj/hbOBziLBQfOSEbq/6Ms7QSiK6aOENItCbGxLIUlXo45LsElurOLgNdvSuGOdjnlYFvgk/AJ+IfOqJyfJ+SvI+VPNtpRYkNhr7oJHMcdnWjOwoW+7KlEaeGuvTG2ifevUHbuUnQdI8Fquh+/D82jhPOiRHtI4sS4yvRHtm7e3TLr2BCwZV3VNTSXyY6QiTutAfcEcTdSNkPFl/TJxg9XH2Z5Qf+PpaASoAG+79RG+QY/zrRklWwcjtJXdgf/e06/wO3D8cl85ujenYPmJXsWSsVOILLSjalIqejb0SKQp8Eap1iTKQMJQ6l8ozS3eXcJvviJZ07Bu50V0UhiDoDFuw9bSVtNEujAYAJdiizli2hjI9OTgRVKzZNMgmeyoDfqkrZw+AgvhmBah1hg+4W8zmSzidg/8GJPS1xMyQHkgu0JxIOrumkueP+FcnE4I8hBFnjRg6SL1RtwTc9Rv8OW3EhjAWBlKcjqROg0xwQ8OqHVuud7VEKqlf1jLKTWFF1/xcmRtO9zJWWlo5qEGsz7r+9Yw7zce8cHwme7Me9eXgBKh7a7vxc9ENtKx3HgD6ISFzlQf0ikmvbgrFSprP5yvrZniQJWv7QWNAOVqMESV13OeGv+yHD+TaqPQyh/4SgvsHcnadAmQnVNH3nbhoik6hRBItoN+borxI7TgwPby/GVS/YMOognzZQUgD2xA+S+plIJC4MSm0qAT+hT3QBKKgAh2mFXZUtWe44IHT/I52kiiDJNxLsfsUCZIEMJZmYBEgZ4weSLmR81NwWavFZuy4DxquRIk0zc82LoQCOJdRkel5ZeWrrH2R6xzaR7fzxTllPQB+1Ou5kIVRc8Ies/F1DK9h9fxoWbQsQ65hcaFM+Kd7G3vD7fVfqFqkz+cWGpuRajYHcc9e1/1ojgtgBRjmYDJXOmZwAqE6WrRaUBL/GmJJ3HIMpOAb3YPdYd12Tfo0SdY+oEZ28+KSoABH0MAMqSIaycTfoB4hvTjaWPcpZTvjytSCu83IDPh574T+frIS03VFt78uuHn3N2PS5Cn8/xbZJNTViL5HKiiSyvprqclFY/W6PhKGRP8gSoXsCJc4+jQ0UA7NRQfBN14w6SGqRLl2+MQbowah9TskAsaYZ0b7UxPBcE/1UBcz/s5eM985X42yUhUPVVZwC/I+xhqyIKFp2f+3AI2U1Bjhm9K2BEKNpq7nS5MU5Y2Tk4/1vj2XE2OWmU/RDGEba6rAgO4odw4yIYw3C7/466eg="
+      ct: "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"
     };
 
     function b64ToArr(b64) {
