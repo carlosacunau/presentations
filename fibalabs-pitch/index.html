@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FIBA Labs - AI Operating Systems for SMBs</title>
+
+  <!-- Google Fonts - FibaLabs Style -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Reveal.js -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/monokai.css">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+/*
+ * FibaLabs Presentation Theme
+ * HUD-style, geometric, Electric Violet accent
+ */
+
+:root {
+  --bg-dark: #0A0A14;
+  --bg-card: #12121E;
+  --bg-card-hover: #1A1A2A;
+  --accent: #8B5CF6;
+  --accent-light: #A78BFA;
+  --accent-glow: rgba(139, 92, 246, 0.15);
+  --secondary: #4C2D91;
+  --secondary-light: #6D4DB8;
+  --success: #34D399;
+  --warning: #FBBF24;
+  --error: #F87171;
+  --text-primary: #E8E4F0;
+  --text-secondary: #9B95A8;
+  --text-muted: #5C5670;
+  --border: #2A2A3A;
+  --font-serif: 'Instrument Serif', Georgia, serif;
+  --font-sans: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Fira Code', monospace;
+  --spacing-xs: 8px;
+  --spacing-sm: 16px;
+  --spacing-md: 24px;
+  --spacing-lg: 40px;
+  --spacing-xl: 60px;
+}
+
+html, body {
+  background: var(--bg-dark) !important;
+  color: var(--text-primary);
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.reveal-viewport {
+  background: var(--bg-dark) !important;
+  background-image:
+    linear-gradient(rgba(139, 92, 246, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139, 92, 246, 0.03) 1px, transparent 1px) !important;
+  background-size: 60px 60px !important;
+}
+
+.reveal {
+  background: var(--bg-dark);
+  font-family: var(--font-sans);
+  font-size: 22px;
+  color: var(--text-primary);
+}
+
+.reveal .slides { text-align: left; }
+.reveal .slides section { padding: 0; background: var(--bg-dark); }
+
+.slide {
+  height: 100%;
+  width: 100%;
+  padding: var(--spacing-xl);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  position: relative;
+}
+
+.slide > * { position: relative; z-index: 1; }
+
+.slide--center {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.slide--section { background: transparent; }
+
+.slide--section::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.header__logo {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: 0.1em;
+  text-transform: lowercase;
+}
+
+.header__logo img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.kicker {
+  font-size: 0.7rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  margin-bottom: var(--spacing-sm);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.kicker::after {
+  content: '';
+  width: 40px;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.5;
+}
+
+h1, .h1 {
+  font-family: var(--font-serif);
+  font-size: 4rem;
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.1;
+  margin: 0 0 var(--spacing-md) 0;
+  color: var(--text-primary);
+}
+
+h2, .h2 {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  font-weight: 400;
+  line-height: 1.15;
+  margin: 0 0 var(--spacing-md) 0;
+}
+
+h3, .h3 {
+  font-family: var(--font-sans);
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1.3;
+  margin: 0 0 var(--spacing-sm) 0;
+  letter-spacing: 0.05em;
+}
+
+h4, .h4 {
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0 0 var(--spacing-xs) 0;
+  letter-spacing: 0.05em;
+}
+
+.lead {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 600px;
+  letter-spacing: 0.02em;
+}
+
+.muted { color: var(--text-muted); }
+.highlight, .accent-text { color: var(--accent); }
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-xl);
+  align-items: center;
+  flex: 1;
+}
+
+.split--60-40 { grid-template-columns: 1.5fr 1fr; }
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-md);
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-md);
+}
+
+.grid-5 {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--spacing-sm);
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card {
+  background: transparent;
+  border: 1px solid var(--border);
+  padding: var(--spacing-md);
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+.card:hover {
+  background: var(--bg-card);
+  border-color: var(--accent);
+}
+
+.card--featured { border-color: var(--accent); }
+
+.card__icon {
+  width: 40px;
+  height: 40px;
+  margin-bottom: var(--spacing-sm);
+  color: var(--accent);
+}
+
+.card__icon svg {
+  width: 100%;
+  height: 100%;
+  stroke-width: 1.5;
+}
+
+.card__title {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: var(--spacing-xs);
+  letter-spacing: 0.03em;
+}
+
+.card__text {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.metric {
+  text-align: center;
+  padding: var(--spacing-md);
+  border: 1px solid var(--border);
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+.metric:hover { border-color: var(--accent); }
+
+.metric__value {
+  font-family: var(--font-sans);
+  font-size: 2.5rem;
+  font-weight: 500;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: var(--spacing-xs);
+  letter-spacing: -0.02em;
+}
+
+.metric__label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.list li {
+  padding: var(--spacing-sm) 0;
+  padding-left: var(--spacing-lg);
+  position: relative;
+  border-bottom: 1px solid var(--border);
+}
+
+.list li:last-child { border-bottom: none; }
+
+.list li::before {
+  content: '\2014';
+  position: absolute;
+  left: 0;
+  top: var(--spacing-sm);
+  color: var(--accent);
+  font-weight: 400;
+}
+
+.list--numbered { counter-reset: list-counter; }
+.list--numbered li { counter-increment: list-counter; }
+
+.list--numbered li::before {
+  content: counter(list-counter, decimal-leading-zero);
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+.list--check li::before {
+  content: '\2713';
+  color: var(--success);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 28px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid var(--text-primary);
+  background: transparent;
+  color: var(--text-primary);
+  border-radius: 2px;
+}
+
+.btn:hover {
+  background: var(--text-primary);
+  color: var(--bg-dark);
+}
+
+.btn--accent {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn--accent:hover {
+  background: var(--accent);
+  color: var(--bg-dark);
+}
+
+.timeline {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: var(--spacing-lg) 0;
+  position: relative;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  bottom: 60px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--border);
+}
+
+.timeline__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  flex: 1;
+}
+
+.timeline__year {
+  font-family: var(--font-sans);
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--accent);
+  margin-bottom: var(--spacing-sm);
+  letter-spacing: 0.05em;
+}
+
+.timeline__dot {
+  width: 10px;
+  height: 10px;
+  background: var(--accent);
+  margin-bottom: var(--spacing-sm);
+  position: relative;
+  z-index: 1;
+  border-radius: 0;
+}
+
+.timeline__content {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  max-width: 150px;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-xl);
+}
+
+.contact-item { text-align: center; }
+
+.contact-item__label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: var(--spacing-xs);
+}
+
+.contact-item__value {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+/* Layer card specific */
+.layer-card {
+  background: transparent;
+  border: 1px solid var(--border);
+  padding: var(--spacing-sm);
+  border-radius: 2px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.layer-card:hover {
+  background: var(--bg-card);
+  border-color: var(--accent);
+}
+
+.layer-card__number {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+}
+
+.layer-card__name {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.layer-card__desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* Reveal.js overrides */
+.reveal .controls { color: var(--accent); }
+.reveal .progress { background: var(--border); height: 2px; }
+.reveal .progress span { background: var(--accent); }
+
+.reveal .slide-number {
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-family: var(--font-mono);
+  right: 20px;
+  bottom: 20px;
+}
+
+.reveal .slides section .fragment {
+  opacity: 0;
+  transition: all 0.4s ease;
+}
+
+.reveal .slides section .fragment.visible { opacity: 1; }
+
+.reveal .slides section .fragment.fade-up {
+  transform: translateY(20px);
+}
+
+.reveal .slides section .fragment.fade-up.visible {
+  transform: translateY(0);
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg-dark);
+}
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- SLIDE 1: Title / Cover -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <div class="content flex-center" style="flex-direction: column; text-align: center;">
+            <img src="assets/fiba_labs_monogram.png" alt="FibaLabs" style="width: 80px; height: 80px; object-fit: contain; margin-bottom: 24px;">
+            <p class="kicker" style="justify-content: center;">AI Operating Systems for SMBs</p>
+            <h1>Command the Future.<br><span class="accent-text">Stop Fighting Fires.</span></h1>
+            <p class="lead" style="max-width: 650px; margin: 0 auto;">
+              We build the infrastructure that turns founders from Operator into Architect. Not chatbots. Not dashboards. Operating systems that compound.
+            </p>
+            <div style="margin-top: 40px; display: flex; gap: 16px;">
+              <a href="#" class="btn btn--accent">Book a Diagnostic</a>
+              <a href="#" class="btn">Learn More</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 2: The Problem -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <p class="kicker" style="justify-content: center;">01 // The Problem</p>
+          <h2>The Operator Trap</h2>
+          <p class="lead muted" style="margin: 0 auto;">80% of your bandwidth goes to admin, firefighting, and "must-dos."<br>Every new tool is another login, another dashboard, another thing to check.</p>
+        </div>
+      </section>
+
+      <!-- SLIDE 3: Pain Points -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <img src="assets/fiba_labs_monogram.png" alt="FibaLabs">
+              fiba labs
+            </div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">01 // The Problem</p>
+              <h2>Sound Familiar?</h2>
+              <p class="lead">Most SMB leaders are stuck working IN their business instead of ON it.</p>
+            </div>
+            <div>
+              <ul class="list list--numbered">
+                <li class="fragment">
+                  <strong>47 open tabs, zero clarity</strong><br>
+                  <span class="muted">Fragmented tools that don't talk to each other.</span>
+                </li>
+                <li class="fragment">
+                  <strong>AI hype, zero integration</strong><br>
+                  <span class="muted">More tools, more noise. No unified intelligence layer.</span>
+                </li>
+                <li class="fragment">
+                  <strong>Highest-paid firefighter</strong><br>
+                  <span class="muted">You're the IT, strategy, AND operations department.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 4: Section Divider - Solution -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <p class="kicker" style="justify-content: center;">02 // The Solution</p>
+          <h2>Five Layers That Compound</h2>
+          <p class="lead muted" style="margin: 0 auto;">Each layer delivers immediate value and creates the foundation for the next.</p>
+        </div>
+      </section>
+
+      <!-- SLIDE 5: The Five Layers -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <img src="assets/fiba_labs_monogram.png" alt="FibaLabs">
+              fiba labs
+            </div>
+          </div>
+          <div class="content">
+            <p class="kicker">02 // FIBA OS Architecture</p>
+            <h2>The Five-Layer System</h2>
+            <div class="grid-5" style="margin-top: 32px;">
+              <div class="layer-card fragment fade-up">
+                <div class="layer-card__number">LAYER 01</div>
+                <div class="layer-card__name">Context</div>
+                <div class="layer-card__desc">AI understands YOUR business, team, and strategy</div>
+              </div>
+              <div class="layer-card fragment fade-up">
+                <div class="layer-card__number">LAYER 02</div>
+                <div class="layer-card__name">Data</div>
+                <div class="layer-card__desc">Automatic daily metric collection from your tools</div>
+              </div>
+              <div class="layer-card fragment fade-up">
+                <div class="layer-card__number">LAYER 03</div>
+                <div class="layer-card__name">Intelligence</div>
+                <div class="layer-card__desc">Daily synthesized brief delivered to your phone</div>
+              </div>
+              <div class="layer-card fragment fade-up">
+                <div class="layer-card__number">LAYER 04</div>
+                <div class="layer-card__name">Automate</div>
+                <div class="layer-card__desc">Recurring tasks mapped, scored, and eliminated</div>
+              </div>
+              <div class="layer-card fragment fade-up">
+                <div class="layer-card__number">LAYER 05</div>
+                <div class="layer-card__name">Build</div>
+                <div class="layer-card__desc">Custom automations designed for your business</div>
+              </div>
+            </div>
+            <p class="muted" style="text-align: center; margin-top: 32px; font-size: 0.9rem;">
+              By Layer 3, you're the most informed person in your org <span class="accent-text">without attending a single meeting.</span>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 6: What It Looks Like -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <img src="assets/fiba_labs_monogram.png" alt="FibaLabs">
+              fiba labs
+            </div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">03 // In Practice</p>
+              <h2>Your Morning<br>Command Center</h2>
+              <p class="lead">Wake up to a Daily Intelligence Brief on your phone. No meetings required.</p>
+            </div>
+            <div>
+              <ul class="list list--check">
+                <li class="fragment">Revenue & pipeline numbers pulled overnight</li>
+                <li class="fragment">Yesterday's meetings summarized with action items</li>
+                <li class="fragment">Team communication patterns flagged</li>
+                <li class="fragment">Strategic recommendations grounded in YOUR data</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 7: Core Principles -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <img src="assets/fiba_labs_monogram.png" alt="FibaLabs">
+              fiba labs
+            </div>
+          </div>
+          <div class="content">
+            <p class="kicker">04 // Principles</p>
+            <h2>How We Build</h2>
+            <div class="grid-2" style="margin-top: 32px;">
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="search"></i></div>
+                <h4 class="card__title">Diagnosis Before Prescription</h4>
+                <p class="card__text">We don't sell tools. We architect clarity. Deep understanding before a single line of code.</p>
+              </div>
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="layers"></i></div>
+                <h4 class="card__title">Layers, Not Leaps</h4>
+                <p class="card__text">Progressive value delivery. No big-bang implementations. No six-month projects.</p>
+              </div>
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="refresh-cw"></i></div>
+                <h4 class="card__title">Self-Healing Systems</h4>
+                <p class="card__text">Every system monitors itself, logs failures, and improves over time. No silent breakdowns.</p>
+              </div>
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="target"></i></div>
+                <h4 class="card__title">Precision Over Hype</h4>
+                <p class="card__text">If it doesn't save time, make money, or reduce risk, we don't build it.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 8: Who This Is For -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <img src="assets/fiba_labs_monogram.png" alt="FibaLabs">
+              fiba labs
+            </div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">05 // Ideal Client</p>
+              <h2>Built for<br><span class="accent-text">Founders Who Lead</span></h2>
+              <p class="lead">CEOs of small-to-medium businesses who want leverage, not more headcount.</p>
+            </div>
+            <div>
+              <ul class="list">
+                <li class="fragment">Teams of 5-50 people</li>
+                <li class="fragment">Drowning in operational overhead</li>
+                <li class="fragment">Tried AI tools but found them shallow</li>
+                <li class="fragment">Value time above everything else</li>
+                <li class="fragment">Ready to become the Architect, not the Operator</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 9: Engagement Timeline -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <img src="assets/fiba_labs_monogram.png" alt="FibaLabs">
+              fiba labs
+            </div>
+          </div>
+          <div class="content">
+            <p class="kicker">06 // Process</p>
+            <h2>From Chaos to Command</h2>
+            <div class="timeline" style="margin-top: 48px;">
+              <div class="timeline__item fragment">
+                <div class="timeline__year">Week 1</div>
+                <div class="timeline__dot"></div>
+                <div class="timeline__content">Deep Diagnostic &amp; Business Mapping</div>
+              </div>
+              <div class="timeline__item fragment">
+                <div class="timeline__year">Week 2-3</div>
+                <div class="timeline__dot"></div>
+                <div class="timeline__content">Context + Data Layers Deployed</div>
+              </div>
+              <div class="timeline__item fragment">
+                <div class="timeline__year">Week 4</div>
+                <div class="timeline__dot"></div>
+                <div class="timeline__content">Intelligence Layer &amp; Daily Briefs Live</div>
+              </div>
+              <div class="timeline__item fragment">
+                <div class="timeline__year">Month 2+</div>
+                <div class="timeline__dot"></div>
+                <div class="timeline__content">Automation &amp; Custom Builds</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 10: Why FibaLabs -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <img src="assets/fiba_labs_monogram.png" alt="FibaLabs">
+              fiba labs
+            </div>
+          </div>
+          <div class="content" style="justify-content: center;">
+            <p class="kicker">07 // Why Us</p>
+            <h2>We Build What We Use</h2>
+            <p class="lead" style="margin-bottom: 40px;">Our own operating system runs our business daily. Every morning brief, every automation, every agent interaction has been tested on ourselves first.</p>
+            <div class="metrics">
+              <div class="metric fragment">
+                <div class="metric__value">22+</div>
+                <div class="metric__label">Years in Tech</div>
+              </div>
+              <div class="metric fragment">
+                <div class="metric__value">5</div>
+                <div class="metric__label">OS Layers</div>
+              </div>
+              <div class="metric fragment">
+                <div class="metric__value">24/7</div>
+                <div class="metric__label">Always-On Agents</div>
+              </div>
+              <div class="metric fragment">
+                <div class="metric__value">0</div>
+                <div class="metric__label">Dashboards to Check</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 11: CTA / Closing -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <div class="content flex-center" style="flex-direction: column;">
+            <img src="assets/fiba_labs_monogram.png" alt="FibaLabs" style="width: 60px; height: 60px; object-fit: contain; margin-bottom: 24px;">
+            <h1>Stop Being the<br><span class="accent-text">Highest-Paid Employee.</span></h1>
+            <p class="lead" style="margin-bottom: 40px;">Start being the Architect.</p>
+            <div style="margin-bottom: 48px;">
+              <a href="#" class="btn btn--accent">Book Your Diagnostic</a>
+            </div>
+            <div class="contact-grid" style="width: 100%; max-width: 600px;">
+              <div class="contact-item">
+                <div class="contact-item__label">Email</div>
+                <div class="contact-item__value">hello@fibalabs.com</div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-item__label">Website</div>
+                <div class="contact-item__value">fibalabs.com</div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-item__label">LinkedIn</div>
+                <div class="contact-item__value">Carlos Acuna</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Reveal.js Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.js"></script>
+
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: true,
+      controls: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      center: false,
+      transition: 'slide',
+      backgroundTransition: 'fade',
+      width: 1280,
+      height: 720,
+      margin: 0,
+      minScale: 0.2,
+      maxScale: 2,
+      autoAnimate: true,
+      autoAnimateDuration: 0.7,
+      plugins: [RevealHighlight]
+    });
+
+    lucide.createIcons();
+  </script>
+
+  <!-- CTA Button - outside reveal for clickability -->
+  <div style="position: fixed; top: 20px; right: 20px; display: flex; gap: 12px; z-index: 999999;">
+    <a href="https://fibalabs.com" target="_blank"
+       style="padding: 8px 16px; font-size: 12px; text-decoration: none;
+              border: 1px solid #8B5CF6; color: #8B5CF6;
+              text-transform: uppercase; letter-spacing: 0.1em;
+              font-family: 'Space Grotesk', sans-serif; border-radius: 2px;">
+      fibalabs.com
+    </a>
+  </div>
+</body>
+</html>
