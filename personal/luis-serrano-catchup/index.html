@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luis Serrano & Carlos Acuna — Catch-Up Recap</title>
+
+  <!-- Google Fonts - FibaLabs Style -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Reveal.js -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/monokai.css">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+/*
+ * FibaLabs Presentation Theme
+ * HUD-style, geometric, Electric Violet accent
+ * For use with Reveal.js 4.5+
+ */
+
+/* ===== CSS VARIABLES - FIBALABS PALETTE ===== */
+:root {
+  /* Backgrounds - "Void + Electric Violet" */
+  --bg-dark: #0A0A14;
+  --bg-card: #12121E;
+  --bg-card-hover: #1A1A2A;
+
+  /* Accent - Electric Violet */
+  --accent: #8B5CF6;
+  --accent-light: #A78BFA;
+  --accent-glow: rgba(139, 92, 246, 0.15);
+
+  /* Secondary - Deep Indigo */
+  --secondary: #4C2D91;
+  --secondary-light: #6D4DB8;
+
+  /* Semantic Colors */
+  --success: #34D399;
+  --warning: #FBBF24;
+  --error: #F87171;
+
+  /* Text Colors - Lavender White system */
+  --text-primary: #E8E4F0;
+  --text-secondary: #9B95A8;
+  --text-muted: #5C5670;
+
+  /* Borders */
+  --border: #2A2A3A;
+
+  /* Typography */
+  --font-serif: 'Instrument Serif', Georgia, serif;
+  --font-sans: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Fira Code', monospace;
+
+  /* Spacing */
+  --spacing-xs: 8px;
+  --spacing-sm: 16px;
+  --spacing-md: 24px;
+  --spacing-lg: 40px;
+  --spacing-xl: 60px;
+}
+
+/* ===== BASE STYLES ===== */
+html, body {
+  background: var(--bg-dark) !important;
+  color: var(--text-primary);
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.reveal-viewport {
+  background: var(--bg-dark) !important;
+  background-image:
+    linear-gradient(rgba(139, 92, 246, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139, 92, 246, 0.03) 1px, transparent 1px) !important;
+  background-size: 60px 60px !important;
+}
+
+.reveal {
+  background: var(--bg-dark);
+  font-family: var(--font-sans);
+  font-size: 22px;
+  color: var(--text-primary);
+}
+
+.reveal .slides {
+  text-align: left;
+}
+
+.reveal .slides section {
+  padding: 0;
+  background: var(--bg-dark);
+}
+
+/* ===== SLIDE BASE ===== */
+.slide {
+  height: 100%;
+  width: 100%;
+  padding: var(--spacing-xl);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  position: relative;
+}
+
+.slide > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== SLIDE VARIANTS ===== */
+.slide--center {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.slide--section {
+  background: transparent;
+}
+
+.slide--section::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ===== HEADER BAR ===== */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.header__logo {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: 0.1em;
+  text-transform: lowercase;
+}
+
+.header__logo svg {
+  width: 18px;
+  height: 18px;
+  color: var(--accent);
+}
+
+.header__nav {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: center;
+}
+
+.header__nav-item {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+}
+
+/* ===== TYPOGRAPHY - HUD / COMMAND CENTER STYLE ===== */
+.kicker {
+  font-size: 0.7rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  margin-bottom: var(--spacing-sm);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.kicker::after {
+  content: '';
+  width: 40px;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.5;
+}
+
+h1, .h1 {
+  font-family: var(--font-serif);
+  font-size: 4rem;
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.1;
+  margin: 0 0 var(--spacing-md) 0;
+  color: var(--text-primary);
+}
+
+h2, .h2 {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  font-weight: 400;
+  line-height: 1.15;
+  margin: 0 0 var(--spacing-md) 0;
+}
+
+h3, .h3 {
+  font-family: var(--font-sans);
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1.3;
+  margin: 0 0 var(--spacing-sm) 0;
+  letter-spacing: 0.05em;
+}
+
+h4, .h4 {
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0 0 var(--spacing-xs) 0;
+  letter-spacing: 0.05em;
+}
+
+.lead {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 600px;
+  letter-spacing: 0.02em;
+}
+
+.muted {
+  color: var(--text-muted);
+}
+
+.highlight, .accent-text {
+  color: var(--accent);
+}
+
+.secondary-text {
+  color: var(--secondary-light);
+}
+
+/* ===== LAYOUT ===== */
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-xl);
+  align-items: center;
+  flex: 1;
+}
+
+.split--60-40 {
+  grid-template-columns: 1.5fr 1fr;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-md);
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-md);
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-md);
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gap-sm { gap: var(--spacing-sm); }
+.gap-md { gap: var(--spacing-md); }
+.gap-lg { gap: var(--spacing-lg); }
+
+/* ===== CARDS - TRANSPARENT, GEOMETRIC ===== */
+.card {
+  background: transparent;
+  border: 1px solid var(--border);
+  padding: var(--spacing-md);
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+.card:hover {
+  background: var(--bg-card);
+  border-color: var(--accent);
+}
+
+.card--featured {
+  border-color: var(--accent);
+}
+
+.card__icon {
+  width: 40px;
+  height: 40px;
+  margin-bottom: var(--spacing-sm);
+  color: var(--accent);
+}
+
+.card__icon svg {
+  width: 100%;
+  height: 100%;
+  stroke-width: 1.5;
+}
+
+.card__title {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: var(--spacing-xs);
+  letter-spacing: 0.03em;
+}
+
+.card__text {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ===== METRICS - HUD STYLE ===== */
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.metric {
+  text-align: center;
+  padding: var(--spacing-md);
+  border: 1px solid var(--border);
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+.metric:hover {
+  border-color: var(--accent);
+}
+
+.metric__value {
+  font-family: var(--font-sans);
+  font-size: 2.5rem;
+  font-weight: 500;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: var(--spacing-xs);
+  letter-spacing: -0.02em;
+}
+
+.metric__label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+/* ===== LISTS - DASH STYLE ===== */
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.list li {
+  padding: var(--spacing-sm) 0;
+  padding-left: var(--spacing-lg);
+  position: relative;
+  border-bottom: 1px solid var(--border);
+}
+
+.list li:last-child {
+  border-bottom: none;
+}
+
+.list li::before {
+  content: '\2014';
+  position: absolute;
+  left: 0;
+  top: var(--spacing-sm);
+  color: var(--accent);
+  font-weight: 400;
+}
+
+.list--check li::before {
+  content: '\2713';
+  color: var(--success);
+}
+
+.list--numbered {
+  counter-reset: list-counter;
+}
+
+.list--numbered li {
+  counter-increment: list-counter;
+}
+
+.list--numbered li::before {
+  content: counter(list-counter, decimal-leading-zero);
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+/* ===== BADGES - OUTLINED ===== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+}
+
+.badge--success {
+  color: var(--success);
+  border-color: var(--success);
+}
+
+.badge--warning {
+  color: var(--warning);
+  border-color: var(--warning);
+}
+
+/* ===== CONTACT/CTA ===== */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-xl);
+}
+
+.contact-item {
+  text-align: center;
+}
+
+.contact-item__label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: var(--spacing-xs);
+}
+
+.contact-item__value {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+/* ===== BUTTONS - OUTLINED, GEOMETRIC ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 28px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid var(--text-primary);
+  background: transparent;
+  color: var(--text-primary);
+  border-radius: 2px;
+}
+
+.btn:hover {
+  background: var(--text-primary);
+  color: var(--bg-dark);
+}
+
+.btn--accent {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn--accent:hover {
+  background: var(--accent);
+  color: var(--bg-dark);
+}
+
+/* ===== PERSON CARD (custom for this pres) ===== */
+.person-card {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  border: 1px solid var(--border);
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+.person-card:hover {
+  background: var(--bg-card);
+  border-color: var(--accent);
+}
+
+.person-card__initials {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-style: italic;
+  flex-shrink: 0;
+  border-radius: 2px;
+}
+
+.person-card__info {
+  flex: 1;
+}
+
+.person-card__name {
+  font-weight: 500;
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+  letter-spacing: 0.03em;
+}
+
+.person-card__detail {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* ===== REVEAL.JS OVERRIDES ===== */
+.reveal .controls {
+  color: var(--accent);
+}
+
+.reveal .progress {
+  background: var(--border);
+  height: 2px;
+}
+
+.reveal .progress span {
+  background: var(--accent);
+}
+
+.reveal .slide-number {
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-family: var(--font-mono);
+  right: 20px;
+  bottom: 20px;
+}
+
+/* ===== FRAGMENTS ===== */
+.reveal .slides section .fragment {
+  opacity: 0;
+  transition: all 0.4s ease;
+}
+
+.reveal .slides section .fragment.visible {
+  opacity: 1;
+}
+
+.reveal .slides section .fragment.fade-up {
+  transform: translateY(20px);
+}
+
+.reveal .slides section .fragment.fade-up.visible {
+  transform: translateY(0);
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg-dark);
+}
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- SLIDE 1: Title -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <div class="content flex-center" style="flex-direction: column; text-align: center;">
+            <p class="kicker" style="justify-content: center;">Marzo 13, 2026</p>
+            <h1>Luis Serrano<br><span class="accent-text">&amp; Carlos Acuna</span></h1>
+            <p class="lead" style="max-width: 600px; margin: 0 auto;">
+              Catch-up entre amigos del colegio. Vida personal, red de contactos, y una conversacion profunda sobre AI y oportunidades de colaboracion.
+            </p>
+            <div style="margin-top: 32px; display: flex; gap: 16px;">
+              <span class="badge">Catch-Up</span>
+              <span class="badge">AI / Tech</span>
+              <span class="badge">Networking</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 2: Participants -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="users"></i>
+              Meeting Recap
+            </div>
+            <div class="header__nav">
+              <span class="header__nav-item">Mar 13, 2026</span>
+            </div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">01 // Participantes</p>
+              <h2>Quienes Somos</h2>
+              <p class="lead">Amigos del colegio reconectando despues de anos, ahora explorando el mundo de AI desde angulos complementarios.</p>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+              <div class="person-card fragment fade-up">
+                <div class="person-card__initials">CA</div>
+                <div class="person-card__info">
+                  <div class="person-card__name">Carlos Acuna</div>
+                  <div class="person-card__detail">Founder, FibaLabs. 11 anos en Chile. Ex IBM, Red Hat, McAfee, Vertiv. Construye AI Operating Systems para SMBs usando Claude Code + Antigravity IDE.</div>
+                </div>
+              </div>
+              <div class="person-card fragment fade-up">
+                <div class="person-card__initials">LS</div>
+                <div class="person-card__info">
+                  <div class="person-card__name">Luisgui Serrano</div>
+                  <div class="person-card__detail">Data scientist / educador en Toronto, Canada. Casado con colombiana. Foco en entender los fundamentos matematicos de LLMs y ensenanza.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 3: Life Updates -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="globe"></i>
+              Meeting Recap
+            </div>
+          </div>
+          <div class="content">
+            <p class="kicker">02 // Vida Personal</p>
+            <h2>Donde Estamos</h2>
+            <div class="grid-2" style="margin-top: 32px;">
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="map-pin"></i></div>
+                <h4 class="card__title">Carlos en Santiago, Chile</h4>
+                <p class="card__text">11 anos viviendo aca. Esposa colombiana (Paola, 20 anos en Chile). Dos hijos chilenos: el mayor cumple 10 en junio, la menor 8 en mayo. Feliz y estable en Chile.</p>
+              </div>
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="snowflake"></i></div>
+                <h4 class="card__title">Luis en Toronto, Canada</h4>
+                <p class="card__text">Esposa colombiana. Escapan del invierno yendo a Colombia 3 meses al ano (dic-feb). Mama vive cerca, se recupero de un ACV. Sin hijos, decision personal.</p>
+              </div>
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="plane"></i></div>
+                <h4 class="card__title">Familias en Colombia</h4>
+                <p class="card__text">Papa de Carlos es piloto en Avianca, a punto de jubilarse. Mama de Luis pensionada a los 45 (Banco Cafetero, 25 anos de servicio).</p>
+              </div>
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="building"></i></div>
+                <h4 class="card__title">Chile: Estable y Prospero</h4>
+                <p class="card__text">Economia solida, influencia europea fuerte (italiana, alemana, espanola). Los empresarios chilenos son duenos del retail (Falabella, Sodimac, Cencosud). Tech caro pero avanzado digitalmente.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 4: Shared Network -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="link"></i>
+              Meeting Recap
+            </div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">03 // Red Compartida</p>
+              <h2>Conexiones<br>en Comun</h2>
+              <p class="lead">Amigos del colegio y conexiones profesionales dispersos entre Chile, Canada, Emiratos y Colombia.</p>
+            </div>
+            <div>
+              <ul class="list list--numbered">
+                <li class="fragment">
+                  <strong>Pachon</strong><br>
+                  <span class="muted">Estuvo en Chile, esposa chilena. Va y vuelve. Contacto constante con Luis.</span>
+                </li>
+                <li class="fragment">
+                  <strong>Sami Ramirez</strong><br>
+                  <span class="muted">En Montreal. Amiga de la esposa de Luis. Trabajo con Carlos en Oracle. Visito Chile hace 10+ anos.</span>
+                </li>
+                <li class="fragment">
+                  <strong>Cruz</strong><br>
+                  <span class="muted">Se cruzaron en IBM. Carlos lo recuerda vagamente del area de operaciones.</span>
+                </li>
+                <li class="fragment">
+                  <strong>Nicolas Rencoret</strong><br>
+                  <span class="muted">Celular chileno pero no activo en la red. Posiblemente chileno de origen.</span>
+                </li>
+                <li class="fragment">
+                  <strong>Zapata, Lobera, Jose Rawa</strong><br>
+                  <span class="muted">Del colegio, viven en Toronto. Se ven poco pero mantienen contacto.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 5: Section Divider - AI -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <p class="kicker" style="justify-content: center;">04 // Tema Central</p>
+          <h2>La Conversacion<br><span class="accent-text">sobre AI</span></h2>
+          <p class="lead muted">Dos enfoques complementarios: Carlos construye, Luis entiende los fundamentos.</p>
+        </div>
+      </section>
+
+      <!-- SLIDE 6: Carlos's AI Stack -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="cpu"></i>
+              Meeting Recap
+            </div>
+          </div>
+          <div class="content">
+            <p class="kicker">05 // El Stack de Carlos</p>
+            <h2>Construyendo con AI</h2>
+            <div class="grid-2" style="margin-top: 32px;">
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="terminal"></i></div>
+                <h4 class="card__title">Antigravity IDE + Claude Code</h4>
+                <p class="card__text">Fork de VS Code de Google. Con Claude Code adentro, es como tener un ingeniero experto, disenador y CRO. "Sky is the limit." Empezo hace 3 meses.</p>
+              </div>
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="file-text"></i></div>
+                <h4 class="card__title">Generador de Propuestas</h4>
+                <p class="card__text">Para su esposa en Cinepolis. Le dio propuestas como ejemplo, Claude genero codigo Python para crear propuestas automaticamente. Sin necesidad de RAG manual.</p>
+              </div>
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="video"></i></div>
+                <h4 class="card__title">Gemini Video Analysis</h4>
+                <p class="card__text">Analiza videos cuadro por cuadro. Puede convertir un tutorial de YouTube en plan de accion. Acceso backend a videos de YouTube.</p>
+              </div>
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="layers"></i></div>
+                <h4 class="card__title">Skills + MCPs</h4>
+                <p class="card__text">Skills para presentaciones, scraping de LinkedIn, descarga de cursos. Browsing integrado. "Donde usted tenga acceso, ya no tiene que buscar como hacerlo, sino pedirlo."</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 7: Luis's Approach -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="brain"></i>
+              Meeting Recap
+            </div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">06 // El Enfoque de Luis</p>
+              <h2>Entender los<br>Fundamentos</h2>
+              <p class="lead">Luis se enfoca en por que funcionan los LLMs, no en como usarlos. Curiosidad por las bases matematicas y la siguiente frontera.</p>
+            </div>
+            <div>
+              <ul class="list">
+                <li class="fragment">
+                  <strong>Prediccion palabra por palabra</strong><br>
+                  <span class="muted">Ve una debilidad fundamental: los LLMs solo generan una palabra a la vez (hacia adelante). Las imagenes no se generan pixel por pixel, sino de ruido a claridad.</span>
+                </li>
+                <li class="fragment">
+                  <strong>Idea-primero vs. Token-primero</strong><br>
+                  <span class="muted">Plantea que quizas el texto deberia formarse como una idea general que se refina, no secuencialmente. Similar a diffusion models.</span>
+                </li>
+                <li class="fragment">
+                  <strong>Educador de corazon</strong><br>
+                  <span class="muted">Crea material cuando ve gente interesada. No es tecnico en implementacion. Prefiere asociarse con alguien tecnico para proyectos.</span>
+                </li>
+                <li class="fragment">
+                  <strong>GPU vs LPU (Groq)</strong><br>
+                  <span class="muted">Carlos menciono GPUs para entrenar, LPUs (Language Processing Units) de Groq para inferencia. Mas eficientes para uso, no entrenamiento.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 8: The Before/After -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="arrow-right"></i>
+              Meeting Recap
+            </div>
+          </div>
+          <div class="content">
+            <p class="kicker">07 // El Cambio de Paradigma</p>
+            <h2>Antes vs. Ahora</h2>
+            <div class="grid-2" style="margin-top: 32px;">
+              <div class="card" style="border-color: var(--error);">
+                <h4 class="card__title" style="color: var(--error);">Antes</h4>
+                <ul class="list" style="margin-top: 16px;">
+                  <li>Aprender embeddings y crear un RAG</li>
+                  <li>Conectar APIs manualmente</li>
+                  <li>Semanas de desarrollo para un prototipo</li>
+                  <li>Necesitar equipo tecnico completo</li>
+                </ul>
+              </div>
+              <div class="card" style="border-color: var(--success);">
+                <h4 class="card__title" style="color: var(--success);">Ahora con Claude Code</h4>
+                <ul class="list list--check" style="margin-top: 16px;">
+                  <li>Darle una carpeta con ejemplos y que entienda</li>
+                  <li>"Lea esta API y haga la conexion"</li>
+                  <li>Prototipo funcional en una sesion</li>
+                  <li>Un solopreneur puede hacer lo de un equipo</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 9: Potential Collaboration -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="handshake"></i>
+              Meeting Recap
+            </div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">08 // Oportunidades</p>
+              <h2>Colaboracion<br><span class="accent-text">Potencial</span></h2>
+              <p class="lead">Perfiles complementarios en el grupo: implementacion tecnica (Carlos), fundamentos/ensenanza (Luis), data science (Andres), y mas.</p>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+              <div class="person-card fragment fade-up">
+                <div class="person-card__initials">AC</div>
+                <div class="person-card__info">
+                  <div class="person-card__name">Ale Consortizado</div>
+                  <div class="person-card__detail">Tambien haciendo cosas de AI. Carlos esta hablando con el para posible colaboracion.</div>
+                </div>
+              </div>
+              <div class="person-card fragment fade-up">
+                <div class="person-card__initials">AM</div>
+                <div class="person-card__info">
+                  <div class="person-card__name">Andres Martinez</div>
+                  <div class="person-card__detail">Estadistico, data scientist. Luis hablo con el hace 2 dias. Propuesta: reunirse todos para explorar sinergias.</div>
+                </div>
+              </div>
+              <div class="card fragment fade-up" style="border-color: var(--warning); margin-top: 8px;">
+                <h4 class="card__title" style="color: var(--warning);">Complementariedad</h4>
+                <p class="card__text">Carlos: implementacion y producto. Luis: fundamentos y educacion. Andres: data science y estadistica. Ale: por definir. "Hay unas parecidas, estamos viendo cosas similares."</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 10: Next Steps -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <div class="content flex-center" style="flex-direction: column;">
+            <p class="kicker" style="justify-content: center;">09 // Proximos Pasos</p>
+            <h1>Mantener la<br><span class="accent-text">Conversacion</span></h1>
+            <p class="lead" style="margin-bottom: 40px;">Acordamos seguir hablando y explorar oportunidades juntos.</p>
+            <div class="grid-3" style="width: 100%; max-width: 700px; margin-top: 16px;">
+              <div class="card" style="text-align: center;">
+                <div class="card__icon" style="margin: 0 auto 12px;"><i data-lucide="users"></i></div>
+                <h4 class="card__title">Reunion Grupal</h4>
+                <p class="card__text">Juntar a Carlos, Luis, Ale y Andres para explorar sinergias</p>
+              </div>
+              <div class="card" style="text-align: center;">
+                <div class="card__icon" style="margin: 0 auto 12px;"><i data-lucide="message-circle"></i></div>
+                <h4 class="card__title">Mantener Contacto</h4>
+                <p class="card__text">No dejar pasar anos entre conversaciones. Temas en comun claros.</p>
+              </div>
+              <div class="card" style="text-align: center;">
+                <div class="card__icon" style="margin: 0 auto 12px;"><i data-lucide="zap"></i></div>
+                <h4 class="card__title">Ale a Bordo</h4>
+                <p class="card__text">Carlos sigue en conversaciones con Ale para sumarlo al grupo.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Reveal.js Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.js"></script>
+
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: true,
+      controls: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      center: false,
+      transition: 'slide',
+      backgroundTransition: 'fade',
+      width: 1280,
+      height: 720,
+      margin: 0,
+      minScale: 0.2,
+      maxScale: 2,
+      autoAnimate: true,
+      autoAnimateDuration: 0.7,
+      plugins: [RevealHighlight]
+    });
+
+    // Initialize Lucide icons
+    lucide.createIcons();
+  </script>
+
+</body>
+</html>
