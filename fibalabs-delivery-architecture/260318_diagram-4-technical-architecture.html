@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Technical Architecture — How It Actually Works</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0d1117;
+    color: #c9d1d9;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    padding: 32px;
+    min-height: 100vh;
+  }
+  h1 {
+    text-align: center;
+    font-size: 24px;
+    color: #f0f6fc;
+    margin-bottom: 8px;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 14px;
+    color: #8b949e;
+    margin-bottom: 32px;
+  }
+  .key-labels {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+  .key-label {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 13px;
+    color: #8b949e;
+    max-width: 380px;
+    text-align: center;
+  }
+  .key-label strong { color: #58a6ff; }
+
+  .zones {
+    display: grid;
+    grid-template-columns: 280px 1fr 280px;
+    gap: 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .zone {
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+  }
+  .zone-title {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid;
+  }
+
+  /* Customer zone */
+  .zone-customer {
+    background: #0d1f2d;
+    border: 1px solid #1a4060;
+  }
+  .zone-customer .zone-title {
+    color: #79c0ff;
+    border-color: #1a4060;
+  }
+
+  /* VPS zone */
+  .zone-vps {
+    background: #151b23;
+    border: 1px solid #2d333b;
+  }
+  .zone-vps .zone-title {
+    color: #f0883e;
+    border-color: #4a3520;
+  }
+
+  /* Carlos zone */
+  .zone-carlos {
+    background: #1a1524;
+    border: 1px solid #3d2a5c;
+  }
+  .zone-carlos .zone-title {
+    color: #d2a8ff;
+    border-color: #3d2a5c;
+  }
+
+  .component {
+    background: #21262d;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+  .component-name {
+    font-weight: 600;
+    font-size: 14px;
+    color: #f0f6fc;
+    margin-bottom: 4px;
+  }
+  .component-desc {
+    font-size: 12px;
+    color: #8b949e;
+    line-height: 1.5;
+  }
+  .component-icon {
+    display: inline-block;
+    width: 20px;
+    text-align: center;
+    margin-right: 4px;
+  }
+
+  .router-box {
+    background: #1c2128;
+    border: 2px solid #f0883e;
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .router-title {
+    font-weight: 700;
+    font-size: 15px;
+    color: #f0883e;
+    margin-bottom: 12px;
+  }
+  .router-flow {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+    font-size: 11px;
+    color: #8b949e;
+    line-height: 1.7;
+    white-space: pre;
+    overflow-x: auto;
+  }
+  .router-flow .highlight { color: #7ee787; }
+  .router-flow .warn { color: #f0883e; }
+  .router-flow .dim { color: #484f58; }
+
+  .supabase-box {
+    background: #1c2128;
+    border: 1px solid #3fb950;
+    border-radius: 8px;
+    padding: 14px;
+    margin-bottom: 12px;
+  }
+  .supabase-title {
+    font-weight: 700;
+    color: #3fb950;
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  .supabase-tables {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .table-tag {
+    background: #0d1f0d;
+    border: 1px solid #238636;
+    border-radius: 4px;
+    padding: 3px 8px;
+    font-size: 11px;
+    font-family: monospace;
+    color: #7ee787;
+  }
+
+  /* Data flows section */
+  .flows {
+    max-width: 1400px;
+    margin: 40px auto 0;
+  }
+  .flows-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #f0f6fc;
+    margin-bottom: 16px;
+  }
+  .flow-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .flow-item {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 14px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .flow-num {
+    background: #21262d;
+    border: 1px solid #30363d;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: #58a6ff;
+    flex-shrink: 0;
+  }
+  .flow-text {
+    font-size: 13px;
+    color: #c9d1d9;
+    line-height: 1.5;
+  }
+  .flow-arrow { color: #484f58; }
+  .flow-highlight { color: #58a6ff; font-weight: 600; }
+
+  /* Arrows between zones */
+  .arrow-overlay {
+    position: absolute;
+    pointer-events: none;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .badge-free { background: #0d2818; color: #3fb950; border: 1px solid #238636; }
+  .badge-cheap { background: #2a1f0a; color: #f0883e; border: 1px solid #9e6a03; }
+  .badge-queue { background: #1c1224; color: #d2a8ff; border: 1px solid #6e40c9; }
+  .badge-daemon { background: #0d1f2d; color: #79c0ff; border: 1px solid #1a4060; }
+
+  .divider {
+    border: none;
+    border-top: 1px solid #21262d;
+    margin: 10px 0;
+  }
+
+  .note {
+    font-size: 11px;
+    color: #484f58;
+    font-style: italic;
+    margin-top: 4px;
+  }
+
+  @media (max-width: 1100px) {
+    .zones { grid-template-columns: 1fr; }
+    .flow-list { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Technical Architecture — How It Actually Works</h1>
+<p class="subtitle">FibaLabs Managed AI OS &middot; Message Flow & System Architecture</p>
+
+<div class="key-labels">
+  <div class="key-label"><strong>Subscription-first:</strong> CLI online = free. CLI offline = Haiku (cheap) or queue.</div>
+  <div class="key-label"><strong>Customer installs 2 things:</strong> Discord + Claude Code CLI. That's it.</div>
+  <div class="key-label"><strong>VPS is the 24/7 backbone.</strong> It never sleeps.</div>
+</div>
+
+<div class="zones">
+  <!-- CUSTOMER ZONE -->
+  <div class="zone zone-customer">
+    <div class="zone-title">Customer Zone</div>
+
+    <div class="component">
+      <div class="component-name"><span class="component-icon">💬</span> Discord App</div>
+      <div class="component-desc">Phone + Laptop. Customer's only interface. Sends messages, receives responses, gets daily briefs.</div>
+    </div>
+
+    <div class="component">
+      <div class="component-name"><span class="component-icon">⚡</span> Claude Code CLI <span class="badge badge-daemon">daemon</span></div>
+      <div class="component-desc">
+        Runs in background on customer's laptop. Invisible after onboarding.
+      </div>
+      <hr class="divider">
+      <div class="component-desc">
+        <strong>Auto-starts</strong> on login (LaunchAgent / systemd)<br>
+        <strong>Heartbeat</strong> to VPS every ~30s<br>
+        <strong>Full local access</strong> to files, repos, tools<br>
+        <strong>Handles ALL tasks</strong> when online — simple or complex
+      </div>
+      <hr class="divider">
+      <div class="component-desc">
+        <span class="badge badge-free">$0 API cost</span> Uses Claude subscription
+      </div>
+    </div>
+
+    <div class="note">Customer never interacts with CLI directly. Discord is the only surface.</div>
+  </div>
+
+  <!-- VPS ZONE -->
+  <div class="zone zone-vps">
+    <div class="zone-title">VPS Zone — 24/7 Backbone</div>
+
+    <div class="component">
+      <div class="component-name"><span class="component-icon">🤖</span> GoBot — Discord Gateway</div>
+      <div class="component-desc">Captures all Discord messages. Webhook processor. Multi-customer adapter.</div>
+    </div>
+
+    <div class="router-box">
+      <div class="router-title">Message Router — Subscription-First Logic</div>
+      <div class="router-flow"><span class="dim">Message arrives at VPS</span>
+    <span class="dim">│</span>
+    <span class="dim">├──</span> CLI online? <span class="dim">(fresh heartbeat)</span>
+    <span class="dim">│   └──</span> <span class="highlight">YES → Route to CLI</span>
+    <span class="dim">│       </span> <span class="badge badge-free">$0</span> Subscription, zero API cost
+    <span class="dim">│       </span> CLI has full local file access
+    <span class="dim">│       </span> Handles ALL tasks: simple or complex
+    <span class="dim">│</span>
+    <span class="dim">└──</span> CLI offline? <span class="dim">(stale heartbeat)</span>
+        <span class="dim">├──</span> Simple enough for Haiku?
+        <span class="dim">│   └──</span> <span class="warn">YES → Process with Haiku API</span>
+        <span class="dim">│       </span> <span class="badge badge-cheap">~$0.001</span> Cheap, immediate
+        <span class="dim">│</span>
+        <span class="dim">└──</span> Complex task?
+            <span class="dim">└──</span> <span style="color:#d2a8ff">Queue in Supabase</span>
+                <span class="badge badge-queue">queued</span> Until CLI comes back</div>
+    </div>
+
+    <div class="supabase-box">
+      <div class="supabase-title">Supabase — Per-Customer Data (RLS Isolation)</div>
+      <div class="supabase-tables">
+        <span class="table-tag">messages</span>
+        <span class="table-tag">memory</span>
+        <span class="table-tag">async_tasks</span>
+        <span class="table-tag">node_heartbeat</span>
+        <span class="table-tag">call_transcripts</span>
+        <span class="table-tag">metrics</span>
+        <span class="table-tag">assets (Storage)</span>
+      </div>
+    </div>
+
+    <div class="component">
+      <div class="component-name"><span class="component-icon">⏰</span> Scheduled Jobs (PM2)</div>
+      <div class="component-desc">
+        Daily brief generation<br>
+        Data collection pipelines<br>
+        Health monitoring & heartbeat checks<br>
+        Upstream GoBot update check
+      </div>
+    </div>
+
+    <div class="component">
+      <div class="component-name"><span class="component-icon">🔒</span> Cloudflare Tunnels</div>
+      <div class="component-desc">Secure access without exposed ports. bot.fibalabs.com, gobot.fibalabs.com</div>
+    </div>
+  </div>
+
+  <!-- CARLOS ZONE -->
+  <div class="zone zone-carlos">
+    <div class="zone-title">Carlos Zone</div>
+
+    <div class="component">
+      <div class="component-name"><span class="component-icon">🛠</span> Claude Code IDE</div>
+      <div class="component-desc">Antigravity. Primary development environment. Builds skills, services, MCP endpoints.</div>
+    </div>
+
+    <div class="component">
+      <div class="component-name"><span class="component-icon">🚀</span> Deploy Pipeline</div>
+      <div class="component-desc">
+        <code>git push</code> &rarr; webhook &rarr; VPS auto-deploys<br>
+        Customer gets update instantly. Zero downtime.
+      </div>
+    </div>
+
+    <div class="component">
+      <div class="component-name"><span class="component-icon">📊</span> Monitoring Dashboard</div>
+      <div class="component-desc">
+        Heartbeat status per customer<br>
+        Task queue depth<br>
+        Error rates & alerts<br>
+        API cost tracking
+      </div>
+    </div>
+
+    <hr class="divider">
+    <div class="note">Never touches customer's machine after onboarding. All updates flow through VPS.</div>
+  </div>
+</div>
+
+<!-- DATA FLOWS -->
+<div class="flows">
+  <div class="flows-title">Key Data Flows</div>
+  <div class="flow-list">
+    <div class="flow-item">
+      <div class="flow-num">1</div>
+      <div class="flow-text">
+        <span class="flow-highlight">Customer message</span>
+        <span class="flow-arrow">&rarr;</span> Discord
+        <span class="flow-arrow">&rarr;</span> VPS (GoBot captures)
+        <span class="flow-arrow">&rarr;</span> Router decides: CLI, Haiku, or queue
+      </div>
+    </div>
+    <div class="flow-item">
+      <div class="flow-num">2</div>
+      <div class="flow-text">
+        <span class="flow-highlight">CLI processes task</span>
+        <span class="flow-arrow">&rarr;</span> Result sent back to VPS
+        <span class="flow-arrow">&rarr;</span> GoBot posts response in Discord
+      </div>
+    </div>
+    <div class="flow-item">
+      <div class="flow-num">3</div>
+      <div class="flow-text">
+        <span class="flow-highlight">Scheduled jobs</span> run on VPS
+        <span class="flow-arrow">&rarr;</span> Results stored in Supabase
+        <span class="flow-arrow">&rarr;</span> GoBot pushes daily brief to Discord
+      </div>
+    </div>
+    <div class="flow-item">
+      <div class="flow-num">4</div>
+      <div class="flow-text">
+        <span class="flow-highlight">Carlos pushes code</span>
+        <span class="flow-arrow">&rarr;</span> VPS auto-deploys via webhook
+        <span class="flow-arrow">&rarr;</span> Customer gets update instantly
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FibaLabs — Delivery Architecture</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/monokai.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+/*
+ * FibaLabs Presentation Theme
+ * HUD-style, geometric, Electric Violet accent
+ * For use with Reveal.js 4.5+
+ */
+
+/* ===== CSS VARIABLES - FIBALABS PALETTE ===== */
+:root {
+  /* Backgrounds - "Void + Electric Violet" */
+  --bg-dark: #0A0A14;
+  --bg-card: #12121E;
+  --bg-card-hover: #1A1A2A;
+
+  /* Accent - Electric Violet */
+  --accent: #8B5CF6;
+  --accent-light: #A78BFA;
+  --accent-glow: rgba(139, 92, 246, 0.15);
+
+  /* Secondary - Deep Indigo */
+  --secondary: #4C2D91;
+  --secondary-light: #6D4DB8;
+
+  /* Semantic Colors */
+  --success: #34D399;
+  --warning: #FBBF24;
+  --error: #F87171;
+
+  /* Text Colors - Lavender White system */
+  --text-primary: #E8E4F0;
+  --text-secondary: #9B95A8;
+  --text-muted: #5C5670;
+
+  /* Borders */
+  --border: #2A2A3A;
+
+  /* Typography */
+  --font-serif: 'Instrument Serif', Georgia, serif;
+  --font-sans: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Fira Code', monospace;
+
+  /* Spacing */
+  --spacing-xs: 8px;
+  --spacing-sm: 16px;
+  --spacing-md: 24px;
+  --spacing-lg: 40px;
+  --spacing-xl: 60px;
+}
+
+/* ===== BASE STYLES ===== */
+html, body {
+  background: var(--bg-dark) !important;
+  color: var(--text-primary);
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.reveal-viewport {
+  background: var(--bg-dark) !important;
+  background-image:
+    linear-gradient(rgba(139, 92, 246, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139, 92, 246, 0.03) 1px, transparent 1px) !important;
+  background-size: 60px 60px !important;
+}
+
+.reveal {
+  background: var(--bg-dark);
+  font-family: var(--font-sans);
+  font-size: 22px;
+  color: var(--text-primary);
+}
+
+.reveal .slides { text-align: left; }
+.reveal .slides section { padding: 0; background: var(--bg-dark); }
+
+/* ===== SLIDE BASE ===== */
+.slide {
+  height: 100%;
+  width: 100%;
+  padding: var(--spacing-xl);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  position: relative;
+}
+
+.slide > * { position: relative; z-index: 1; }
+
+/* ===== SLIDE VARIANTS ===== */
+.slide--center { align-items: center; justify-content: center; text-align: center; }
+.slide--section { background: transparent; }
+
+.slide--section::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ===== HEADER BAR ===== */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.header__logo {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: 0.1em;
+  text-transform: lowercase;
+}
+
+.header__logo svg { width: 18px; height: 18px; color: var(--accent); }
+
+/* ===== TYPOGRAPHY - HUD / COMMAND CENTER STYLE ===== */
+.kicker {
+  font-size: 0.7rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  margin-bottom: var(--spacing-sm);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.kicker::after {
+  content: '';
+  width: 40px;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.5;
+}
+
+h1, .h1 {
+  font-family: var(--font-serif);
+  font-size: 4rem;
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.1;
+  margin: 0 0 var(--spacing-md) 0;
+  color: var(--text-primary);
+}
+
+h2, .h2 {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  font-weight: 400;
+  line-height: 1.15;
+  margin: 0 0 var(--spacing-md) 0;
+}
+
+h3, .h3 {
+  font-family: var(--font-sans);
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1.3;
+  margin: 0 0 var(--spacing-sm) 0;
+  letter-spacing: 0.05em;
+}
+
+h4, .h4 {
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0 0 var(--spacing-xs) 0;
+  letter-spacing: 0.05em;
+}
+
+.lead {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 600px;
+  letter-spacing: 0.02em;
+}
+
+.muted { color: var(--text-muted); }
+.highlight, .accent-text { color: var(--accent); }
+.secondary-text { color: var(--secondary-light); }
+
+/* ===== CODE STYLING ===== */
+code, .code {
+  font-family: var(--font-mono);
+  background: rgba(139, 92, 246, 0.1);
+  padding: 2px 8px;
+  font-size: 0.85em;
+  color: var(--accent-light);
+  border: 1px solid var(--border);
+}
+
+pre {
+  background: #08080F;
+  border: 1px solid var(--border);
+  padding: var(--spacing-md);
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  line-height: 1.6;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  border: none;
+  color: var(--text-secondary);
+}
+
+/* ===== LAYOUT UTILITIES ===== */
+.content { flex: 1; display: flex; flex-direction: column; }
+
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-xl);
+  align-items: center;
+  flex: 1;
+}
+
+.split--60-40 { grid-template-columns: 1.5fr 1fr; }
+.split--40-60 { grid-template-columns: 1fr 1.5fr; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-md); }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-md); }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--spacing-md); }
+.flex-center { display: flex; align-items: center; justify-content: center; }
+
+/* ===== CARDS - TRANSPARENT, GEOMETRIC ===== */
+.card {
+  background: transparent;
+  border: 1px solid var(--border);
+  padding: var(--spacing-md);
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+.card:hover { background: var(--bg-card); border-color: var(--accent); }
+.card--featured { border-color: var(--accent); }
+
+.card__icon {
+  width: 40px;
+  height: 40px;
+  margin-bottom: var(--spacing-sm);
+  color: var(--accent);
+}
+
+.card__icon svg { width: 100%; height: 100%; stroke-width: 1.5; }
+
+.card__title {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: var(--spacing-xs);
+  letter-spacing: 0.03em;
+}
+
+.card__text {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ===== METRICS - HUD STYLE ===== */
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.metric {
+  text-align: center;
+  padding: var(--spacing-md);
+  border: 1px solid var(--border);
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+.metric:hover { border-color: var(--accent); }
+
+.metric__value {
+  font-family: var(--font-sans);
+  font-size: 2.5rem;
+  font-weight: 500;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: var(--spacing-xs);
+  letter-spacing: -0.02em;
+}
+
+.metric__label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+/* ===== LISTS - DASH STYLE ===== */
+.list { list-style: none; padding: 0; margin: 0; }
+
+.list li {
+  padding: var(--spacing-sm) 0;
+  padding-left: var(--spacing-lg);
+  position: relative;
+  border-bottom: 1px solid var(--border);
+}
+
+.list li:last-child { border-bottom: none; }
+
+.list li::before {
+  content: '\2014';
+  position: absolute;
+  left: 0;
+  top: var(--spacing-sm);
+  color: var(--accent);
+  font-weight: 400;
+}
+
+.list--check li::before { content: '\2713'; color: var(--success); }
+.list--numbered { counter-reset: list-counter; }
+.list--numbered li { counter-increment: list-counter; }
+
+.list--numbered li::before {
+  content: counter(list-counter, decimal-leading-zero);
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+/* ===== BADGES - OUTLINED ===== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+}
+
+.badge--success { color: var(--success); border-color: var(--success); }
+.badge--warning { color: var(--warning); border-color: var(--warning); }
+.badge--danger { color: var(--error); border-color: var(--error); }
+
+/* ===== TIMELINE - GEOMETRIC ===== */
+.timeline {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: var(--spacing-lg) 0;
+  position: relative;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  bottom: 60px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--border);
+}
+
+.timeline__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  flex: 1;
+}
+
+.timeline__year {
+  font-family: var(--font-sans);
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--accent);
+  margin-bottom: var(--spacing-sm);
+  letter-spacing: 0.05em;
+}
+
+.timeline__dot {
+  width: 10px;
+  height: 10px;
+  background: var(--accent);
+  margin-bottom: var(--spacing-sm);
+  position: relative;
+  z-index: 1;
+  /* Geometric: square dot, not round */
+  border-radius: 0;
+}
+
+.timeline__content {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  max-width: 150px;
+}
+
+/* ===== BUTTONS - OUTLINED, GEOMETRIC ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 28px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid var(--text-primary);
+  background: transparent;
+  color: var(--text-primary);
+  border-radius: 2px;
+}
+
+.btn:hover { background: var(--text-primary); color: var(--bg-dark); }
+.btn--accent { border-color: var(--accent); color: var(--accent); }
+.btn--accent:hover { background: var(--accent); color: var(--bg-dark); }
+
+/* ===== REVEAL.JS OVERRIDES ===== */
+.reveal .controls { color: var(--accent); }
+.reveal .progress { background: var(--border); height: 2px; }
+.reveal .progress span { background: var(--accent); }
+
+.reveal .slide-number {
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 16px;
+  font-family: var(--font-mono);
+  left: 20px;
+  right: auto;
+  bottom: 20px;
+}
+
+/* ===== FRAGMENT ANIMATIONS ===== */
+.reveal .slides section .fragment { opacity: 0; transition: all 0.4s ease; }
+.reveal .slides section .fragment.visible { opacity: 1; }
+.reveal .slides section .fragment.fade-up { transform: translateY(20px); }
+.reveal .slides section .fragment.fade-up.visible { transform: translateY(0); }
+
+/* ===== DIAGRAM LINK BUTTON ===== */
+.diagram-link-btn {
+  display: inline-block !important;
+  margin-top: 12px !important;
+  padding: 8px 20px !important;
+  font-size: 0.75rem !important;
+  color: #fff !important;
+  background: #6C3FC5 !important;
+  border-radius: 6px !important;
+  text-decoration: none !important;
+  font-family: 'Inter', sans-serif !important;
+  letter-spacing: 0.05em !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+}
+.diagram-link-btn:hover {
+  background: #7E52D6 !important;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-dark); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+::selection { background: var(--accent); color: var(--bg-dark); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  h1 { font-size: 2.5rem; }
+  h2 { font-size: 2rem; }
+  .split { grid-template-columns: 1fr; gap: var(--spacing-lg); }
+  .grid-4, .grid-3 { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ===== CUSTOM ADDITIONS FOR THIS PRESENTATION ===== */
+.arch-zone {
+  border: 1px solid var(--border);
+  padding: var(--spacing-md);
+  position: relative;
+  border-radius: 2px;
+}
+
+.arch-zone__label {
+  position: absolute;
+  top: -10px;
+  left: 16px;
+  background: var(--bg-dark);
+  padding: 0 8px;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+.journey-track {
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+  overflow-x: auto;
+  padding: var(--spacing-sm) 0;
+}
+
+.journey-stage {
+  min-width: 120px;
+  flex: 1;
+  padding: 12px;
+  border-top: 3px solid var(--accent);
+  background: var(--bg-card);
+  border-radius: 2px;
+}
+
+.journey-stage__num {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+.journey-stage__title { font-size: 0.75rem; font-weight: 600; margin-bottom: 4px; }
+.journey-stage__desc { font-size: 0.65rem; color: var(--text-muted); line-height: 1.3; }
+
+.flow-row { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+
+.flow-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 10px 14px;
+  font-size: 0.8rem;
+  flex: 1;
+  border-radius: 2px;
+}
+
+.flow-arrow { color: var(--accent); font-size: 1.2rem; flex-shrink: 0; }
+
+.comparison-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+.comparison-label { width: 100px; font-weight: 600; flex-shrink: 0; }
+.comparison-segment { padding: 8px 12px; text-align: center; font-size: 0.7rem; border-radius: 2px; }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- Slide 1: Title -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <div class="content flex-center" style="flex-direction: column; text-align: center;">
+            <p class="kicker" style="justify-content: center;">Delivery Architecture</p>
+            <h1>FibaLabs<br><span class="accent-text">Managed AI OS</span></h1>
+            <p class="lead" style="max-width: 650px; margin: 0 auto;">
+              Managed AI Operating System for SMB CEOs — the product, the architecture, the delivery.
+            </p>
+            <p class="muted" style="margin-top: 32px; font-size: 0.8rem;">Meeting with Goda & Sjoerd — March 19, 2026</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 2: What We're Solving -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><i data-lucide="hexagon"></i> fiba labs</div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">01 // The Problem</p>
+              <h2>What We're<br>Solving</h2>
+              <p class="lead">SMB CEOs need AI superpowers but can't build or maintain the systems themselves.</p>
+            </div>
+            <div>
+              <ul class="list list--numbered">
+                <li class="fragment">
+                  <strong>SMBs under $10M, 5-10 employees</strong><br>
+                  <span class="muted">Need AI but can't hire for it or build it themselves</span>
+                </li>
+                <li class="fragment">
+                  <strong>They need an advisor, not a chatbot vendor</strong><br>
+                  <span class="muted">Deep business knowledge, not a transactional tool</span>
+                </li>
+                <li class="fragment">
+                  <strong>Fractional Chief AI Officer (CAIO)</strong><br>
+                  <span class="muted">I build, monitor, and improve — they use and grow</span>
+                </li>
+                <li class="fragment">
+                  <strong>The OS is the product. The bot is the window.</strong><br>
+                  <span class="muted">Skills, pipelines, integrations, expert knowledge — delivered through chat</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 3: The Product (Excalidraw-style screenshot + link to full wireframe) -->
+      <section data-link="260318_diagram-1-bot-capabilities.html">
+        <div class="slide" style="padding: 0;">
+          <img src="260318_diagram-1-bot-capabilities-excalidraw.png" alt="Bot Capabilities" style="width: 100%; height: 100%; object-fit: contain;">
+        </div>
+      </section>
+
+      <!-- Slide 4: Customer Journey (Excalidraw-style screenshot + link to full HTML) -->
+      <section>
+        <div class="slide" style="padding: 0;">
+          <img src="excalidraw-slide4-customer-journey.png" alt="Customer Journey" style="width: 100%; height: 100%; object-fit: contain;">
+        </div>
+      </section>
+
+      <!-- Slide 5: Discovery & Sales Flow (Excalidraw PNG) -->
+      <section>
+        <div class="slide" style="padding: 0;">
+          <img src="260318_diagram-3-discovery-flow-excalidraw.png" alt="Discovery & Sales Flow" style="width: 100%; height: 100%; object-fit: contain;">
+        </div>
+      </section>
+
+      <!-- Slide 6: Lead Generation -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><i data-lucide="hexagon"></i> fiba labs</div>
+          </div>
+          <div class="content">
+            <p class="kicker">05 // Growth</p>
+            <h2>Lead Generation</h2>
+            <div class="grid-2" style="margin-top: 24px;">
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="pen-tool"></i></div>
+                <h4 class="card__title">Content Marketing</h4>
+                <p class="card__text">LinkedIn posts, YouTube demos, "look what the OS can do" — show capabilities, not theory.</p>
+              </div>
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="users"></i></div>
+                <h4 class="card__title">Community Reputation</h4>
+                <p class="card__text">Autonomee power user, workshops, case studies shared in communities. Trust through contribution.</p>
+              </div>
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="repeat"></i></div>
+                <h4 class="card__title">Referrals</h4>
+                <p class="card__text">Satisfied customers refer peers. Deep business knowledge creates strong word-of-mouth.</p>
+              </div>
+              <div class="card fragment fade-up">
+                <div class="card__icon"><i data-lucide="file-text"></i></div>
+                <h4 class="card__title">Case Studies</h4>
+                <p class="card__text">Early customers &#8594; documented results &#8594; proof for the next conversation. Start at $1-1.5K to build portfolio.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 7: Technical Architecture -->
+      <section data-link="260318_diagram-4-technical-architecture.html">
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><i data-lucide="hexagon"></i> fiba labs</div>
+          </div>
+          <div class="content">
+            <p class="kicker">06 // Architecture</p>
+            <h2>Technical Architecture</h2>
+            <div class="grid-3" style="margin-top: 20px;">
+              <div class="arch-zone fragment fade-up">
+                <div class="arch-zone__label">Customer</div>
+                <h4 style="margin-top: 8px;">Discord</h4>
+                <p class="card__text">Phone + laptop — only app they touch</p>
+                <h4 style="margin-top: 12px;">Claude Code CLI</h4>
+                <p class="card__text">Background daemon, auto-starts on login, heartbeat every 30s</p>
+              </div>
+              <div class="arch-zone fragment fade-up" style="border-color: var(--accent);">
+                <div class="arch-zone__label" style="color: var(--accent-light);">VPS — 24/7</div>
+                <h4 style="margin-top: 8px;">GoBot + Router</h4>
+                <p class="card__text">Captures messages, routes based on CLI status</p>
+                <h4 style="margin-top: 12px;">Supabase</h4>
+                <p class="card__text">Per-customer data, RLS isolation</p>
+                <h4 style="margin-top: 12px;">Scheduled Jobs</h4>
+                <p class="card__text">Daily brief, metrics, monitoring</p>
+              </div>
+              <div class="arch-zone fragment fade-up">
+                <div class="arch-zone__label">Carlos (IDE)</div>
+                <h4 style="margin-top: 8px;">Build & Deploy</h4>
+                <p class="card__text">Skills, services, MCP endpoints &#8594; push to VPS</p>
+                <h4 style="margin-top: 12px;">Monitor</h4>
+                <p class="card__text">Heartbeats, task queues, errors across all customers</p>
+              </div>
+            </div>
+            <div style="margin-top: 16px; padding: 12px; border: 1px solid var(--border); border-left: 3px solid var(--accent);">
+              <p style="font-size: 0.8rem; margin: 0;"><strong style="color: var(--accent);">Subscription-first routing:</strong> <span class="muted">CLI online = subscription (free) · CLI offline = Haiku API (cheap) or queue · Customer installs 2 things: Discord + CLI</span></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 8: Service Catalog -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><i data-lucide="hexagon"></i> fiba labs</div>
+          </div>
+          <div class="content">
+            <p class="kicker">07 // Catalog</p>
+            <h2>Service Catalog</h2>
+            <div class="grid-2" style="margin-top: 16px;">
+              <div>
+                <span class="badge badge--success" style="margin-bottom: 8px;">Base — Included</span>
+                <ul class="list list--check" style="font-size: 0.85rem;">
+                  <li style="padding: 6px 0 6px var(--spacing-lg);">GoBot second brain (8 specialists)</li>
+                  <li style="padding: 6px 0 6px var(--spacing-lg);">Daily morning brief</li>
+                  <li style="padding: 6px 0 6px var(--spacing-lg);">Business context engine + session memory</li>
+                  <li style="padding: 6px 0 6px var(--spacing-lg);">Connected workspace (Gmail, Calendar, Drive)</li>
+                  <li style="padding: 6px 0 6px var(--spacing-lg);">/brainstorm &#8594; /explore flow</li>
+                  <li style="padding: 6px 0 6px var(--spacing-lg);">Hook guardrails + 2-3 quick wins</li>
+                </ul>
+              </div>
+              <div>
+                <span class="badge" style="margin-bottom: 8px;">Add-Ons — Per Need</span>
+                <ul class="list" style="font-size: 0.85rem;">
+                  <li style="padding: 6px 0 6px var(--spacing-lg);">Business metrics dashboard</li>
+                  <li style="padding: 6px 0 6px var(--spacing-lg);">Meeting intelligence</li>
+                  <li style="padding: 6px 0 6px var(--spacing-lg);">Competitor monitoring</li>
+                  <li style="padding: 6px 0 6px var(--spacing-lg);">Content creation pipeline</li>
+                  <li style="padding: 6px 0 6px var(--spacing-lg);">LinkedIn monitoring & scraping</li>
+                  <li style="padding: 6px 0 6px var(--spacing-lg);">Expert knowledge base</li>
+                  <li style="padding: 6px 0 6px var(--spacing-lg);">Networking intelligence</li>
+                  <li style="padding: 6px 0 6px var(--spacing-lg);">Custom integrations</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 9: Infrastructure (link to full HTML diagram) -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <div class="content flex-center" style="flex-direction: column;">
+            <p class="kicker" style="justify-content: center;">08 // Infrastructure</p>
+            <h2>Infrastructure<br>Diagram</h2>
+            <p class="lead" style="text-align: center; margin: 0 auto;">Hetzner VPS, Supabase, customer laptop, monitoring, network topology — full technical reference.</p>
+            <a href="260318_diagram-7-infrastructure.html" target="_blank" class="diagram-link-btn" style="margin-top: 24px; writing-mode: horizontal-tb;">Full diagram →</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 10: Pricing -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><i data-lucide="hexagon"></i> fiba labs</div>
+          </div>
+          <div class="content">
+            <p class="kicker">08 // Pricing</p>
+            <h2>Economics</h2>
+            <div class="metrics" style="margin-top: 24px;">
+              <div class="metric fragment">
+                <div class="metric__value">$1-5K</div>
+                <div class="metric__label">Setup Fee</div>
+              </div>
+              <div class="metric fragment">
+                <div class="metric__value">~$2K</div>
+                <div class="metric__label">Monthly Retainer</div>
+              </div>
+              <div class="metric fragment">
+                <div class="metric__value">$26-40</div>
+                <div class="metric__label">Customer Infra/mo</div>
+              </div>
+              <div class="metric fragment">
+                <div class="metric__value">5-10</div>
+                <div class="metric__label">Target Customers</div>
+              </div>
+            </div>
+            <div class="grid-2" style="margin-top: 24px;">
+              <div class="card fragment">
+                <h4 class="card__title">Customer Pays</h4>
+                <p class="card__text">Setup: $1-1.5K (case study) &#8594; $5K (proven)<br>Retainer: ~$2K/mo flat, not hourly<br>Infra: Claude Pro $20 + VPS share $5-15 + API $1-5</p>
+              </div>
+              <div class="card fragment">
+                <h4 class="card__title">Scale Path</h4>
+                <p class="card__text">1-3 customers: Carlos does everything<br>5-10: $10-20K/mo recurring<br>10+: hire account managers, Carlos focuses product</p>
+              </div>
+            </div>
+            <p class="muted" style="font-size: 0.7rem; margin-top: 16px; text-align: center;">Prices subject to change. Working model for discussion.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 10: Carlos's Operational View -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><i data-lucide="terminal"></i> fiba labs</div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">09 // Operations</p>
+              <h2>Morning<br>Routine</h2>
+              <p class="lead">Not a dashboard product to build — a simple slash command.</p>
+              <ul class="list" style="margin-top: 16px;">
+                <li>CLI status (online/offline)</li>
+                <li>Daily brief status (delivered/failed)</li>
+                <li>Queued tasks count</li>
+                <li>Message volume + errors</li>
+                <li>Needs-attention flags</li>
+              </ul>
+            </div>
+            <div>
+              <div style="background: #08080F; border: 1px solid var(--border); padding: 16px; font-family: var(--font-mono); font-size: 0.65rem; line-height: 1.6;">
+                <div style="color: var(--accent); margin-bottom: 8px;">$ /customers-status</div>
+                <div style="color: var(--text-muted); margin-bottom: 8px;">FibaLabs — Customer Status</div>
+                <div style="margin-bottom: 8px;">
+                  <div><strong style="color: var(--text-primary);">Acme Corp</strong></div>
+                  <div>&#9500;&#9472;&#9472; CLI: <span style="color: #4ade80;">&#9679; Online</span> (2m ago)</div>
+                  <div>&#9500;&#9472;&#9472; Brief: <span style="color: #4ade80;">&#10003;</span> 7:02 AM</div>
+                  <div>&#9500;&#9472;&#9472; Queue: 0</div>
+                  <div>&#9492;&#9472;&#9472; Status: <span style="color: #4ade80;">Healthy</span></div>
+                </div>
+                <div>
+                  <div><strong style="color: var(--text-primary);">GrowthCo</strong></div>
+                  <div>&#9500;&#9472;&#9472; CLI: <span style="color: #4ade80;">&#9679; Online</span></div>
+                  <div>&#9500;&#9472;&#9472; Brief: <span style="color: #f87171;">&#10007; Gmail auth expired</span></div>
+                  <div>&#9500;&#9472;&#9472; Queue: 0</div>
+                  <div>&#9492;&#9472;&#9472; Status: <span style="color: #f87171;">&#9888; Fix Gmail OAuth</span></div>
+                </div>
+                <div style="margin-top: 8px; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 8px;">2 customers &#9474; 1 healthy &#9474; 1 action needed</div>
+              </div>
+              <p class="muted" style="font-size: 0.7rem; margin-top: 8px; text-align: center;">"The system monitors itself; Carlos reviews."</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 11: Onboarding SOP (Excalidraw PNG) -->
+      <section>
+        <div class="slide" style="padding: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+          <img src="260318_diagram-10-onboarding-excalidraw.png" alt="Onboarding SOP" style="width: 95%; max-height: 82%; object-fit: contain;">
+          <p style="margin-top: 12px; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-secondary); letter-spacing: 0.03em;">Goal: repeatable, not artisanal. Clone → configure → deploy.</p>
+        </div>
+      </section>
+
+      <!-- Slide 12: Discussion Topics -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><i data-lucide="hexagon"></i> fiba labs</div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">11 // Discussion</p>
+              <h2>Open<br>Questions</h2>
+              <p class="lead">Topics for today's meeting.</p>
+            </div>
+            <div>
+              <ul class="list list--numbered">
+                <li class="fragment">
+                  <strong>Does this architecture make sense?</strong><br>
+                  <span class="muted">What's missing? What would you change?</span>
+                </li>
+                <li class="fragment">
+                  <strong>Multi-tenant MCP (Sjoerd's proposal)</strong><br>
+                  <span class="muted">Build now or after first 2-3 paying customers?</span>
+                </li>
+                <li class="fragment">
+                  <strong>Discord as default channel</strong><br>
+                  <span class="muted">Any concerns? Better alternatives?</span>
+                </li>
+                <li class="fragment">
+                  <strong>Can we test onboarding this month?</strong><br>
+                  <span class="muted">Real customer, real deployment, validate the SOP</span>
+                </li>
+                <li class="fragment">
+                  <strong>What can Goda & Sjoerd help with?</strong><br>
+                  <span class="muted">Product direction, guidance, roadmap, architecture revision, technical doubts</span>
+                </li>
+                <li class="fragment">
+                  <strong>How can I help?</strong><br>
+                  <span class="muted">What do you need from me to move this forward?</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 13: Thanks -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <div class="content flex-center" style="flex-direction: column;">
+            <h1 style="font-size: 6rem; color: #6C3FC5;">Thanks!</h1>
+            <p class="lead" style="text-align: center; margin-top: 16px; color: var(--text-secondary);">Let's build this together.</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.js"></script>
+  <!-- Clickable link button — outside Reveal container so clicks work -->
+  <div id="diagram-link-btn" style="display: none; position: fixed; top: 50%; right: 20px; transform: translateY(-50%); z-index: 999999; padding: 10px 16px; font-size: 12px; font-family: 'Inter', sans-serif; color: #fff; background: #6C3FC5; cursor: pointer; letter-spacing: 0.03em; border-radius: 6px; font-weight: 500; writing-mode: vertical-rl; text-orientation: mixed;">
+    Full diagram &#8594;
+  </div>
+  <script>
+    Reveal.initialize({
+      hash: true, slideNumber: true, controls: true,
+      controlsLayout: 'bottom-right', controlsBackArrows: 'faded',
+      progress: true, center: false, transition: 'slide',
+      backgroundTransition: 'fade', width: 1280, height: 720,
+      margin: 0, minScale: 0.2, maxScale: 2,
+      autoAnimate: true, autoAnimateDuration: 0.7,
+      plugins: [RevealHighlight]
+    });
+    lucide.createIcons();
+
+    // Show/hide "Full diagram" link based on current slide
+    const linkBtn = document.getElementById('diagram-link-btn');
+    function allFragmentsShown(slide) {
+      const fragments = slide.querySelectorAll('.fragment');
+      if (fragments.length === 0) return true;
+      return Array.from(fragments).every(f => f.classList.contains('visible'));
+    }
+    function updateDiagramLink() {
+      const current = Reveal.getCurrentSlide();
+      const link = current && current.getAttribute('data-link');
+      if (link && allFragmentsShown(current)) {
+        linkBtn.style.display = 'block';
+        linkBtn.setAttribute('data-href', link);
+      } else {
+        linkBtn.style.display = 'none';
+      }
+    }
+    Reveal.on('slidechanged', updateDiagramLink);
+    Reveal.on('fragmentshown', updateDiagramLink);
+    Reveal.on('fragmenthidden', updateDiagramLink);
+    Reveal.on('ready', updateDiagramLink);
+    linkBtn.addEventListener('click', function() {
+      const href = this.getAttribute('data-href');
+      if (href) window.open(href, '_blank');
+    });
+  </script>
+</body>
+</html>

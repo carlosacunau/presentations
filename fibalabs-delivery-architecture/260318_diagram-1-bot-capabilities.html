@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FibaLabs Managed AI OS — Bot Capabilities & Core Services</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface-2: #222632;
+    --border: #2e3347;
+    --text: #e8eaed;
+    --text-muted: #9aa0b4;
+    --accent: #6c7ee1;
+    --accent-glow: rgba(108, 126, 225, 0.15);
+    --layer1: #3b82f6;
+    --layer1-bg: rgba(59, 130, 246, 0.08);
+    --layer1-border: rgba(59, 130, 246, 0.25);
+    --layer2: #8b5cf6;
+    --layer2-bg: rgba(139, 92, 246, 0.08);
+    --layer2-border: rgba(139, 92, 246, 0.25);
+    --layer3: #06b6d4;
+    --layer3-bg: rgba(6, 182, 212, 0.08);
+    --layer3-border: rgba(6, 182, 212, 0.25);
+    --layer4: #f59e0b;
+    --layer4-bg: rgba(245, 158, 11, 0.06);
+    --layer4-border: rgba(245, 158, 11, 0.2);
+    --loop: #10b981;
+    --loop-bg: rgba(16, 185, 129, 0.08);
+    --loop-border: rgba(16, 185, 129, 0.25);
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 40px 24px 60px;
+    line-height: 1.5;
+  }
+
+  .container {
+    max-width: 1140px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #e8eaed 0%, #9aa0b4 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .header .subtitle {
+    font-size: 15px;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  /* FibaLabs badge */
+  .fiba-badge {
+    position: fixed;
+    top: 20px;
+    right: 24px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-glow);
+    border: 1px solid rgba(108, 126, 225, 0.3);
+    padding: 6px 14px;
+    border-radius: 6px;
+    z-index: 100;
+  }
+
+  /* Main layout: layers + sidebar */
+  .main-grid {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 24px;
+    align-items: start;
+  }
+
+  .layers {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* Layer card base */
+  .layer {
+    border-radius: var(--radius);
+    padding: 28px;
+    position: relative;
+  }
+  .layer-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 4px;
+    margin-bottom: 14px;
+  }
+  .layer-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .layer-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+  }
+
+  /* Connector arrows between layers */
+  .connector {
+    display: flex;
+    justify-content: center;
+    margin: -8px 0;
+    position: relative;
+    z-index: 2;
+  }
+  .connector svg {
+    width: 24px;
+    height: 16px;
+  }
+
+  /* Layer 1 — Customer Interface */
+  .layer-1 {
+    background: var(--layer1-bg);
+    border: 1px solid var(--layer1-border);
+  }
+  .layer-1 .layer-label {
+    color: var(--layer1);
+    background: rgba(59, 130, 246, 0.12);
+  }
+  .layer-1 .layer-title { color: var(--layer1); }
+
+  .device-row {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    align-items: stretch;
+  }
+  .device {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 20px 28px;
+    text-align: center;
+    flex: 1;
+    max-width: 260px;
+  }
+  .device-icon {
+    font-size: 32px;
+    margin-bottom: 8px;
+  }
+  .device-name {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .device-sub {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  /* Layer 2 — GoBot */
+  .layer-2 {
+    background: var(--layer2-bg);
+    border: 1px solid var(--layer2-border);
+  }
+  .layer-2 .layer-label {
+    color: var(--layer2);
+    background: rgba(139, 92, 246, 0.12);
+  }
+  .layer-2 .layer-title { color: var(--layer2); }
+
+  .agents-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .agent-chip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 8px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 500;
+    transition: border-color 0.2s;
+  }
+  .agent-chip:hover {
+    border-color: var(--layer2);
+  }
+  .agent-emoji {
+    font-size: 18px;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .capabilities {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .cap-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 12.5px;
+    color: var(--text-muted);
+    padding: 8px 10px;
+    background: var(--surface);
+    border-radius: 6px;
+    border: 1px solid transparent;
+  }
+  .cap-icon {
+    font-size: 14px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .cap-item strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  /* Layer 3 — Services */
+  .layer-3 {
+    background: var(--layer3-bg);
+    border: 1px solid var(--layer3-border);
+  }
+  .layer-3 .layer-label {
+    color: var(--layer3);
+    background: rgba(6, 182, 212, 0.12);
+  }
+  .layer-3 .layer-title { color: var(--layer3); }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .service-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    transition: border-color 0.2s;
+  }
+  .service-card:hover {
+    border-color: var(--layer3);
+  }
+  .service-icon {
+    font-size: 20px;
+    margin-bottom: 6px;
+  }
+  .service-name {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  .service-desc {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  /* Layer 4 — Connected Tools */
+  .layer-4 {
+    background: var(--layer4-bg);
+    border: 1px solid var(--layer4-border);
+  }
+  .layer-4 .layer-label {
+    color: var(--layer4);
+    background: rgba(245, 158, 11, 0.12);
+  }
+  .layer-4 .layer-title { color: var(--layer4); }
+
+  .tools-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .tools-group h4 {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .tools-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .tool-tag {
+    font-size: 11px;
+    padding: 5px 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  .expert-kb {
+    grid-column: 1 / -1;
+    margin-top: 4px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+  }
+  .expert-kb h4 {
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--layer4);
+  }
+  .expert-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .expert-tag {
+    font-size: 11px;
+    padding: 4px 10px;
+    background: var(--layer4-bg);
+    border: 1px solid var(--layer4-border);
+    border-radius: 5px;
+    color: var(--text-muted);
+  }
+
+  /* Sidebar — Feedback Loop */
+  .sidebar {
+    position: sticky;
+    top: 40px;
+  }
+  .feedback-loop {
+    background: var(--loop-bg);
+    border: 1px solid var(--loop-border);
+    border-radius: var(--radius);
+    padding: 24px;
+  }
+  .feedback-loop .layer-label {
+    color: var(--loop);
+    background: rgba(16, 185, 129, 0.12);
+  }
+  .feedback-loop h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--loop);
+    margin-bottom: 16px;
+  }
+  .loop-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .loop-step {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    position: relative;
+    padding-bottom: 18px;
+  }
+  .loop-step:last-child {
+    padding-bottom: 0;
+  }
+  .loop-step::before {
+    content: '';
+    position: absolute;
+    left: 13px;
+    top: 28px;
+    bottom: 0;
+    width: 1px;
+    background: var(--loop-border);
+  }
+  .loop-step:last-child::before {
+    display: none;
+  }
+  .loop-num {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid var(--loop-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--loop);
+    flex-shrink: 0;
+  }
+  .loop-text {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    padding-top: 3px;
+  }
+  .loop-text strong {
+    color: var(--text);
+  }
+
+  .loop-insight {
+    margin-top: 18px;
+    padding: 12px;
+    background: rgba(16, 185, 129, 0.06);
+    border-left: 3px solid var(--loop);
+    border-radius: 0 6px 6px 0;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  .loop-arrow {
+    display: flex;
+    justify-content: center;
+    margin-top: 14px;
+  }
+  .loop-arrow svg {
+    width: 32px;
+    height: 32px;
+    color: var(--loop);
+  }
+
+  /* Tagline */
+  .tagline {
+    text-align: center;
+    margin-top: 40px;
+    padding: 28px 40px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .tagline p {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+  .tagline em {
+    color: var(--text);
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  /* Responsive */
+  @media (max-width: 960px) {
+    .main-grid {
+      grid-template-columns: 1fr;
+    }
+    .sidebar {
+      position: static;
+    }
+    .agents-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .services-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 600px) {
+    body { padding: 20px 12px 40px; }
+    .agents-grid { grid-template-columns: repeat(2, 1fr); }
+    .capabilities { grid-template-columns: 1fr; }
+    .services-grid { grid-template-columns: 1fr; }
+    .tools-section { grid-template-columns: 1fr; }
+    .device-row { flex-direction: column; align-items: center; }
+    .layer { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="fiba-badge">FibaLabs</div>
+
+<div class="container">
+
+  <div class="header">
+    <h1>Managed AI Operating System</h1>
+    <p class="subtitle">Bot Capabilities & Core Services</p>
+  </div>
+
+  <div class="main-grid">
+
+    <div class="layers">
+
+      <!-- LAYER 1: Customer Interface -->
+      <div class="layer layer-1">
+        <div class="layer-label">Layer 1 &mdash; Customer Interface</div>
+        <div class="layer-title">Discord</div>
+        <div class="layer-desc">Talk to your business brain from anywhere. This is the only thing you touch.</div>
+        <div class="device-row">
+          <div class="device">
+            <div class="device-icon">📱</div>
+            <div class="device-name">Phone</div>
+            <div class="device-sub">Voice & text on the go</div>
+          </div>
+          <div class="device">
+            <div class="device-icon">💻</div>
+            <div class="device-name">Laptop</div>
+            <div class="device-sub">Full workspace experience</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="connector">
+        <svg viewBox="0 0 24 16" fill="none"><path d="M12 0v12M6 8l6 6 6-6" stroke="#9aa0b4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+
+      <!-- LAYER 2: GoBot -->
+      <div class="layer layer-2">
+        <div class="layer-label">Layer 2 &mdash; The Second Brain</div>
+        <div class="layer-title">GoBot</div>
+        <div class="layer-desc">8 specialist agents working together. Ask anything about your business.</div>
+
+        <div class="agents-grid">
+          <div class="agent-chip"><span class="agent-emoji">🧠</span>General</div>
+          <div class="agent-chip"><span class="agent-emoji">🔍</span>Research</div>
+          <div class="agent-chip"><span class="agent-emoji">✍️</span>Content</div>
+          <div class="agent-chip"><span class="agent-emoji">💰</span>Finance</div>
+          <div class="agent-chip"><span class="agent-emoji">🎯</span>Strategy</div>
+          <div class="agent-chip"><span class="agent-emoji">🧪</span>Critic</div>
+          <div class="agent-chip"><span class="agent-emoji">📊</span>Analytics</div>
+          <div class="agent-chip"><span class="agent-emoji">⚙️</span>Ops</div>
+        </div>
+
+        <div class="capabilities">
+          <div class="cap-item">
+            <span class="cap-icon">🔀</span>
+            <span><strong>Smart Routing</strong> &mdash; right specialist for each question</span>
+          </div>
+          <div class="cap-item">
+            <span class="cap-icon">🏛️</span>
+            <span><strong>Board Meetings</strong> &mdash; multi-agent strategy with synthesis</span>
+          </div>
+          <div class="cap-item">
+            <span class="cap-icon">✋</span>
+            <span><strong>Human-in-the-Loop</strong> &mdash; nothing sensitive without approval</span>
+          </div>
+          <div class="cap-item">
+            <span class="cap-icon">🧠</span>
+            <span><strong>Persistent Memory</strong> &mdash; remembers everything, grows over time</span>
+          </div>
+          <div class="cap-item">
+            <span class="cap-icon">🎙️</span>
+            <span><strong>Voice Replies</strong> &mdash; ElevenLabs text-to-speech</span>
+          </div>
+          <div class="cap-item">
+            <span class="cap-icon">⚡</span>
+            <span><strong>Model Routing</strong> &mdash; fast model for simple, deep for complex</span>
+          </div>
+          <div class="cap-item" style="grid-column: 1 / -1;">
+            <span class="cap-icon">🛠️</span>
+            <span><strong>/brainstorm &rarr; /explore &rarr; /build</strong> &mdash; guided automation creation for non-technical users</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="connector">
+        <svg viewBox="0 0 24 16" fill="none"><path d="M12 0v12M6 8l6 6 6-6" stroke="#9aa0b4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+
+      <!-- LAYER 3: Services -->
+      <div class="layer layer-3">
+        <div class="layer-label">Layer 3 &mdash; Always-On Services</div>
+        <div class="layer-title">Data & Intelligence Pipelines</div>
+        <div class="layer-desc">Run 24/7. Feed GoBot with fresh, structured information.</div>
+
+        <div class="services-grid">
+          <div class="service-card">
+            <div class="service-icon">☀️</div>
+            <div class="service-name">Daily Brief</div>
+            <div class="service-desc">Morning synthesis: goals, calendar, tasks, metrics, news</div>
+          </div>
+          <div class="service-card">
+            <div class="service-icon">📈</div>
+            <div class="service-name">Business Metrics</div>
+            <div class="service-desc">KPIs from Stripe, GA4, CRM, spreadsheets</div>
+          </div>
+          <div class="service-card">
+            <div class="service-icon">🎤</div>
+            <div class="service-name">Meeting Intelligence</div>
+            <div class="service-desc">Searchable transcripts from all meetings</div>
+          </div>
+          <div class="service-card">
+            <div class="service-icon">💬</div>
+            <div class="service-name">Messaging Monitor</div>
+            <div class="service-desc">Digests from WhatsApp & Slack groups</div>
+          </div>
+          <div class="service-card">
+            <div class="service-icon">🤖</div>
+            <div class="service-name">AI Landscape</div>
+            <div class="service-desc">Tracks AI model changes & new capabilities</div>
+          </div>
+          <div class="service-card">
+            <div class="service-icon">🔗</div>
+            <div class="service-name">Session Memory</div>
+            <div class="service-desc">Context continuity across every session</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="connector">
+        <svg viewBox="0 0 24 16" fill="none"><path d="M12 0v12M6 8l6 6 6-6" stroke="#9aa0b4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+
+      <!-- LAYER 4: Connected Tools -->
+      <div class="layer layer-4">
+        <div class="layer-label">Layer 4 &mdash; Connected Tools & Intelligence</div>
+        <div class="layer-title">Integrations & Knowledge</div>
+        <div class="layer-desc">Everything the OS connects to. Data flows up through the layers.</div>
+
+        <div class="tools-section">
+          <div class="tools-group">
+            <h4>Google Workspace</h4>
+            <div class="tools-list">
+              <span class="tool-tag">Gmail</span>
+              <span class="tool-tag">Calendar</span>
+              <span class="tool-tag">Drive</span>
+              <span class="tool-tag">Docs</span>
+              <span class="tool-tag">Sheets</span>
+            </div>
+          </div>
+          <div class="tools-group">
+            <h4>Business Tools</h4>
+            <div class="tools-list">
+              <span class="tool-tag">CRM</span>
+              <span class="tool-tag">Stripe</span>
+              <span class="tool-tag">GA4</span>
+              <span class="tool-tag">LinkedIn</span>
+              <span class="tool-tag">Web Scraping</span>
+            </div>
+          </div>
+          <div class="expert-kb">
+            <h4>Expert Knowledge Base</h4>
+            <div class="expert-items">
+              <span class="expert-tag">Competitor Profiles</span>
+              <span class="expert-tag">Advisor Simulation</span>
+              <span class="expert-tag">Industry Voices</span>
+              <span class="expert-tag">Networking Intelligence</span>
+              <span class="expert-tag">Custom Automations</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /layers -->
+
+    <!-- SIDEBAR: Feedback Loop -->
+    <div class="sidebar">
+      <div class="feedback-loop">
+        <div class="layer-label">Continuous</div>
+        <h3>The Feedback Loop</h3>
+
+        <div class="loop-steps">
+          <div class="loop-step">
+            <div class="loop-num">1</div>
+            <div class="loop-text"><strong>OS surfaces opportunities</strong> from real usage patterns and data</div>
+          </div>
+          <div class="loop-step">
+            <div class="loop-num">2</div>
+            <div class="loop-text"><strong>Customer logs needs</strong> via a dedicated Discord channel</div>
+          </div>
+          <div class="loop-step">
+            <div class="loop-num">3</div>
+            <div class="loop-text"><strong>Carlos builds</strong> new automations from the audit backlog</div>
+          </div>
+          <div class="loop-step">
+            <div class="loop-num">4</div>
+            <div class="loop-text"><strong>Deployed to the OS</strong> &mdash; the system gets smarter</div>
+          </div>
+        </div>
+
+        <div class="loop-arrow">
+          <svg viewBox="0 0 32 32" fill="none">
+            <path d="M16 4a12 12 0 0 1 10.4 6M16 4a12 12 0 0 0-10.4 6M26.4 10A12 12 0 0 1 22 26M5.6 10A12 12 0 0 0 10 26M22 26a12 12 0 0 1-12 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M22 26l2-3.5M22 26l-3.5-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <div class="loop-insight">"The OS becomes the auditor" &mdash; usage data reveals what to build next.</div>
+      </div>
+    </div>
+
+  </div><!-- /main-grid -->
+
+  <!-- TAGLINE -->
+  <div class="tagline">
+    <p>
+      <em>A second brain that knows your business, runs 24/7, and gets smarter over time</em>
+      &mdash; plus a fractional CAIO building new automations on top.
+    </p>
+  </div>
+
+</div>
+
+</body>
+</html>
