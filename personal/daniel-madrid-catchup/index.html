@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Llamada Daniel Madrid & Carlos Acuña — 19 Mar 2026</title>
+
+  <!-- Google Fonts - FibaLabs Style -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Reveal.js -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/monokai.css">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+/*
+ * FibaLabs Presentation Theme
+ * HUD-style, geometric, Electric Violet accent
+ * For use with Reveal.js 4.5+
+ */
+
+/* ===== CSS VARIABLES - FIBALABS PALETTE ===== */
+:root {
+  /* Backgrounds - "Void + Electric Violet" */
+  --bg-dark: #0A0A14;
+  --bg-card: #12121E;
+  --bg-card-hover: #1A1A2A;
+
+  /* Accent - Electric Violet */
+  --accent: #8B5CF6;
+  --accent-light: #A78BFA;
+  --accent-glow: rgba(139, 92, 246, 0.15);
+
+  /* Secondary - Deep Indigo */
+  --secondary: #4C2D91;
+  --secondary-light: #6D4DB8;
+
+  /* Semantic Colors */
+  --success: #34D399;
+  --warning: #FBBF24;
+  --error: #F87171;
+
+  /* Text Colors - Lavender White system */
+  --text-primary: #E8E4F0;
+  --text-secondary: #9B95A8;
+  --text-muted: #5C5670;
+
+  /* Borders */
+  --border: #2A2A3A;
+
+  /* Typography */
+  --font-serif: 'Instrument Serif', Georgia, serif;
+  --font-sans: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Fira Code', monospace;
+
+  /* Spacing */
+  --spacing-xs: 8px;
+  --spacing-sm: 16px;
+  --spacing-md: 24px;
+  --spacing-lg: 40px;
+  --spacing-xl: 60px;
+}
+
+/* ===== BASE STYLES ===== */
+html, body {
+  background: var(--bg-dark) !important;
+  color: var(--text-primary);
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.reveal-viewport {
+  background: var(--bg-dark) !important;
+  background-image:
+    linear-gradient(rgba(139, 92, 246, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139, 92, 246, 0.03) 1px, transparent 1px) !important;
+  background-size: 60px 60px !important;
+}
+
+.reveal {
+  background: var(--bg-dark);
+  font-family: var(--font-sans);
+  font-size: 22px;
+  color: var(--text-primary);
+}
+
+.reveal .slides {
+  text-align: left;
+}
+
+.reveal .slides section {
+  padding: 0;
+  background: var(--bg-dark);
+}
+
+/* ===== SLIDE BASE ===== */
+.slide {
+  height: 100%;
+  width: 100%;
+  padding: var(--spacing-xl);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  position: relative;
+}
+
+.slide > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== SLIDE VARIANTS ===== */
+.slide--center {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.slide--section {
+  background: transparent;
+}
+
+.slide--section::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ===== HEADER BAR ===== */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.header__logo {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: 0.1em;
+  text-transform: lowercase;
+}
+
+.header__logo svg {
+  width: 18px;
+  height: 18px;
+  color: var(--accent);
+}
+
+.header__nav-item {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+}
+
+/* ===== TYPOGRAPHY ===== */
+.kicker {
+  font-size: 0.7rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  margin-bottom: var(--spacing-sm);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.kicker::after {
+  content: '';
+  width: 40px;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.5;
+}
+
+h1, .h1 {
+  font-family: var(--font-serif);
+  font-size: 4rem;
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.1;
+  margin: 0 0 var(--spacing-md) 0;
+  color: var(--text-primary);
+}
+
+h2, .h2 {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  font-weight: 400;
+  line-height: 1.15;
+  margin: 0 0 var(--spacing-md) 0;
+}
+
+h3, .h3 {
+  font-family: var(--font-sans);
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1.3;
+  margin: 0 0 var(--spacing-sm) 0;
+  letter-spacing: 0.05em;
+}
+
+h4, .h4 {
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0 0 var(--spacing-xs) 0;
+  letter-spacing: 0.05em;
+}
+
+.lead {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 600px;
+  letter-spacing: 0.02em;
+}
+
+.muted {
+  color: var(--text-muted);
+}
+
+.highlight, .accent-text {
+  color: var(--accent);
+}
+
+/* ===== LAYOUT UTILITIES ===== */
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-xl);
+  align-items: center;
+  flex: 1;
+}
+
+.split--60-40 {
+  grid-template-columns: 1.5fr 1fr;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-md);
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-md);
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-md);
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===== CARDS ===== */
+.card {
+  background: transparent;
+  border: 1px solid var(--border);
+  padding: var(--spacing-md);
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+.card:hover {
+  background: var(--bg-card);
+  border-color: var(--accent);
+}
+
+.card--featured {
+  border-color: var(--accent);
+}
+
+.card__icon {
+  width: 40px;
+  height: 40px;
+  margin-bottom: var(--spacing-sm);
+  color: var(--accent);
+}
+
+.card__icon svg {
+  width: 100%;
+  height: 100%;
+  stroke-width: 1.5;
+}
+
+.card__title {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: var(--spacing-xs);
+  letter-spacing: 0.03em;
+}
+
+.card__text {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ===== LISTS ===== */
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.list li {
+  padding: var(--spacing-sm) 0;
+  padding-left: var(--spacing-lg);
+  position: relative;
+  border-bottom: 1px solid var(--border);
+}
+
+.list li:last-child {
+  border-bottom: none;
+}
+
+.list li::before {
+  content: '\2014';
+  position: absolute;
+  left: 0;
+  top: var(--spacing-sm);
+  color: var(--accent);
+  font-weight: 400;
+}
+
+.list--numbered {
+  counter-reset: list-counter;
+}
+
+.list--numbered li {
+  counter-increment: list-counter;
+}
+
+.list--numbered li::before {
+  content: counter(list-counter, decimal-leading-zero);
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+/* ===== BADGES ===== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+}
+
+/* ===== BUTTONS ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 28px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid var(--text-primary);
+  background: transparent;
+  color: var(--text-primary);
+  border-radius: 2px;
+}
+
+.btn:hover {
+  background: var(--text-primary);
+  color: var(--bg-dark);
+}
+
+.btn--accent {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn--accent:hover {
+  background: var(--accent);
+  color: var(--bg-dark);
+}
+
+/* ===== CONTACT/CTA ===== */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-xl);
+}
+
+.contact-item {
+  text-align: center;
+}
+
+.contact-item__label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: var(--spacing-xs);
+}
+
+.contact-item__value {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+/* ===== REVEAL.JS OVERRIDES ===== */
+.reveal .controls {
+  color: var(--accent);
+}
+
+.reveal .progress {
+  background: var(--border);
+  height: 2px;
+}
+
+.reveal .progress span {
+  background: var(--accent);
+}
+
+.reveal .slide-number {
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 16px;
+  font-family: var(--font-mono);
+  left: 20px;
+  right: auto;
+  bottom: 20px;
+}
+
+/* ===== FRAGMENT ANIMATIONS ===== */
+.reveal .slides section .fragment {
+  opacity: 0;
+  transition: all 0.4s ease;
+}
+
+.reveal .slides section .fragment.visible {
+  opacity: 1;
+}
+
+.reveal .slides section .fragment.fade-up {
+  transform: translateY(20px);
+}
+
+.reveal .slides section .fragment.fade-up.visible {
+  transform: translateY(0);
+}
+
+/* ===== CUSTOM: LEVELS VISUAL ===== */
+.level-card {
+  background: transparent;
+  border: 1px solid var(--border);
+  padding: 20px;
+  transition: all 0.3s ease;
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+}
+
+.level-card:hover {
+  background: var(--bg-card);
+  border-color: var(--accent);
+}
+
+.level-card--active {
+  border-color: var(--accent);
+  background: var(--bg-card);
+}
+
+.level-card--active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--accent);
+}
+
+.level-number {
+  font-family: var(--font-sans);
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+
+.level-title {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-bottom: 6px;
+  letter-spacing: 0.03em;
+}
+
+.level-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.level-badge {
+  display: inline-block;
+  font-size: 0.6rem;
+  padding: 3px 8px;
+  border: 1px solid;
+  border-radius: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 8px;
+}
+
+.level-badge--copy { color: var(--text-muted); border-color: var(--text-muted); }
+.level-badge--program { color: var(--warning); border-color: var(--warning); }
+.level-badge--build { color: var(--success); border-color: var(--success); }
+
+/* ===== FAMILY GRID ===== */
+.family-item {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.family-item:hover {
+  background: var(--bg-card);
+  border-color: var(--accent);
+}
+
+.family-item__name {
+  font-weight: 500;
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+}
+
+.family-item__detail {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* ===== DEMO ITEM ===== */
+.demo-card {
+  background: transparent;
+  border: 1px solid var(--border);
+  padding: var(--spacing-md);
+  border-radius: 2px;
+  border-left: 3px solid var(--accent);
+  transition: all 0.3s ease;
+}
+
+.demo-card:hover {
+  background: var(--bg-card);
+}
+
+.demo-card__title {
+  font-weight: 500;
+  font-size: 1rem;
+  margin-bottom: 8px;
+  letter-spacing: 0.03em;
+}
+
+.demo-card__desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.demo-card__tech {
+  margin-top: 12px;
+  font-size: 0.7rem;
+  color: var(--accent-light);
+  font-family: var(--font-mono);
+  letter-spacing: 0.05em;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg-dark);
+}
+
+@media (max-width: 1024px) {
+  h1 { font-size: 2.5rem; }
+  h2 { font-size: 2rem; }
+  .split { grid-template-columns: 1fr; gap: var(--spacing-lg); }
+  .grid-4, .grid-3 { grid-template-columns: repeat(2, 1fr); }
+}
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- SLIDE 1: Title -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <div class="content flex-center" style="flex-direction: column; text-align: center;">
+            <p class="kicker" style="justify-content: center;">19 Marzo 2026 // Catch-Up</p>
+            <h1>Daniel Madrid<br><span class="accent-text">& Carlos Acuña</span></h1>
+            <p class="lead" style="max-width: 600px; margin: 0 auto;">
+              Reconectando tras años. Familia, vida y el futuro de la AI aplicada al negocio.
+            </p>
+            <div style="margin-top: 32px; display: flex; gap: 16px; font-size: 0.8rem; color: var(--text-muted);">
+              <span>Daniel desde París</span>
+              <span style="color: var(--accent);">//</span>
+              <span>Carlos desde Chile</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 2: Contexto -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="hexagon"></i>
+              fiba labs
+            </div>
+            <span class="header__nav-item">Resumen de llamada</span>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">01 // Contexto</p>
+              <h2>Amigos de<br>toda la vida</h2>
+              <p class="lead">Conexión entre Bogotá, París y Santiago. Daniel tiene una startup bootstrap funcionando bien, clientes contentos con el valor. Vio un post de Carlos sobre SDR as a service y quiso reconectar.</p>
+            </div>
+            <div>
+              <ul class="list">
+                <li class="fragment fade-up">
+                  <strong>Daniel Madrid Spitz</strong><br>
+                  <span class="muted">Fundador de startup en Francia. Negocio bootstrap, crecimiento orgánico, clientes satisfechos.</span>
+                </li>
+                <li class="fragment fade-up">
+                  <strong>Carlos Acuña</strong><br>
+                  <span class="muted">Fundador de FibaLabs. AI Operating Systems para SMBs. Workshops y consultoría.</span>
+                </li>
+                <li class="fragment fade-up">
+                  <strong>Motivación de la llamada</strong><br>
+                  <span class="muted">Explorar potencial de colaboración. Interés mutuo en trabajar juntos.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 3: Familia Daniel -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="hexagon"></i>
+              fiba labs
+            </div>
+            <span class="header__nav-item">Puesta al día</span>
+          </div>
+          <div class="content">
+            <p class="kicker">02 // Familia Madrid Spitz</p>
+            <h2>El lado de Daniel</h2>
+            <div class="grid-3" style="margin-top: 32px;">
+              <div class="family-item fragment fade-up">
+                <div class="family-item__name">Padres en París</div>
+                <div class="family-item__detail">Fueron a visitarlo y no pueden volver a Israel por la guerra con Irán. Daniel los prefiere cerca y seguros.</div>
+              </div>
+              <div class="family-item fragment fade-up">
+                <div class="family-item__name">Rafael (hermano)</div>
+                <div class="family-item__detail">Retirado del ejército israelí a los 42. Viajando por el mundo con su familia: Indonesia, Singapur, China. Pensión asegurada.</div>
+              </div>
+              <div class="family-item fragment fade-up">
+                <div class="family-item__name">David (hermano)</div>
+                <div class="family-item__detail">Se hizo papá hace poco. Vive en Israel con su familia. Apartamento con cuarto antimisil.</div>
+              </div>
+            </div>
+            <div style="margin-top: 24px; padding: 16px; border: 1px solid var(--border); border-radius: 2px;" class="fragment fade-up">
+              <span style="color: var(--accent); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em;">Situación Israel-Irán</span>
+              <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 8px; line-height: 1.5;">
+                La mayoría de misiles interceptados. La gente se resguarda en cuartos antimisil. El conflicto es asimétrico entre lo que pasa en Irán y lo que pasa en Israel.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 4: Familia Carlos -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="hexagon"></i>
+              fiba labs
+            </div>
+            <span class="header__nav-item">Puesta al día</span>
+          </div>
+          <div class="content">
+            <p class="kicker">03 // Familia Acuña</p>
+            <h2>El lado de Carlos</h2>
+            <div class="grid-2" style="margin-top: 32px;">
+              <div class="family-item fragment fade-up">
+                <div class="family-item__name">Paola Bendeck (esposa)</div>
+                <div class="family-item__detail">Gerente Comercial en Cinépolis Chile. 20 años en la compañía. Colombiana de Cali.</div>
+              </div>
+              <div class="family-item fragment fade-up">
+                <div class="family-item__name">Iza & Federico (hijos)</div>
+                <div class="family-item__detail">Iza cumple 8 en mayo, Federico cumple 10 en junio. En la escuela italiana. Los únicos nietos de la familia.</div>
+              </div>
+              <div class="family-item fragment fade-up">
+                <div class="family-item__name">Lucho (papá)</div>
+                <div class="family-item__detail">Jefe de pilotos, próximo a jubilarse. Vuela una vez al mes para mantener autonomía. Construyeron casa en Girardot.</div>
+              </div>
+              <div class="family-item fragment fade-up">
+                <div class="family-item__name">David (hermano)</div>
+                <div class="family-item__detail">Se casó el año pasado. Trabaja en Dialéctica (startup). Estuvo en Mastercard y Mercado Libre. No quiere hijos.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 5: Invitaciones mutuas -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <p class="kicker" style="justify-content: center;">04 // Puertas abiertas</p>
+          <h2>Invitaciones Mutuas</h2>
+          <div class="grid-2" style="margin-top: 40px; max-width: 800px;">
+            <div class="card fragment fade-up">
+              <div class="card__icon"><i data-lucide="mountain"></i></div>
+              <h4 class="card__title">Chile</h4>
+              <p class="card__text">Carlos invita a Rafael y Daniel. Cuarto de invitados disponible. Conexión aérea directa desde Oceanía/Asia.</p>
+            </div>
+            <div class="card fragment fade-up">
+              <div class="card__icon"><i data-lucide="building-2"></i></div>
+              <h4 class="card__title">París</h4>
+              <p class="card__text">Daniel invita a Carlos y familia. Cuarto de invitados. Paola quiere ir a Europa en verano.</p>
+            </div>
+          </div>
+          <p class="lead muted" style="margin-top: 32px; max-width: 500px;">Carlos le mandó saludo a Rafael vía Daniel con foto incluida.</p>
+        </div>
+      </section>
+
+      <!-- SLIDE 6: 4 Niveles de AI (KEY SLIDE) -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="hexagon"></i>
+              fiba labs
+            </div>
+            <span class="header__nav-item">Lo que Carlos está construyendo</span>
+          </div>
+          <div class="content">
+            <p class="kicker">05 // Framework</p>
+            <h2>Los 4 Niveles de <span class="accent-text">Adopción AI</span></h2>
+            <div class="grid-4" style="margin-top: 28px;">
+              <div class="level-card fragment fade-up">
+                <div class="level-number">01</div>
+                <div class="level-title">Chat con LLM</div>
+                <div class="level-desc">ChatGPT, Claude, Gemini. Interfaz de chat directa. Google Search glorificado.</div>
+                <div class="level-badge level-badge--copy">Copy-paste</div>
+              </div>
+              <div class="level-card fragment fade-up">
+                <div class="level-number">02</div>
+                <div class="level-title">Custom GPTs</div>
+                <div class="level-desc">Gems, Proyectos. Enfocado y personalizado. Tu voz, tus reglas.</div>
+                <div class="level-badge level-badge--copy">Copy-paste</div>
+              </div>
+              <div class="level-card fragment fade-up">
+                <div class="level-number">03</div>
+                <div class="level-title">Herramientas</div>
+                <div class="level-desc">Claude Desktop, NotebookLM, Claude for Excel/PPT. Acceso a archivos.</div>
+                <div class="level-badge level-badge--program">Programable</div>
+              </div>
+              <div class="level-card level-card--active fragment fade-up">
+                <div class="level-number">04</div>
+                <div class="level-title">IDE + Claude Code</div>
+                <div class="level-desc">VSCode, Antigravity, Cursor. Lenguaje natural. Sin automatizadores externos.</div>
+                <div class="level-badge level-badge--build">El salto</div>
+              </div>
+            </div>
+            <p class="muted" style="margin-top: 20px; font-size: 0.8rem;">Ninguno está mal. Cada nivel sirve. Pero hay un punto donde necesitas alguien que implemente el Nivel 4.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 7: Demos mostrados -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="hexagon"></i>
+              fiba labs
+            </div>
+            <span class="header__nav-item">Demo en vivo</span>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">06 // Demos</p>
+              <h2>Lo que vio<br><span class="accent-text">Daniel</span></h2>
+              <p class="lead">Carlos compartió pantalla y mostró aplicaciones construidas con Claude Code, en lenguaje natural, sin código manual.</p>
+            </div>
+            <div>
+              <div class="demo-card fragment fade-up" style="margin-bottom: 16px;">
+                <div class="demo-card__title">Horarios de talleres escolares</div>
+                <div class="demo-card__desc">App web para ver en qué taller está cada hijo. Publicada y accesible. Construida con un prompt en lenguaje natural.</div>
+                <div class="demo-card__tech">claude code + vscode + html</div>
+              </div>
+              <div class="demo-card fragment fade-up">
+                <div class="demo-card__title">Generador de propuestas para Cinépolis</div>
+                <div class="demo-card__desc">Analiza la estructura de propuestas de Paola, tablas de precios, y genera propuestas automáticas desde transcripciones de llamadas. Con la marca de Cinépolis.</div>
+                <div class="demo-card__tech">claude code + transcripción + excel/word</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 8: Oportunidad de Colaboración -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="hexagon"></i>
+              fiba labs
+            </div>
+            <span class="header__nav-item">Siguiente paso</span>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">07 // Colaboración</p>
+              <h2>Potencial de<br><span class="accent-text">trabajar juntos</span></h2>
+              <p class="lead">Daniel vio el post de Carlos sobre SDR as a service. Conexión personal + fit de negocio. Interés mutuo en explorar.</p>
+            </div>
+            <div>
+              <ul class="list list--numbered">
+                <li class="fragment fade-up">
+                  <strong>Daniel tiene clientes</strong><br>
+                  <span class="muted">Startup bootstrap con base de clientes contentos y servicio que genera valor.</span>
+                </li>
+                <li class="fragment fade-up">
+                  <strong>Carlos tiene la tecnología</strong><br>
+                  <span class="muted">AI Operating Systems, automatización de nivel 4, workshops y frameworks probados.</span>
+                </li>
+                <li class="fragment fade-up">
+                  <strong>Confianza preexistente</strong><br>
+                  <span class="muted">Amistad de toda la vida. Ya habían hablado antes de que Carlos estuviera en Remote.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 9: Closing -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <div class="content flex-center" style="flex-direction: column;">
+            <h1>Reconectados.<br><span class="accent-text">Explorando.</span></h1>
+            <p class="lead" style="margin-bottom: 40px;">Amistad + negocio. París + Santiago. La conversación sigue.</p>
+            <div class="contact-grid" style="width: 100%; max-width: 600px;">
+              <div class="contact-item">
+                <div class="contact-item__label">Carlos</div>
+                <div class="contact-item__value">FibaLabs, Santiago</div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-item__label">Daniel</div>
+                <div class="contact-item__value">Startup, París</div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-item__label">Next Steps</div>
+                <div class="contact-item__value">Explorar fit de negocio</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Reveal.js Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.js"></script>
+
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: true,
+      controls: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      center: false,
+      transition: 'slide',
+      backgroundTransition: 'fade',
+      width: 1280,
+      height: 720,
+      margin: 0,
+      minScale: 0.2,
+      maxScale: 2,
+      autoAnimate: true,
+      autoAnimateDuration: 0.7,
+      plugins: [RevealHighlight]
+    });
+
+    // Initialize Lucide icons
+    lucide.createIcons();
+  </script>
+
+</body>
+</html>
