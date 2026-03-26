@@ -173,11 +173,90 @@
     text-align: center;
   }
 
+  /* Talleres */
+  .taller-separator {
+    background: #2c3e50;
+    color: white;
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 8px 6px;
+    text-align: center;
+  }
+  td.taller-cell {
+    vertical-align: top;
+    padding: 6px 4px;
+    background: #f9f9f9;
+    border: 1px solid #000;
+  }
+  td.taller-cell .taller-time {
+    font-size: 0.6rem;
+    color: #888;
+    margin-bottom: 4px;
+    text-align: center;
+  }
+  td.taller-cell select {
+    width: 100%;
+    padding: 4px 2px;
+    font-size: 0.65rem;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background: #fff;
+    cursor: pointer;
+  }
+  .taller-tag {
+    display: block;
+    padding: 3px 4px;
+    margin-bottom: 3px;
+    border-radius: 3px;
+    font-size: 0.62rem;
+    font-weight: 500;
+    line-height: 1.3;
+    background: #e8f4e8;
+    border: 1px solid #b0d8b0;
+    cursor: pointer;
+    text-align: left;
+  }
+  .taller-tag:hover { background: #fdd; border-color: #d88; }
+  .taller-tag .taller-prof {
+    display: block;
+    font-weight: 400;
+    font-size: 0.55rem;
+    color: #666;
+  }
+
+  /* Toolbar */
+  .toolbar {
+    max-width: 1200px;
+    margin: 12px auto 0;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+  }
+  .toolbar button {
+    padding: 6px 14px;
+    font-size: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: #fff;
+    cursor: pointer;
+    font-weight: 500;
+  }
+  .toolbar button:hover { background: #f0f0f0; }
+  .toolbar .btn-print { background: #2c3e50; color: #fff; border-color: #2c3e50; }
+  .toolbar .btn-print:hover { background: #3d5166; }
+  .toolbar .btn-clear { color: #c00; border-color: #c00; }
+
   @media print {
     body { padding: 0; background: white; }
     table { min-width: unset; }
     th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     td.subject { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    td.taller-cell { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .toolbar { display: none; }
+    td.taller-cell select { display: none; }
+    .taller-tag:hover { background: #e8f4e8; border-color: #b0d8b0; }
   }
 
   @media (max-width: 600px) {
@@ -309,8 +388,25 @@
     <td class="subject bg-religion">Religion<span class="teacher">J. Aravena</span></td>
     <td class="empty"></td>
   </tr>
+  <!-- TALLERES EXTRACURRICULARES -->
+  <tr>
+    <td class="taller-separator" colspan="6">Talleres Extracurriculares</td>
+  </tr>
+  <tr>
+    <td class="time">Talleres</td>
+    <td class="taller-cell" data-day="lun"></td>
+    <td class="taller-cell" data-day="mar"></td>
+    <td class="taller-cell" data-day="mie"></td>
+    <td class="taller-cell" data-day="jue"></td>
+    <td class="taller-cell" data-day="vie"></td>
+  </tr>
 </tbody>
 </table>
+</div>
+
+<div class="toolbar">
+  <button class="btn-print" onclick="window.print()">Imprimir horario</button>
+  <button class="btn-clear" onclick="clearAll()">Borrar talleres</button>
 </div>
 
 <div class="legend">
@@ -327,6 +423,139 @@
 </div>
 
 <p class="note">Miercoles y Viernes: sin almuerzo en el colegio, salen a las 13:45</p>
+
+<script>
+const STORAGE_KEY = 'horario-2basico-d-talleres';
+
+// Workshops available for 1°-2° by day (deportivos + culturales)
+const TALLERES = {
+  lun: {
+    time: '16:00 – 17:45',
+    options: [
+      { id: 'cheerleader-lun', name: 'Cheerleader / Bailes Trad.', prof: 'Josefina Moya' },
+      { id: 'coral', name: 'Taller Coral: The Voice', prof: 'Carolina Aguayo' },
+      { id: 'ajedrez', name: 'Ajedrez', prof: 'Dennise Jana' },
+      { id: 'motricidad-g1', name: 'Motricidad/Bisuteria G1', prof: 'Carolina Alegria' },
+    ]
+  },
+  mar: {
+    time: '16:00 – 17:45',
+    options: [
+      { id: 'tenis-mar', name: 'Tenis', prof: 'Javier Santelices' },
+      { id: 'gimnasia-g1-mar', name: 'Gimnasia Artistica G1', prof: 'Luis Munoz' },
+      { id: 'minibasquet-mar', name: 'Mini-Basquetbol', prof: 'Ignacio Veloz' },
+      { id: 'miniatletismo-mar', name: 'Mini-Atletismo', prof: 'Tomas Lastra' },
+      { id: 'aikido-g1', name: 'Aikido G1', prof: 'Juan Caroca' },
+      { id: 'titeres', name: 'Tecnica y Constr. de Titeres', prof: 'Italo Carcamo' },
+    ]
+  },
+  mie: {
+    time: '13:45 – 16:00',
+    options: [
+      { id: 'minicalcio-mie', name: 'Mini-Calcio', prof: 'Micaela Caprile' },
+      { id: 'natacion-g1-mie', name: 'Natacion G1', prof: 'Nadya Rebolledo' },
+      { id: 'cheerleader-mie', name: 'Cheerleader / Bailes Trad.', prof: 'Josefina Moya' },
+      { id: 'comics', name: 'Comics y Dibujo', prof: 'Helein Gonzalez' },
+      { id: 'artealegria', name: 'Arte y Alegria', prof: 'Claudia Tapia Rabuco' },
+      { id: 'lego-g1', name: 'Taller de Lego G1', prof: 'Julia Hernandez' },
+    ]
+  },
+  jue: {
+    time: '16:00 – 17:45',
+    options: [
+      { id: 'tenis-jue', name: 'Tenis', prof: 'Javier Santelices' },
+      { id: 'gimnasia-g1-jue', name: 'Gimnasia Artistica G1', prof: 'Luis Munoz' },
+      { id: 'minibasquet-jue', name: 'Mini-Basquetbol', prof: 'Ignacio Veloz' },
+      { id: 'miniatletismo-jue', name: 'Mini-Atletismo', prof: 'Tomas Lastra' },
+      { id: 'teatro', name: 'Teatro', prof: 'Maria Belen Avila' },
+    ]
+  },
+  vie: {
+    time: '13:45 – 16:00',
+    options: [
+      { id: 'minicalcio-vie', name: 'Mini-Calcio', prof: 'Micaela Caprile' },
+      { id: 'natacion-g1-vie', name: 'Natacion G1', prof: 'Nadya Rebolledo' },
+    ]
+  }
+};
+
+function load() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+  catch { return {}; }
+}
+
+function save(data) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+function render() {
+  const data = load();
+  document.querySelectorAll('td.taller-cell').forEach(cell => {
+    const day = cell.dataset.day;
+    const info = TALLERES[day];
+    const selected = data[day] || [];
+
+    cell.innerHTML = '';
+
+    // Time label
+    const timeDiv = document.createElement('div');
+    timeDiv.className = 'taller-time';
+    timeDiv.textContent = info.time;
+    cell.appendChild(timeDiv);
+
+    // Selected tags
+    selected.forEach(id => {
+      const opt = info.options.find(o => o.id === id);
+      if (!opt) return;
+      const tag = document.createElement('span');
+      tag.className = 'taller-tag';
+      tag.innerHTML = opt.name + '<span class="taller-prof">' + opt.prof + '</span>';
+      tag.title = 'Click para quitar';
+      tag.addEventListener('click', () => {
+        const d = load();
+        d[day] = (d[day] || []).filter(x => x !== id);
+        if (d[day].length === 0) delete d[day];
+        save(d);
+        render();
+      });
+      cell.appendChild(tag);
+    });
+
+    // Dropdown with remaining options
+    const remaining = info.options.filter(o => !selected.includes(o.id));
+    if (remaining.length > 0) {
+      const select = document.createElement('select');
+      const defaultOpt = document.createElement('option');
+      defaultOpt.value = '';
+      defaultOpt.textContent = '+ Agregar taller...';
+      select.appendChild(defaultOpt);
+      remaining.forEach(o => {
+        const opt = document.createElement('option');
+        opt.value = o.id;
+        opt.textContent = o.name;
+        select.appendChild(opt);
+      });
+      select.addEventListener('change', function() {
+        if (!this.value) return;
+        const d = load();
+        if (!d[day]) d[day] = [];
+        d[day].push(this.value);
+        save(d);
+        render();
+      });
+      cell.appendChild(select);
+    }
+  });
+}
+
+function clearAll() {
+  if (!confirm('Borrar todos los talleres seleccionados?')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  render();
+}
+
+render();
+</script>
 
 </body>
 </html>
