@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Horario 2DO BASICO D - 2026</title>
+<style>
+  :root {
+    --musica: #F2E050;
+    --ingles: #A892D0;
+    --lenguaje: #2090FF;
+    --matematica: #5CE85C;
+    --italiano: #FF7EBE;
+    --historia: #C8B898;
+    --ciencias: #90C8F8;
+    --ed-fisica: #F0A020;
+    --orientacion: #F08880;
+    --artes: #D0C8E8;
+    --tecnologia: #88D888;
+    --religion: #F0A030;
+    --break-bg: #F5F5F0;
+    --lunch-bg: #EAEAE0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: #f8f9fa;
+    padding: 20px;
+    color: #333;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 1.6rem;
+    margin-bottom: 4px;
+    color: #222;
+  }
+
+  .subtitle {
+    text-align: center;
+    font-size: 0.95rem;
+    color: #666;
+    margin-bottom: 20px;
+  }
+
+  .schedule-wrapper {
+    overflow-x: auto;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    min-width: 800px;
+  }
+
+  th {
+    background: #2c3e50;
+    color: white;
+    padding: 10px 6px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  th:first-child {
+    width: 90px;
+  }
+
+  td {
+    padding: 6px 8px;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid #000;
+    font-size: 0.8rem;
+    height: 48px;
+  }
+
+  td.time {
+    background: #fafafa;
+    font-weight: 600;
+    font-size: 0.75rem;
+    color: #555;
+    white-space: nowrap;
+  }
+
+  td.subject {
+    font-weight: 600;
+    border-radius: 0;
+    line-height: 1.3;
+    position: relative;
+  }
+
+  td.subject .teacher {
+    display: block;
+    font-weight: 400;
+    font-size: 0.7rem;
+    opacity: 0.75;
+    margin-top: 2px;
+  }
+
+  td.break-cell {
+    background: #E0E0E0;
+    color: #000;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+  }
+
+  td.lunch-cell {
+    background: #D0D0D0;
+    color: #000;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+
+  td.empty {
+    background: #fafafa;
+  }
+
+  /* Subject colors — text contrast */
+  .bg-musica { background: var(--musica); color: #000; }
+  .bg-ingles { background: var(--ingles); color: #000; }
+  .bg-lenguaje { background: var(--lenguaje); color: #000; }
+  .bg-matematica { background: var(--matematica); color: #000; }
+  .bg-italiano { background: var(--italiano); color: #000; }
+  .bg-historia { background: var(--historia); color: #000; }
+  .bg-ciencias { background: var(--ciencias); color: #000; }
+  .bg-ed-fisica { background: var(--ed-fisica); color: #000; }
+  .bg-orientacion { background: var(--orientacion); color: #000; }
+  .bg-artes { background: var(--artes); color: #000; }
+  .bg-tecnologia { background: var(--tecnologia); color: #000; }
+  .bg-religion { background: var(--religion); color: #000; }
+
+  /* Legend */
+  .legend {
+    max-width: 1200px;
+    margin: 20px auto 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+  }
+
+  .legend-swatch {
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.15);
+    flex-shrink: 0;
+  }
+
+  .note {
+    max-width: 1200px;
+    margin: 16px auto 0;
+    font-size: 0.8rem;
+    color: #777;
+    text-align: center;
+  }
+
+  @media print {
+    body { padding: 0; background: white; }
+    table { min-width: unset; }
+    th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    td.subject { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+
+  @media (max-width: 600px) {
+    body { padding: 8px; }
+    h1 { font-size: 1.2rem; }
+    td { font-size: 0.7rem; padding: 4px; height: 42px; }
+    td.subject .teacher { font-size: 0.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Horario 2DO BASICO D - 2026</h1>
+
+<div class="schedule-wrapper">
+<table>
+<thead>
+  <tr>
+    <th>Hora</th>
+    <th>Lunes</th>
+    <th>Martes</th>
+    <th>Miercoles</th>
+    <th>Jueves</th>
+    <th>Viernes</th>
+  </tr>
+</thead>
+<tbody>
+  <!-- Block 1: 8:00–8:45 -->
+  <tr>
+    <td class="time">8:00 – 8:45</td>
+    <td class="subject bg-musica">Musica<span class="teacher">E. Soto</span></td>
+    <td class="subject bg-ingles">Ingles<span class="teacher">M. Bustos</span></td>
+    <td class="subject bg-lenguaje">Lenguaje<span class="teacher">C. Jaramillo</span></td>
+    <td class="subject bg-matematica">Matematica<span class="teacher">M. Tagliavanti</span></td>
+    <td class="subject bg-orientacion">Orientacion<span class="teacher">C. Jaramillo</span></td>
+  </tr>
+  <!-- Block 2: 8:45–9:30 -->
+  <tr>
+    <td class="time">8:45 – 9:30</td>
+    <td class="subject bg-musica">Musica<span class="teacher">E. Soto</span></td>
+    <td class="subject bg-ingles">Ingles<span class="teacher">M. Bustos</span></td>
+    <td class="subject bg-lenguaje">Lenguaje<span class="teacher">C. Jaramillo</span></td>
+    <td class="subject bg-matematica">Matematica<span class="teacher">M. Tagliavanti</span></td>
+    <td class="subject bg-orientacion">Orientacion<span class="teacher">C. Jaramillo</span></td>
+  </tr>
+  <!-- RECREO 9:30–9:45 -->
+  <tr>
+    <td class="time">9:30 – 9:45</td>
+    <td class="break-cell" colspan="5">Recreo</td>
+  </tr>
+  <!-- Block 3: 9:45–10:30 -->
+  <tr>
+    <td class="time">9:45 – 10:30</td>
+    <td class="subject bg-ingles">Ingles<span class="teacher">M. Bustos</span></td>
+    <td class="subject bg-historia">Historia y Geo.<span class="teacher">M. Tagliavanti</span></td>
+    <td class="subject bg-italiano">Italiano<span class="teacher">M. Tagliavanti</span></td>
+    <td class="subject bg-lenguaje">Lenguaje<span class="teacher">C. Jaramillo</span></td>
+    <td class="subject bg-italiano">Italiano<span class="teacher">M. Tagliavanti</span></td>
+  </tr>
+  <!-- Block 4: 10:30–11:15 -->
+  <tr>
+    <td class="time">10:30 – 11:15</td>
+    <td class="subject bg-tecnologia">Tecnologia<span class="teacher">M. Espinosa</span></td>
+    <td class="subject bg-historia">Historia y Geo.<span class="teacher">M. Tagliavanti</span></td>
+    <td class="subject bg-italiano">Italiano<span class="teacher">M. Tagliavanti</span></td>
+    <td class="subject bg-lenguaje">Lenguaje<span class="teacher">C. Jaramillo</span></td>
+    <td class="subject bg-italiano">Italiano<span class="teacher">M. Tagliavanti</span></td>
+  </tr>
+  <!-- RECREO 11:15–11:30 -->
+  <tr>
+    <td class="time">11:15 – 11:30</td>
+    <td class="break-cell" colspan="5">Recreo</td>
+  </tr>
+  <!-- Block 5: 11:30–12:15 -->
+  <tr>
+    <td class="time">11:30 – 12:15</td>
+    <td class="subject bg-italiano">Italiano<span class="teacher">M. Tagliavanti</span></td>
+    <td class="subject bg-matematica">Matematica<span class="teacher">M. Tagliavanti</span></td>
+    <td class="subject bg-ciencias">Ciencias Nat.<span class="teacher">M. Tagliavanti</span></td>
+    <td class="subject bg-historia">Historia y Geo.<span class="teacher">M. Tagliavanti</span></td>
+    <td class="subject bg-ingles">Ingles<span class="teacher">M. Bustos</span></td>
+  </tr>
+  <!-- Block 6: 12:15–13:00 -->
+  <tr>
+    <td class="time">12:15 – 13:00</td>
+    <td class="subject bg-italiano">Italiano<span class="teacher">M. Tagliavanti</span></td>
+    <td class="subject bg-matematica">Matematica<span class="teacher">M. Tagliavanti</span></td>
+    <td class="subject bg-ed-fisica">Ed. Fisica<span class="teacher">J. Santelices</span></td>
+    <td class="subject bg-historia">Historia y Geo.<span class="teacher">M. Tagliavanti</span></td>
+    <td class="subject bg-matematica">Matematica<span class="teacher">M. Tagliavanti</span></td>
+  </tr>
+  <!-- ALMUERZO 13:00–13:45 (Mon, Tue, Thu only) -->
+  <tr>
+    <td class="time">13:00 – 13:45</td>
+    <td class="lunch-cell"><strong>ALMUERZO</strong></td>
+    <td class="lunch-cell"><strong>ALMUERZO</strong></td>
+    <td class="subject bg-ed-fisica">Ed. Fisica<span class="teacher">J. Santelices</span></td>
+    <td class="lunch-cell"><strong>ALMUERZO</strong></td>
+    <td class="subject bg-matematica">Matematica<span class="teacher">M. Tagliavanti</span></td>
+  </tr>
+  <!-- Block 7: 13:45–14:30 -->
+  <tr>
+    <td class="time">13:45 – 14:30</td>
+    <td class="subject bg-lenguaje">Lenguaje<span class="teacher">C. Jaramillo</span></td>
+    <td class="subject bg-ciencias">Ciencias Nat.<span class="teacher">M. Tagliavanti</span></td>
+    <td class="empty"></td>
+    <td class="subject bg-artes">Artes Visuales<span class="teacher">C. Jaramillo</span></td>
+    <td class="empty"></td>
+  </tr>
+  <!-- Block 8: 14:30–15:15 -->
+  <tr>
+    <td class="time">14:30 – 15:15</td>
+    <td class="subject bg-ed-fisica">Ed. Fisica<span class="teacher">J. Santelices</span></td>
+    <td class="subject bg-ciencias">Ciencias Nat.<span class="teacher">M. Tagliavanti</span></td>
+    <td class="empty"></td>
+    <td class="subject bg-artes">Artes Visuales<span class="teacher">C. Jaramillo</span></td>
+    <td class="empty"></td>
+  </tr>
+  <!-- Block 9: 15:15–16:00 -->
+  <tr>
+    <td class="time">15:15 – 16:00</td>
+    <td class="subject bg-ed-fisica">Ed. Fisica<span class="teacher">J. Santelices</span></td>
+    <td class="subject bg-lenguaje">Lenguaje<span class="teacher">C. Jaramillo</span></td>
+    <td class="empty"></td>
+    <td class="subject bg-religion">Religion<span class="teacher">J. Aravena</span></td>
+    <td class="empty"></td>
+  </tr>
+</tbody>
+</table>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-swatch" style="background:#F2E050"></div>Musica</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:#A892D0"></div>Ingles</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:#2090FF"></div>Lenguaje</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:#5CE85C"></div>Matematica</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:#FF7EBE"></div>Italiano</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:#C8B898"></div>Historia y Geo.</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:#90C8F8"></div>Ciencias Nat.</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:#F0A020"></div>Ed. Fisica</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:#88D888"></div>Tecnologia</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:#D0C8E8"></div>Artes Visuales</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:#F08880"></div>Orientacion</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:#F0A030"></div>Religion</div>
+</div>
+
+<p class="note">Miercoles y Viernes: sin almuerzo en el colegio, salen a las 13:45</p>
+
+</body>
+</html>
