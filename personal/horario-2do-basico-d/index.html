@@ -55,7 +55,7 @@
     width: 100%;
     border-collapse: collapse;
     table-layout: fixed;
-    min-width: 800px;
+    min-width: 0;
   }
 
   th {
@@ -68,22 +68,24 @@
   }
 
   th:first-child {
-    width: 90px;
+    width: 70px;
   }
 
   td {
-    padding: 6px 8px;
+    padding: 4px 3px;
     text-align: center;
     vertical-align: middle;
     border: 1px solid #000;
-    font-size: 0.8rem;
-    height: 48px;
+    font-size: 0.75rem;
+    height: 42px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
 
   td.time {
     background: #fafafa;
     font-weight: 600;
-    font-size: 0.75rem;
+    font-size: 0.65rem;
     color: #555;
     white-space: nowrap;
   }
@@ -177,10 +179,14 @@
   }
 
   @media (max-width: 600px) {
-    body { padding: 8px; }
-    h1 { font-size: 1.2rem; }
-    td { font-size: 0.7rem; padding: 4px; height: 42px; }
-    td.subject .teacher { font-size: 0.6rem; }
+    body { padding: 4px; }
+    h1 { font-size: 1rem; }
+    th { padding: 6px 2px; font-size: 0.65rem; letter-spacing: 0; }
+    th:first-child { width: 52px; }
+    td { font-size: 0.6rem; padding: 3px 2px; height: 36px; }
+    td.time { font-size: 0.55rem; }
+    td.subject .teacher { font-size: 0.5rem; }
+    td.break-cell, td.lunch-cell { font-size: 0.7rem; }
   }
 </style>
 </head>
