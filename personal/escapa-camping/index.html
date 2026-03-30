@@ -161,7 +161,26 @@
       text-align: left;
     }
 
-    @media (max-width: 600px) {
+    /* Landscape mobile: fit everything on screen */
+    @media (max-height: 500px) and (orientation: landscape) {
+      body { padding: 8px; }
+      .header { margin-bottom: 8px; }
+      .header h1 { font-size: 1.1rem; }
+      .header p { font-size: 0.75rem; }
+      .banner { max-height: 80px; margin-bottom: 8px; }
+      table { min-width: unset; width: 100%; table-layout: fixed; }
+      thead th { padding: 6px 4px; }
+      thead .camp-logo { height: 28px; }
+      thead .camp-name { font-size: 0.8rem; }
+      thead .camp-meta { font-size: 0.65rem; }
+      thead th.col-parent { min-width: 120px; }
+      tbody td { padding: 4px 4px; font-size: 0.75rem; }
+      .kid-size, .parent-size { font-size: 0.65rem; }
+      tfoot td { padding: 6px 4px; font-size: 0.75rem; }
+    }
+
+    /* Portrait mobile */
+    @media (max-width: 600px) and (orientation: portrait) {
       body { padding: 8px; }
       .header h1 { font-size: 1.4rem; }
       thead .camp-logo { height: 36px; }
