@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ES CA PA — Camping Padre-Hijo SIVM 2026</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #f0f2f5;
+      color: #1a1a2e;
+      padding: 24px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 4px;
+    }
+
+    .header p {
+      font-size: 1rem;
+      color: #666;
+    }
+
+    .banner {
+      width: 100%;
+      max-height: 200px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 16px;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      background: #fff;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 800px;
+    }
+
+    /* Column header colors — one per camp */
+    .col-esploratori { background: #4caf50; color: #fff; }
+    .col-campeggio  { background: #2196f3; color: #fff; }
+    .col-campisti   { background: #ff9800; color: #fff; }
+    .col-papimono   { background: #9c27b0; color: #fff; }
+
+    thead th {
+      padding: 14px 12px;
+      font-size: 0.95rem;
+      text-align: center;
+      border-bottom: 2px solid #e0e0e0;
+    }
+
+    thead th.col-parent {
+      background: #37474f;
+      color: #fff;
+      text-align: left;
+      min-width: 200px;
+    }
+
+    thead .camp-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    thead .camp-meta {
+      font-size: 0.75rem;
+      font-weight: 400;
+      opacity: 0.9;
+      display: block;
+      margin-top: 2px;
+    }
+
+    thead .camp-logo {
+      height: 48px;
+      margin-bottom: 6px;
+      border-radius: 6px;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid #eee;
+    }
+
+    tbody tr:nth-child(even) {
+      background: #fafafa;
+    }
+
+    tbody tr:hover {
+      background: #e8f0fe;
+    }
+
+    tbody td {
+      padding: 10px 12px;
+      vertical-align: top;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    tbody td.parent-cell {
+      text-align: left;
+      font-weight: 600;
+    }
+
+    .parent-name { display: block; }
+    .parent-size {
+      display: block;
+      font-weight: 400;
+      font-size: 0.8rem;
+      color: #888;
+    }
+
+    .kid-entry {
+      margin-bottom: 4px;
+    }
+
+    .kid-name { display: block; font-weight: 500; }
+    .kid-size {
+      display: block;
+      font-size: 0.8rem;
+      color: #888;
+    }
+
+    .empty-cell {
+      color: #ccc;
+    }
+
+    /* Summary row */
+    tfoot td {
+      padding: 12px;
+      font-weight: 700;
+      background: #263238;
+      color: #fff;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    tfoot td.parent-cell {
+      text-align: left;
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 8px; }
+      .header h1 { font-size: 1.4rem; }
+      thead .camp-logo { height: 36px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <img src="img/banner.png" alt="Camping" class="banner">
+    <h1>ES CA PA — Camping Padre-Hijo 2026</h1>
+    <p>Scuola Italiana Vittorio Montiglio</p>
+  </div>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th class="col-parent" rowspan="2">Apoderado</th>
+          <th class="col-esploratori">
+            <img class="camp-logo" src="img/esploratori.png" alt=""><br>
+            <span class="camp-name">Esploratori</span>
+            <span class="camp-meta">1° Básico · 20-22 Nov</span>
+          </th>
+          <th class="col-campeggio">
+            <img class="camp-logo" src="img/campeggio.png" alt=""><br>
+            <span class="camp-name">Campeggio</span>
+            <span class="camp-meta">2° Básico · 06-08 Nov</span>
+          </th>
+          <th class="col-campisti">
+            <img class="camp-logo" src="img/campisti.png" alt=""><br>
+            <span class="camp-name">Campisti</span>
+            <span class="camp-meta">4° Básico · 13-15 Nov</span>
+          </th>
+          <th class="col-papimono">
+            <img class="camp-logo" src="img/papimono.png" alt=""><br>
+            <span class="camp-name">Papimono</span>
+            <span class="camp-meta">6° Básico · 27-29 Nov</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody id="camping-body">
+
+        <tr>
+          <td class="parent-cell">
+            <span class="parent-name">Carlos Acuña</span>
+            <span class="parent-size">Talla: L</span>
+          </td>
+          <td class="empty-cell">—</td>
+          <td>
+            <div class="kid-entry">
+              <span class="kid-name">Isabela</span>
+              <span class="kid-size">Talla: 8-10</span>
+            </div>
+          </td>
+          <td>
+            <div class="kid-entry">
+              <span class="kid-name">Federico</span>
+              <span class="kid-size">Talla: 12-14</span>
+            </div>
+          </td>
+          <td class="empty-cell">—</td>
+        </tr>
+
+        <tr>
+          <td class="parent-cell">
+            <span class="parent-name">Nicolas Ferrari</span>
+            <span class="parent-size">Talla: XL</span>
+          </td>
+          <td class="empty-cell">—</td>
+          <td class="empty-cell">—</td>
+          <td>
+            <div class="kid-entry">
+              <span class="kid-name">Filippa</span>
+              <span class="kid-size">Talla: 8-10</span>
+            </div>
+          </td>
+          <td>
+            <div class="kid-entry">
+              <span class="kid-name">Luca</span>
+              <span class="kid-size">Talla: 12-14</span>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="parent-cell">
+            <span class="parent-name">Romano Tempesta</span>
+            <span class="parent-size">Talla: M</span>
+          </td>
+          <td class="empty-cell">—</td>
+          <td>
+            <div class="kid-entry">
+              <span class="kid-name">Luca</span>
+              <span class="kid-size">Talla: 4-6</span>
+            </div>
+          </td>
+          <td>
+            <div class="kid-entry">
+              <span class="kid-name">Agustina</span>
+              <span class="kid-size">Talla: 8-10</span>
+            </div>
+          </td>
+          <td class="empty-cell">—</td>
+        </tr>
+
+        <tr>
+          <td class="parent-cell">
+            <span class="parent-name">Leonardo Tiso</span>
+            <span class="parent-size">Talla: L</span>
+          </td>
+          <td>
+            <div class="kid-entry">
+              <span class="kid-name">Max</span>
+              <span class="kid-size">Talla: 4-6</span>
+            </div>
+          </td>
+          <td class="empty-cell">—</td>
+          <td>
+            <div class="kid-entry">
+              <span class="kid-name">Rafaela</span>
+              <span class="kid-size">Talla: 8-10</span>
+            </div>
+          </td>
+          <td class="empty-cell">—</td>
+        </tr>
+
+
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="parent-cell">Total por Camping</td>
+          <td id="count-esploratori">0</td>
+          <td id="count-campeggio">1</td>
+          <td id="count-campisti">1</td>
+          <td id="count-papimono">0</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <script>
+    // Auto-count kids per camp column
+    function updateCounts() {
+      const body = document.getElementById('camping-body');
+      const rows = body.querySelectorAll('tr');
+      const counts = [0, 0, 0, 0]; // esploratori, campeggio, campisti, papimono
+
+      rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        // cells[0] = parent, cells[1..4] = camps
+        for (let i = 1; i <= 4; i++) {
+          const kids = cells[i]?.querySelectorAll('.kid-entry') || [];
+          counts[i - 1] += kids.length;
+        }
+      });
+
+      document.getElementById('count-esploratori').textContent = counts[0];
+      document.getElementById('count-campeggio').textContent = counts[1];
+      document.getElementById('count-campisti').textContent = counts[2];
+      document.getElementById('count-papimono').textContent = counts[3];
+    }
+
+    updateCounts();
+  </script>
+
+</body>
+</html>
