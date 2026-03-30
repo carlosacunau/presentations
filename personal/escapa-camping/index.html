@@ -114,6 +114,11 @@
       <button class="btn" data-sort="apellido" onclick="setSort('apellido')">Apellido</button>
     </div>
     <div class="control-group">
+      <label>Columnas:</label>
+      <button class="btn active" data-col="grado" onclick="setColOrder('grado')">Por Grado</button>
+      <button class="btn" data-col="fecha" onclick="setColOrder('fecha')">Por Fecha</button>
+    </div>
+    <div class="control-group">
       <label>Camping:</label>
       <select class="filter-select" id="filter-camp" onchange="render()">
         <option value="todos">Todos</option>
@@ -190,6 +195,7 @@ const DATA = [{"p": "Alessandro Corte", "ps": "M", "ph": "977655976", "ex": "de 
 let sortBy = 'nombre';
 let sortDir = 1; // 1=asc, -1=desc
 let expandedIdx = null;
+let colOrder = 'grado';
 
 function getFirstName(p) { return p.split(' ')[0].toLowerCase(); }
 function getLastName(p) { const parts = p.split(' '); return parts[parts.length - 1].toLowerCase(); }
@@ -208,6 +214,52 @@ function toggleSortDir() {
   document.getElementById('sort-arrow').textContent = sortDir === 1 ? '▲' : '▼';
   expandedIdx = null;
   render();
+}
+
+function setColOrder(order) {
+  colOrder = order;
+  document.querySelectorAll('.btn[data-col]').forEach(b => b.classList.toggle('active', b.dataset.col === order));
+  expandedIdx = null;
+  updateHeaders();
+  render();
+}
+
+// Column configs: grado order vs fecha order
+const COLS_GRADO = [
+  {key: 'e', name: 'Esploratori', meta: '1° Básico · 20-22 Nov', cls: 'col-esploratori', img: 'img/esploratori.png'},
+  {key: 'c', name: 'Campeggio', meta: '2° Básico · 06-08 Nov', cls: 'col-campeggio', img: 'img/campeggio.png'},
+  {key: 'k', name: 'Campisti', meta: '4° Básico · 13-15 Nov', cls: 'col-campisti', img: 'img/campisti.png'},
+  {key: 'm', name: 'Papimono', meta: '6° Básico · 27-29 Nov', cls: 'col-papimono', img: 'img/papimono.png'}
+];
+const COLS_FECHA = [
+  {key: 'c', name: 'Campeggio', meta: '2° Básico · 06-08 Nov', cls: 'col-campeggio', img: 'img/campeggio.png'},
+  {key: 'k', name: 'Campisti', meta: '4° Básico · 13-15 Nov', cls: 'col-campisti', img: 'img/campisti.png'},
+  {key: 'e', name: 'Esploratori', meta: '1° Básico · 20-22 Nov', cls: 'col-esploratori', img: 'img/esploratori.png'},
+  {key: 'm', name: 'Papimono', meta: '6° Básico · 27-29 Nov', cls: 'col-papimono', img: 'img/papimono.png'}
+];
+
+function getCols() { return colOrder === 'fecha' ? COLS_FECHA : COLS_GRADO; }
+
+function updateHeaders() {
+  const cols = getCols();
+  const headerRow = document.querySelector('thead tr');
+  // Remove all th except the first (Apoderado)
+  while (headerRow.children.length > 1) headerRow.removeChild(headerRow.lastChild);
+  cols.forEach(col => {
+    const th = document.createElement('th');
+    th.className = col.cls;
+    th.innerHTML = '<img class="camp-logo" src="' + col.img + '" alt=""><br><span class="camp-name">' + col.name + '</span><span class="camp-meta">' + col.meta + '</span>';
+    headerRow.appendChild(th);
+  });
+  // Update footer order
+  const footerRow = document.querySelector('tfoot tr');
+  while (footerRow.children.length > 1) footerRow.removeChild(footerRow.lastChild);
+  cols.forEach(col => {
+    const td = document.createElement('td');
+    td.id = 'count-' + col.key;
+    td.textContent = '0';
+    footerRow.appendChild(td);
+  });
 }
 
 function getAllSizes() {
@@ -231,7 +283,8 @@ function hasSize(d, size) {
 
 function hasCamp(d, camp) {
   const map = {esploratori: 'e', campeggio: 'c', campisti: 'k', papimono: 'm'};
-  return d[map[camp]].length > 0;
+  const key = map[camp];
+  return key ? d[key].length > 0 : false;
 }
 
 function kidsHtml(arr) {
@@ -291,23 +344,24 @@ function render() {
     return;
   }
 
-  const counts = {esploratori: 0, campeggio: 0, campisti: 0, papimono: 0};
+  const counts = {e: 0, c: 0, k: 0, m: 0};
   let html = '';
   filtered.forEach((d, i) => {
-    counts.esploratori += d.e.length;
-    counts.campeggio += d.c.length;
-    counts.campisti += d.k.length;
-    counts.papimono += d.m.length;
+    counts.e += d.e.length;
+    counts.c += d.c.length;
+    counts.k += d.k.length;
+    counts.m += d.m.length;
 
+    const cols = getCols();
     html += '<tr onclick="toggleDetail(' + i + ')">' +
       '<td class="parent-cell"><span class="parent-name">' + d.p + '</span><span class="parent-size">Talla: ' + d.ps + '</span></td>' +
-      kidsHtml(d.e) + kidsHtml(d.c) + kidsHtml(d.k) + kidsHtml(d.m) +
+      cols.map(col => kidsHtml(d[col.key])).join('') +
       '</tr>';
     if (expandedIdx === i) html += detailHtml(d, i);
   });
 
   body.innerHTML = html;
-  Object.keys(counts).forEach(c => document.getElementById('count-' + c).textContent = counts[c]);
+  Object.keys(counts).forEach(c => { const el = document.getElementById('count-' + c); if (el) el.textContent = counts[c]; });
   document.getElementById('count-display').textContent = filtered.length + ' de ' + DATA.length + ' apoderados';
 }
 
