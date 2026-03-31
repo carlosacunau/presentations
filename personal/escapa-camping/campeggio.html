@@ -102,9 +102,10 @@ function setSort(type) {
 }
 
 function render() {
-  const searchTerm = document.getElementById('search-box').value.toLowerCase().trim();
+  function norm(s) { return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase(); }
+  const searchTerm = norm(document.getElementById('search-box').value.trim());
   const sortFn = sortBy === 'apellido' ? getLastName : getFirstName;
-  const filtered = searchTerm ? DATA.filter(d => d.p.toLowerCase().includes(searchTerm)) : DATA;
+  const filtered = searchTerm ? DATA.filter(d => norm(d.p).includes(searchTerm)) : DATA;
   const sorted = [...filtered].sort((a, b) => {
     const va = sortFn(a.p), vb = sortFn(b.p);
     return va.localeCompare(vb, 'es', {sensitivity: 'base'}) * sortDir;

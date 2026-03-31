@@ -318,9 +318,10 @@ function render() {
   const campFilter = document.getElementById('filter-camp').value;
   const sizeFilter = document.getElementById('filter-size').value;
 
-  const searchTerm = document.getElementById('search-box').value.toLowerCase().trim();
+  function norm(s) { return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase(); }
+  const searchTerm = norm(document.getElementById('search-box').value.trim());
   let filtered = DATA.filter(d => {
-    if (searchTerm && !d.p.toLowerCase().includes(searchTerm)) return false;
+    if (searchTerm && !norm(d.p).includes(searchTerm)) return false;
     if (campFilter !== 'todos' && !hasCamp(d, campFilter)) return false;
     if (sizeFilter !== 'todas' && !hasSize(d, sizeFilter)) return false;
     return true;
