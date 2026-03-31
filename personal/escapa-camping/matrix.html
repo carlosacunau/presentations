@@ -134,6 +134,7 @@
         <option value="todas">Todas</option>
       </select>
     </div>
+    <div class="control-group"><label>Buscar:</label><input type="text" id="search-box" class="filter-select" placeholder="Nombre..." oninput="render()" style="min-width:140px;"></div>
     <div class="control-group" style="margin-left:auto;">
       <span id="count-display" style="font-size:0.85rem;color:#666;"></span>
     </div>
@@ -317,7 +318,9 @@ function render() {
   const campFilter = document.getElementById('filter-camp').value;
   const sizeFilter = document.getElementById('filter-size').value;
 
+  const searchTerm = document.getElementById('search-box').value.toLowerCase().trim();
   let filtered = DATA.filter(d => {
+    if (searchTerm && !d.p.toLowerCase().includes(searchTerm)) return false;
     if (campFilter !== 'todos' && !hasCamp(d, campFilter)) return false;
     if (sizeFilter !== 'todas' && !hasSize(d, sizeFilter)) return false;
     return true;

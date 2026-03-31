@@ -60,6 +60,7 @@
       <button class="btn active" data-sort="nombre" onclick="setSort('nombre')">Nombre</button>
       <button class="btn" data-sort="apellido" onclick="setSort('apellido')">Apellido</button>
     </div>
+    <div class="control-group"><label>Buscar:</label><input type="text" id="search-box" class="filter-select" placeholder="Nombre..." oninput="render()" style="min-width:140px;"></div>
     <div class="control-group" style="margin-left:auto;">
       <span id="count-display" style="font-size:0.85rem;color:#666;"></span>
     </div>
@@ -101,8 +102,10 @@ function setSort(type) {
 }
 
 function render() {
+  const searchTerm = document.getElementById('search-box').value.toLowerCase().trim();
   const sortFn = sortBy === 'apellido' ? getLastName : getFirstName;
-  const sorted = [...DATA].sort((a, b) => {
+  const filtered = searchTerm ? DATA.filter(d => d.p.toLowerCase().includes(searchTerm)) : DATA;
+  const sorted = [...filtered].sort((a, b) => {
     const va = sortFn(a.p), vb = sortFn(b.p);
     return va.localeCompare(vb, 'es', {sensitivity: 'base'}) * sortDir;
   });
@@ -122,7 +125,7 @@ function render() {
 
   body.innerHTML = html;
   document.getElementById('count-total').textContent = kidCount + ' niños / ' + sorted.length + ' apoderados';
-  document.getElementById('count-display').textContent = sorted.length + ' apoderados · Actualizado: ' + LAST_UPDATED;
+  document.getElementById('count-display').textContent = sorted.length + ' de ' + DATA.length + ' apoderados · Actualizado: ' + LAST_UPDATED;
 }
 
 render();
