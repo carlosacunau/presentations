@@ -337,7 +337,7 @@ function render() {
   if (!filtered.length) {
     body.innerHTML = '<tr><td colspan="5" class="no-results">No hay resultados para estos filtros</td></tr>';
     ['esploratori','campeggio','campisti','papimono'].forEach(c => document.getElementById('count-' + c).textContent = '0');
-    document.getElementById('count-display').textContent = '0 de ' + DATA.length + ' apoderados';
+    document.getElementById('count-display').textContent = '0 de ' + DATA.length + ' apoderados (0 campistas en total)';
     return;
   }
 
@@ -359,7 +359,9 @@ function render() {
 
   body.innerHTML = html;
   Object.keys(counts).forEach(c => { const el = document.getElementById('count-' + c); if (el) el.textContent = counts[c]; });
-  document.getElementById('count-display').textContent = filtered.length + ' de ' + DATA.length + ' apoderados · Actualizado: ' + LAST_UPDATED;
+  const totalKids = counts.e + counts.c + counts.k + counts.m;
+  const totalCampistas = filtered.length + totalKids;
+  document.getElementById('count-display').textContent = filtered.length + ' de ' + DATA.length + ' apoderados (' + totalCampistas + ' campistas en total) · Actualizado: ' + LAST_UPDATED;
 }
 
 function toggleDetail(idx) {

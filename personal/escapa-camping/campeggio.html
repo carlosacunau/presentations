@@ -126,7 +126,8 @@ function render() {
 
   body.innerHTML = html;
   document.getElementById('count-total').textContent = kidCount + ' niños / ' + sorted.length + ' apoderados';
-  document.getElementById('count-display').textContent = sorted.length + ' de ' + DATA.length + ' apoderados · Actualizado: ' + LAST_UPDATED;
+  const totalCampistas = sorted.length + kidCount;
+  document.getElementById('count-display').textContent = sorted.length + ' de ' + DATA.length + ' apoderados (' + totalCampistas + ' campistas en total) · Actualizado: ' + LAST_UPDATED;
 }
 
 render();
