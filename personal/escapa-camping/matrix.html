@@ -173,10 +173,17 @@
       <tfoot>
         <tr>
           <td class="parent-cell">Total por Camping</td>
-          <td id="count-esploratori">0</td>
-          <td id="count-campeggio">0</td>
-          <td id="count-campisti">0</td>
-          <td id="count-papimono">0</td>
+          <td id="count-e">0</td>
+          <td id="count-c">0</td>
+          <td id="count-k">0</td>
+          <td id="count-m">0</td>
+        </tr>
+        <tr style="background:#1a252b;">
+          <td class="parent-cell">Total Campistas</td>
+          <td id="total-e">0</td>
+          <td id="total-c">0</td>
+          <td id="total-k">0</td>
+          <td id="total-m">0</td>
         </tr>
       </tfoot>
     </table>
@@ -246,13 +253,19 @@ function updateHeaders() {
     headerRow.appendChild(th);
   });
   // Update footer order
-  const footerRow = document.querySelector('tfoot tr');
-  while (footerRow.children.length > 1) footerRow.removeChild(footerRow.lastChild);
+  const footerRows = document.querySelectorAll('tfoot tr');
+  footerRows.forEach(row => {
+    while (row.children.length > 1) row.removeChild(row.lastChild);
+  });
   cols.forEach(col => {
-    const td = document.createElement('td');
-    td.id = 'count-' + col.key;
-    td.textContent = '0';
-    footerRow.appendChild(td);
+    const td1 = document.createElement('td');
+    td1.id = 'count-' + col.key;
+    td1.textContent = '0';
+    footerRows[0].appendChild(td1);
+    const td2 = document.createElement('td');
+    td2.id = 'total-' + col.key;
+    td2.textContent = '0';
+    footerRows[1].appendChild(td2);
   });
 }
 
@@ -336,18 +349,23 @@ function render() {
   const body = document.getElementById('camping-body');
   if (!filtered.length) {
     body.innerHTML = '<tr><td colspan="5" class="no-results">No hay resultados para estos filtros</td></tr>';
-    ['esploratori','campeggio','campisti','papimono'].forEach(c => document.getElementById('count-' + c).textContent = '0');
+    ['e','c','k','m'].forEach(c => { var el; el = document.getElementById('count-' + c); if (el) el.textContent = '0'; el = document.getElementById('total-' + c); if (el) el.textContent = '0'; });
     document.getElementById('count-display').textContent = '0 de ' + DATA.length + ' apoderados (0 campistas en total)';
     return;
   }
 
   const counts = {e: 0, c: 0, k: 0, m: 0};
+  const parents = {e: 0, c: 0, k: 0, m: 0};
   let html = '';
   filtered.forEach((d, i) => {
     counts.e += d.e.length;
     counts.c += d.c.length;
     counts.k += d.k.length;
     counts.m += d.m.length;
+    if (d.e.length) parents.e++;
+    if (d.c.length) parents.c++;
+    if (d.k.length) parents.k++;
+    if (d.m.length) parents.m++;
 
     const cols = getCols();
     html += '<tr onclick="toggleDetail(' + i + ')">' +
@@ -359,6 +377,7 @@ function render() {
 
   body.innerHTML = html;
   Object.keys(counts).forEach(c => { const el = document.getElementById('count-' + c); if (el) el.textContent = counts[c]; });
+  Object.keys(counts).forEach(c => { const el = document.getElementById('total-' + c); if (el) el.textContent = counts[c] + parents[c]; });
   const totalKids = counts.e + counts.c + counts.k + counts.m;
   const totalCampistas = filtered.length + totalKids;
   document.getElementById('count-display').textContent = filtered.length + ' de ' + DATA.length + ' apoderados (' + totalCampistas + ' campistas en total) · Actualizado: ' + LAST_UPDATED;
