@@ -5,7 +5,7 @@ and updates matrix.html + campeggio.html.
 
 Runs both locally and in GitHub Actions.
 """
-import json, re, os, sys, datetime, unicodedata
+import json, re, os, sys, datetime, unicodedata, zoneinfo
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
@@ -215,7 +215,7 @@ if __name__ == '__main__':
 
     rows = read_sheet()
     data = process_rows(rows)
-    timestamp = datetime.datetime.now().strftime('%d/%m %H:%M')
+    timestamp = datetime.datetime.now(zoneinfo.ZoneInfo('America/Santiago')).strftime('%d/%m %H:%M')
 
     update_html(os.path.join(script_dir, 'matrix.html'), data, timestamp)
 
