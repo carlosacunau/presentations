@@ -145,6 +145,42 @@
     }
     .cal-icon { font-size: 0.9rem; }
 
+    .add-all {
+      max-width: 900px;
+      margin: 20px auto 0;
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+    .add-all-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.15s;
+    }
+    .add-all-google {
+      background: #238636;
+      color: #fff;
+    }
+    .add-all-google:hover { background: #2ea043; }
+    .add-all-outlook {
+      background: #1f6feb;
+      color: #fff;
+    }
+    .add-all-outlook:hover { background: #388bfd; }
+    .add-all-ics {
+      background: #30363d;
+      color: #c9d1d9;
+    }
+    .add-all-ics:hover { background: #484f58; }
+
     .footer {
       text-align: center;
       margin-top: 24px;
@@ -187,6 +223,12 @@
       </thead>
       <tbody id="schedule-body"></tbody>
     </table>
+  </div>
+
+  <div class="add-all">
+    <button class="add-all-btn add-all-google" onclick="addAllGoogle()">📅 Agregar todos a Google Calendar</button>
+    <button class="add-all-btn add-all-outlook" onclick="downloadICS('outlook')">📆 Agregar todos a Outlook</button>
+    <button class="add-all-btn add-all-ics" onclick="downloadICS('ics')">📁 Descargar .ics</button>
   </div>
 
   <div class="footer">
@@ -268,6 +310,49 @@ function render() {
       `}</td>
     `;
     tbody.appendChild(tr);
+  });
+}
+
+function generateICS() {
+  const events = matches.filter(m => m.rival);
+  let ics = 'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Luperca FC//Babbo Cannoniere//ES\r\nCALSCALE:GREGORIAN\r\nX-WR-CALNAME:Luperca - Babbo Cannoniere\r\nX-WR-TIMEZONE:America/Santiago\r\n';
+
+  events.forEach(m => {
+    const [y, mo, d] = m.fecha.split('-');
+    const [hh, mm] = m.hora.split(':');
+    const endH = String(parseInt(hh) + 1).padStart(2, '0');
+    const uid = `luperca-j${m.j}-2026@babbo`;
+    ics += 'BEGIN:VEVENT\r\n';
+    ics += `DTSTART;TZID=America/Santiago:${y}${mo}${d}T${hh}${mm}00\r\n`;
+    ics += `DTEND;TZID=America/Santiago:${y}${mo}${d}T${endH}${mm}00\r\n`;
+    ics += `SUMMARY:${TEAM} vs ${m.rival} - Babbo Cannoniere\r\n`;
+    ics += `DESCRIPTION:Jornada ${m.j} - ${m.cancha}\\nBabbo Cannoniere Apertura 2026\r\n`;
+    ics += `LOCATION:${LOCATION}\r\n`;
+    ics += `UID:${uid}\r\n`;
+    ics += 'END:VEVENT\r\n';
+  });
+
+  ics += 'END:VCALENDAR\r\n';
+  return ics;
+}
+
+function downloadICS(type) {
+  const ics = generateICS();
+  const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'luperca-apertura-2026.ics';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function addAllGoogle() {
+  const playMatches = matches.filter(m => m.rival);
+  playMatches.forEach((m, i) => {
+    setTimeout(() => {
+      window.open(toGoogleCalUrl(m), '_blank');
+    }, i * 600);
   });
 }
 
