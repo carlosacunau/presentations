@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luperca - Babbo Cannoniere Apertura 2026</title>
+  <meta property="og:title" content="Luperca - Calendario Apertura 2026">
+  <meta property="og:description" content="Babbo Cannoniere - Scuola Italiana Vittorio Montiglio">
+  <meta property="og:type" content="website">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+      padding: 24px;
+      min-height: 100vh;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .header img {
+      height: 120px;
+      border-radius: 50%;
+      margin-bottom: 12px;
+      border: 3px solid #30363d;
+    }
+    .header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    .header .subtitle {
+      font-size: 1rem;
+      color: #8b949e;
+      margin-top: 4px;
+    }
+    .header .team-name {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 6px 24px;
+      background: linear-gradient(135deg, #8b0000, #cc0000);
+      color: #fff;
+      border-radius: 20px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .table-wrapper {
+      max-width: 900px;
+      margin: 0 auto;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+      background: #161b22;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    thead th {
+      padding: 14px 16px;
+      font-size: 0.85rem;
+      text-align: left;
+      background: #21262d;
+      color: #8b949e;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid #30363d;
+    }
+    tbody tr {
+      border-bottom: 1px solid #21262d;
+      transition: background 0.15s;
+    }
+    tbody tr:hover {
+      background: #1c2128;
+    }
+    tbody tr.libre {
+      background: #1a1a2e;
+      opacity: 0.6;
+    }
+    tbody td {
+      padding: 12px 16px;
+      font-size: 0.95rem;
+      vertical-align: middle;
+    }
+    .jornada {
+      font-weight: 700;
+      color: #58a6ff;
+    }
+    .dia { color: #8b949e; }
+    .fecha { color: #c9d1d9; }
+    .hora { color: #c9d1d9; font-weight: 600; }
+    .cancha { color: #8b949e; font-size: 0.85rem; }
+    .rival {
+      font-weight: 700;
+      color: #f0f6fc;
+    }
+    .libre-tag {
+      display: inline-block;
+      padding: 3px 12px;
+      background: #30363d;
+      color: #8b949e;
+      border-radius: 10px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    .cal-links {
+      display: flex;
+      gap: 8px;
+    }
+    .cal-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.15s;
+      cursor: pointer;
+    }
+    .cal-google {
+      background: #1a3a1a;
+      color: #3fb950;
+      border: 1px solid #238636;
+    }
+    .cal-google:hover {
+      background: #238636;
+      color: #fff;
+    }
+    .cal-outlook {
+      background: #1a2a3a;
+      color: #58a6ff;
+      border: 1px solid #1f6feb;
+    }
+    .cal-outlook:hover {
+      background: #1f6feb;
+      color: #fff;
+    }
+    .cal-icon { font-size: 0.9rem; }
+
+    .footer {
+      text-align: center;
+      margin-top: 24px;
+      color: #484f58;
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 700px) {
+      body { padding: 8px; }
+      .header h1 { font-size: 1.4rem; }
+      table { font-size: 0.85rem; }
+      thead th, tbody td { padding: 8px 6px; }
+      .cal-links { flex-direction: column; gap: 4px; }
+      .cal-btn { font-size: 0.7rem; padding: 4px 8px; }
+      .hide-mobile { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <img src="luperca.png" alt="Luperca FC">
+    <h1>Babbo Cannoniere</h1>
+    <div class="subtitle">Apertura 2026 -- Scuola Italiana Vittorio Montiglio</div>
+    <div class="team-name">LUPERCA</div>
+  </div>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>J</th>
+          <th>Dia</th>
+          <th>Fecha</th>
+          <th>Hora</th>
+          <th class="hide-mobile">Cancha</th>
+          <th>Rival</th>
+          <th>Calendario</th>
+        </tr>
+      </thead>
+      <tbody id="schedule-body"></tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    Luperca -- Babbo Cannoniere Apertura 2026
+  </div>
+
+<script>
+const LOCATION = "Scuola Italiana Vittorio Montiglio, Santiago, Chile";
+const TEAM = "Luperca";
+
+const matches = [
+  { j: 1,  dia: "Jueves",  fecha: "2026-04-09", hora: "21:00", cancha: "Cancha 1", rival: "Bestia Negra" },
+  { j: 2,  dia: "Jueves",  fecha: "2026-04-16", hora: "20:00", cancha: "Cancha 2", rival: "Ragusa" },
+  { j: 3,  dia: "Martes",  fecha: "2026-04-21", hora: null,     cancha: null,        rival: null },
+  { j: 4,  dia: "Martes",  fecha: "2026-04-28", hora: "20:00", cancha: "Cancha 2", rival: "Parrilleros" },
+  { j: 5,  dia: "Jueves",  fecha: "2026-05-07", hora: "21:00", cancha: "Cancha 1", rival: "Inter" },
+  { j: 6,  dia: "Jueves",  fecha: "2026-05-14", hora: "20:00", cancha: "Cancha 1", rival: "Peroni" },
+  { j: 7,  dia: "Martes",  fecha: "2026-05-19", hora: "19:00", cancha: "Cancha 1", rival: "Strega" },
+  { j: 8,  dia: "Jueves",  fecha: "2026-05-28", hora: "21:00", cancha: "Cancha 1", rival: "AMR" },
+  { j: 9,  dia: "Jueves",  fecha: "2026-06-04", hora: "19:00", cancha: "Cancha 1", rival: "Professores" },
+  { j: 10, dia: "Jueves",  fecha: "2026-06-11", hora: "21:00", cancha: "Cancha 1", rival: "Fatiga" },
+  { j: 11, dia: "Jueves",  fecha: "2026-06-18", hora: "20:00", cancha: "Cancha 1", rival: "Bud Spencer" },
+];
+
+function formatDate(iso) {
+  const [y, m, d] = iso.split('-');
+  const months = ['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  return `${parseInt(d)} ${months[parseInt(m)]}`;
+}
+
+function toGoogleCalUrl(m) {
+  const [y, mo, d] = m.fecha.split('-');
+  const [hh, mm] = m.hora.split(':');
+  const start = `${y}${mo}${d}T${hh}${mm}00`;
+  const endH = String(parseInt(hh) + 1).padStart(2, '0');
+  const end = `${y}${mo}${d}T${endH}${mm}00`;
+  const title = encodeURIComponent(`${TEAM} vs ${m.rival} - Babbo Cannoniere`);
+  const details = encodeURIComponent(`Jornada ${m.j} - ${m.cancha}\nBabbo Cannoniere Apertura 2026`);
+  const loc = encodeURIComponent(LOCATION);
+  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${start}/${end}&ctz=America/Santiago&details=${details}&location=${loc}`;
+}
+
+function toOutlookUrl(m) {
+  const [y, mo, d] = m.fecha.split('-');
+  const [hh, mm] = m.hora.split(':');
+  const startISO = `${y}-${mo}-${d}T${hh}:${mm}:00`;
+  const endH = String(parseInt(hh) + 1).padStart(2, '0');
+  const endISO = `${y}-${mo}-${d}T${endH}:${mm}:00`;
+  const title = encodeURIComponent(`${TEAM} vs ${m.rival} - Babbo Cannoniere`);
+  const body = encodeURIComponent(`Jornada ${m.j} - ${m.cancha}\nBabbo Cannoniere Apertura 2026`);
+  const loc = encodeURIComponent(LOCATION);
+  return `https://outlook.live.com/calendar/0/action/compose?subject=${title}&startdt=${startISO}&enddt=${endISO}&body=${body}&location=${loc}`;
+}
+
+function render() {
+  const tbody = document.getElementById('schedule-body');
+  tbody.innerHTML = '';
+  matches.forEach(m => {
+    const tr = document.createElement('tr');
+    const isLibre = !m.rival;
+    if (isLibre) tr.classList.add('libre');
+
+    tr.innerHTML = `
+      <td class="jornada">${m.j}</td>
+      <td class="dia">${m.dia}</td>
+      <td class="fecha">${formatDate(m.fecha)}</td>
+      <td class="hora">${isLibre ? '--' : m.hora}</td>
+      <td class="cancha hide-mobile">${isLibre ? '--' : m.cancha}</td>
+      <td class="rival">${isLibre ? '<span class="libre-tag">LIBRE</span>' : 'vs ' + m.rival}</td>
+      <td>${isLibre ? '' : `
+        <div class="cal-links">
+          <a class="cal-btn cal-google" href="${toGoogleCalUrl(m)}" target="_blank" rel="noopener">
+            <span class="cal-icon">📅</span> Google
+          </a>
+          <a class="cal-btn cal-outlook" href="${toOutlookUrl(m)}" target="_blank" rel="noopener">
+            <span class="cal-icon">📆</span> Outlook
+          </a>
+        </div>
+      `}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+render();
+</script>
+
+</body>
+</html>
