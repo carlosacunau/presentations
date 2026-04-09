@@ -348,12 +348,15 @@ function downloadICS(type) {
 }
 
 function addAllGoogle() {
-  const playMatches = matches.filter(m => m.rival);
-  playMatches.forEach((m, i) => {
-    setTimeout(() => {
-      window.open(toGoogleCalUrl(m), '_blank');
-    }, i * 600);
-  });
+  const ics = generateICS();
+  const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'luperca-apertura-2026.ics';
+  a.click();
+  URL.revokeObjectURL(url);
+  alert('Archivo .ics descargado. Abrelo o importalo en Google Calendar:\nCalendar → Settings → Import & Export → Import');
 }
 
 render();
