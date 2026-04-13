@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>B2B Sales 2025 - Andean Region - Cinepolis</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root {
+      --bg-dark: #0D1117;
+      --bg-card: #161B22;
+      --bg-card-hover: #1C2330;
+      --accent-green: #4FC974;
+      --accent-blue: #4781FF;
+      --accent-gold: #F5A623;
+      --text-primary: #FFFFFF;
+      --text-secondary: #8B949E;
+      --text-muted: #484F58;
+      --border: #30363D;
+      --chile-color: #4FC974;
+      --colombia-color: #F5A623;
+      --peru-color: #4781FF;
+    }
+
+    html, body {
+      background: var(--bg-dark) !important;
+      color: var(--text-primary);
+      margin: 0;
+      height: 100%;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .reveal-viewport {
+      background: var(--bg-dark) !important;
+    }
+
+    .reveal .slides {
+      text-align: left;
+    }
+
+    .reveal .slides section {
+      padding: 0;
+    }
+
+    /* Base slide */
+    .slide {
+      width: 1280px;
+      height: 720px;
+      padding: 48px 60px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .slide--center {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    /* Typography */
+    h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 2.8em;
+      line-height: 1.1;
+      margin: 0 0 16px 0;
+      color: var(--text-primary);
+    }
+
+    h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1.8em;
+      line-height: 1.2;
+      margin: 0 0 12px 0;
+      color: var(--text-primary);
+    }
+
+    h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      font-size: 1.2em;
+      margin: 0 0 8px 0;
+      color: var(--text-primary);
+    }
+
+    p, li {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 400;
+      font-size: 0.85em;
+      line-height: 1.5;
+      color: var(--text-secondary);
+    }
+
+    .lead {
+      font-size: 1.05em;
+      color: var(--text-secondary);
+      max-width: 800px;
+    }
+
+    .kicker {
+      font-size: 0.7em;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent-green);
+      margin: 0 0 8px 0;
+    }
+
+    .accent-green { color: var(--accent-green); }
+    .accent-blue { color: var(--accent-blue); }
+    .accent-gold { color: var(--accent-gold); }
+    .bold { font-weight: 700; }
+
+    /* Header bar */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header__title {
+      font-size: 0.65em;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .header__logo {
+      font-size: 0.65em;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-green);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Layouts */
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      flex: 1;
+      align-items: center;
+    }
+
+    .split--40-60 {
+      display: grid;
+      grid-template-columns: 2fr 3fr;
+      gap: 48px;
+      flex: 1;
+      align-items: start;
+    }
+
+    .content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .flex-center {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 20px;
+    }
+
+    .card:hover {
+      background: var(--bg-card-hover);
+    }
+
+    .card__title {
+      font-size: 0.8em;
+      font-weight: 700;
+      margin: 0 0 6px 0;
+      color: var(--text-primary);
+    }
+
+    .card__text {
+      font-size: 0.72em;
+      color: var(--text-secondary);
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    /* Grids */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 16px;
+    }
+
+    /* Metrics */
+    .metric {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .metric__value {
+      font-size: 2.2em;
+      font-weight: 800;
+      color: var(--accent-green);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .metric__value--blue { color: var(--accent-blue); }
+    .metric__value--gold { color: var(--accent-gold); }
+
+    .metric__label {
+      font-size: 0.65em;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .metric__sublabel {
+      font-size: 0.6em;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Tables */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.72em;
+    }
+
+    .data-table th {
+      text-align: left;
+      padding: 10px 14px;
+      font-weight: 600;
+      font-size: 0.85em;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border-bottom: 2px solid var(--border);
+    }
+
+    .data-table td {
+      padding: 10px 14px;
+      color: var(--text-secondary);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .data-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .data-table .highlight {
+      color: var(--accent-green);
+      font-weight: 700;
+    }
+
+    .data-table .highlight-blue {
+      color: var(--accent-blue);
+      font-weight: 700;
+    }
+
+    .data-table .row-total {
+      background: rgba(79, 201, 116, 0.08);
+      font-weight: 700;
+    }
+
+    .data-table .row-total td {
+      color: var(--text-primary);
+      border-top: 2px solid var(--accent-green);
+    }
+
+    /* Bar chart (CSS-only) */
+    .bar-chart {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .bar-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .bar-label {
+      width: 100px;
+      font-size: 0.7em;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .bar-track {
+      flex: 1;
+      height: 28px;
+      background: var(--bg-card);
+      border-radius: 2px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 8px;
+      font-size: 0.65em;
+      font-weight: 700;
+      color: white;
+      min-width: 40px;
+      transition: width 1s ease;
+    }
+
+    .bar-fill--green { background: var(--accent-green); }
+    .bar-fill--blue { background: var(--accent-blue); }
+    .bar-fill--gold { background: var(--accent-gold); }
+
+    /* Lists */
+    .list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .list li {
+      padding: 6px 0;
+      padding-left: 20px;
+      position: relative;
+      font-size: 0.78em;
+      color: var(--text-secondary);
+    }
+
+    .list li::before {
+      content: '\2014';
+      position: absolute;
+      left: 0;
+      color: var(--accent-green);
+      font-weight: 700;
+    }
+
+    .list--blue li::before { color: var(--accent-blue); }
+
+    /* Bullet lists for best practices */
+    .bp-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .bp-list li {
+      padding: 5px 0 5px 16px;
+      position: relative;
+      font-size: 0.73em;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    .bp-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 12px;
+      width: 6px;
+      height: 6px;
+      background: var(--accent-green);
+      border-radius: 1px;
+    }
+
+    .bp-list li.accent-item {
+      color: var(--accent-blue);
+      font-weight: 600;
+    }
+
+    .bp-list li.accent-item::before {
+      background: var(--accent-blue);
+    }
+
+    /* Donut chart (CSS) */
+    .donut-container {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .donut {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .donut-label {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+
+    .donut-label__value {
+      font-size: 1.6em;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .donut-label__text {
+      font-size: 0.55em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .donut-legend {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.7em;
+      color: var(--text-secondary);
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    /* Pillar badge */
+    .pillar-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 2px;
+      font-size: 0.6em;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .pillar-badge--events { background: rgba(79, 201, 116, 0.15); color: var(--accent-green); border: 1px solid rgba(79, 201, 116, 0.3); }
+    .pillar-badge--vouchers { background: rgba(71, 129, 255, 0.15); color: var(--accent-blue); border: 1px solid rgba(71, 129, 255, 0.3); }
+    .pillar-badge--partnerships { background: rgba(245, 166, 35, 0.15); color: var(--accent-gold); border: 1px solid rgba(245, 166, 35, 0.3); }
+    .pillar-badge--media { background: rgba(167, 139, 250, 0.15); color: #A78BFA; border: 1px solid rgba(167, 139, 250, 0.3); }
+
+    /* Section badge */
+    .section-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border: 1px solid var(--accent-green);
+      border-radius: 2px;
+      font-size: 0.6em;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent-green);
+      margin-bottom: 16px;
+    }
+
+    /* Opportunity cards */
+    .opp-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent-blue);
+      border-radius: 2px;
+      padding: 14px 16px;
+    }
+
+    .opp-card__title {
+      font-size: 0.75em;
+      font-weight: 700;
+      color: var(--accent-blue);
+      margin: 0 0 4px 0;
+    }
+
+    .opp-card__text {
+      font-size: 0.68em;
+      color: var(--text-secondary);
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    /* Country flag dots */
+    .country-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      margin-right: 6px;
+    }
+
+    .country-dot--chile { background: var(--chile-color); }
+    .country-dot--colombia { background: var(--colombia-color); }
+    .country-dot--peru { background: var(--peru-color); }
+
+    /* Footer */
+    .slide-footer {
+      position: absolute;
+      bottom: 16px;
+      left: 60px;
+      right: 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.55em;
+      color: var(--text-muted);
+    }
+
+    /* Cover specific */
+    .cover-bg {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(135deg, #0D1117 0%, #1a1f2e 50%, #0D1117 100%);
+      z-index: 0;
+    }
+
+    .cover-accent {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.15;
+    }
+
+    .cover-accent--green {
+      background: var(--accent-green);
+      top: -100px;
+      right: -100px;
+    }
+
+    .cover-accent--blue {
+      background: var(--accent-blue);
+      bottom: -100px;
+      left: -50px;
+    }
+
+    .cover-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Key insight callout */
+    .insight-box {
+      background: rgba(79, 201, 116, 0.08);
+      border: 1px solid rgba(79, 201, 116, 0.25);
+      border-radius: 4px;
+      padding: 14px 18px;
+      margin-top: 12px;
+    }
+
+    .insight-box p {
+      margin: 0;
+      font-size: 0.78em;
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .insight-box .insight-icon {
+      color: var(--accent-green);
+      font-weight: 700;
+      margin-right: 6px;
+    }
+
+    /* Stacked bar (horizontal) */
+    .stacked-bar {
+      height: 32px;
+      display: flex;
+      border-radius: 2px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .stacked-segment {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.6em;
+      font-weight: 700;
+      color: white;
+      min-width: 30px;
+    }
+
+    /* Reveal overrides */
+    .reveal .slide-number {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      color: var(--text-muted);
+      background: transparent;
+    }
+
+    .reveal .controls .controls-arrow {
+      color: var(--accent-green);
+    }
+
+    .reveal .progress span {
+      background: var(--accent-green);
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ============================================ -->
+      <!-- SLIDE 1: COVER -->
+      <!-- ============================================ -->
+      <section>
+        <div class="slide slide--center" style="padding: 0;">
+          <div class="cover-bg">
+            <div class="cover-accent cover-accent--green"></div>
+            <div class="cover-accent cover-accent--blue"></div>
+          </div>
+          <div class="cover-content" style="text-align: center;">
+            <p class="kicker" style="justify-content: center; margin-bottom: 24px;">Andean Region</p>
+            <h1 style="font-size: 3em;">B2B Sales 2025<br><span class="accent-green">Best Practices & Results</span></h1>
+            <p class="lead" style="margin: 20px auto 0; text-align: center; max-width: 600px;">
+              Chile &middot; Colombia &middot; Peru
+            </p>
+            <p style="margin-top: 40px; font-size: 0.75em; color: var(--text-muted);">April 2026</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 2: AGENDA -->
+      <!-- ============================================ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><i data-lucide="list" style="width:16px;height:16px;"></i> Agenda</div>
+            <div class="header__title">Cinepolis Andean Region</div>
+          </div>
+          <div class="split" style="align-items: start; padding-top: 24px;">
+            <div>
+              <h2>Today's<br>Discussion</h2>
+              <p class="lead" style="margin-top: 12px;">10-15 minute overview of B2B performance, best practices developed in Chile, and expansion opportunities for the Andean region.</p>
+            </div>
+            <div>
+              <div style="display: flex; flex-direction: column; gap: 14px;">
+                <div style="display: flex; align-items: center; gap: 16px;">
+                  <span style="font-size: 1.4em; font-weight: 800; color: var(--accent-green); width: 36px;">01</span>
+                  <div>
+                    <div style="font-size: 0.85em; font-weight: 600; color: var(--text-primary);">Market Position</div>
+                    <div style="font-size: 0.68em; color: var(--text-muted);">Chile, Colombia, Peru overview</div>
+                  </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 16px;">
+                  <span style="font-size: 1.4em; font-weight: 800; color: var(--accent-green); width: 36px;">02</span>
+                  <div>
+                    <div style="font-size: 0.85em; font-weight: 600; color: var(--text-primary);">B2B Financial Impact</div>
+                    <div style="font-size: 0.68em; color: var(--text-muted);">Revenue weight, EBITDA contribution</div>
+                  </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 16px;">
+                  <span style="font-size: 1.4em; font-weight: 800; color: var(--accent-green); width: 36px;">03</span>
+                  <div>
+                    <div style="font-size: 0.85em; font-weight: 600; color: var(--text-primary);">Revenue Breakdown by Pillar</div>
+                    <div style="font-size: 0.68em; color: var(--text-muted);">Events, Vouchers, Partnerships, Media</div>
+                  </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 16px;">
+                  <span style="font-size: 1.4em; font-weight: 800; color: var(--accent-green); width: 36px;">04</span>
+                  <div>
+                    <div style="font-size: 0.85em; font-weight: 600; color: var(--text-primary);">Best Practices (Chile)</div>
+                    <div style="font-size: 0.68em; color: var(--text-muted);">What's working and proven results</div>
+                  </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 16px;">
+                  <span style="font-size: 1.4em; font-weight: 800; color: var(--accent-green); width: 36px;">05</span>
+                  <div>
+                    <div style="font-size: 0.85em; font-weight: 600; color: var(--text-primary);">Opportunities & Next Steps</div>
+                    <div style="font-size: 0.68em; color: var(--text-muted);">Growth levers for the region</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 3: MARKET POSITION -->
+      <!-- ============================================ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><i data-lucide="map-pin" style="width:16px;height:16px;"></i> 01 // Market Position</div>
+            <div class="header__title">Andean Region</div>
+          </div>
+          <h2>Andean Region Overview</h2>
+          <div class="grid-3" style="margin-top: 20px; flex: 1; align-items: stretch;">
+            <!-- Chile -->
+            <div class="card" style="border-top: 3px solid var(--chile-color); display: flex; flex-direction: column;">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                <span class="country-dot country-dot--chile"></span>
+                <h3 style="margin: 0;">Chile</h3>
+              </div>
+              <div style="font-size: 2em; font-weight: 800; color: var(--accent-green); margin-bottom: 4px;">#1</div>
+              <div style="font-size: 0.7em; color: var(--text-secondary); margin-bottom: 12px;">Market leader &middot; 42-45% share</div>
+              <ul class="bp-list" style="flex: 1;">
+                <li>16-17 years of B2B operation</li>
+                <li>Premium locations nationwide</li>
+                <li>Dedicated team: 1 Director + 2 Sales + 1 Programming + 1 Admin</li>
+                <li>Advertising externalized to FlixMedia</li>
+              </ul>
+            </div>
+            <!-- Colombia -->
+            <div class="card" style="border-top: 3px solid var(--colombia-color); display: flex; flex-direction: column;">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                <span class="country-dot country-dot--colombia"></span>
+                <h3 style="margin: 0;">Colombia</h3>
+              </div>
+              <div style="font-size: 2em; font-weight: 800; color: var(--accent-gold); margin-bottom: 4px;">~6%</div>
+              <div style="font-size: 0.7em; color: var(--text-secondary); margin-bottom: 12px;">Market share &middot; Growing presence</div>
+              <ul class="bp-list" style="flex: 1;">
+                <li>Relevant locations in key cities</li>
+                <li>No dedicated B2B team</li>
+                <li>Revenue from pricing/alliances only</li>
+                <li class="accent-item">Big untapped opportunity</li>
+              </ul>
+            </div>
+            <!-- Peru -->
+            <div class="card" style="border-top: 3px solid var(--peru-color); display: flex; flex-direction: column;">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                <span class="country-dot country-dot--peru"></span>
+                <h3 style="margin: 0;">Peru</h3>
+              </div>
+              <div style="font-size: 2em; font-weight: 800; color: var(--accent-blue); margin-bottom: 4px;">~6%</div>
+              <div style="font-size: 0.7em; color: var(--text-secondary); margin-bottom: 12px;">Market share &middot; Strategic locations</div>
+              <ul class="bp-list" style="flex: 1;">
+                <li>Larcomar (premium/VIP brands)</li>
+                <li>No dedicated B2B team</li>
+                <li>Cinema-level efforts only</li>
+                <li class="accent-item">Big untapped opportunity</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 4: B2B FINANCIAL IMPACT (NEW - requested) -->
+      <!-- ============================================ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><i data-lucide="bar-chart-3" style="width:16px;height:16px;"></i> 02 // Financial Impact</div>
+            <div class="header__title">B2B Weight on Total Revenue & EBITDA</div>
+          </div>
+          <h2>B2B Revenue Summary <span style="font-weight: 400; font-size: 0.6em; color: var(--text-muted);">(USD, 2025)</span></h2>
+
+          <div class="split" style="gap: 36px; margin-top: 8px;">
+            <div>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th><span class="country-dot country-dot--chile"></span>Chile</th>
+                    <th><span class="country-dot country-dot--colombia"></span>Colombia</th>
+                    <th><span class="country-dot country-dot--peru"></span>Peru</th>
+                    <th style="color: var(--text-primary);">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="font-weight: 600; color: var(--text-primary);">B2B Revenue</td>
+                    <td class="highlight">$11.1M</td>
+                    <td>$1.0M</td>
+                    <td>$749K</td>
+                    <td style="font-weight: 700; color: var(--text-primary);">$12.9M</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight: 600; color: var(--text-primary);">% of Total Revenue</td>
+                    <td class="highlight">13.4%</td>
+                    <td>3.7%</td>
+                    <td>4.3%</td>
+                    <td style="font-weight: 700; color: var(--text-primary);">10.6%</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight: 600; color: var(--text-primary);">B2B Gross Margin</td>
+                    <td class="highlight">$6.8M</td>
+                    <td>$773K</td>
+                    <td>$525K</td>
+                    <td style="font-weight: 700; color: var(--text-primary);">$8.1M</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight: 600; color: var(--text-primary);">% of EBITDA</td>
+                    <td class="highlight">58.6%</td>
+                    <td>14.2%</td>
+                    <td>12.9%</td>
+                    <td style="font-weight: 700; color: var(--text-primary);">40.4%</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="insight-box" style="margin-top: 16px;">
+                <p><span class="insight-icon">&#9650;</span> B2B contributes <strong class="accent-green">40% of Andean EBITDA</strong> with high-margin revenue streams. Chile alone delivers 58.6% of its country EBITDA from B2B.</p>
+              </div>
+            </div>
+
+            <div>
+              <!-- B2B Revenue Share by Country -->
+              <h3 style="font-size: 0.85em; margin-bottom: 16px;">B2B Revenue Distribution</h3>
+              <div class="stacked-bar" style="height: 40px; margin-bottom: 16px;">
+                <div class="stacked-segment" style="width: 86.4%; background: var(--chile-color);">Chile 86.4%</div>
+                <div class="stacked-segment" style="width: 7.8%; background: var(--colombia-color); font-size: 0.5em;">7.8%</div>
+                <div class="stacked-segment" style="width: 5.8%; background: var(--peru-color); font-size: 0.5em;">5.8%</div>
+              </div>
+
+              <!-- % of Revenue bars -->
+              <h3 style="font-size: 0.85em; margin-bottom: 12px; margin-top: 24px;">B2B as % of Total Revenue</h3>
+              <div class="bar-chart">
+                <div class="bar-row">
+                  <span class="bar-label"><span class="country-dot country-dot--chile"></span>Chile</span>
+                  <div class="bar-track">
+                    <div class="bar-fill bar-fill--green" style="width: 67%;">13.4%</div>
+                  </div>
+                </div>
+                <div class="bar-row">
+                  <span class="bar-label"><span class="country-dot country-dot--peru"></span>Peru</span>
+                  <div class="bar-track">
+                    <div class="bar-fill bar-fill--blue" style="width: 21.5%;">4.3%</div>
+                  </div>
+                </div>
+                <div class="bar-row">
+                  <span class="bar-label"><span class="country-dot country-dot--colombia"></span>Colombia</span>
+                  <div class="bar-track">
+                    <div class="bar-fill bar-fill--gold" style="width: 18.5%;">3.7%</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- % of EBITDA bars -->
+              <h3 style="font-size: 0.85em; margin-bottom: 12px; margin-top: 20px;">B2B as % of EBITDA</h3>
+              <div class="bar-chart">
+                <div class="bar-row">
+                  <span class="bar-label"><span class="country-dot country-dot--chile"></span>Chile</span>
+                  <div class="bar-track">
+                    <div class="bar-fill bar-fill--green" style="width: 90%;">58.6%</div>
+                  </div>
+                </div>
+                <div class="bar-row">
+                  <span class="bar-label"><span class="country-dot country-dot--colombia"></span>Colombia</span>
+                  <div class="bar-track">
+                    <div class="bar-fill bar-fill--gold" style="width: 24%;">14.2%</div>
+                  </div>
+                </div>
+                <div class="bar-row">
+                  <span class="bar-label"><span class="country-dot country-dot--peru"></span>Peru</span>
+                  <div class="bar-track">
+                    <div class="bar-fill bar-fill--blue" style="width: 22%;">12.9%</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 5: REVENUE BREAKDOWN BY PILLAR -->
+      <!-- ============================================ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><i data-lucide="pie-chart" style="width:16px;height:16px;"></i> 03 // Revenue Mix</div>
+            <div class="header__title">By Business Pillar (USD, 2025)</div>
+          </div>
+          <h2>B2B Revenue by Pillar & Country</h2>
+
+          <div style="flex: 1; display: flex; flex-direction: column; gap: 16px; margin-top: 12px;">
+            <!-- Top metrics row -->
+            <div class="grid-4" style="gap: 12px;">
+              <div class="card" style="text-align: center; border-top: 3px solid var(--accent-gold); padding: 14px;">
+                <span class="pillar-badge pillar-badge--partnerships">Partnerships</span>
+                <div style="font-size: 1.6em; font-weight: 800; color: var(--accent-gold);">$6.05M</div>
+                <div style="font-size: 0.65em; color: var(--text-muted); margin-top: 2px;">46.9% of B2B</div>
+              </div>
+              <div class="card" style="text-align: center; border-top: 3px solid var(--accent-blue); padding: 14px;">
+                <span class="pillar-badge pillar-badge--vouchers">Vouchers</span>
+                <div style="font-size: 1.6em; font-weight: 800; color: var(--accent-blue);">$2.79M</div>
+                <div style="font-size: 0.65em; color: var(--text-muted); margin-top: 2px;">21.6% of B2B</div>
+              </div>
+              <div class="card" style="text-align: center; border-top: 3px solid #A78BFA; padding: 14px;">
+                <span class="pillar-badge pillar-badge--media">Media</span>
+                <div style="font-size: 1.6em; font-weight: 800; color: #A78BFA;">$2.36M</div>
+                <div style="font-size: 0.65em; color: var(--text-muted); margin-top: 2px;">18.3% of B2B</div>
+              </div>
+              <div class="card" style="text-align: center; border-top: 3px solid var(--accent-green); padding: 14px;">
+                <span class="pillar-badge pillar-badge--events">Events</span>
+                <div style="font-size: 1.6em; font-weight: 800; color: var(--accent-green);">$1.70M</div>
+                <div style="font-size: 0.65em; color: var(--text-muted); margin-top: 2px;">13.2% of B2B</div>
+              </div>
+            </div>
+
+            <!-- Breakdown table -->
+            <table class="data-table" style="font-size: 0.68em;">
+              <thead>
+                <tr>
+                  <th>Pillar</th>
+                  <th>Sub-category</th>
+                  <th style="text-align: right;"><span class="country-dot country-dot--chile"></span>Chile</th>
+                  <th style="text-align: right;"><span class="country-dot country-dot--colombia"></span>Colombia</th>
+                  <th style="text-align: right;"><span class="country-dot country-dot--peru"></span>Peru</th>
+                  <th style="text-align: right; color: var(--text-primary);">Total USD</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td rowspan="4" style="color: var(--accent-green); font-weight: 600;">Events</td>
+                  <td>School Bulk Bookings</td>
+                  <td style="text-align: right;">$468K</td>
+                  <td style="text-align: right;">$5K</td>
+                  <td style="text-align: right;">$24K</td>
+                  <td style="text-align: right; font-weight: 600;">$497K</td>
+                </tr>
+                <tr>
+                  <td>Corporate Events</td>
+                  <td style="text-align: right;">$733K</td>
+                  <td style="text-align: right;">$163K</td>
+                  <td style="text-align: right;">$86K</td>
+                  <td style="text-align: right; font-weight: 600;">$983K</td>
+                </tr>
+                <tr>
+                  <td>Birthdays / Private</td>
+                  <td style="text-align: right;">$39K</td>
+                  <td style="text-align: right;">$60K</td>
+                  <td style="text-align: right;">$13K</td>
+                  <td style="text-align: right; font-weight: 600;">$111K</td>
+                </tr>
+                <tr>
+                  <td>Pre-screenings</td>
+                  <td style="text-align: right;">$26K</td>
+                  <td style="text-align: right;">$12K</td>
+                  <td style="text-align: right;">$71K</td>
+                  <td style="text-align: right; font-weight: 600;">$110K</td>
+                </tr>
+                <tr>
+                  <td style="color: var(--accent-blue); font-weight: 600;">Vouchers</td>
+                  <td>Corporate Ticket Codes</td>
+                  <td style="text-align: right;">$2,560K</td>
+                  <td style="text-align: right;">$227K</td>
+                  <td style="text-align: right;">$0</td>
+                  <td style="text-align: right; font-weight: 600;">$2,787K</td>
+                </tr>
+                <tr>
+                  <td rowspan="2" style="color: var(--accent-gold); font-weight: 600;">Partnerships</td>
+                  <td>Banks / Telecom / Payment</td>
+                  <td style="text-align: right;">$4,792K</td>
+                  <td style="text-align: right;">$0</td>
+                  <td style="text-align: right;">$149K</td>
+                  <td style="text-align: right; font-weight: 600;">$4,941K</td>
+                </tr>
+                <tr>
+                  <td>Others</td>
+                  <td style="text-align: right;">$1,112K</td>
+                  <td style="text-align: right;">$0</td>
+                  <td style="text-align: right;">$0</td>
+                  <td style="text-align: right; font-weight: 600;">$1,112K</td>
+                </tr>
+                <tr>
+                  <td rowspan="3" style="color: #A78BFA; font-weight: 600;">Media</td>
+                  <td>Cine Spots</td>
+                  <td style="text-align: right;">$747K</td>
+                  <td style="text-align: right;">$289K</td>
+                  <td style="text-align: right;">$72K</td>
+                  <td style="text-align: right; font-weight: 600;">$1,108K</td>
+                </tr>
+                <tr>
+                  <td>Coca-Cola Contract</td>
+                  <td style="text-align: right;">$311K</td>
+                  <td style="text-align: right;">$248K</td>
+                  <td style="text-align: right;">$335K</td>
+                  <td style="text-align: right; font-weight: 600;">$894K</td>
+                </tr>
+                <tr>
+                  <td>Others (naming, digital, lobby)</td>
+                  <td style="text-align: right;">$358K</td>
+                  <td style="text-align: right;">$0</td>
+                  <td style="text-align: right;">$0</td>
+                  <td style="text-align: right; font-weight: 600;">$358K</td>
+                </tr>
+                <tr class="row-total">
+                  <td colspan="2" style="font-weight: 700;">TOTAL B2B REVENUE</td>
+                  <td style="text-align: right;">$11,147K</td>
+                  <td style="text-align: right;">$1,005K</td>
+                  <td style="text-align: right;">$749K</td>
+                  <td style="text-align: right; color: var(--accent-green);">$12,901K</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="insight-box" style="margin-top: 0;">
+              <p><span class="insight-icon">&#9650;</span> <strong>98% of partnership revenue is concentrated in Chile</strong> -- the only market charging promotional fees. Replicating this model in Colombia and Peru represents the largest single growth lever.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 6: FOUR B2B PILLARS OVERVIEW -->
+      <!-- ============================================ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><i data-lucide="layers" style="width:16px;height:16px;"></i> 03 // Business Lines</div>
+            <div class="header__title">Four B2B Pillars</div>
+          </div>
+          <h2>Four Revenue Pillars</h2>
+          <div class="grid-2" style="margin-top: 16px; gap: 14px; flex: 1;">
+            <!-- Events -->
+            <div class="card">
+              <span class="pillar-badge pillar-badge--events">A. Events</span>
+              <h3 style="font-size: 0.9em;">Screenings & Corporate Functions</h3>
+              <ul class="bp-list">
+                <li>School bulk bookings & group screenings (El Bibliotecom)</li>
+                <li>Corporate events, avant-premieres, private screenings</li>
+                <li>Birthday celebrations (Junior Room, expansion opportunity)</li>
+                <li>Room rentals for corporate presentations (off-peak hours)</li>
+              </ul>
+            </div>
+            <!-- Vouchers -->
+            <div class="card">
+              <span class="pillar-badge pillar-badge--vouchers">B. Vouchers</span>
+              <h3 style="font-size: 0.9em;">Corporate Ticket Sales</h3>
+              <ul class="bp-list">
+                <li>~60-70% digital codes, ~30% physical (migrating to all-digital)</li>
+                <li>All formats + candy bar combos</li>
+                <li>Third-party loyalty programs & HR departments</li>
+                <li>E-commerce platform: 10-400 tickets online</li>
+              </ul>
+            </div>
+            <!-- Partnerships -->
+            <div class="card">
+              <span class="pillar-badge pillar-badge--partnerships">C. Partnerships</span>
+              <h3 style="font-size: 0.9em;">Commercial Alliances <span style="font-size: 0.7em; color: var(--accent-gold);">(largest revenue)</span></h3>
+              <ul class="bp-list">
+                <li>Banks, telcos, compensation funds offer 40-50% discounts</li>
+                <li>Fee model: 20-40% of ATP per ticket or fixed annual fee</li>
+                <li>Partners invest in advertising + events + corporate tickets</li>
+                <li>11% of 2025 admissions came from partnerships</li>
+              </ul>
+            </div>
+            <!-- Media -->
+            <div class="card">
+              <span class="pillar-badge pillar-badge--media">D. Media / Advertising</span>
+              <h3 style="font-size: 0.9em;">Screen & Lobby Advertising</h3>
+              <ul class="bp-list">
+                <li><strong>3 tiers:</strong> Pre-showtime (cheapest) &rarr; Traditional slot &rarr; Premium (2 min before film)</li>
+                <li>Lobby: digital screens, standees, floor graphics, bathroom</li>
+                <li>Sold through FlixMedia + direct for global deals</li>
+                <li>NEW: local cinema advertising to nearby businesses</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 7: BEST PRACTICES - EVENTS -->
+      <!-- ============================================ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><i data-lucide="calendar" style="width:16px;height:16px;"></i> 04 // Best Practices</div>
+            <div class="header__title">Events</div>
+          </div>
+          <div class="split--40-60" style="gap: 36px;">
+            <div>
+              <span class="pillar-badge pillar-badge--events">Events</span>
+              <h2>Best Practices</h2>
+              <div style="margin-top: 16px;">
+                <h3 style="font-size: 0.8em; color: var(--accent-green); margin-bottom: 8px;">Chile Events Mix</h3>
+                <div class="bar-chart" style="gap: 6px;">
+                  <div class="bar-row">
+                    <span class="bar-label" style="width: 70px; font-size: 0.62em;">Corporate</span>
+                    <div class="bar-track">
+                      <div class="bar-fill bar-fill--green" style="width: 58%;">58% $733K</div>
+                    </div>
+                  </div>
+                  <div class="bar-row">
+                    <span class="bar-label" style="width: 70px; font-size: 0.62em;">Schools</span>
+                    <div class="bar-track">
+                      <div class="bar-fill bar-fill--green" style="width: 37%; opacity: 0.8;">37% $468K</div>
+                    </div>
+                  </div>
+                  <div class="bar-row">
+                    <span class="bar-label" style="width: 70px; font-size: 0.62em;">Birthdays</span>
+                    <div class="bar-track">
+                      <div class="bar-fill bar-fill--green" style="width: 3%; min-width: 50px; opacity: 0.6;">3%</div>
+                    </div>
+                  </div>
+                  <div class="bar-row">
+                    <span class="bar-label" style="width: 70px; font-size: 0.62em;">Premieres</span>
+                    <div class="bar-track">
+                      <div class="bar-fill bar-fill--green" style="width: 2%; min-width: 50px; opacity: 0.5;">2%</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="insight-box" style="margin-top: 16px;">
+                <p style="font-size: 0.7em;"><span class="insight-icon">&#9650;</span> El Bibliotecom: <strong>100,857 attendees</strong>, $248MM net sales, $250MM+ concessions</p>
+              </div>
+            </div>
+            <div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <div class="card" style="padding: 14px;">
+                  <h3 style="font-size: 0.75em; color: var(--accent-green);">Expand Reach</h3>
+                  <ul class="bp-list" style="font-size: 0.9em;">
+                    <li>Automated contact forms & itemized quotes for schools and birthdays</li>
+                    <li>Direct email with cinemas</li>
+                    <li>Annual negotiations with key accounts</li>
+                    <li>Screen rentals for corporate presentations (weekday mornings)</li>
+                  </ul>
+                </div>
+                <div class="card" style="padding: 14px;">
+                  <h3 style="font-size: 0.75em; color: var(--accent-blue);">Build Relationships</h3>
+                  <ul class="bp-list list--blue" style="font-size: 0.9em;">
+                    <li>Exclusive events for key B2B clients</li>
+                    <li>CRM: mailing + special date promotions</li>
+                    <li>Movie release updates for distributors</li>
+                    <li>Bi-annual pricing review aligned with dynamic pricing</li>
+                  </ul>
+                </div>
+                <div class="card" style="padding: 14px;">
+                  <h3 style="font-size: 0.75em; color: var(--accent-green);">Communication Plan</h3>
+                  <ul class="bp-list" style="font-size: 0.9em;">
+                    <li>Cinema lobby & pre-show</li>
+                    <li>Digital ads + mailing</li>
+                    <li>LinkedIn + exclusive B2B website</li>
+                    <li>Malls and partner channels</li>
+                  </ul>
+                </div>
+                <div class="card" style="padding: 14px;">
+                  <h3 style="font-size: 0.75em; color: var(--accent-gold);">Growth Opportunities</h3>
+                  <ul class="bp-list" style="font-size: 0.9em;">
+                    <li>Crew incentives: cinema-level budgets for managers</li>
+                    <li>Third-party brokers (schools, birthdays)</li>
+                    <li>Recurrent contracts (banks, loyalty programs)</li>
+                    <li>Reinforce corporate events approach</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 8: BEST PRACTICES - VOUCHERS -->
+      <!-- ============================================ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><i data-lucide="ticket" style="width:16px;height:16px;"></i> 04 // Best Practices</div>
+            <div class="header__title">Vouchers</div>
+          </div>
+          <div class="split" style="gap: 36px;">
+            <div>
+              <span class="pillar-badge pillar-badge--vouchers">Vouchers</span>
+              <h2>Best Practices</h2>
+
+              <div style="margin-top: 16px;">
+                <h3 style="font-size: 0.8em; color: var(--accent-blue); margin-bottom: 12px;">B2B E-Commerce Platform</h3>
+                <ul class="bp-list">
+                  <li class="accent-item">Small purchases (under 400 tickets) increased by 100%</li>
+                  <li>tickets.cinepolismedia.cl: 10-400 tickets purchasable online</li>
+                  <li>Automated code delivery, no manual intervention</li>
+                  <li>Enabled participation in Cyber Monday, Black Friday</li>
+                  <li>Closed employee-benefit campaigns (company communicates, employees buy at special prices)</li>
+                </ul>
+              </div>
+
+              <div style="margin-top: 16px;">
+                <h3 style="font-size: 0.8em; color: var(--accent-blue); margin-bottom: 12px;">Key Client Management</h3>
+                <ul class="bp-list">
+                  <li>Ongoing contact with key corporate customers</li>
+                  <li>Collaborating with B2B teams of partner companies</li>
+                  <li>Growth through public tenders and government sales</li>
+                  <li>Per-cinema sales channels with tracked fulfillment (2026)</li>
+                </ul>
+              </div>
+            </div>
+            <div>
+              <div style="display: flex; flex-direction: column; gap: 14px;">
+                <div class="card" style="padding: 14px;">
+                  <h3 style="font-size: 0.8em; color: var(--accent-blue);">360&deg; Communication</h3>
+                  <ul class="bp-list">
+                    <li>Paid campaigns during key retail dates (Mother's Day, Children's Day, Labor Day)</li>
+                    <li>Ongoing communication: Instagram, LinkedIn, Facebook, website</li>
+                    <li>CRM segmented emails by movie releases and key dates</li>
+                  </ul>
+                </div>
+
+                <div class="opp-card">
+                  <div class="opp-card__title">Opportunities to Grow Further</div>
+                  <ul class="bp-list" style="margin-top: 8px;">
+                    <li class="accent-item">Other Income Program: cinema managers as local sales agents with targets and incentives</li>
+                    <li class="accent-item">Voucher Management API: real-time redemption control as partner asset</li>
+                    <li class="accent-item">AI-assisted leads: real-time feedback to prospects</li>
+                    <li class="accent-item">Scale Chile digital sales automations to Peru and Colombia</li>
+                  </ul>
+                </div>
+
+                <div class="insight-box">
+                  <p style="font-size: 0.72em;"><span class="insight-icon">&#9650;</span> Example: <strong>Cencosud Prime</strong> -- discount on ticket packages, leveraging their marketing channels. Max 1-week campaigns riding partner communication.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 9: BEST PRACTICES - PARTNERSHIPS -->
+      <!-- ============================================ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><i data-lucide="handshake" style="width:16px;height:16px;"></i> 04 // Best Practices</div>
+            <div class="header__title">Partnerships</div>
+          </div>
+          <div class="split" style="gap: 36px;">
+            <div>
+              <span class="pillar-badge pillar-badge--partnerships">Partnerships</span>
+              <h2>Best Practices</h2>
+              <p class="lead" style="font-size: 0.82em; margin-bottom: 16px;">Partners subsidize discounts (40-50% off) and pay fees ranging from 20-40% of ATP. Two models: per-ticket fee or fixed annual fee.</p>
+
+              <h3 style="font-size: 0.8em; color: var(--accent-gold); margin-bottom: 10px;">Key Partners (Chile)</h3>
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                <div class="card" style="padding: 10px 14px; border-left: 3px solid var(--accent-gold);">
+                  <div style="font-size: 0.75em; font-weight: 700; color: var(--accent-gold);">Telefonica</div>
+                  <div style="font-size: 0.65em; color: var(--text-secondary);">Telecom, since 2006. Per-ticket fee + cinema spots + events. <strong>USD 670K/year</strong></div>
+                </div>
+                <div class="card" style="padding: 10px 14px; border-left: 3px solid var(--accent-gold);">
+                  <div style="font-size: 0.75em; font-weight: 700; color: var(--accent-gold);">Caja Los Andes</div>
+                  <div style="font-size: 0.65em; color: var(--text-secondary);">Compensation Fund, since 2015. Per-ticket fee. <strong>USD 352K/year</strong></div>
+                </div>
+                <div class="card" style="padding: 10px 14px; border-left: 3px solid var(--accent-gold);">
+                  <div style="font-size: 0.75em; font-weight: 700; color: var(--accent-gold);">Cencosud Scotiabank</div>
+                  <div style="font-size: 0.65em; color: var(--text-secondary);">Bank, since 2024. Fixed annual fee. <strong>USD 141K/year</strong>. Non-exclusive.</div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div class="card" style="padding: 14px;">
+                  <h3 style="font-size: 0.75em; color: var(--accent-gold);">Concessions Partners</h3>
+                  <ul class="bp-list">
+                    <li>Sponsored combos: Nestle, M&M, Lays, Savory, Fini</li>
+                    <li>Annual fee + rappel + media investment</li>
+                    <li>In & outs, co-branding, special promotions</li>
+                    <li>Crew incentives and prizes for compliance</li>
+                  </ul>
+                </div>
+
+                <div class="card" style="padding: 14px;">
+                  <h3 style="font-size: 0.75em; color: var(--accent-blue);">New Strategic Investments (2026)</h3>
+                  <ul class="bp-list">
+                    <li class="accent-item">CLA Media: USD 100K + Cinema Day (40K tickets at $5 each)</li>
+                    <li class="accent-item">Ripley & Banco Ripley: bi-monthly events, USD 200K</li>
+                    <li class="accent-item">RUT Pay: USD 300K promotional budget</li>
+                    <li>Web/App card recognition enables new bank partnerships</li>
+                  </ul>
+                </div>
+
+                <div class="card" style="padding: 14px;">
+                  <h3 style="font-size: 0.75em; color: var(--accent-green);">Naming Rights & Premium</h3>
+                  <ul class="bp-list">
+                    <li>Premium banks sponsoring VIP theaters</li>
+                    <li>Tech companies sponsoring IMAX</li>
+                    <li>Non-exclusivity approach has enabled more partnerships</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 10: BEST PRACTICES - DIGITAL & INNOVATION -->
+      <!-- ============================================ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><i data-lucide="rocket" style="width:16px;height:16px;"></i> 04 // Best Practices</div>
+            <div class="header__title">Digital Innovation & Client Retention</div>
+          </div>
+          <h2>Digital Transformation & Client Loyalty</h2>
+          <div class="grid-2" style="margin-top: 16px; gap: 14px; flex: 1;">
+            <div class="card" style="padding: 16px;">
+              <h3 style="font-size: 0.85em; color: var(--accent-blue);"><i data-lucide="globe" style="width:14px;height:14px;display:inline;vertical-align:middle;margin-right:4px;"></i> B2B E-Commerce & Automation</h3>
+              <ul class="bp-list" style="margin-top: 8px;">
+                <li class="accent-item">tickets.cinepolismedia.cl: doubled small-volume sales</li>
+                <li>Automated code delivery (10-400 tickets)</li>
+                <li>Cyber Monday / Black Friday participation enabled</li>
+                <li>Employee-benefit campaigns (company promotes, employees buy)</li>
+                <li>Per-cinema sales channels with tracked fulfillment (2026)</li>
+              </ul>
+            </div>
+
+            <div class="card" style="padding: 16px;">
+              <h3 style="font-size: 0.85em; color: var(--accent-green);"><i data-lucide="users" style="width:14px;height:14px;display:inline;vertical-align:middle;margin-right:4px;"></i> Client Retention Program</h3>
+              <ul class="bp-list" style="margin-top: 8px;">
+                <li>Bimonthly movie events for top clients</li>
+                <li>Ticket raffles and exclusive premieres</li>
+                <li class="accent-item">Key stat: 35 companies = 75% of revenue (out of 625 total)</li>
+                <li>CRM: segmented emails by releases, key dates, opportunities</li>
+                <li>Quarterly targets and prizes for cinemas and regional managers</li>
+              </ul>
+            </div>
+
+            <div class="card" style="padding: 16px;">
+              <h3 style="font-size: 0.85em; color: var(--accent-gold);"><i data-lucide="megaphone" style="width:14px;height:14px;display:inline;vertical-align:middle;margin-right:4px;"></i> Brand & Communication</h3>
+              <ul class="bp-list" style="margin-top: 8px;">
+                <li>B2B Agency (2+ years): professional presentations, brand consistency</li>
+                <li>LinkedIn presence: offers, events, permanent contact</li>
+                <li>InspiraMax talks: themed events (AI, marketing, HR) to showcase venue</li>
+                <li>Bonda HR event sponsorship (3rd consecutive year)</li>
+              </ul>
+            </div>
+
+            <div class="card" style="padding: 16px;">
+              <h3 style="font-size: 0.85em; color: #A78BFA;"><i data-lucide="shield-check" style="width:14px;height:14px;display:inline;vertical-align:middle;margin-right:4px;"></i> Operational Controls</h3>
+              <ul class="bp-list" style="margin-top: 8px;">
+                <li>New ticket/promo administration system (just implemented)</li>
+                <li>Integrated billing + ticket lot management with audit capability</li>
+                <li>Approval workflows for ticket issuance (risk control)</li>
+                <li>Incentive program: quarterly targets for cinema managers</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 11: OPPORTUNITIES & EXPANSION -->
+      <!-- ============================================ -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><i data-lucide="trending-up" style="width:16px;height:16px;"></i> 05 // Opportunities</div>
+            <div class="header__title">Growth & Expansion</div>
+          </div>
+          <h2>Opportunities & Next Steps</h2>
+
+          <div class="split" style="gap: 36px; margin-top: 12px;">
+            <div>
+              <h3 style="font-size: 0.85em; color: var(--accent-green); margin-bottom: 14px;">Expand Chile Playbook to Peru & Colombia</h3>
+              <div style="display: flex; flex-direction: column; gap: 10px;">
+                <div class="opp-card">
+                  <div class="opp-card__title">Corporate Sales Website</div>
+                  <div class="opp-card__text">Clear product information + automated quote forms</div>
+                </div>
+                <div class="opp-card">
+                  <div class="opp-card__title">Digital Ticket Sales</div>
+                  <div class="opp-card__text">E-commerce platform replication for online corporate purchases</div>
+                </div>
+                <div class="opp-card">
+                  <div class="opp-card__title">Cinema-Level Sales Program</div>
+                  <div class="opp-card__text">Empower each cinema as a local sales agent with targets</div>
+                </div>
+                <div class="opp-card">
+                  <div class="opp-card__title">Partnership Fee Model</div>
+                  <div class="opp-card__text">Introduce promotional fees (currently 0% in Colombia & Peru)</div>
+                </div>
+              </div>
+
+              <h3 style="font-size: 0.85em; color: var(--accent-gold); margin-top: 16px; margin-bottom: 10px;">High-Potential Cinemas</h3>
+              <div class="grid-2" style="gap: 8px;">
+                <div class="card" style="padding: 10px; border-left: 3px solid var(--colombia-color);">
+                  <div style="font-size: 0.7em; font-weight: 700; color: var(--accent-gold);">Colombia</div>
+                  <div style="font-size: 0.62em; color: var(--text-secondary);">Cali Limonar, Barranquilla VIP, Bogota Calima</div>
+                </div>
+                <div class="card" style="padding: 10px; border-left: 3px solid var(--peru-color);">
+                  <div style="font-size: 0.7em; font-weight: 700; color: var(--accent-blue);">Peru</div>
+                  <div style="font-size: 0.62em; color: var(--text-secondary);">Lima Norte, Santanita, Larcomar (VIP/premium)</div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 style="font-size: 0.85em; color: var(--accent-blue); margin-bottom: 14px;">Innovation & Technology</h3>
+              <div style="display: flex; flex-direction: column; gap: 10px;">
+                <div class="opp-card" style="border-left-color: var(--accent-blue);">
+                  <div class="opp-card__title"><i data-lucide="bot" style="width:12px;height:12px;display:inline;vertical-align:middle;margin-right:4px;"></i> AI-Powered Quoting</div>
+                  <div class="opp-card__text">Automated quoting agents for faster customer response. Same-day proposals are significantly more effective.</div>
+                </div>
+                <div class="opp-card" style="border-left-color: var(--accent-blue);">
+                  <div class="opp-card__title"><i data-lucide="radio" style="width:12px;height:12px;display:inline;vertical-align:middle;margin-right:4px;"></i> AI In-Cinema Radio</div>
+                  <div class="opp-card__text">No music rights costs, weekly content changes, funded by ad sales.</div>
+                </div>
+                <div class="opp-card" style="border-left-color: var(--accent-blue);">
+                  <div class="opp-card__title"><i data-lucide="map" style="width:12px;height:12px;display:inline;vertical-align:middle;margin-right:4px;"></i> Geo-Referencing</div>
+                  <div class="opp-card__text">Map businesses and schools near cinemas for targeted outreach. Parque Arauco pilot underway.</div>
+                </div>
+                <div class="opp-card" style="border-left-color: var(--accent-blue);">
+                  <div class="opp-card__title"><i data-lucide="star" style="width:12px;height:12px;display:inline;vertical-align:middle;margin-right:4px;"></i> CRM Data Profiling</div>
+                  <div class="opp-card__text">Personalized offers based on purchase history (e.g., Super Mario Bros 1 buyer &rarr; SMB2 offer).</div>
+                </div>
+                <div class="opp-card" style="border-left-color: var(--accent-blue);">
+                  <div class="opp-card__title"><i data-lucide="clipboard-check" style="width:12px;height:12px;display:inline;vertical-align:middle;margin-right:4px;"></i> Post-Service Survey</div>
+                  <div class="opp-card__text">Customer satisfaction tracking. Target: Q4 2026.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 12: CLOSING / WHY B2B MATTERS -->
+      <!-- ============================================ -->
+      <section>
+        <div class="slide slide--center" style="padding: 0;">
+          <div class="cover-bg">
+            <div class="cover-accent cover-accent--green"></div>
+            <div class="cover-accent cover-accent--blue"></div>
+          </div>
+          <div class="cover-content" style="text-align: center; max-width: 900px;">
+            <p class="kicker" style="justify-content: center; margin-bottom: 20px;">Why B2B Matters</p>
+            <h1 style="font-size: 2.4em; margin-bottom: 32px;">High Margin,<br><span class="accent-green">High Impact</span></h1>
+
+            <div class="grid-3" style="gap: 24px; margin-bottom: 32px;">
+              <div class="metric">
+                <div class="metric__value">$12.9M</div>
+                <div class="metric__label">B2B Revenue</div>
+                <div class="metric__sublabel">Andean Region 2025</div>
+              </div>
+              <div class="metric">
+                <div class="metric__value metric__value--blue">40.4%</div>
+                <div class="metric__label">of EBITDA</div>
+                <div class="metric__sublabel">High-margin contribution</div>
+              </div>
+              <div class="metric">
+                <div class="metric__value metric__value--gold">~100%</div>
+                <div class="metric__label">Media Margin</div>
+                <div class="metric__sublabel">Near-zero variable cost</div>
+              </div>
+            </div>
+
+            <div class="insight-box" style="max-width: 700px; margin: 0 auto; text-align: left;">
+              <p><span class="insight-icon">&#9650;</span> Chile's proven B2B playbook generates <strong>58.6% of its EBITDA</strong>. Replicating even a fraction of this in Colombia and Peru -- where partnerships currently contribute <strong>$0 and $149K</strong> respectively -- represents significant upside with minimal incremental cost.</p>
+            </div>
+
+            <p style="margin-top: 32px; font-size: 0.7em; color: var(--text-muted);">Cinepolis Andean Region &middot; B2B Sales 2025</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: 'c/t',
+      controls: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      center: false,
+      transition: 'slide',
+      backgroundTransition: 'fade',
+      width: 1280,
+      height: 720,
+      margin: 0,
+      minScale: 0.2,
+      maxScale: 2,
+      autoAnimateDuration: 0.7
+    });
+    lucide.createIcons();
+  </script>
+</body>
+</html>
