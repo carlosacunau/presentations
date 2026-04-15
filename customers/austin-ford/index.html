@@ -651,7 +651,7 @@ code, .code {
             <p class="kicker" style="justify-content: center;">FD Roofing + FibaLabs</p>
             <h1>Automating Your<br><span class="accent-text">Permit Discovery</span></h1>
             <p class="lead" style="max-width: 650px; margin: 0 auto;">
-              How AI tools can turn 30,000 manual permit lookups into a one-click operation.
+              From 30,000 manual lookups to a one-click operation. We proved it works live on this call.
             </p>
             <div style="margin-top: 32px; display: flex; gap: 12px; align-items: center;">
               <span class="badge">April 15, 2026</span>
@@ -790,11 +790,11 @@ code, .code {
         </div>
       </section>
 
-      <!-- SLIDE 5: Section Divider - The Solution -->
+      <!-- SLIDE 5: Section Divider - The Tools -->
       <section>
         <div class="slide slide--section slide--center">
-          <p class="kicker" style="justify-content: center;">04 // The Solution</p>
-          <h2>Three Tools That<br><span class="accent-text">Change Everything</span></h2>
+          <p class="kicker" style="justify-content: center;">04 // The Tools</p>
+          <h2>Three Things That<br><span class="accent-text">Change Everything</span></h2>
           <p class="lead muted">Skills, MCPs, and APIs -- the building blocks of AI automation</p>
         </div>
       </section>
@@ -815,27 +815,27 @@ code, .code {
               <div class="card fragment fade-up">
                 <div class="card__icon"><i data-lucide="book-open"></i></div>
                 <h4 class="card__title">Skills</h4>
-                <p class="card__text">SOPs you teach Claude once. Things you do repeatedly -- like summarizing data, formatting exports, or running a specific workflow. Write it once, run it forever.</p>
-                <p style="margin-top: 12px; font-size: 0.75rem; color: var(--accent);">Example: "Import PropStream CSV and tag by neighborhood"</p>
+                <p class="card__text">SOPs you teach Claude once. Things you do repeatedly -- write it once, run it forever. I have 48 of these. They're just .md files you can share and open in Cursor.</p>
+                <p style="margin-top: 12px; font-size: 0.75rem; color: var(--accent);">Example: "Summarize YouTube videos", "Create presentations", "Discover hidden APIs"</p>
               </div>
               <div class="card card--featured fragment fade-up">
                 <div class="card__icon"><i data-lucide="plug"></i></div>
                 <h4 class="card__title">MCPs</h4>
-                <p class="card__text">Pre-built servers that connect Claude to external tools. Gmail, Google Sheets, browser control, DevTools. Not one SOP -- a whole set of capabilities already wired up.</p>
-                <p style="margin-top: 12px; font-size: 0.75rem; color: var(--accent);">Example: Playwright MCP controls a browser for you</p>
+                <p class="card__text">Pre-built servers with multiple tools baked in. Google Workspace MCP does Gmail + Calendar + Drive. Playwright MCP controls a browser and monitors network traffic.</p>
+                <p style="margin-top: 12px; font-size: 0.75rem; color: var(--accent);">A skill = one SOP. An MCP = a whole toolbox.</p>
               </div>
               <div class="card fragment fade-up">
                 <div class="card__icon"><i data-lucide="code"></i></div>
                 <h4 class="card__title">APIs</h4>
-                <p class="card__text">How apps talk to each other behind the scenes. Every website (PropStream, MGO Connect) has one. We find it, document it, and let Claude call it directly.</p>
-                <p style="margin-top: 12px; font-size: 0.75rem; color: var(--accent);">Example: MGO Connect's hidden API for permit queries</p>
+                <p class="card__text">How apps talk to each other behind the scenes. Every website has one -- PropStream, MGO Connect. We find it by watching the network traffic, then call it directly.</p>
+                <p style="margin-top: 12px; font-size: 0.75rem; color: var(--accent);">If the app doesn't publish docs, we reverse-engineer it.</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- SLIDE 7: What We Found -->
+      <!-- SLIDE 7: What We Found - API -->
       <section>
         <div class="slide">
           <div class="header">
@@ -847,41 +847,49 @@ code, .code {
           <div class="split">
             <div>
               <p class="kicker">06 // Discovery</p>
-              <h2>MGO Connect Has<br>a Hidden API</h2>
-              <p class="lead">The website you use manually? It talks to a backend API. We already found the base URL and public endpoints.</p>
+              <h2>MGO Connect's<br>Hidden API</h2>
+              <p class="lead">We logged into your Santa Rosa account, searched one permit manually, and captured everything the browser was doing behind the scenes.</p>
               <div style="margin-top: 20px;">
                 <div class="solution-row fragment fade-up">
                   <div class="solution-row__icon"><i data-lucide="check-circle"></i></div>
-                  <div class="solution-row__text"><strong>Base URL found</strong> -- api.mgoconnect.org/api/v3/</div>
+                  <div class="solution-row__text"><strong>Base URL</strong> -- api.mgoconnect.org/api/v3/</div>
                 </div>
                 <div class="solution-row fragment fade-up">
                   <div class="solution-row__icon"><i data-lucide="check-circle"></i></div>
-                  <div class="solution-row__text"><strong>433 jurisdictions</strong> indexed including Santa Rosa</div>
+                  <div class="solution-row__text"><strong>Auth token captured</strong> -- session stays alive for batch queries</div>
                 </div>
                 <div class="solution-row fragment fade-up">
-                  <div class="solution-row__icon"><i data-lucide="search"></i></div>
-                  <div class="solution-row__text"><strong>Next step</strong> -- log in together and capture the permit search endpoint</div>
+                  <div class="solution-row__icon"><i data-lucide="check-circle"></i></div>
+                  <div class="solution-row__text"><strong>Permit search endpoint</strong> -- residential + reroof filters mapped</div>
+                </div>
+                <div class="solution-row fragment fade-up">
+                  <div class="solution-row__icon"><i data-lucide="check-circle"></i></div>
+                  <div class="solution-row__text"><strong>433 jurisdictions</strong> indexed -- works beyond Santa Rosa</div>
                 </div>
               </div>
             </div>
             <div>
-              <pre style="background: #08080F; border: 1px solid var(--border); padding: 20px; font-family: var(--font-mono); font-size: 0.75em; line-height: 1.6; color: var(--text-secondary); overflow-x: auto;"><code style="background: none; border: none; padding: 0;">// What we already know
+              <pre style="background: #08080F; border: 1px solid var(--border); padding: 20px; font-family: var(--font-mono); font-size: 0.75em; line-height: 1.6; color: var(--text-secondary); overflow-x: auto;"><code style="background: none; border: none; padding: 0;">// What we captured live
 {
   "base": "api.mgoconnect.org/api/v3/",
-  "public_endpoints": [
-    "/cp/jurisdiction-states/all",
-    "/cp/public/jurisdictions"
-  ],
-  "auth": "Bearer token (TBD)",
-  "permit_search": "needs login capture",
-  "infrastructure": "Angular + SignalR"
+  "auth": "Bearer token (captured)",
+  "permit_search": {
+    "designation": "residential",
+    "work_type": "re-roof",
+    "address": "from spreadsheet"
+  },
+  "response_fields": [
+    "address", "status",
+    "created_date", "closed_date",
+    "contractor", "permit_number"
+  ]
 }</code></pre>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- SLIDE 8: The Automated Workflow -->
+      <!-- SLIDE 8: Live Demo Results -->
       <section>
         <div class="slide">
           <div class="header">
@@ -891,7 +899,52 @@ code, .code {
             </div>
           </div>
           <div class="content">
-            <p class="kicker">07 // Automated Workflow</p>
+            <p class="kicker">07 // Live Demo</p>
+            <h2>We Ran It Live on the Call</h2>
+            <div class="metrics" style="margin-top: 36px;">
+              <div class="metric fragment">
+                <div class="metric__value">1</div>
+                <div class="metric__label">Manual Lookup to Map API</div>
+              </div>
+              <div class="metric fragment">
+                <div class="metric__value">20</div>
+                <div class="metric__label">Addresses Batch-Queried</div>
+              </div>
+              <div class="metric fragment">
+                <div class="metric__value">~30s</div>
+                <div class="metric__label">Total Time for 20</div>
+              </div>
+              <div class="metric fragment">
+                <div class="metric__value" style="color: var(--success);">8 cols</div>
+                <div class="metric__label">Data Fields Per Result</div>
+              </div>
+            </div>
+            <div style="margin-top: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+              <div class="card fragment fade-up">
+                <h4 class="card__title">What happened</h4>
+                <p class="card__text">Carlos searched one address manually while Claude watched the network traffic. Then Claude replicated the same API call for the next 20 addresses on Jamison Circle -- automatically. Results went straight to a Google Sheet.</p>
+              </div>
+              <div class="card fragment fade-up">
+                <h4 class="card__title">What Austin said</h4>
+                <p class="card__text" style="font-style: italic;">"That's freaking cool. I didn't know you could do something like that."</p>
+                <p class="card__text" style="margin-top: 8px; font-style: italic;">"So you can teach it to go to the thing and do that."</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 9: The Automated Workflow -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="hexagon"></i>
+              fiba labs
+            </div>
+          </div>
+          <div class="content">
+            <p class="kicker">08 // Automated Workflow</p>
             <h2>What It Looks Like After</h2>
             <div class="workflow" style="margin-top: 36px;">
               <div class="workflow__step fragment fade-up">
@@ -930,7 +983,7 @@ code, .code {
         </div>
       </section>
 
-      <!-- SLIDE 9: Before / After -->
+      <!-- SLIDE 10: Before / After -->
       <section>
         <div class="slide">
           <div class="header">
@@ -940,7 +993,7 @@ code, .code {
             </div>
           </div>
           <div class="content">
-            <p class="kicker">08 // Comparison</p>
+            <p class="kicker">09 // Comparison</p>
             <h2>Before vs After</h2>
             <div class="before-after">
               <div>
@@ -969,7 +1022,16 @@ code, .code {
         </div>
       </section>
 
-      <!-- SLIDE 10: PropStream API Bonus -->
+      <!-- SLIDE 11: Section Divider - The Bigger Vision -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <p class="kicker" style="justify-content: center;">10 // The Vision</p>
+          <h2>Austin's<br><span class="accent-text">Full Pipeline</span></h2>
+          <p class="lead muted">Permits are just step one. Here's where this goes.</p>
+        </div>
+      </section>
+
+      <!-- SLIDE 12: Austin's Two Big Ideas -->
       <section>
         <div class="slide">
           <div class="header">
@@ -978,28 +1040,32 @@ code, .code {
               fiba labs
             </div>
           </div>
-          <div class="split">
-            <div>
-              <p class="kicker">09 // Bonus</p>
-              <h2>PropStream Also<br>Has an API</h2>
-              <p class="lead">The manual export from PropStream can also be automated. Same approach -- find the API, connect it, and pull data programmatically.</p>
-              <p class="muted" style="margin-top: 16px; font-size: 0.85rem;">This means the entire pipeline from filtering homes to checking permits could run without opening a browser.</p>
-            </div>
-            <div>
-              <div class="card" style="margin-bottom: 16px;">
-                <h4 class="card__title" style="color: var(--accent);">Phase 1 (Now)</h4>
-                <p class="card__text">Automate MGO Connect permit lookups. This is where 90% of your time goes.</p>
+          <div class="content">
+            <p class="kicker">11 // Austin's Ideas</p>
+            <h2>Two Breakthroughs from the Call</h2>
+            <div class="grid-2" style="margin-top: 32px;">
+              <div class="card card--featured fragment fade-up" style="padding: 32px;">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                  <span style="font-size: 2rem; color: var(--accent); font-weight: 500;">1</span>
+                  <h4 class="card__title" style="margin: 0;">Skip the PropStream Export</h4>
+                </div>
+                <p class="card__text" style="font-size: 0.95rem; color: var(--text-secondary);">"Every time I save a property in PropStream, it sounds like with the API call, I can just automatically put it over here."</p>
+                <p style="margin-top: 12px; font-size: 0.8rem; color: var(--accent);">PropStream has an API. No more CSV export/import dance.</p>
               </div>
-              <div class="card">
-                <h4 class="card__title" style="color: var(--text-muted);">Phase 2 (Later)</h4>
-                <p class="card__text">Connect PropStream API to auto-pull property lists. Fully automated pipeline.</p>
+              <div class="card card--featured fragment fade-up" style="padding: 32px;">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                  <span style="font-size: 2rem; color: var(--accent); font-weight: 500;">2</span>
+                  <h4 class="card__title" style="margin: 0;">Remove the Import Feature</h4>
+                </div>
+                <p class="card__text" style="font-size: 0.95rem; color: var(--text-secondary);">"You just proved to me that it can go on MGO Connect and check for each permit. So that's a feature I could remove from the app."</p>
+                <p style="margin-top: 12px; font-size: 0.8rem; color: var(--accent);">The app checks permits automatically on import. No manual step needed.</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- SLIDE 11: Next Steps -->
+      <!-- SLIDE 13: Direct Mail Pipeline -->
       <section>
         <div class="slide">
           <div class="header">
@@ -1010,27 +1076,118 @@ code, .code {
           </div>
           <div class="split">
             <div>
-              <p class="kicker">10 // Next Steps</p>
-              <h2>What We Do Now</h2>
-              <p class="lead">We're close. The prep work is done. Here's what happens next to get this running.</p>
+              <p class="kicker">12 // Direct Mail</p>
+              <h2>The Marketing<br>Machine</h2>
+              <p class="lead">Once you know which homes need a reroof, the next step is getting them to call you. Austin's got a direct mail strategy ready to go.</p>
             </div>
             <div>
-              <ul class="list list--numbered">
+              <div class="card" style="margin-bottom: 12px;">
+                <h4 class="card__title"><i data-lucide="mail" style="width: 16px; height: 16px; vertical-align: middle; color: var(--accent);"></i> 3-Letter Sequence</h4>
+                <p class="card__text">Sent every 7 days. "I drove by your house and noticed..." Personalized with address and roof condition data.</p>
+              </div>
+              <div class="card" style="margin-bottom: 12px;">
+                <h4 class="card__title"><i data-lucide="pen-tool" style="width: 16px; height: 16px; vertical-align: middle; color: var(--accent);"></i> Handwritten Addresses</h4>
+                <p class="card__text">People open handwritten envelopes. Crooked stamps. Looks personal, not mass-mailed. Open rates go way up.</p>
+              </div>
+              <div class="card">
+                <h4 class="card__title"><i data-lucide="phone" style="width: 16px; height: 16px; vertical-align: middle; color: var(--accent);"></i> CRM Phone Number</h4>
+                <p class="card__text">Responses go to the CRM, routed to sales guys. From letter to phone call to roof sold.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 14: Full Automation Roadmap -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="hexagon"></i>
+              fiba labs
+            </div>
+          </div>
+          <div class="content">
+            <p class="kicker">13 // Roadmap</p>
+            <h2>The Full Automation Roadmap</h2>
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 32px;">
+              <div class="card card--featured fragment fade-up">
+                <span class="badge badge--success" style="margin-bottom: 12px;">Done</span>
+                <h4 class="card__title">Phase 1</h4>
+                <p class="card__text">API Discovery</p>
+                <ul style="margin-top: 8px; padding-left: 16px; color: var(--text-muted); font-size: 0.8rem;">
+                  <li>Hidden API mapped</li>
+                  <li>Auth token captured</li>
+                  <li>20 addresses queried live</li>
+                </ul>
+              </div>
+              <div class="card fragment fade-up">
+                <span class="badge badge--warning" style="margin-bottom: 12px;">Next Week</span>
+                <h4 class="card__title">Phase 2</h4>
+                <p class="card__text">App Integration</p>
+                <ul style="margin-top: 8px; padding-left: 16px; color: var(--text-muted); font-size: 0.8rem;">
+                  <li>Austin shares repo on GitHub</li>
+                  <li>Add permit auto-check on import</li>
+                  <li>Periodic re-scrape (every few months)</li>
+                </ul>
+              </div>
+              <div class="card fragment fade-up">
+                <span class="badge" style="margin-bottom: 12px;">Phase 3</span>
+                <h4 class="card__title">PropStream API</h4>
+                <p class="card__text">Auto-Pull Properties</p>
+                <ul style="margin-top: 8px; padding-left: 16px; color: var(--text-muted); font-size: 0.8rem;">
+                  <li>Skip CSV export/import</li>
+                  <li>Save in PropStream = appears in app</li>
+                  <li>Full pipeline, no browser needed</li>
+                </ul>
+              </div>
+              <div class="card fragment fade-up">
+                <span class="badge" style="margin-bottom: 12px;">Phase 4</span>
+                <h4 class="card__title">Mail Merger</h4>
+                <p class="card__text">Automated Letters</p>
+                <ul style="margin-top: 8px; padding-left: 16px; color: var(--text-muted); font-size: 0.8rem;">
+                  <li>Generate letters from templates</li>
+                  <li>Personalized per property</li>
+                  <li>Print-ready, 3-letter sequence</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 15: What Austin Gets -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="hexagon"></i>
+              fiba labs
+            </div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">14 // Deliverables</p>
+              <h2>What You Walk<br>Away With</h2>
+              <p class="lead">After our next session, you'll have everything you need to run this on your own.</p>
+            </div>
+            <div>
+              <ul class="list list--check">
                 <li class="fragment fade-up">
-                  <strong>API Discovery Session</strong><br>
-                  <span class="muted">You log in, I watch the network traffic. We capture the permit search endpoint and auth tokens.</span>
+                  <strong>MGO Permit Lookup Skill</strong><br>
+                  <span class="muted">An .md file you open in Cursor. It teaches Claude how to query permits for any address list.</span>
                 </li>
                 <li class="fragment fade-up">
-                  <strong>Create a Separate Login</strong><br>
-                  <span class="muted">For automation -- so your daily account doesn't get rate-limited or locked.</span>
+                  <strong>API Integration in Your App</strong><br>
+                  <span class="muted">The permit check wired directly into your import flow. No more separate step.</span>
                 </li>
                 <li class="fragment fade-up">
-                  <strong>Build the Batch Script</strong><br>
-                  <span class="muted">Takes your CSV of addresses, queries MGO for each one, outputs permit status.</span>
+                  <strong>Auto Re-scrape Setup</strong><br>
+                  <span class="muted">Every few months, your database refreshes -- catches new permits from other companies.</span>
                 </li>
                 <li class="fragment fade-up">
-                  <strong>Integrate with Your App</strong><br>
-                  <span class="muted">Add a button in your app that triggers the batch lookup. One click, all permits.</span>
+                  <strong>Knowledge Transfer</strong><br>
+                  <span class="muted">You'll understand skills, MCPs, and APIs well enough to build the next feature yourself.</span>
                 </li>
               </ul>
             </div>
@@ -1038,12 +1195,88 @@ code, .code {
         </div>
       </section>
 
-      <!-- SLIDE 12: CTA -->
+      <!-- SLIDE 16: The Business Case -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="hexagon"></i>
+              fiba labs
+            </div>
+          </div>
+          <div class="content">
+            <p class="kicker">15 // Impact</p>
+            <h2>What This Is Worth</h2>
+            <div class="metrics" style="margin-top: 36px;">
+              <div class="metric fragment">
+                <div class="metric__value">$12-30K</div>
+                <div class="metric__label">Per Roof Sold</div>
+              </div>
+              <div class="metric fragment">
+                <div class="metric__value">500</div>
+                <div class="metric__label">Letters This Week</div>
+              </div>
+              <div class="metric fragment">
+                <div class="metric__value">30K</div>
+                <div class="metric__label">Total Pipeline</div>
+              </div>
+              <div class="metric fragment">
+                <div class="metric__value" style="color: var(--success);">1 roof</div>
+                <div class="metric__label">Pays for Everything</div>
+              </div>
+            </div>
+            <p class="muted" style="text-align: center; margin-top: 32px; font-size: 0.9rem;">
+              If this automation helps close even one extra roof per month, the ROI is 50x+.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 17: Next Steps -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <i data-lucide="hexagon"></i>
+              fiba labs
+            </div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">16 // Next Steps</p>
+              <h2>What Happens<br>This Week</h2>
+              <p class="lead">Phase 1 is done. We proved it works. Now we put it in your app.</p>
+            </div>
+            <div>
+              <ul class="list list--numbered">
+                <li class="fragment fade-up">
+                  <strong>Austin puts app code on GitHub</strong><br>
+                  <span class="muted">So Carlos can review the codebase and plan the integration.</span>
+                </li>
+                <li class="fragment fade-up">
+                  <strong>Agree on pricing</strong><br>
+                  <span class="muted">Hands-on session to implement the permit feature directly in the app.</span>
+                </li>
+                <li class="fragment fade-up">
+                  <strong>Schedule longer session</strong><br>
+                  <span class="muted">Carlos screen-shares into Cursor. Walk through the integration together. Austin learns as we build.</span>
+                </li>
+                <li class="fragment fade-up">
+                  <strong>500 addresses ready by Friday</strong><br>
+                  <span class="muted">Austin's immediate goal -- ready for the first direct mail batch.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 18: CTA -->
       <section>
         <div class="slide slide--section slide--center">
           <div class="content flex-center" style="flex-direction: column;">
             <h1>Let's Kill the<br><span class="accent-text">Bottleneck</span></h1>
-            <p class="lead" style="margin-bottom: 40px;">30,000 addresses. Zero manual lookups. Ready when you are.</p>
+            <p class="lead" style="margin-bottom: 40px;">30,000 addresses. Zero manual lookups. One roof pays for everything.</p>
             <div class="contact-grid" style="width: 100%; max-width: 600px;">
               <div class="contact-item">
                 <div class="contact-item__label">Email</div>
@@ -1055,7 +1288,7 @@ code, .code {
               </div>
               <div class="contact-item">
                 <div class="contact-item__label">Next</div>
-                <div class="contact-item__value">API Discovery Session</div>
+                <div class="contact-item__value">Implementation Session</div>
               </div>
             </div>
           </div>
