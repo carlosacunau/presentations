@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workshop IA Cinépolis — Recap de Planificación</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/monokai.css">
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+:root {
+  --bg-dark: #0A0A14;
+  --bg-card: #12121E;
+  --bg-card-hover: #1A1A2A;
+  --accent: #8B5CF6;
+  --accent-light: #A78BFA;
+  --accent-glow: rgba(139, 92, 246, 0.15);
+  --secondary: #4C2D91;
+  --secondary-light: #6D4DB8;
+  --success: #34D399;
+  --warning: #FBBF24;
+  --error: #F87171;
+  --text-primary: #E8E4F0;
+  --text-secondary: #9B95A8;
+  --text-muted: #5C5670;
+  --border: #2A2A3A;
+  --font-serif: 'Instrument Serif', Georgia, serif;
+  --font-sans: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Fira Code', monospace;
+  --spacing-xs: 8px;
+  --spacing-sm: 16px;
+  --spacing-md: 24px;
+  --spacing-lg: 40px;
+  --spacing-xl: 60px;
+}
+
+html, body {
+  background: var(--bg-dark) !important;
+  color: var(--text-primary);
+  margin: 0;
+  height: 100%;
+}
+
+body { font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+
+.reveal-viewport {
+  background: var(--bg-dark) !important;
+  background-image:
+    linear-gradient(rgba(139, 92, 246, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139, 92, 246, 0.03) 1px, transparent 1px) !important;
+  background-size: 60px 60px !important;
+}
+
+.reveal { background: var(--bg-dark); font-family: var(--font-sans); font-size: 22px; color: var(--text-primary); }
+.reveal .slides { text-align: left; }
+.reveal .slides section { padding: 0; background: var(--bg-dark); }
+
+.slide { height: 100%; width: 100%; padding: var(--spacing-xl); box-sizing: border-box; display: flex; flex-direction: column; background: transparent; position: relative; }
+.slide > * { position: relative; z-index: 1; }
+.slide--center { align-items: center; justify-content: center; text-align: center; }
+
+.slide--section::before {
+  content: ''; position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%); width: 600px; height: 600px;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  pointer-events: none; z-index: 0;
+}
+
+.header { display: flex; justify-content: space-between; align-items: center; padding-bottom: var(--spacing-md); margin-bottom: var(--spacing-lg); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.header__logo { font-family: var(--font-sans); font-size: 0.9rem; font-weight: 500; color: var(--text-secondary); display: flex; align-items: center; gap: 10px; letter-spacing: 0.1em; text-transform: lowercase; }
+.header__logo svg { width: 18px; height: 18px; color: var(--accent); }
+.header__nav { font-size: 0.75rem; color: var(--text-muted); letter-spacing: 0.15em; text-transform: uppercase; }
+
+.kicker { font-size: 0.7rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.25em; margin-bottom: var(--spacing-sm); font-weight: 500; display: flex; align-items: center; gap: 12px; }
+.kicker::after { content: ''; width: 40px; height: 1px; background: var(--accent); opacity: 0.5; }
+
+h1, .h1 { font-family: var(--font-serif); font-size: 4rem; font-weight: 400; font-style: italic; line-height: 1.1; margin: 0 0 var(--spacing-md) 0; color: var(--text-primary); }
+h2, .h2 { font-family: var(--font-serif); font-size: 2.5rem; font-weight: 400; line-height: 1.15; margin: 0 0 var(--spacing-md) 0; }
+h3, .h3 { font-family: var(--font-sans); font-size: 1.4rem; font-weight: 500; line-height: 1.3; margin: 0 0 var(--spacing-sm) 0; letter-spacing: 0.05em; }
+h4, .h4 { font-family: var(--font-sans); font-size: 1rem; font-weight: 500; margin: 0 0 var(--spacing-xs) 0; letter-spacing: 0.05em; }
+
+.lead { font-size: 1.05rem; color: var(--text-secondary); line-height: 1.7; max-width: 700px; letter-spacing: 0.02em; }
+.muted { color: var(--text-muted); }
+.highlight { color: var(--accent); }
+
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-xl); align-items: start; flex: 1; }
+.split--40-60 { grid-template-columns: 1fr 1.5fr; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-md); }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-md); }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--spacing-sm); }
+
+.card { background: transparent; border: 1px solid var(--border); padding: var(--spacing-md); transition: all 0.3s ease; border-radius: 2px; }
+.card:hover { background: var(--bg-card); border-color: var(--accent); }
+.card--featured { border-color: var(--accent); }
+.card__icon { width: 32px; height: 32px; margin-bottom: var(--spacing-sm); color: var(--accent); }
+.card__icon svg { width: 100%; height: 100%; stroke-width: 1.5; }
+.card__title { font-family: var(--font-sans); font-size: 0.95rem; font-weight: 500; margin-bottom: var(--spacing-xs); letter-spacing: 0.03em; }
+.card__text { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
+
+.metric { text-align: center; padding: var(--spacing-md); border: 1px solid var(--border); border-radius: 2px; }
+.metric--featured { border-color: var(--accent); }
+.metric__value { font-family: var(--font-sans); font-size: 2.5rem; font-weight: 500; color: var(--accent); line-height: 1; margin-bottom: var(--spacing-xs); letter-spacing: -0.02em; }
+.metric__label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.15em; }
+
+.list { list-style: none; padding: 0; margin: 0; }
+.list li { padding: var(--spacing-sm) 0; padding-left: var(--spacing-lg); position: relative; border-bottom: 1px solid var(--border); font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5; }
+.list li:last-child { border-bottom: none; }
+.list li::before { content: '\2014'; position: absolute; left: 0; top: var(--spacing-sm); color: var(--accent); }
+.list--numbered { counter-reset: list-counter; }
+.list--numbered li { counter-increment: list-counter; padding-left: 50px; }
+.list--numbered li::before { content: counter(list-counter, decimal-leading-zero); color: var(--accent); font-size: 0.85rem; font-weight: 500; letter-spacing: 0.05em; }
+
+.badge { display: inline-flex; align-items: center; padding: 6px 14px; font-size: 0.7rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.15em; background: transparent; color: var(--accent); border: 1px solid var(--accent); border-radius: 2px; }
+
+.quote-block { border-left: 3px solid var(--accent); padding: var(--spacing-sm) var(--spacing-md); margin: var(--spacing-md) 0; font-family: var(--font-serif); font-style: italic; font-size: 1.2rem; color: var(--text-primary); line-height: 1.5; }
+.quote-attr { font-family: var(--font-sans); font-style: normal; font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.15em; margin-top: var(--spacing-sm); display: block; }
+
+.reveal .controls { color: var(--accent); }
+.reveal .progress { background: var(--border); height: 2px; }
+.reveal .progress span { background: var(--accent); }
+.reveal .slide-number { background: transparent; color: var(--text-muted); font-size: 14px; font-family: var(--font-mono); left: 20px; right: auto; bottom: 20px; }
+
+.section-num { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted); letter-spacing: 0.15em; margin-bottom: var(--spacing-sm); }
+
+.cmp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md); margin-top: var(--spacing-md); }
+.cmp-col { padding: var(--spacing-md); border: 1px solid var(--border); border-radius: 2px; }
+.cmp-col--bad { border-color: rgba(248, 113, 113, 0.4); }
+.cmp-col--good { border-color: var(--accent); }
+.cmp-col h4 { color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: var(--spacing-sm); }
+.cmp-col--bad h4 { color: var(--error); }
+.cmp-col--good h4 { color: var(--accent); }
+
+.ladder { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--spacing-sm); }
+.ladder__step { padding: var(--spacing-sm); border: 1px solid var(--border); border-radius: 2px; text-align: center; }
+.ladder__step--peak { border-color: var(--accent); background: rgba(139, 92, 246, 0.05); }
+.ladder__time { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); letter-spacing: 0.15em; }
+.ladder__value { font-family: var(--font-sans); font-size: 1.6rem; font-weight: 500; color: var(--accent); margin: var(--spacing-xs) 0; }
+.ladder__value--peak { font-size: 1.8rem; }
+.ladder__label { font-size: 0.75rem; color: var(--text-secondary); }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<!-- ============ SLIDE 1: COVER ============ -->
+<section>
+<div class="slide slide--center">
+  <div class="kicker">Recap de planificación · 2026-04-25</div>
+  <h1>Workshop IA<br><span class="highlight">Cinépolis Parque Arauco</span></h1>
+  <p class="lead" style="text-align:center; margin: var(--spacing-md) auto 0;">
+    Síntesis de la sesión de diseño de contenido entre Carlos y Pep.<br>
+    Posicionamiento, formato, banco de ejemplos y próximos pasos.
+  </p>
+  <div style="margin-top: var(--spacing-xl); display: flex; gap: var(--spacing-lg); justify-content: center;">
+    <div style="text-align: center;"><div class="muted" style="font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;">Duración</div><div style="font-family: var(--font-mono); color: var(--accent); margin-top: 6px;">~90 min · 3 partes</div></div>
+    <div style="text-align: center;"><div class="muted" style="font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;">Asistentes</div><div style="font-family: var(--font-mono); color: var(--accent); margin-top: 6px;">Carlos · Pep · Paola</div></div>
+    <div style="text-align: center;"><div class="muted" style="font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;">Target workshop</div><div style="font-family: var(--font-mono); color: var(--accent); margin-top: 6px;">Mayo · 60 empresas</div></div>
+  </div>
+</div>
+</section>
+
+<!-- ============ SLIDE 2: AGENDA ============ -->
+<section>
+<div class="slide">
+  <div class="header"><div class="header__logo"><i data-lucide="hexagon"></i>fiba labs</div><div class="header__nav">01 // Agenda</div></div>
+  <h2>Lo que alineamos</h2>
+  <div class="grid-2" style="margin-top: var(--spacing-lg);">
+    <ol class="list list--numbered">
+      <li>Posicionamiento: estrategia, no cursos</li>
+      <li>Auditoría antes de automatizar</li>
+      <li>El crecimiento exponencial como gancho</li>
+    </ol>
+    <ol class="list list--numbered" style="counter-reset: list-counter 3;">
+      <li>Banco de ejemplos por área</li>
+      <li>Formato del workshop (intercalado)</li>
+      <li>Receta de construcción de agentes</li>
+    </ol>
+  </div>
+</div>
+</section>
+
+<!-- ============ SLIDE 3: SECTION 01 ============ -->
+<section>
+<div class="slide slide--center slide--section">
+  <div class="section-num">SECCIÓN 01</div>
+  <h1 style="text-align:center;">Posicionamiento</h1>
+  <p class="lead" style="text-align:center; margin: 0 auto;">No vendemos cursos ni automatizaciones aisladas.<br>Vendemos la estrategia para meter la IA en cómo opera tu empresa.</p>
+</div>
+</section>
+
+<!-- ============ SLIDE 4: BAD VS GOOD POSITIONING ============ -->
+<section>
+<div class="slide">
+  <div class="header"><div class="header__logo"><i data-lucide="hexagon"></i>fiba labs</div><div class="header__nav">02 // Posicionamiento</div></div>
+  <div class="kicker">El mensaje principal</div>
+  <h2>Por qué fallan las iniciativas hoy</h2>
+  <div class="cmp-grid">
+    <div class="cmp-col cmp-col--bad">
+      <h4>Lo que vende el mercado</h4>
+      <ul class="list">
+        <li>Cursos sueltos por empleado, sin alineación</li>
+        <li>Automatizaciones puntuales, parches a procesos rotos</li>
+        <li>Vendor lock-in con SaaS caros</li>
+        <li>"La IA lo hace todo, despreocúpate"</li>
+      </ul>
+    </div>
+    <div class="cmp-col cmp-col--good">
+      <h4>Lo que ofrecemos</h4>
+      <ul class="list">
+        <li>Estrategia integral: cultura, procesos y herramientas</li>
+        <li>Auditoría primero, automatización después</li>
+        <li>Soluciones propias, sin amarre a un proveedor</li>
+        <li>Formación para que el equipo se vuelva gerente de IA</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ============ SLIDE 5: TWO OBSTACLES ============ -->
+<section>
+<div class="slide">
+  <div class="header"><div class="header__logo"><i data-lucide="hexagon"></i>fiba labs</div><div class="header__nav">02 // Posicionamiento</div></div>
+  <div class="kicker">Dos obstáculos que matan toda iniciativa</div>
+  <h2>Antes de hablar de IA</h2>
+  <div class="grid-2" style="margin-top: var(--spacing-lg);">
+    <div class="card card--featured">
+      <div class="card__icon"><i data-lucide="database"></i></div>
+      <div class="card__title">1. Datos digitalizados de calidad</div>
+      <div class="card__text" style="margin-top: var(--spacing-sm);">Sin datos estructurados no hay automatización posible. Esta es la puerta de entrada, no un nice-to-have.</div>
+    </div>
+    <div class="card card--featured">
+      <div class="card__icon"><i data-lucide="alert-triangle"></i></div>
+      <div class="card__title">2. La IA es probabilística</div>
+      <div class="card__text" style="margin-top: var(--spacing-sm);">No es un ERP que factura igual mañana y pasado. <span class="highlight">1 de cada 10 va a fallar</span> por diseño. Hay que armar procesos que toleren eso.</div>
+    </div>
+  </div>
+  <div class="quote-block" style="margin-top: var(--spacing-lg);">
+    "La IA no es magia. Para que parezca magia se necesita una estrategia humana que la guíe."
+    <span class="quote-attr">— Pep, durante la sesión</span>
+  </div>
+</div>
+</section>
+
+<!-- ============ SLIDE 6: SECTION 02 ============ -->
+<section>
+<div class="slide slide--center slide--section">
+  <div class="section-num">SECCIÓN 02</div>
+  <h1 style="text-align:center;">Auditoría primero</h1>
+  <p class="lead" style="text-align:center; margin: 0 auto;">No automatices procesos rotos. Identifica qué eliminar antes de qué automatizar.</p>
+</div>
+</section>
+
+<!-- ============ SLIDE 7: 60-70% ============ -->
+<section>
+<div class="slide">
+  <div class="header"><div class="header__logo"><i data-lucide="hexagon"></i>fiba labs</div><div class="header__nav">03 // Auditoría</div></div>
+  <div class="kicker">Potencial interno desbloqueado</div>
+  <h2>El equipo capacitado resuelve el 60-70%</h2>
+  <div class="split" style="margin-top: var(--spacing-lg);">
+    <div>
+      <p class="lead">Cuando la primera línea ve los casos de uso, el output cambia: cada gerente identifica oportunidades en su área.</p>
+      <p class="lead" style="margin-top: var(--spacing-md);">Si esa cabeza abierta la tiene <span class="highlight">todo el equipo</span>, la empresa puede arquitectar su propia estrategia, sin depender de tercerización costosa.</p>
+    </div>
+    <div>
+      <div class="metric metric--featured" style="padding: var(--spacing-lg);">
+        <div class="metric__value" style="font-size: 4rem;">60-70%</div>
+        <div class="metric__label">Resoluble por el propio personal capacitado</div>
+      </div>
+      <div class="metric" style="margin-top: var(--spacing-md);">
+        <div class="metric__value" style="font-size: 2rem; color: var(--text-primary);">Carlos & Pep</div>
+        <div class="metric__label">Sólo el 30-40% restante necesita arquitectura externa</div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ============ SLIDE 8: SECTION 03 ============ -->
+<section>
+<div class="slide slide--center slide--section">
+  <div class="section-num">SECCIÓN 03</div>
+  <h1 style="text-align:center;">Crecimiento<br>exponencial</h1>
+  <p class="lead" style="text-align:center; margin: 0 auto;">Diez minutos máximo. Lo justo para anclar la urgencia.</p>
+</div>
+</section>
+
+<!-- ============ SLIDE 9: ADOPTION SPEED ============ -->
+<section>
+<div class="slide">
+  <div class="header"><div class="header__logo"><i data-lucide="hexagon"></i>fiba labs</div><div class="header__nav">04 // Crecimiento</div></div>
+  <div class="kicker">Récord histórico de adopción</div>
+  <h2>Nada en la historia ha sido así</h2>
+  <div class="grid-3" style="margin-top: var(--spacing-lg);">
+    <div class="metric"><div class="metric__value">15-30</div><div class="metric__label">Años para adoptar la electricidad</div></div>
+    <div class="metric"><div class="metric__value">15-30</div><div class="metric__label">Años para adoptar el automóvil</div></div>
+    <div class="metric metric--featured"><div class="metric__value">&lt; 1 año</div><div class="metric__label">800M usuarios en ChatGPT</div></div>
+  </div>
+  <p class="lead" style="margin-top: var(--spacing-lg);">No tenemos modelo mental para proyectar lo exponencial. La intuición humana subestima el cambio sistemáticamente.</p>
+</div>
+</section>
+
+<!-- ============ SLIDE 10: ALPHAFOLD ============ -->
+<section>
+<div class="slide">
+  <div class="header"><div class="header__logo"><i data-lucide="hexagon"></i>fiba labs</div><div class="header__nav">04 // Crecimiento</div></div>
+  <div class="kicker">El ejemplo que se queda</div>
+  <h2>AlphaFold · Premio Nobel 2024</h2>
+  <div class="grid-2" style="margin-top: var(--spacing-lg); align-items: stretch;">
+    <div class="card">
+      <div class="card__icon"><i data-lucide="dna"></i></div>
+      <div class="card__title">40 años de medicina previa</div>
+      <div class="metric__value" style="font-size: 3rem; margin-top: var(--spacing-md);">10</div>
+      <div class="muted" style="font-size: 0.85rem;">Plegamientos de proteínas descubiertos</div>
+    </div>
+    <div class="card card--featured">
+      <div class="card__icon"><i data-lucide="zap"></i></div>
+      <div class="card__title">AlphaFold · 1 semana</div>
+      <div class="metric__value" style="font-size: 3rem; margin-top: var(--spacing-md);">2.000.000.000+</div>
+      <div class="muted" style="font-size: 0.85rem;">Plegamientos · 99% de las proteínas conocidas</div>
+    </div>
+  </div>
+  <p class="lead" style="margin-top: var(--spacing-lg);">Bonus: detección de Alzheimer 5 años antes de su aparición. La medicina cambió de curva entera.</p>
+</div>
+</section>
+
+<!-- ============ SLIDE 11: SECTION 04 ============ -->
+<section>
+<div class="slide slide--center slide--section">
+  <div class="section-num">SECCIÓN 04</div>
+  <h1 style="text-align:center;">Banco de<br>ejemplos</h1>
+  <p class="lead" style="text-align:center; margin: 0 auto;">El núcleo del workshop. Cada ejemplo abre una cabeza distinta.</p>
+</div>
+</section>
+
+<!-- ============ SLIDE 12: EXAMPLES BANK GRID ============ -->
+<section>
+<div class="slide">
+  <div class="header"><div class="header__logo"><i data-lucide="hexagon"></i>fiba labs</div><div class="header__nav">05 // Ejemplos</div></div>
+  <div class="kicker">15+ candidatos por área</div>
+  <h2>Casos de uso identificados</h2>
+  <div class="grid-4" style="margin-top: var(--spacing-md);">
+    <div class="card"><div class="card__icon"><i data-lucide="users"></i></div><div class="card__title">RR.HH.</div><div class="card__text">Infografías de marcaje · SOPs visuales · Onboarding personalizado</div></div>
+    <div class="card"><div class="card__icon"><i data-lucide="trending-up"></i></div><div class="card__title">Comercial</div><div class="card__text">Cotizaciones por correo · Liberar al vendedor de planillas · Pricing automatizado</div></div>
+    <div class="card"><div class="card__icon"><i data-lucide="hard-hat"></i></div><div class="card__title">Construcción</div><div class="card__text">Hojas manuscritas → costos · Detección de EPP por cámara · Alertas por parlante</div></div>
+    <div class="card"><div class="card__icon"><i data-lucide="stethoscope"></i></div><div class="card__title">Servicios 1:1</div><div class="card__text">Voz a ficha (vets, médicos) · Transcripción → reporte · Knowledge base interna</div></div>
+  </div>
+  <div class="grid-4" style="margin-top: var(--spacing-md);">
+    <div class="card"><div class="card__icon"><i data-lucide="message-circle"></i></div><div class="card__title">Atención al cliente</div><div class="card__text">GPT con manuales · Reducción 90% consultas · Self-service</div></div>
+    <div class="card"><div class="card__icon"><i data-lucide="package"></i></div><div class="card__title">Logística</div><div class="card__text">Monitoreo de stock · Conciliaciones semanales · Optimización de equipo</div></div>
+    <div class="card"><div class="card__icon"><i data-lucide="graduation-cap"></i></div><div class="card__title">Educación</div><div class="card__text">Pokémon · Minecraft · Personalización por gusto del alumno</div></div>
+    <div class="card"><div class="card__icon"><i data-lucide="home"></i></div><div class="card__title">Personal</div><div class="card__text">Dietas · Listas filtradas · Foto del refri → recetas</div></div>
+  </div>
+</div>
+</section>
+
+<!-- ============ SLIDE 13: TIME LADDER ============ -->
+<section>
+<div class="slide">
+  <div class="header"><div class="header__logo"><i data-lucide="hexagon"></i>fiba labs</div><div class="header__nav">05 // Ejemplos</div></div>
+  <div class="kicker">El cálculo que aterriza el ahorro</div>
+  <h2>15 minutos × 4 tareas · Por mes</h2>
+  <div class="ladder" style="margin-top: var(--spacing-lg);">
+    <div class="ladder__step"><div class="ladder__time">POR TAREA</div><div class="ladder__value">15 min</div><div class="ladder__label">Una pega pajera optimizada</div></div>
+    <div class="ladder__step"><div class="ladder__time">POR DÍA</div><div class="ladder__value">1 hr</div><div class="ladder__label">4 tareas similares</div></div>
+    <div class="ladder__step"><div class="ladder__time">POR SEMANA</div><div class="ladder__value">5 hrs</div><div class="ladder__label">Mitad de un día completo</div></div>
+    <div class="ladder__step ladder__step--peak"><div class="ladder__time">POR MES</div><div class="ladder__value ladder__value--peak">~2.5 días</div><div class="ladder__label">Liberados para vender, pensar, ejecutar</div></div>
+  </div>
+  <p class="lead" style="margin-top: var(--spacing-lg);">Ese tiempo no se queda libre. Se transforma en output de mayor valor con la misma jornada.</p>
+</div>
+</section>
+
+<!-- ============ SLIDE 14: SECTION 05 ============ -->
+<section>
+<div class="slide slide--center slide--section">
+  <div class="section-num">SECCIÓN 05</div>
+  <h1 style="text-align:center;">Construir<br>un agente</h1>
+  <p class="lead" style="text-align:center; margin: 0 auto;">La receta de 4 pasos · El bloque enseñable más alto del workshop.</p>
+</div>
+</section>
+
+<!-- ============ SLIDE 15: AGENT RECIPE ============ -->
+<section>
+<div class="slide">
+  <div class="header"><div class="header__logo"><i data-lucide="hexagon"></i>fiba labs</div><div class="header__nav">06 // Receta</div></div>
+  <div class="kicker">Demostrado en vivo con Paola (Cinépolis)</div>
+  <h2>4 pasos para cualquier agente operativo</h2>
+  <ol class="list list--numbered" style="margin-top: var(--spacing-md);">
+    <li><strong style="color: var(--text-primary);">Tríada · Rol + Contexto + Objetivo.</strong> El mayor lever en calidad. Antes/después es dramático.</li>
+    <li><strong style="color: var(--text-primary);">Knowledge base · 2-3 ejemplos previos.</strong> Sube propuestas/PDFs. Restringe orígenes si no quieres internet.</li>
+    <li><strong style="color: var(--text-primary);">Lógica · Instrucciones + Específicos.</strong> Paso a paso como a un humano. Condicionales (si X, hacer Y).</li>
+    <li><strong style="color: var(--text-primary);">Salida · Word/Excel + iniciadores.</strong> Output operativo. Prompts de ejemplo para que el equipo lo use.</li>
+  </ol>
+</div>
+</section>
+
+<!-- ============ SLIDE 16: AGENT PRINCIPLES ============ -->
+<section>
+<div class="slide">
+  <div class="header"><div class="header__logo"><i data-lucide="hexagon"></i>fiba labs</div><div class="header__nav">06 // Receta</div></div>
+  <div class="kicker">Principios que rodean la receta</div>
+  <h2>Las reglas que destrabaron a Paola</h2>
+  <div class="grid-2" style="margin-top: var(--spacing-lg);">
+    <div class="card">
+      <div class="card__title highlight">Regla 80/20</div>
+      <div class="card__text" style="margin-top: var(--spacing-sm);">No persigas el 100%. Borrador robusto en <strong style="color:var(--text-primary)">2 min vs 30 min</strong> ya es la victoria. El 20% restante se "coquetea" a mano.</div>
+    </div>
+    <div class="card">
+      <div class="card__title highlight">30-60 min en el prompt</div>
+      <div class="card__text" style="margin-top: var(--spacing-sm);">Esa inversión paga "como churros" para siempre. La mayoría se rinde tras un mal prompt. Esa es la diferencia.</div>
+    </div>
+    <div class="card">
+      <div class="card__title highlight">Cambia de modelo cuando se atasca</div>
+      <div class="card__text" style="margin-top: var(--spacing-sm);">GPT default daba poco; Claude Sonnet dentro de Copilot lo cambió todo. Enseñar a probar varios.</div>
+    </div>
+    <div class="card">
+      <div class="card__title highlight">Compartir por link</div>
+      <div class="card__text" style="margin-top: var(--spacing-sm);">El agente no se queda en una persona. Link interno → todo el equipo lo usa. Cero handoff técnico.</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ============ SLIDE 17: WORKSHOP FORMAT ============ -->
+<section>
+<div class="slide">
+  <div class="header"><div class="header__logo"><i data-lucide="hexagon"></i>fiba labs</div><div class="header__nav">07 // Formato</div></div>
+  <div class="kicker">Cómo presentamos</div>
+  <h2>Tag-team intercalado, no mitad y mitad</h2>
+  <div class="grid-2" style="margin-top: var(--spacing-lg);">
+    <ul class="list">
+      <li>Ambos en sala, pasando la pelota ejemplo por ejemplo</li>
+      <li>Cada uno toma una nueva área cuando recibe el turno</li>
+      <li>Cada 2 ejemplos · pausa de 2 min · audiencia comparte casos propios</li>
+      <li>Mic + parlante de sala para capturar contribuciones en Plaud</li>
+    </ul>
+    <ul class="list">
+      <li>Intro corta (~10 min): exponencialidad + AlphaFold</li>
+      <li>Auditoría como gate antes de los ejemplos</li>
+      <li>Cierre con demo en vivo del agente de propuestas</li>
+      <li>Post-evento: presentación personalizada generada de la grabación</li>
+    </ul>
+  </div>
+  <div class="quote-block" style="margin-top: var(--spacing-lg);">
+    "El éxito es que cada asistente salga pensando: huevón, en mi área podríamos hacer X."
+    <span class="quote-attr">— Carlos, sobre el outcome único del workshop</span>
+  </div>
+</div>
+</section>
+
+<!-- ============ SLIDE 18: ACTION ITEMS ============ -->
+<section>
+<div class="slide">
+  <div class="header"><div class="header__logo"><i data-lucide="hexagon"></i>fiba labs</div><div class="header__nav">08 // Próximos pasos</div></div>
+  <div class="kicker">Acciones pendientes</div>
+  <h2>Para la próxima sesión</h2>
+  <div class="grid-2" style="margin-top: var(--spacing-lg);">
+    <div>
+      <div style="font-size: 0.75rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: var(--spacing-sm);">Carlos</div>
+      <ul class="list">
+        <li>Pagar plan Claude $100 (sesiones de 4hr)</li>
+        <li>Procesar transcripción → v1 del deck</li>
+        <li>Preparar visual de crecimiento exponencial</li>
+        <li>Confirmar mic + parlante el día del workshop</li>
+      </ul>
+    </div>
+    <div>
+      <div style="font-size: 0.75rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: var(--spacing-sm);">Conjunto</div>
+      <ul class="list">
+        <li>Cerrar lista final de ejemplos (de ~15 candidatos)</li>
+        <li>Asignar quién presenta cada ejemplo</li>
+        <li>Decidir si la demo del agente va en vivo</li>
+        <li>Definir mensaje de marca y rol de cada uno en intro</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ============ SLIDE 19: CLOSING ============ -->
+<section>
+<div class="slide slide--center slide--section">
+  <div class="section-num">CIERRE · 2026-04-25</div>
+  <h1 style="text-align:center;"><span class="highlight">Abrir</span><br>la cabeza</h1>
+  <p class="lead" style="text-align:center; margin: var(--spacing-md) auto 0;">
+    El workshop no vende automatizaciones. Vende la capacidad de que cada empresa<br>
+    diseñe la suya. Los ejemplos son el vehículo. La estrategia es el destino.
+  </p>
+  <div style="margin-top: var(--spacing-xl); font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted); letter-spacing: 0.2em;">
+    FIBA LABS · CARLOS ACUÑA &nbsp;×&nbsp; PEP BELTRAN
+  </div>
+</div>
+</section>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true, slideNumber: true, controls: true,
+      controlsLayout: 'bottom-right', controlsBackArrows: 'faded',
+      progress: true, center: false, transition: 'slide',
+      backgroundTransition: 'fade', width: 1280, height: 720,
+      margin: 0, minScale: 0.2, maxScale: 2,
+      plugins: [RevealHighlight]
+    });
+    lucide.createIcons();
+  </script>
+</body>
+</html>
