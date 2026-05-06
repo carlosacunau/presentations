@@ -1,0 +1,410 @@
+/*
+ * Alizia x Fiba Labs — Workshop Co-Brand
+ * Light mode bridge between Alizia (white + red) and Fiba Labs (void + violet).
+ * Project-local: only used for the joint Cinepolis workshop deck.
+ * For use with Reveal.js 4.5+
+ */
+
+/* ===== CSS VARIABLES — CO-BRAND PALETTE ===== */
+:root {
+  /* Backgrounds */
+  --bg-light: #FFFFFF;
+  --bg-surface: #F5F6F7;
+  --bg-quote: #F9FAFB;
+
+  /* Ink */
+  --ink: #0A0A14;
+  --body: #374151;
+  --muted: #9CA3AF;
+  --rule: #E5E7EB;
+  --rule-strong: #0A0A14;
+
+  /* Dual accents — used by section ownership */
+  --accent-alizia: #E11D2A;
+  --accent-alizia-soft: rgba(225, 29, 42, 0.08);
+  --accent-fiba: #8B5CF6;
+  --accent-fiba-soft: rgba(139, 92, 246, 0.10);
+
+  /* Default joint accent (intro/outro/agenda) */
+  --accent-joint: #0A0A14;
+
+  /* Typography */
+  --font-display: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Spacing */
+  --spacing-xs: 8px;
+  --spacing-sm: 16px;
+  --spacing-md: 24px;
+  --spacing-lg: 40px;
+  --spacing-xl: 60px;
+}
+
+/* ===== BASE ===== */
+html, body {
+  background: var(--bg-light) !important;
+  color: var(--ink);
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+.reveal-viewport {
+  background: var(--bg-light) !important;
+}
+
+.reveal {
+  background: var(--bg-light);
+  font-family: var(--font-body);
+  font-size: 22px;
+  color: var(--ink);
+}
+
+.reveal .slides { text-align: left; }
+
+.reveal .slides section {
+  padding: 0;
+  background: var(--bg-light);
+}
+
+/* ===== SLIDE BASE ===== */
+.slide {
+  height: 100%;
+  width: 100%;
+  padding: var(--spacing-xl);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  position: relative;
+}
+
+/* Section ownership: vertical bar on the left of the title block.
+   Add .slide--alizia, .slide--fiba, or .slide--joint to color the bar. */
+.slide--alizia .h1::before,
+.slide--fiba .h1::before,
+.slide--joint .h1::before {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+}
+
+.slide--alizia .title-block { border-left: 4px solid var(--accent-alizia); padding-left: 20px; }
+.slide--fiba    .title-block { border-left: 4px solid var(--accent-fiba); padding-left: 20px; }
+.slide--joint   .title-block { border-left: 4px solid var(--accent-joint); padding-left: 20px; }
+
+/* ===== HEADER (logo lockup top-right) ===== */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+  flex-shrink: 0;
+}
+
+.eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.logo-lockup {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.logo-lockup img {
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* Alizia is taller (mark + wordmark), Fiba is wider (wordmark only).
+   Match by visual weight, not raw pixels. */
+.logo-lockup img[alt="Alizia"] { height: 56px; }
+.logo-lockup img[alt="Fiba Labs"] { height: 40px; }
+
+.logo-lockup .divider {
+  width: 1px;
+  height: 36px;
+  background: var(--rule);
+}
+
+/* Title-slide centered lockup variant */
+.logo-lockup--center {
+  justify-content: center;
+  margin: 0 auto;
+  gap: 48px;
+}
+
+.logo-lockup--center img[alt="Alizia"] { height: 110px; }
+.logo-lockup--center img[alt="Fiba Labs"] { height: 72px; }
+
+/* ===== TYPOGRAPHY ===== */
+.kicker {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: var(--spacing-sm);
+}
+
+h1, .h1 {
+  font-family: var(--font-display);
+  font-size: 4rem;
+  font-weight: 800;
+  line-height: 1.05;
+  margin: 0 0 var(--spacing-md) 0;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+}
+
+h2, .h2 {
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.15;
+  margin: 0 0 var(--spacing-md) 0;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+h3, .h3 {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 0 0 var(--spacing-sm) 0;
+  color: var(--ink);
+}
+
+.lead {
+  font-size: 1.1rem;
+  color: var(--body);
+  line-height: 1.6;
+  max-width: 720px;
+}
+
+.body { color: var(--body); line-height: 1.6; }
+.muted { color: var(--muted); }
+
+/* Underline rule under H1 (Alizia signature) */
+.rule-under {
+  width: 200px;
+  height: 4px;
+  background: var(--ink);
+  margin: var(--spacing-sm) 0 var(--spacing-lg) 0;
+  border: 0;
+}
+
+/* Accent text — only one accent per slide */
+.text-alizia { color: var(--accent-alizia); }
+.text-fiba   { color: var(--accent-fiba); }
+
+/* ===== QUOTE / CALLOUT BLOCK (Alizia pattern) ===== */
+.quote {
+  background: var(--bg-quote);
+  border-left: 4px solid var(--ink);
+  padding: var(--spacing-md) var(--spacing-lg);
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--ink);
+  line-height: 1.5;
+  margin: var(--spacing-md) 0;
+}
+
+.slide--alizia .quote { border-left-color: var(--accent-alizia); }
+.slide--fiba    .quote { border-left-color: var(--accent-fiba); }
+
+/* ===== LAYOUT UTILITIES ===== */
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-xl);
+  align-items: start;
+  flex: 1;
+}
+
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-md); }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-md); }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--spacing-md); }
+
+/* ===== AGENDA / NUMBERED COLUMNS (Alizia pattern) ===== */
+.numbered-col__num {
+  font-family: var(--font-display);
+  font-size: 4rem;
+  font-weight: 800;
+  color: #D1D5DB;
+  line-height: 1;
+  margin-bottom: var(--spacing-sm);
+  letter-spacing: -0.03em;
+}
+
+.numbered-col__title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: var(--spacing-xs);
+  padding-bottom: var(--spacing-xs);
+  border-bottom: 2px solid var(--ink);
+}
+
+.slide--alizia .numbered-col__title { border-bottom-color: var(--accent-alizia); }
+.slide--fiba    .numbered-col__title { border-bottom-color: var(--accent-fiba); }
+
+.numbered-col__body {
+  font-size: 0.9rem;
+  color: var(--body);
+  line-height: 1.5;
+}
+
+/* ===== CARDS ===== */
+.card {
+  background: var(--bg-surface);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: var(--spacing-md);
+  transition: border-color 0.2s ease;
+}
+
+.card:hover { border-color: var(--ink); }
+
+.card__title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: var(--spacing-xs);
+}
+
+.card__text {
+  font-size: 0.9rem;
+  color: var(--body);
+  line-height: 1.5;
+}
+
+/* ===== LISTS ===== */
+.list { list-style: none; padding: 0; margin: 0; }
+
+.list li {
+  padding: var(--spacing-xs) 0 var(--spacing-xs) var(--spacing-md);
+  position: relative;
+  color: var(--body);
+}
+
+.list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 14px;
+  width: 8px;
+  height: 2px;
+  background: var(--ink);
+}
+
+.slide--alizia .list li::before { background: var(--accent-alizia); }
+.slide--fiba    .list li::before { background: var(--accent-fiba); }
+
+/* ===== METRICS ===== */
+.metric {
+  padding: var(--spacing-md) 0;
+  border-top: 1px solid var(--rule);
+}
+
+.metric__value {
+  font-family: var(--font-display);
+  font-size: 2.75rem;
+  font-weight: 800;
+  color: var(--ink);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.metric__label {
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-top: var(--spacing-xs);
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  margin-top: auto;
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--rule);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+/* ===== BUTTONS ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  border: 1.5px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.btn:hover { background: var(--ink); color: var(--bg-light); }
+
+.btn--alizia { border-color: var(--accent-alizia); color: var(--accent-alizia); }
+.btn--alizia:hover { background: var(--accent-alizia); color: var(--bg-light); }
+
+.btn--fiba { border-color: var(--accent-fiba); color: var(--accent-fiba); }
+.btn--fiba:hover { background: var(--accent-fiba); color: var(--bg-light); }
+
+/* ===== REVEAL OVERRIDES ===== */
+.reveal .controls { color: var(--ink); }
+
+.reveal .progress {
+  background: var(--rule);
+  height: 2px;
+}
+
+.reveal .progress span { background: var(--ink); }
+
+.reveal .slide-number {
+  background: transparent;
+  color: var(--muted);
+  font-size: 13px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.1em;
+}
+
+::selection { background: var(--ink); color: var(--bg-light); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  h1, .h1 { font-size: 2.5rem; }
+  h2, .h2 { font-size: 1.75rem; }
+  .split, .grid-3, .grid-4 { grid-template-columns: 1fr; gap: var(--spacing-md); }
+}
