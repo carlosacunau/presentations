@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workshop IA · Recap · Alizia × Fiba Labs</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/alizia-fiba.css">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- 01 · TITLE -->
+      <section>
+        <div class="slide slide--joint" style="justify-content: center; align-items: center; text-align: center;">
+          <div class="logo-lockup logo-lockup--center" style="margin-bottom: 60px;">
+            <span class="alizia-card">
+              <img src="assets/alizia-logo.png" alt="Alizia">
+            </span>
+            <span class="divider"></span>
+            <img src="assets/fiba-logo.png" alt="Fiba Labs">
+          </div>
+          <p class="eyebrow" style="margin-bottom: 24px;">RECAP DEL WORKSHOP</p>
+          <h1 class="h1" style="font-size: 4.5rem; max-width: 1000px;">Adopción práctica de IA</h1>
+          <p class="lead" style="max-width: 720px; margin: 24px auto 0;">
+            Lo que vimos juntos en Cinepolis Parque Arauco. Las ideas, los ejemplos y los próximos pasos.
+          </p>
+          <p class="muted" style="margin-top: 48px; font-size: 0.9rem;">
+            Cinepolis Parque Arauco · 8 de mayo de 2026
+          </p>
+        </div>
+      </section>
+
+      <!-- 02 · GRACIAS / ASISTENTES -->
+      <section>
+        <div class="slide slide--joint">
+          <div class="header">
+            <p class="eyebrow">GRACIAS POR VENIR</p>
+            <div class="logo-lockup">
+              <span class="alizia-card">
+                <img src="assets/alizia-logo.png" alt="Alizia">
+              </span>
+              <span class="divider"></span>
+              <img src="assets/fiba-logo.png" alt="Fiba Labs">
+            </div>
+          </div>
+
+          <div class="title-block">
+            <h1 class="h1">Quiénes estuvieron en la sala</h1>
+          </div>
+          <hr class="rule-under">
+
+          <div class="grid-3" style="margin-top: 40px;">
+            <div class="card">
+              <div class="card__title">Helga</div>
+              <div class="card__text">Inversión inmobiliaria, parcelaciones en el sur.</div>
+            </div>
+            <div class="card">
+              <div class="card__title">Eduardo Teixido</div>
+              <div class="card__text">Entretenimiento familiar (Chuck E. Cheese, Happyland) y socio en RRHH y consultora.</div>
+            </div>
+            <div class="card">
+              <div class="card__title">Michael</div>
+              <div class="card__text">Agencia de marca digital y tecnología.</div>
+            </div>
+            <div class="card">
+              <div class="card__title">David Caro</div>
+              <div class="card__text">CEO de AdInfluence. Influencer marketing con IA, desarrollo propio.</div>
+            </div>
+            <div class="card">
+              <div class="card__title">Waldo González</div>
+              <div class="card__text">Tecnólogo, investigando y desarrollando con IA.</div>
+            </div>
+            <div class="card">
+              <div class="card__title">Leonardo Villanueva</div>
+              <div class="card__text">Ingeniería y proyectos. Implementaciones locales con Gemma y n8n.</div>
+            </div>
+            <div class="card">
+              <div class="card__title">Víctor Heldo</div>
+              <div class="card__text">Arquitecto. Diseño y construcción de data centers.</div>
+            </div>
+            <div class="card">
+              <div class="card__title">Y todos los que siguen llegando</div>
+              <div class="card__text">Esta sesión es solo el primer encuentro de muchos.</div>
+            </div>
+          </div>
+
+          <div class="footer">
+            <span>WORKSHOP · ALIZIA × FIBA LABS</span>
+            <span>02</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 03 · LAS 3 IDEAS -->
+      <section>
+        <div class="slide slide--joint">
+          <div class="header">
+            <p class="eyebrow">LO QUE QUEREMOS QUE TE LLEVES</p>
+            <div class="logo-lockup">
+              <span class="alizia-card">
+                <img src="assets/alizia-logo.png" alt="Alizia">
+              </span>
+              <span class="divider"></span>
+              <img src="assets/fiba-logo.png" alt="Fiba Labs">
+            </div>
+          </div>
+
+          <div class="title-block">
+            <h1 class="h1">Tres ideas centrales</h1>
+          </div>
+          <hr class="rule-under">
+
+          <div class="grid-3" style="margin-top: 40px;">
+            <div>
+              <div class="numbered-col__num">01</div>
+              <div class="numbered-col__title">La IA ya no alucina como antes</div>
+              <div class="numbered-col__body">El problema casi siempre está en cómo le pedimos las cosas, no en lo que la IA puede o no puede hacer.</div>
+            </div>
+            <div>
+              <div class="numbered-col__num">02</div>
+              <div class="numbered-col__title">Iteración, no magia</div>
+              <div class="numbered-col__body">A ningún colega le pides algo y sale perfecto a la primera. A la IA tampoco. Dale feedback.</div>
+            </div>
+            <div>
+              <div class="numbered-col__num">03</div>
+              <div class="numbered-col__title">Te devuelve tu tiempo</div>
+              <div class="numbered-col__body">Las tareas que no agregan valor son las que primero se automatizan. Eso libera horas para lo que sí importa.</div>
+            </div>
+          </div>
+
+          <div class="footer">
+            <span>WORKSHOP · ALIZIA × FIBA LABS</span>
+            <span>03</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 04 · PEP QUOTE: HUMANOS NO COMUNICAMOS -->
+      <section>
+        <div class="slide slide--alizia" style="justify-content: center;">
+          <div class="header">
+            <p class="eyebrow">IDEA 01 · PEP</p>
+            <div class="logo-lockup">
+              <span class="alizia-card">
+                <img src="assets/alizia-logo.png" alt="Alizia">
+              </span>
+              <span class="divider"></span>
+              <img src="assets/fiba-logo.png" alt="Fiba Labs">
+            </div>
+          </div>
+
+          <div style="max-width: 1000px;">
+            <p class="eyebrow text-alizia">EL PUNTO</p>
+            <h2 class="h2" style="font-size: 3rem;">
+              La IA no miente. El problema es que los humanos no sabemos comunicarnos bien.
+            </h2>
+            <p class="body" style="margin-top: 32px; max-width: 800px;">
+              Si a un colega le pides algo ambiguo, te trae algo ambiguo. La IA hace exactamente lo mismo. La diferencia es que con la IA notamos el problema, con el colega lo asumimos como normal.
+            </p>
+          </div>
+
+          <div class="footer">
+            <span>BLOQUE PEP · IDEA 01</span>
+            <span>04</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 05 · PEP: NO USES "PODRIAS" -->
+      <section>
+        <div class="slide slide--alizia">
+          <div class="header">
+            <p class="eyebrow">PROMPTING · REGLA PRÁCTICA</p>
+            <div class="logo-lockup">
+              <span class="alizia-card">
+                <img src="assets/alizia-logo.png" alt="Alizia">
+              </span>
+              <span class="divider"></span>
+              <img src="assets/fiba-logo.png" alt="Fiba Labs">
+            </div>
+          </div>
+
+          <div class="title-block">
+            <h1 class="h1">No le pidas "podrías", dile "haz"</h1>
+          </div>
+          <hr class="rule-under">
+
+          <div class="split" style="margin-top: 40px;">
+            <div class="card">
+              <div class="card__title text-alizia">Ambiguo</div>
+              <div class="card__text" style="font-size: 1.15rem;">"¿Podrías hacerme un resumen de este correo?"</div>
+              <p class="muted" style="margin-top: 16px; font-size: 0.85rem;">Le abres la puerta a que pueda y a que no pueda. La IA es estadística, y eso enreda la respuesta.</p>
+            </div>
+            <div class="card">
+              <div class="card__title text-alizia">Directo</div>
+              <div class="card__text" style="font-size: 1.15rem;">"Resume este correo en 3 puntos. Quiero las decisiones, no los saludos."</div>
+              <p class="muted" style="margin-top: 16px; font-size: 0.85rem;">Acción clara, formato claro, alcance claro. La IA tiene un solo camino.</p>
+            </div>
+          </div>
+
+          <div class="footer">
+            <span>BLOQUE PEP · REGLA</span>
+            <span>05</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 06 · PEP DEMO: WHATSAPP -> EXCEL -->
+      <section>
+        <div class="slide slide--alizia">
+          <div class="header">
+            <p class="eyebrow">DEMO 01 · PEP</p>
+            <div class="logo-lockup">
+              <span class="alizia-card">
+                <img src="assets/alizia-logo.png" alt="Alizia">
+              </span>
+              <span class="divider"></span>
+              <img src="assets/fiba-logo.png" alt="Fiba Labs">
+            </div>
+          </div>
+
+          <div class="title-block">
+            <h1 class="h1">De WhatsApp a Excel listo</h1>
+          </div>
+          <hr class="rule-under">
+
+          <div class="quote">
+            "Recibo un mensaje pidiendo cinco cursos. En lugar de ordenar todo a mano, le paso el texto a la IA y me devuelve el Excel listo para repartir entre profesores."
+          </div>
+
+          <div class="grid-3" style="margin-top: 32px;">
+            <div class="card">
+              <div class="card__title text-alizia">Input</div>
+              <div class="card__text">Conversación de WhatsApp con la solicitud completa.</div>
+            </div>
+            <div class="card">
+              <div class="card__title text-alizia">Prompt</div>
+              <div class="card__text">"Identifica y extrae los cursos que me solicitan. Entrégame un Excel con cada curso en una línea, dejando espacio para horas y profesor."</div>
+            </div>
+            <div class="card">
+              <div class="card__title text-alizia">Output</div>
+              <div class="card__text">Excel descargado, listo para compartir con el equipo.</div>
+            </div>
+          </div>
+
+          <div class="footer">
+            <span>BLOQUE PEP · DEMO 01</span>
+            <span>06</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 07 · LA MATEMATICA DEL TIEMPO -->
+      <section>
+        <div class="slide slide--fiba">
+          <div class="header">
+            <p class="eyebrow">EL ARGUMENTO DE NEGOCIO</p>
+            <div class="logo-lockup">
+              <span class="alizia-card">
+                <img src="assets/alizia-logo.png" alt="Alizia">
+              </span>
+              <span class="divider"></span>
+              <img src="assets/fiba-logo.png" alt="Fiba Labs">
+            </div>
+          </div>
+
+          <div class="title-block">
+            <h1 class="h1">15 minutos contra 2 minutos</h1>
+          </div>
+          <hr class="rule-under">
+
+          <div class="grid-4" style="margin-top: 40px;">
+            <div>
+              <div class="numbered-col__num">15'</div>
+              <div class="numbered-col__title">Sin IA</div>
+              <div class="numbered-col__body">Una sola tarea repetitiva, hecha a mano.</div>
+            </div>
+            <div>
+              <div class="numbered-col__num">2'</div>
+              <div class="numbered-col__title">Con IA</div>
+              <div class="numbered-col__body">Misma tarea, mismo resultado, hecha mientras voy en el metro.</div>
+            </div>
+            <div>
+              <div class="numbered-col__num">4×</div>
+              <div class="numbered-col__title">Por día</div>
+              <div class="numbered-col__body">Si esa tarea aparece cuatro veces al día, son 60 minutos diarios.</div>
+            </div>
+            <div>
+              <div class="numbered-col__num">20h</div>
+              <div class="numbered-col__title">Por mes</div>
+              <div class="numbered-col__body">2 jornadas y media liberadas. Solo con una tarea, solo con un caso.</div>
+            </div>
+          </div>
+
+          <p class="body" style="margin-top: 32px; max-width: 900px;">
+            Y eso es solo lo más obvio. La pregunta que vale la pena hacerse esta semana: ¿cuáles son tus tres tareas que se repiten y que no te agregan valor?
+          </p>
+
+          <div class="footer">
+            <span>BLOQUE CARLOS · MATEMÁTICA</span>
+            <span>07</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 08 · IKIGAI QUOTE -->
+      <section>
+        <div class="slide slide--joint" style="justify-content: center;">
+          <div class="header">
+            <span></span>
+            <div class="logo-lockup">
+              <span class="alizia-card">
+                <img src="assets/alizia-logo.png" alt="Alizia">
+              </span>
+              <span class="divider"></span>
+              <img src="assets/fiba-logo.png" alt="Fiba Labs">
+            </div>
+          </div>
+
+          <div style="max-width: 1000px;">
+            <p class="eyebrow">LA IDEA QUE NOS LLEVAMOS</p>
+            <h2 class="h2" style="font-size: 3rem;">
+              La IA nos viene a devolver nuestro ikigai. El tiempo de las tareas que no nos agregan valor, vuelve a nosotros.
+            </h2>
+            <p class="body" style="margin-top: 32px; max-width: 800px;">
+              No estudiaste cinco años para traspasar correos a un Excel. La cabeza es para crear, para hacer ingeniería, para agregar valor. Eso es lo que la IA libera.
+            </p>
+          </div>
+
+          <div class="footer">
+            <span>WORKSHOP · ALIZIA × FIBA LABS</span>
+            <span>08</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 09 · IMAGENES SUPERPODER -->
+      <section>
+        <div class="slide slide--alizia">
+          <div class="header">
+            <p class="eyebrow">DEMO 02 · PEP</p>
+            <div class="logo-lockup">
+              <span class="alizia-card">
+                <img src="assets/alizia-logo.png" alt="Alizia">
+              </span>
+              <span class="divider"></span>
+              <img src="assets/fiba-logo.png" alt="Fiba Labs">
+            </div>
+          </div>
+
+          <div class="title-block">
+            <h1 class="h1">Imágenes como superpoder</h1>
+          </div>
+          <hr class="rule-under">
+
+          <div class="quote">
+            "La IA no solo nos eficienta el tiempo. Nos da el poder de hacer cosas que antes no hubiéramos hecho."
+          </div>
+
+          <ul class="list" style="margin-top: 24px;">
+            <li>Una infografía visual de cuatro o cinco imágenes a partir de una noticia.</li>
+            <li>Un boceto rápido de una propuesta de diseño para conversar con un cliente.</li>
+            <li>Una pieza para redes, sin pasar por un diseñador, sin abrir Photoshop.</li>
+            <li>Una imagen explicativa para un correo o un informe en menos de un minuto.</li>
+          </ul>
+
+          <div class="footer">
+            <span>BLOQUE PEP · DEMO 02</span>
+            <span>09</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 10 · PROXIMOS PASOS -->
+      <section>
+        <div class="slide slide--joint">
+          <div class="header">
+            <p class="eyebrow">ESTA SEMANA</p>
+            <div class="logo-lockup">
+              <span class="alizia-card">
+                <img src="assets/alizia-logo.png" alt="Alizia">
+              </span>
+              <span class="divider"></span>
+              <img src="assets/fiba-logo.png" alt="Fiba Labs">
+            </div>
+          </div>
+
+          <div class="title-block">
+            <h1 class="h1">Tres ejercicios para esta semana</h1>
+          </div>
+          <hr class="rule-under">
+
+          <div class="grid-3" style="margin-top: 40px;">
+            <div>
+              <div class="numbered-col__num">01</div>
+              <div class="numbered-col__title">Lista tus tres tareas pajeras</div>
+              <div class="numbered-col__body">Las que se repiten, las que no te agregan valor, las que te roban el día.</div>
+            </div>
+            <div>
+              <div class="numbered-col__num">02</div>
+              <div class="numbered-col__title">Lleva una a la IA</div>
+              <div class="numbered-col__body">No la más complicada. La más recurrente. Empieza por ahí.</div>
+            </div>
+            <div>
+              <div class="numbered-col__num">03</div>
+              <div class="numbered-col__title">Iterá y ajustá</div>
+              <div class="numbered-col__body">Si la primera respuesta no es perfecta, dale feedback. Es parte del proceso.</div>
+            </div>
+          </div>
+
+          <div class="footer">
+            <span>WORKSHOP · ALIZIA × FIBA LABS</span>
+            <span>10</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 11 · CIERRE / CONTACTO -->
+      <section>
+        <div class="slide slide--joint">
+          <div class="header">
+            <p class="eyebrow">CIERRE · CONTACTO</p>
+            <div class="logo-lockup">
+              <span class="alizia-card">
+                <img src="assets/alizia-logo.png" alt="Alizia">
+              </span>
+              <span class="divider"></span>
+              <img src="assets/fiba-logo.png" alt="Fiba Labs">
+            </div>
+          </div>
+
+          <div class="title-block">
+            <h1 class="h1">Si quieres llevar esto a tu empresa</h1>
+          </div>
+          <hr class="rule-under">
+
+          <div class="split" style="margin-top: 40px;">
+            <div>
+              <p class="eyebrow text-alizia">ALIZIA</p>
+              <h3 class="h3">Josep Beltran</h3>
+              <p class="body">josep.beltran@alizia.cl</p>
+              <a href="https://alizia.cl" class="btn btn--alizia" style="margin-top: 16px;">alizia.cl</a>
+            </div>
+            <div>
+              <p class="eyebrow text-fiba">FIBA LABS</p>
+              <h3 class="h3">Carlos Acuna</h3>
+              <p class="body">acuna.carlosandres@gmail.com</p>
+              <a href="https://fibalabs.com" class="btn btn--fiba" style="margin-top: 16px;">fibalabs.com</a>
+            </div>
+          </div>
+
+          <div class="footer">
+            <span>GRACIAS POR ESTAR</span>
+            <span>Mayo 2026</span>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: 'c/t',
+      controls: true,
+      progress: true,
+      center: false,
+      transition: 'fade',
+      width: 1366,
+      height: 768,
+      margin: 0
+    });
+  </script>
+</body>
+</html>
