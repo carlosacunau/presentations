@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía de Probabilidad y Conteo · Sofía</title>
+<style>
+  :root {
+    --conteo: #1e5fa8;
+    --conteo-bg: #eaf2fb;
+    --conteo-border: #c5dbf2;
+    --prob: #1f7a4a;
+    --prob-bg: #e8f5ee;
+    --prob-border: #c2e2cf;
+    --warn: #b34a2a;
+    --warn-bg: #fdeee6;
+    --warn-border: #f4cdb8;
+    --neutral: #1a1a1a;
+    --muted: #5a5a5a;
+    --line: #d9d9d9;
+    --bg: #ffffff;
+    --page-bg: #f5f5f5;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--page-bg);
+    font-family: -apple-system, "Segoe UI", Inter, Helvetica, Arial, sans-serif;
+    color: var(--neutral);
+    line-height: 1.5;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+    background: var(--bg);
+    box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    border-bottom: 2px solid var(--neutral);
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+  }
+  .header h1 {
+    margin: 0;
+    font-size: 28px;
+    letter-spacing: 0.3px;
+  }
+  .header .sub {
+    color: var(--muted);
+    font-size: 14px;
+    margin-top: 6px;
+  }
+
+  /* Step 0 */
+  .step0 {
+    background: #f9f9fa;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin-bottom: 28px;
+  }
+  .step0-header {
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--neutral);
+    background: var(--neutral);
+    color: white;
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+  }
+  .step0-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .step0-card {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 10px 14px;
+  }
+  .step0-card b { display: block; font-size: 14px; margin-bottom: 2px; }
+  .step0-card span { color: var(--muted); font-size: 13px; }
+
+  /* Topic sections */
+  .topic {
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 28px;
+  }
+  .topic.conteo {
+    background: var(--conteo-bg);
+    border: 2px solid var(--conteo-border);
+  }
+  .topic.prob {
+    background: var(--prob-bg);
+    border: 2px solid var(--prob-border);
+  }
+
+  .topic-title {
+    font-size: 22px;
+    font-weight: bold;
+    margin: 0 0 18px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .topic.conteo .topic-title { color: var(--conteo); }
+  .topic.prob .topic-title { color: var(--prob); }
+
+  .topic-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  @media (max-width: 768px) {
+    .topic-grid { grid-template-columns: 1fr; }
+  }
+
+  .section-title {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    border-top: 1px solid var(--line);
+    padding-top: 12px;
+    margin: 8px 0 8px 0;
+    font-weight: bold;
+  }
+  .section-title.first { border-top: none; padding-top: 0; margin-top: 0; }
+
+  /* Cards inside topics */
+  .card {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    font-size: 14px;
+  }
+  .card:last-child { margin-bottom: 0; }
+
+  /* Decision tree */
+  .tree {
+    background: white;
+    border: 1.5px solid var(--line);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  .tree-q {
+    text-align: center;
+    font-weight: bold;
+    font-size: 15px;
+    margin-bottom: 10px;
+  }
+  .tree-branches {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    text-align: center;
+  }
+  .tree-branch {
+    padding: 10px;
+    border-radius: 6px;
+    background: #fafafa;
+  }
+  .tree-label {
+    font-weight: bold;
+    color: var(--muted);
+    font-size: 11px;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .tree-branch b { font-size: 14px; }
+
+  /* Formula display */
+  .formula {
+    font-family: "Georgia", "Times New Roman", serif;
+    font-size: 16px;
+    text-align: center;
+    padding: 6px 0;
+    color: var(--neutral);
+  }
+  .formula-label {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: bold;
+    margin: 8px 0 2px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .formula-label:first-child { margin-top: 0; }
+
+  /* Note callout */
+  .note {
+    background: #fff8e1;
+    border: 1.5px solid #f0d97d;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 12px;
+    font-size: 14px;
+  }
+  .note b { color: #8a6b00; }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+  }
+  th, td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  th {
+    background: #f0f0f0;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  tr:last-child td { border-bottom: none; }
+
+  /* Order rule */
+  .order-rule .case {
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+  .order-rule .case:last-child { margin-bottom: 0; }
+  .order-rule .yes { color: var(--conteo); font-weight: bold; }
+  .order-rule .no { color: var(--prob); font-weight: bold; }
+  .order-rule code {
+    font-family: "Menlo", "Consolas", monospace;
+    background: #f5f5f5;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 13px;
+  }
+
+  /* Tricks */
+  .tricks ul { margin: 0; padding-left: 20px; }
+  .tricks li { margin-bottom: 8px; font-size: 14px; }
+  .tricks li:last-child { margin-bottom: 0; }
+  .tricks code {
+    font-family: "Menlo", "Consolas", monospace;
+    background: #f5f5f5;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 13px;
+  }
+
+  /* Venn */
+  .venn-container {
+    text-align: center;
+  }
+  .venn-svg {
+    width: 100%;
+    max-width: 360px;
+    height: auto;
+    display: block;
+    margin: 0 auto 8px;
+  }
+  .venn-legend {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .venn-legend b { color: var(--neutral); }
+
+  /* Errors footer */
+  .errors {
+    background: var(--warn-bg);
+    border: 2px solid var(--warn-border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+  }
+  .errors h3 {
+    margin: 0 0 12px 0;
+    color: var(--warn);
+    font-size: 18px;
+  }
+  .errors ul {
+    margin: 0;
+    padding-left: 22px;
+  }
+  @media (min-width: 768px) {
+    .errors ul {
+      columns: 2;
+      column-gap: 32px;
+    }
+  }
+  .errors li {
+    margin-bottom: 6px;
+    font-size: 14px;
+    break-inside: avoid;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 16px;
+  }
+  .footer .heart { color: #d04050; }
+
+  /* TOC */
+  .toc {
+    background: #f9f9fa;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 24px;
+    font-size: 14px;
+  }
+  .toc-title {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+  .toc a {
+    color: var(--neutral);
+    text-decoration: none;
+    margin-right: 16px;
+  }
+  .toc a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <header class="header">
+    <h1>Guía de Probabilidad y Técnicas de Conteo</h1>
+    <div class="sub">Para Sofía · Prueba</div>
+  </header>
+
+  <!-- TOC -->
+  <nav class="toc">
+    <div class="toc-title">Contenido</div>
+    <a href="#paso-0">📋 Paso 0</a>
+    <a href="#conteo">🔢 Conteo</a>
+    <a href="#probabilidad">🎲 Probabilidad</a>
+    <a href="#errores">⚠️ Errores comunes</a>
+  </nav>
+
+  <!-- STEP 0 -->
+  <section id="paso-0" class="step0">
+    <div class="step0-header">PASO 0 — ANTES DE LA FÓRMULA</div>
+    <div class="step0-cards">
+      <div class="step0-card">
+        <b>1. ¿Qué me piden?</b>
+        <span>Lee el final primero. Busca "dado que".</span>
+      </div>
+      <div class="step0-card">
+        <b>2. ¿Qué me dan?</b>
+        <span>Define A, B y anota los datos.</span>
+      </div>
+      <div class="step0-card">
+        <b>3. ¿Qué es ruido?</b>
+        <span>Info que sobra y confunde.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- CONTEO                                                      -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section id="conteo" class="topic conteo">
+    <h2 class="topic-title">🔢 Técnicas de Conteo</h2>
+
+    <div class="topic-grid">
+
+      <!-- LEFT: tree + formulas -->
+      <div>
+        <div class="tree">
+          <div class="tree-q">¿Usa TODOS los elementos?</div>
+          <div class="tree-branches">
+            <div class="tree-branch">
+              <span class="tree-label">SÍ</span>
+              <b>PERMUTACIONES</b>
+            </div>
+            <div class="tree-branch">
+              <span class="tree-label">NO</span>
+              <b>VARIACIÓN / COMBINACIÓN</b>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="section-title first">Permutaciones (usa todos)</h3>
+        <div class="card">
+          <div><b>P<sub>n</sub> = n!</b> <span style="color:var(--muted)">— orden, sin repetir</span></div>
+          <div style="margin-top:6px"><b>P<sub>c</sub> = (n−1)!</b> <span style="color:var(--muted)">— circular, mesa redonda</span></div>
+          <div style="margin-top:6px"><b>PR = n! / (a!·b!·...)</b> <span style="color:var(--muted)">— con repetición (anagramas)</span></div>
+        </div>
+
+        <h3 class="section-title">Variación vs. Combinación</h3>
+        <div class="card">
+          <div class="formula-label">VARIACIÓN — orden SÍ importa</div>
+          <div class="formula">VR(n,r) = n<sup>r</sup> &nbsp;·&nbsp; V(n,r) = n! / (n−r)!</div>
+          <div class="formula-label">COMBINACIÓN — orden NO importa</div>
+          <div class="formula">CR(n,r) = (n+r−1)! / ((n−1)!·r!)</div>
+          <div class="formula">C(n,r) = n! / ((n−r)!·r!)</div>
+          <div style="font-size:12px;color:var(--muted);text-align:center;margin-top:6px">VR/CR = con repetición · V/C = sin repetición</div>
+        </div>
+
+        <h3 class="section-title">Casos especiales</h3>
+        <div class="card">
+          <div><b>Grupos por categoría</b> (ej: 2 hombres + 3 mujeres):</div>
+          <div style="font-size:13px;color:var(--muted);margin-top:2px">Calcula cada categoría aparte y <b>multiplica</b>:</div>
+          <div class="formula">C(4,2) × C(5,3) = 6 × 10 = 60</div>
+          <div style="margin-top:10px"><b>Despejar n</b> (ej: C(n,2) = 36):</div>
+          <div class="formula">n(n−1) / 2 = 36 → n(n−1) = 72 → n = 9</div>
+        </div>
+      </div>
+
+      <!-- RIGHT: orden importa + atajos -->
+      <div>
+        <h3 class="section-title first">¿Orden importa? — Regla definitiva</h3>
+        <div class="card order-rule">
+          <div class="case">Mira el <b>resultado final</b>:</div>
+          <div class="case">
+            <span class="yes">SÍ importa</span> si cuentan como <b>diferentes</b>:<br>
+            <code>P,R,T ≠ P,T,R ≠ R,P,T</code> → 3 resultados<br>
+            → variación / permutación
+          </div>
+          <div class="case">
+            <span class="no">NO importa</span> si cuentan como <b>el mismo</b>:<br>
+            <code>pera,pera,manzana = manzana,pera,pera</code><br>
+            → combinación
+          </div>
+          <div class="case" style="color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:10px">
+            <b>Ejemplos típicos:</b><br>
+            • Palabras, códigos, podio → <span class="yes">SÍ</span><br>
+            • Comité, equipo, grupo, frutas → <span class="no">NO</span>
+          </div>
+        </div>
+
+        <h3 class="section-title">Atajos con factoriales</h3>
+        <div class="card tricks">
+          <ul>
+            <li>
+              <b>No expandas el factorial entero.</b> Cancela contra el factorial más grande del denominador:
+              <div style="margin-top:4px"><code>7! / (4!·3!) = (7·6·5·<u>4!</u>) / (<u>4!</u>·3!) = 7·6·5 / 6 = 35</code></div>
+            </li>
+            <li><b>Cancela ANTES de multiplicar.</b> Evita calcular 5040, 720, etc.</li>
+            <li>Con números chicos, multiplicación directa: <code>C(4,2) = 4·3 / 2 = 6</code> (sin escribir toda la fórmula)</li>
+            <li>Si te da decimal raro o número enorme → <b>revisa la cancelación</b>.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- PROBABILIDAD                                                -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section id="probabilidad" class="topic prob">
+    <h2 class="topic-title">🎲 Probabilidad</h2>
+
+    <div class="topic-grid">
+
+      <!-- LEFT: tree + formulas + when -->
+      <div>
+        <div class="tree">
+          <div class="tree-q">¿Aparece "dado que" o "sabiendo que"?</div>
+          <div class="tree-branches">
+            <div class="tree-branch">
+              <span class="tree-label">SÍ</span>
+              <b>CONDICIONAL</b>
+            </div>
+            <div class="tree-branch">
+              <span class="tree-label">NO</span>
+              <b>SIMPLE</b><br>
+              <span style="font-size:12px;color:var(--muted)">= casos / total</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="note">
+          <b>📌 Notación:</b> <span style="font-family:Georgia,serif">P(A|B)</span> = "probabilidad de A, <b>dado</b> B".<br>
+          La barra <b>NO es división</b>. El libro a veces escribe <span style="font-family:Georgia,serif">P(A/B)</span> pero significa lo mismo.
+        </div>
+
+        <h3 class="section-title">Las 3 fórmulas</h3>
+        <div class="card">
+          <div class="formula-label">Intersección (multiplica):</div>
+          <div class="formula">P(A∩B) = P(A) · P(B|A)</div>
+          <div class="formula-label">Condicional (divide):</div>
+          <div class="formula">P(B|A) = P(A∩B) / P(A)</div>
+          <div class="formula-label">Bayes (invierte condicional):</div>
+          <div class="formula">P(B|A) = P(B) · P(A|B) / P(A)</div>
+        </div>
+
+        <h3 class="section-title">Cuándo usar cada una</h3>
+        <table>
+          <thead>
+            <tr><th>Te dan…</th><th>Te piden…</th><th>Usa</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>P(A∩B), P(A)</td>
+              <td>P(B|A)</td>
+              <td><b style="color:var(--prob)">Condicional</b></td>
+            </tr>
+            <tr>
+              <td>P(A), P(B), P(A|B)<br><span style="color:var(--muted);font-size:11px">SIN intersección</span></td>
+              <td>P(B|A)</td>
+              <td><b style="color:var(--warn)">BAYES</b></td>
+            </tr>
+            <tr>
+              <td>P(A), P(B|A)</td>
+              <td>P(A∩B)</td>
+              <td><b style="color:var(--prob)">Multiplica</b></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- RIGHT: dado que + venn + steps -->
+      <div>
+        <h3 class="section-title first">Truco "dado que"</h3>
+        <div class="card">
+          <div>"<b>Dado que B</b>" elimina todo lo que NO es B.</div>
+          <div style="margin-top:4px">Nuevo universo = B. Calcula <b>dentro</b> de B.</div>
+          <div style="margin-top:10px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:10px">
+            <b>Ejemplo:</b> dado, B = par → universo nuevo = {2, 4, 6}.<br>
+            ¿Múltiplo de 3? Solo {6} → P = 1/3
+          </div>
+        </div>
+
+        <h3 class="section-title">Diagrama de Venn</h3>
+        <div class="card venn-container">
+          <svg class="venn-svg" viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="5" width="310" height="150" rx="8" fill="#fafafa" stroke="#888" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <text x="15" y="22" font-size="11" fill="#666" font-style="italic">Universo</text>
+
+            <circle cx="125" cy="85" r="60" fill="rgba(30,95,168,0.18)" stroke="#1e5fa8" stroke-width="2.5"/>
+            <circle cx="205" cy="85" r="60" fill="rgba(31,122,74,0.18)" stroke="#1f7a4a" stroke-width="2.5"/>
+
+            <defs>
+              <clipPath id="clipA"><circle cx="125" cy="85" r="60"/></clipPath>
+            </defs>
+            <circle cx="205" cy="85" r="60" fill="rgba(120,80,160,0.32)" clip-path="url(#clipA)" stroke="none"/>
+
+            <text x="85" y="92" font-size="22" font-weight="bold" fill="#1e5fa8">A</text>
+            <text x="232" y="92" font-size="22" font-weight="bold" fill="#1f7a4a">B</text>
+            <text x="151" y="90" font-size="13" font-weight="bold" fill="#553377">A∩B</text>
+          </svg>
+          <div class="venn-legend">
+            <b>Universo</b> = total (100%) · <b>A∩B</b> = en ambos<br>
+            "Dado que A" → solo miras <b>dentro</b> del círculo A
+          </div>
+        </div>
+
+        <h3 class="section-title">Pasos para resolver condicional</h3>
+        <div class="card tricks">
+          <ul>
+            <li>Define A y B (¿qué evento es cuál?).</li>
+            <li>Localiza la palabra "<b>dado que</b>" → eso va al denominador.</li>
+            <li>¿Te dan la intersección? → usa fórmula <b>condicional</b>.</li>
+            <li>¿No te dan la intersección pero sí condicional al revés? → <b>Bayes</b>.</li>
+            <li>Si hay porcentajes, multiplica por 100 personas para visualizar mejor.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ERRORS -->
+  <section id="errores" class="errors">
+    <h3>⚠️ Errores comunes (los que vimos hoy)</h3>
+    <ul>
+      <li>La barra <span style="font-family:Georgia,serif">|</span> o <span style="font-family:Georgia,serif">/</span> en P(A|B) <b>NO es división</b> — es "dado que".</li>
+      <li>No expandas el factorial completo → cancela contra el factorial más grande del denominador.</li>
+      <li>Confundir <b>"y"</b> (multiplica) con <b>"dado que"</b> (divide).</li>
+      <li>Olvidar cancelar <b>ambos</b> factoriales del denominador.</li>
+      <li>Tratar grupo mixto (4H + 5M) como uno solo → calcula cada categoría aparte y <b>multiplica</b>.</li>
+      <li>Usar Bayes sin necesidad → si te dan la intersección, basta condicional simple.</li>
+    </ul>
+  </section>
+
+  <footer class="footer">
+    Hecho con <span class="heart">♥</span> para Sofía
+  </footer>
+
+</div>
+
+</body>
+</html>
