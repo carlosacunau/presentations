@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cómo piensa este sistema, Claude Cowork Workshop S1</title>
+
+<!-- Google Fonts - Fiba Labs Style -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- Reveal.js -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/monokai.css">
+
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<style>
+/* ===== CSS VARIABLES - FIBALABS PALETTE ===== */
+:root {
+--bg-dark: #0A0A14;
+--bg-card: #12121E;
+--bg-card-hover: #1A1A2A;
+--accent: #8B5CF6;
+--accent-light: #A78BFA;
+--accent-glow: rgba(139, 92, 246, 0.15);
+--secondary: #4C2D91;
+--secondary-light: #6D4DB8;
+--success: #34D399;
+--warning: #FBBF24;
+--error: #F87171;
+--text-primary: #E8E4F0;
+--text-secondary: #9B95A8;
+--text-muted: #5C5670;
+--border: #2A2A3A;
+--font-serif: 'Instrument Serif', Georgia, serif;
+--font-sans: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+--font-mono: 'Fira Code', monospace;
+--spacing-xs: 8px;
+--spacing-sm: 16px;
+--spacing-md: 24px;
+--spacing-lg: 40px;
+--spacing-xl: 60px;
+}
+
+html, body {
+background: var(--bg-dark) !important;
+color: var(--text-primary);
+margin: 0;
+height: 100%;
+}
+
+body {
+font-family: var(--font-sans);
+-webkit-font-smoothing: antialiased;
+}
+
+.reveal-viewport {
+background: var(--bg-dark) !important;
+background-image:
+linear-gradient(rgba(139, 92, 246, 0.03) 1px, transparent 1px),
+linear-gradient(90deg, rgba(139, 92, 246, 0.03) 1px, transparent 1px) !important;
+background-size: 60px 60px !important;
+}
+
+.reveal {
+background: var(--bg-dark);
+font-family: var(--font-sans);
+font-size: 22px;
+color: var(--text-primary);
+}
+
+.reveal .slides {
+text-align: left;
+}
+
+.reveal .slides section {
+padding: 0;
+background: var(--bg-dark);
+}
+
+/* ===== SLIDE BASE ===== */
+.slide {
+height: 100%;
+width: 100%;
+padding: var(--spacing-xl);
+box-sizing: border-box;
+display: flex;
+flex-direction: column;
+background: transparent;
+position: relative;
+}
+
+.slide > * {
+position: relative;
+z-index: 1;
+}
+
+.slide--center {
+align-items: center;
+justify-content: center;
+text-align: center;
+}
+
+.slide--section {
+background: transparent;
+}
+
+.slide--section::before {
+content: '';
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+width: 600px;
+height: 600px;
+background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+pointer-events: none;
+z-index: 0;
+}
+
+/* ===== HEADER BAR ===== */
+.header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding-bottom: var(--spacing-md);
+margin-bottom: var(--spacing-lg);
+border-bottom: 1px solid var(--border);
+flex-shrink: 0;
+}
+
+.header__logo {
+font-family: var(--font-sans);
+font-size: 0.9rem;
+font-weight: 500;
+color: var(--text-secondary);
+display: flex;
+align-items: center;
+gap: 10px;
+letter-spacing: 0.1em;
+text-transform: lowercase;
+}
+
+.header__logo svg {
+width: 18px;
+height: 18px;
+color: var(--accent);
+}
+
+.header__meta {
+font-size: 0.75rem;
+color: var(--text-muted);
+letter-spacing: 0.1em;
+text-transform: uppercase;
+}
+
+/* ===== TYPOGRAPHY ===== */
+.kicker {
+font-size: 0.7rem;
+color: var(--accent);
+text-transform: uppercase;
+letter-spacing: 0.25em;
+margin-bottom: var(--spacing-sm);
+font-weight: 500;
+display: flex;
+align-items: center;
+gap: 12px;
+}
+
+.kicker::after {
+content: '';
+width: 40px;
+height: 1px;
+background: var(--accent);
+opacity: 0.5;
+}
+
+h1, .h1 {
+font-family: var(--font-serif);
+font-size: 4rem;
+font-weight: 400;
+font-style: italic;
+line-height: 1.1;
+margin: 0 0 var(--spacing-md) 0;
+color: var(--text-primary);
+}
+
+h2, .h2 {
+font-family: var(--font-serif);
+font-size: 2.5rem;
+font-weight: 400;
+line-height: 1.15;
+margin: 0 0 var(--spacing-md) 0;
+}
+
+h3, .h3 {
+font-family: var(--font-sans);
+font-size: 1.5rem;
+font-weight: 500;
+line-height: 1.3;
+margin: 0 0 var(--spacing-sm) 0;
+letter-spacing: 0.05em;
+}
+
+h4 {
+font-family: var(--font-sans);
+font-size: 1.1rem;
+font-weight: 500;
+margin: 0 0 var(--spacing-xs) 0;
+letter-spacing: 0.05em;
+}
+
+.lead {
+font-size: 1.1rem;
+color: var(--text-secondary);
+line-height: 1.7;
+max-width: 800px;
+letter-spacing: 0.02em;
+}
+
+.body-text {
+font-size: 0.95rem;
+color: var(--text-secondary);
+line-height: 1.65;
+max-width: 800px;
+}
+
+.muted {
+color: var(--text-muted);
+}
+
+.highlight, .accent-text {
+color: var(--accent);
+}
+
+strong {
+color: var(--text-primary);
+font-weight: 500;
+}
+
+/* ===== CODE STYLING ===== */
+code, .code {
+font-family: var(--font-mono);
+background: rgba(139, 92, 246, 0.1);
+padding: 2px 8px;
+font-size: 0.85em;
+color: var(--accent-light);
+border: 1px solid var(--border);
+border-radius: 2px;
+}
+
+pre {
+background: #08080F;
+border: 1px solid var(--border);
+border-left: 3px solid var(--accent);
+padding: var(--spacing-md);
+overflow-x: auto;
+font-family: var(--font-mono);
+font-size: 0.85em;
+line-height: 1.6;
+color: var(--text-secondary);
+border-radius: 2px;
+}
+
+pre code {
+background: none;
+padding: 0;
+border: none;
+color: var(--text-secondary);
+}
+
+/* Smaller pre for diagrams */
+pre.diagram {
+font-size: 0.78em;
+line-height: 1.45;
+}
+
+/* ===== LAYOUT ===== */
+.content {
+flex: 1;
+display: flex;
+flex-direction: column;
+}
+
+.split {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: var(--spacing-xl);
+align-items: center;
+flex: 1;
+}
+
+.split--40-60 {
+grid-template-columns: 1fr 1.5fr;
+}
+
+.flex-center {
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+/* ===== LISTS ===== */
+.list {
+list-style: none;
+padding: 0;
+margin: 0;
+}
+
+.list li {
+padding: var(--spacing-sm) 0;
+padding-left: var(--spacing-lg);
+position: relative;
+border-bottom: 1px solid var(--border);
+color: var(--text-secondary);
+font-size: 1rem;
+}
+
+.list li:last-child {
+border-bottom: none;
+}
+
+.list li::before {
+content: '\2014';
+position: absolute;
+left: 0;
+top: var(--spacing-sm);
+color: var(--accent);
+font-weight: 400;
+}
+
+/* ===== TABLES ===== */
+.table {
+width: 100%;
+border-collapse: collapse;
+font-size: 0.9rem;
+color: var(--text-secondary);
+}
+
+.table th {
+text-align: left;
+padding: var(--spacing-sm) var(--spacing-md);
+border-bottom: 1px solid var(--accent);
+color: var(--accent);
+text-transform: uppercase;
+letter-spacing: 0.1em;
+font-size: 0.75rem;
+font-weight: 500;
+}
+
+.table td {
+padding: var(--spacing-sm) var(--spacing-md);
+border-bottom: 1px solid var(--border);
+}
+
+.table tr:last-child td {
+border-bottom: none;
+}
+
+.table .featured {
+color: var(--text-primary);
+font-weight: 500;
+}
+
+.table .featured td {
+background: rgba(139, 92, 246, 0.05);
+}
+
+/* ===== QUOTE / CALLOUT ===== */
+.callout {
+border-left: 3px solid var(--accent);
+padding: var(--spacing-md) var(--spacing-lg);
+margin: var(--spacing-md) 0;
+background: rgba(139, 92, 246, 0.05);
+font-size: 1rem;
+color: var(--text-primary);
+font-style: italic;
+border-radius: 2px;
+}
+
+.callout--center {
+text-align: center;
+border-left: none;
+border-top: 1px solid var(--accent);
+border-bottom: 1px solid var(--accent);
+padding: var(--spacing-md) var(--spacing-lg);
+}
+
+/* ===== BIG CONCEPT BOX (for diagrams in code) ===== */
+.concept-box {
+border: 1px solid var(--accent);
+padding: var(--spacing-lg);
+text-align: center;
+font-family: var(--font-mono);
+font-size: 1.1rem;
+color: var(--accent-light);
+margin: var(--spacing-md) 0;
+background: rgba(139, 92, 246, 0.03);
+}
+
+/* ===== BADGE ===== */
+.badge {
+display: inline-flex;
+align-items: center;
+gap: 6px;
+padding: 4px 12px;
+font-size: 0.65rem;
+font-weight: 500;
+text-transform: uppercase;
+letter-spacing: 0.1em;
+background: transparent;
+color: var(--accent);
+border: 1px solid var(--accent);
+border-radius: 2px;
+}
+
+/* ===== REVEAL.JS OVERRIDES ===== */
+.reveal .controls {
+color: var(--accent);
+}
+
+.reveal .progress {
+background: var(--border);
+height: 2px;
+}
+
+.reveal .progress span {
+background: var(--accent);
+}
+
+.reveal .slide-number {
+background: transparent;
+color: var(--text-muted);
+font-size: 14px;
+font-family: var(--font-mono);
+left: 20px;
+right: auto;
+bottom: 20px;
+}
+
+::selection {
+background: var(--accent);
+color: var(--bg-dark);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+.split {
+grid-template-columns: 1fr;
+gap: var(--spacing-lg);
+}
+}
+</style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- ============ SLIDE 1: PORTADA ============ -->
+<section>
+<div class="slide slide--section slide--center">
+<div class="content flex-center" style="flex-direction: column; text-align: center;">
+<p class="kicker" style="justify-content: center;">Sesión 1 // Cohorte Chile</p>
+<h1>Cómo piensa<br><span class="accent-text">este sistema</span></h1>
+<p class="lead" style="max-width: 700px; margin: 24px auto 0;">
+Lo que necesitas saber antes de poner Cowork a trabajar en tu negocio.
+</p>
+<p class="muted" style="margin-top: 60px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em;">
+Mayo 2026
+</p>
+</div>
+</div>
+</section>
+
+<!-- ============ SLIDE 2: PROMESA ============ -->
+<section>
+<div class="slide">
+<div class="header">
+<div class="header__logo">
+<img src="assets/fiba_labs_monogram.png" alt="Fiba Labs" style="width: 22px; height: 22px; object-fit: contain;">
+fiba labs
+</div>
+<div class="header__meta">01 // La promesa</div>
+</div>
+<div class="content">
+<p class="kicker">Al final de las 3 horas</p>
+<h2>Te llevas cinco cosas<br>que funcionan.</h2>
+<ul class="list" style="margin-top: 32px;">
+<li><strong>Cowork instalado</strong> y corriendo</li>
+<li><strong>Tu carpeta-empresa</strong> montada</li>
+<li><strong>Tu correo conectado</strong> (Gmail o Microsoft)</li>
+<li><strong>Tu voz calibrada</strong> con correos reales que escribiste</li>
+<li><strong>Tu primer correo</strong> redactado por Cowork sonando como tú</li>
+</ul>
+<p class="callout callout--center" style="margin-top: 40px;">
+Lo de hoy es el sistema base. La próxima sesión le agregamos automatización y memoria.
+</p>
+</div>
+</div>
+</section>
+
+<!-- ============ SLIDE 3a: BRIDGE A TEORÍA (parte 1) ============ -->
+<section>
+<div class="slide">
+<div class="header">
+<div class="header__logo">
+<img src="assets/fiba_labs_monogram.png" alt="Fiba Labs" style="width: 22px; height: 22px; object-fit: contain;">
+fiba labs
+</div>
+<div class="header__meta">02 // Antes de empezar (1/2)</div>
+</div>
+<div class="content">
+<p class="kicker">Primero: un poco de teoría</p>
+<h2 style="font-size: 2rem; margin-bottom: 16px;">Conceptos para un entendimiento común.</h2>
+
+<table class="table" style="margin-top: 16px; font-size: 0.95rem;">
+<thead>
+<tr>
+<th style="padding: 10px 14px;">Lo que vamos a cubrir</th>
+<th style="padding: 10px 14px;">Por qué importa hoy</th>
+</tr>
+</thead>
+<tbody>
+<tr><td style="padding: 10px 14px;"><strong>LLM, modelo, prompt</strong></td><td style="padding: 10px 14px;">Qué es el lenguaje y cómo saber qué pedirle.</td></tr>
+<tr><td style="padding: 10px 14px;"><strong>Token</strong></td><td style="padding: 10px 14px;">La unidad básica que la IA entiende. Una palabra, parte de una palabra o un signo.</td></tr>
+<tr><td style="padding: 10px 14px;"><strong>Contexto y ventana de contexto</strong></td><td style="padding: 10px 14px;">Saber por qué la IA olvida y cómo evitarlo.</td></tr>
+<tr><td style="padding: 10px 14px;"><strong>Estocástico vs determinístico</strong></td><td style="padding: 10px 14px;">Qué procesos dan resultado predecible y cuáles varían.</td></tr>
+<tr><td style="padding: 10px 14px;"><strong>Markdown</strong></td><td style="padding: 10px 14px;">Cómo la IA escribe y lee mejor. Es la interfaz.</td></tr>
+<tr><td style="padding: 10px 14px;"><strong>Sandbox</strong></td><td style="padding: 10px 14px;">Un entorno seguro para probar.</td></tr>
+<tr><td style="padding: 10px 14px;"><strong>Skill</strong></td><td style="padding: 10px 14px;">Cómo le enseñas a la IA tus tareas repetitivas.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+
+<!-- ============ SLIDE 3b: BRIDGE A TEORÍA (parte 2) ============ -->
+<section>
+<div class="slide">
+<div class="header">
+<div class="header__logo">
+<img src="assets/fiba_labs_monogram.png" alt="Fiba Labs" style="width: 22px; height: 22px; object-fit: contain;">
+fiba labs
+</div>
+<div class="header__meta">02 // Antes de empezar (2/2)</div>
+</div>
+<div class="content">
+<p class="kicker">Conceptos (continuación)</p>
+<h2 style="font-size: 2rem; margin-bottom: 16px;">Después, manos a la obra.</h2>
+
+<table class="table" style="margin-top: 16px; font-size: 0.95rem;">
+<thead>
+<tr>
+<th style="padding: 10px 14px;">Lo que vamos a cubrir</th>
+<th style="padding: 10px 14px;">Por qué importa hoy</th>
+</tr>
+</thead>
+<tbody>
+<tr><td style="padding: 10px 14px;"><strong>HTML</strong></td><td style="padding: 10px 14px;">El lenguaje de las páginas web. Todo lo visual va en HTML.</td></tr>
+<tr><td style="padding: 10px 14px;"><strong>Artifacts</strong></td><td style="padding: 10px 14px;">Entregables visuales: dashboards, presentaciones, reportes, mini-apps.</td></tr>
+<tr><td style="padding: 10px 14px;"><strong>API</strong></td><td style="padding: 10px 14px;">Cómo un programa le pide cosas a otro, sin pasar por la pantalla.</td></tr>
+<tr><td style="padding: 10px 14px;"><strong>MCP (conectores)</strong></td><td style="padding: 10px 14px;">Cómo la IA llega a tus apps: Gmail, Drive, Notion, Slack.</td></tr>
+<tr><td style="padding: 10px 14px;"><strong>Routines</strong></td><td style="padding: 10px 14px;">Tareas que la IA ejecuta sola en horario.</td></tr>
+<tr><td style="padding: 10px 14px;"><strong>Dispatch</strong></td><td style="padding: 10px 14px;">Le mandas tareas desde el celular, la IA las hace en tu computador.</td></tr>
+<tr><td style="padding: 10px 14px;"><strong>RAG, embeddings, búsqueda semántica</strong></td><td style="padding: 10px 14px;">Buscar en miles de documentos por significado. Sesión 2.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+
+<!-- ============ SLIDE 4: EL MODELO ============ -->
+<section>
+<div class="slide">
+<div class="header">
+<div class="header__logo">
+<img src="assets/fiba_labs_monogram.png" alt="Fiba Labs" style="width: 22px; height: 22px; object-fit: contain;">
+fiba labs
+</div>
+<div class="header__meta">03 // El modelo</div>
+</div>
+<div class="content">
+<p class="kicker" style="margin-bottom: 8px;">El modelo</p>
+<h2 style="font-size: 2.1rem; margin-bottom: 12px;">Un modelo entrenado con cantidades masivas de datos.</h2>
+<p class="body-text" style="margin-top: 6px; font-size: 1rem;">No es inteligente en sentido estricto: encuentra patrones similares a lo que aprendió y los reproduce. Por eso responde bien a lo que se parece a su entrenamiento, y se cae cuando le pides algo verdaderamente nuevo.</p>
+
+<h3 style="margin-top: 22px; font-size: 1.15rem; color: var(--accent);">IA generativa, la familia</h3>
+<table class="table" style="margin-top: 10px; font-size: 0.95rem;">
+<thead>
+<tr><th style="padding: 8px 14px;">Tipo de modelo</th><th style="padding: 8px 14px;">Qué genera</th><th style="padding: 8px 14px;">Ejemplos</th></tr>
+</thead>
+<tbody>
+<tr><td style="padding: 8px 14px;"><strong>LLM</strong> (Large Language Model)</td><td style="padding: 8px 14px;">Texto</td><td style="padding: 8px 14px;">Claude Opus, GPT-5, Gemini 2.5 Pro. Los nuevos también leen imágenes (multimodal).</td></tr>
+<tr><td style="padding: 8px 14px;"><strong>Modelo de imagen</strong></td><td style="padding: 8px 14px;">Imágenes</td><td style="padding: 8px 14px;">Nano Banana, Midjourney, DALL-E 3</td></tr>
+<tr><td style="padding: 8px 14px;"><strong>Modelo de video</strong></td><td style="padding: 8px 14px;">Video</td><td style="padding: 8px 14px;">Sora 2, Runway, Veo 3</td></tr>
+<tr><td style="padding: 8px 14px;"><strong>Modelo de audio</strong></td><td style="padding: 8px 14px;">Voz, música</td><td style="padding: 8px 14px;">ElevenLabs, Suno</td></tr>
+</tbody>
+</table>
+
+<div class="callout" style="margin-top: 22px; font-size: 1rem; font-style: normal;">
+<strong>Modelo no es lo mismo que producto.</strong> El modelo es el motor. El producto es la app que lo envuelve.
+<ul style="margin: 10px 0 0 0; padding-left: 22px; color: var(--text-secondary);">
+<li><strong>ChatGPT</strong> es producto, <strong>GPT-5</strong> es el modelo adentro.</li>
+<li><strong>Claude Cowork</strong> es producto, <strong>Claude Opus 4.7</strong> es el modelo adentro.</li>
+<li><strong>Gemini app</strong> es producto, <strong>Gemini 2.5 Pro</strong> es el modelo adentro.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ============ SLIDE 4b: EL MODELO (TABLA EMPRESAS) ============ -->
+<section>
+<div class="slide">
+<div class="header">
+<div class="header__logo">
+<img src="assets/fiba_labs_monogram.png" alt="Fiba Labs" style="width: 22px; height: 22px; object-fit: contain;">
+fiba labs
+</div>
+<div class="header__meta">03 // El modelo, quién hace qué</div>
+</div>
+<div class="content">
+<p class="kicker">El paisaje de modelos</p>
+<h2 style="font-size: 1.9rem;">Quién hace qué.</h2>
+
+<table class="table" style="margin-top: 12px; font-size: 0.82rem;">
+<thead>
+<tr><th style="padding: 6px 12px;">Empresa</th><th style="padding: 6px 12px;">Modelos</th><th style="padding: 6px 12px;">Notable</th></tr>
+</thead>
+<tbody>
+<tr class="featured">
+<td style="padding: 6px 12px;"><strong>Anthropic</strong></td>
+<td style="padding: 6px 12px;">Claude Opus, Sonnet, Haiku</td>
+<td style="padding: 6px 12px;">Lo que usamos hoy</td>
+</tr>
+<tr><td style="padding: 6px 12px;"><strong>OpenAI</strong></td><td style="padding: 6px 12px;">GPT-5, GPT-4, Codex, Sora</td><td style="padding: 6px 12px;">ChatGPT (chat), Codex (código), Sora (video)</td></tr>
+<tr><td style="padding: 6px 12px;"><strong>Google</strong></td><td style="padding: 6px 12px;">Gemini Pro, Flash, Nano Banana</td><td style="padding: 6px 12px;">Gemini app, edición de imagen</td></tr>
+<tr><td style="padding: 6px 12px;"><strong>Meta</strong></td><td style="padding: 6px 12px;">Llama 3, 4</td><td style="padding: 6px 12px;">Open source, corre local</td></tr>
+<tr><td style="padding: 6px 12px;"><strong>xAI</strong></td><td style="padding: 6px 12px;">Grok</td><td style="padding: 6px 12px;">El de X (Twitter)</td></tr>
+<tr><td style="padding: 6px 12px;"><strong>DeepSeek</strong></td><td style="padding: 6px 12px;">DeepSeek-V3, R1</td><td style="padding: 6px 12px;">Chino, open source, barato</td></tr>
+<tr><td style="padding: 6px 12px;"><strong>Mistral</strong></td><td style="padding: 6px 12px;">Mistral, Mixtral</td><td style="padding: 6px 12px;">Francés, open source</td></tr>
+<tr><td style="padding: 6px 12px;"><strong>OpenRouter</strong></td><td style="padding: 6px 12px;">Acceso a todos</td><td style="padding: 6px 12px;">Agregador: una API key, todos</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+
+<!-- ============ SLIDE 5: CHAT / CODE / COWORK ============ -->
+<section>
+<div class="slide">
+<div class="header">
+<div class="header__logo">
+<img src="assets/fiba_labs_monogram.png" alt="Fiba Labs" style="width: 22px; height: 22px; object-fit: contain;">
+fiba labs
+</div>
+<div class="header__meta">04 // Tres modos</div>
+</div>
+<div class="content">
+<p class="kicker">Chat, Code, Cowork</p>
+<h2 style="font-size: 2.4rem;">Tres formas de usar el mismo sistema.</h2>
+<table class="table" style="margin-top: 32px; font-size: 1.1rem;">
+<thead>
+<tr><th style="padding: 14px 18px;">Modo</th><th style="padding: 14px 18px;">Para qué sirve</th><th style="padding: 14px 18px;">Cuándo</th></tr>
+</thead>
+<tbody>
+<tr><td style="padding: 14px 18px;"><strong>Claude Chat</strong></td><td style="padding: 14px 18px;">Piensa contigo</td><td style="padding: 14px 18px;">Brainstorming, preguntas, escritura</td></tr>
+<tr><td style="padding: 14px 18px;"><strong>Claude Code</strong></td><td style="padding: 14px 18px;">Construye software</td><td style="padding: 14px 18px;">Terminal, código, repos</td></tr>
+<tr class="featured"><td style="padding: 14px 18px;"><strong>Claude Cowork</strong></td><td style="padding: 14px 18px;">Hace el trabajo</td><td style="padding: 14px 18px;">Carpetas, archivos, tareas reales</td></tr>
+</tbody>
+</table>
+<p class="callout" style="margin-top: 32px; font-size: 1.05rem;">
+<strong>Cowork piensa en tareas, no en conversaciones.</strong> No es un chatbot. Es un empleado con acceso a tu carpeta.
+</p>
+</div>
+</div>
+</section>
+
+<!-- ============ SLIDE 6: MARKDOWN (movido) ============ -->
+<section>
+<div class="slide">
+<div class="header">
+<div class="header__logo">
+<img src="assets/fiba_labs_monogram.png" alt="Fiba Labs" style="width: 22px; height: 22px; object-fit: contain;">
+fiba labs
+</div>
+<div class="header__meta">05 // Markdown</div>
+</div>
+<div class="content">
+<p class="kicker">Markdown</p>
+<h2 style="font-size: 1.9rem;">Es como la IA escribe y lee mejor.</h2>
+<div class="split" style="margin-top: 12px;">
+<div>
+<p class="body-text" style="font-size: 0.85rem;">Texto plano con marcas simples para indicar estructura.</p>
+<pre class="diagram" style="margin-top: 8px;"># Título grande
+## Título mediano
+
+- Punto de lista
+- Otro punto
+
+**negrita** y *cursiva*</pre>
+<p class="body-text" style="font-size: 0.8rem; margin-top: 10px;">La IA aprendió a leer y escribir en este formato. Lo entiende mejor que un Word. <strong>Todos los archivos importantes que la IA lee, los escribes en markdown.</strong></p>
+</div>
+<div>
+<h3 style="font-size: 0.95rem; color: var(--accent);">Archivos .md que vas a usar</h3>
+<ul class="list" style="margin-top: 4px; font-size: 0.85rem;">
+<li><strong>CLAUDE.md</strong>: el cerebro operativo de tu carpeta (hoy).</li>
+<li><strong>AGENTS.md</strong>: equivalente para otras herramientas (Gemini, Codex). El nuevo estándar.</li>
+<li><strong>voice.md</strong>: tu voz capturada con ejemplos.</li>
+<li><strong>memory.md</strong>: lo que la IA descubre sobre ti y vale guardar.</li>
+</ul>
+<p class="callout" style="margin-top: 12px; font-size: 0.85rem;">
+No es una preferencia, <strong>es el idioma nativo de la IA.</strong>
+</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ============ SLIDE 7: EL PROMPT ============ -->
+<section>
+<div class="slide">
+<div class="header">
+<div class="header__logo">
+<img src="assets/fiba_labs_monogram.png" alt="Fiba Labs" style="width: 22px; height: 22px; object-fit: contain;">
+fiba labs
+</div>
+<div class="header__meta">06 // El prompt</div>
+</div>
+<div class="content">
+<p class="kicker">El prompt</p>
+<h2>Es lo que le pides a la IA.</h2>
+<pre style="margin-top: 16px;"><code>"Resúmeme este correo en 3 puntos."
+
+"Escríbeme una propuesta para el cliente X."
+
+"Qué dice este contrato sobre cancelación."</code></pre>
+<p class="body-text" style="margin-top: 14px; font-size: 0.9rem;">Cuanto más claro y específico, mejor sale. Como con un asistente nuevo: si le das ideas vagas, te entrega cosas vagas.</p>
+<p class="callout" style="margin-top: 16px; font-size: 0.85rem; font-style: normal;">
+<strong>Antes, tenías que aprender a hacer prompts. Ahora no es necesario.</strong> Solo tienes que saber qué necesitas y describirlo bien. Si te cuesta el prompt, pídeselo a la IA: <em>"Necesito hacer X. Quiero que se vea así (ejemplo). Quiero que siga estas reglas. Ayúdame a escribir el prompt."</em> Lo único que sí o sí tienes que poder hacer: <strong>describir bien lo que necesitas.</strong>
+</p>
+</div>
+</div>
+</section>
+
+<!-- ============ SLIDE 8: CONTEXTO Y VENTANA ============ -->
+<section>
+<div class="slide">
+<div class="header">
+<div class="header__logo">
+<img src="assets/fiba_labs_monogram.png" alt="Fiba Labs" style="width: 22px; height: 22px; object-fit: contain;">
+fiba labs
+</div>
+<div class="header__meta">07 // El contexto</div>
+</div>
+<div class="content">
+<p class="kicker">El contexto</p>
+<h2 style="font-size: 1.9rem;">Es todo lo que la IA ve antes de responder.</h2>
+
+<div class="split" style="margin-top: 14px;">
+<div>
+<ul class="list" style="font-size: 0.85rem;">
+<li>Tu prompt</li>
+<li>Lo que respondió antes en esta conversación</li>
+<li>Archivos que la IA leyó en este turno</li>
+<li>Instrucciones del sistema (tu CLAUDE.md)</li>
+</ul>
+<p class="callout" style="margin-top: 14px; font-size: 0.82rem; font-style: normal;">
+Tiene un <strong>tope</strong>. En Cowork hoy: hasta <strong>500.000 tokens</strong> en los modelos nuevos. En Claude Code: <strong>un millón</strong>. Mismo modelo, ventanas distintas según el producto.
+</p>
+<p class="body-text" style="margin-top: 10px; font-size: 0.82rem;"><strong>Por qué importa:</strong> cada conversación nueva, la IA arranca de cero. Solo sabe lo que entra en la ventana.</p>
+</div>
+<div>
+<pre class="diagram" style="font-size: 0.7rem;"><code> [conversación vieja] &larr; se cae cuando se llena
+───────────────────────────────
+│                             │
+│   VENTANA DE CONTEXTO       │ &larr; lo que la IA "ve"
+│                             │
+│  - Tu CLAUDE.md             │
+│  - Tu voice.md              │
+│  - El correo que pegaste    │
+│  - Lo que respondió la IA   │
+│  - Tu prompt actual         │
+│                             │
+───────────────────────────────</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ============ SLIDE 9: CÓMO TRABAJAR CON LA VENTANA ============ -->
+<section>
+<div class="slide">
+<div class="header">
+<div class="header__logo">
+<img src="assets/fiba_labs_monogram.png" alt="Fiba Labs" style="width: 22px; height: 22px; object-fit: contain;">
+fiba labs
+</div>
+<div class="header__meta">08 // Chat vs carpeta</div>
+</div>
+<div class="content">
+<p class="kicker">Chat vs carpeta</p>
+<h2 style="font-size: 1.85rem;">Dónde pones el archivo cambia cómo lo lee la IA.</h2>
+
+<div class="split" style="margin-top: 10px;">
+<div>
+<ul class="list" style="font-size: 0.82rem;">
+<li><strong>Chat</strong> = lo dejas en el escritorio. La IA lo ve entero, todo el rato, ocupa espacio mientras conversen.</li>
+<li><strong>Carpeta</strong> = está en la biblioteca. La IA va, abre el archivo, lee solo lo que necesita, vuelve. Rapidísimo, casi gratis.</li>
+</ul>
+<p class="body-text" style="margin-top: 8px; font-size: 0.8rem;"><strong>El archivo no se carga entero nunca desde la carpeta.</strong> La IA lee a pedacitos según lo que la tarea pida. Por eso una biblioteca grande no la satura.</p>
+<p class="callout" style="margin-top: 10px; font-size: 0.8rem; font-style: normal;">
+<strong>CLAUDE.md es el catálogo de la biblioteca.</strong> Le dice a la IA dónde está cada cosa. Sin catálogo, pierde turnos buscando.
+</p>
+</div>
+<div>
+<h3 style="font-size: 0.9rem; color: var(--accent);">Cuatro reglas prácticas</h3>
+<ol style="padding-left: 18px; color: var(--text-secondary); font-size: 0.78rem; line-height: 1.5;">
+<li style="margin-bottom: 6px;"><strong>Una conversación = una tarea.</strong> Si cambias de tarea, abre conversación nueva.</li>
+<li style="margin-bottom: 6px;"><strong>Si la IA "se está perdiendo", abre nueva.</strong> Síntoma: te repite, ignora una instrucción, se demora más. Eso es la ventana llena.</li>
+<li style="margin-bottom: 6px;"><strong>Lo que quieres que recuerde, va al archivo, no al chat.</strong> El chat se borra. La carpeta queda.</li>
+<li style="margin-bottom: 6px;"><strong>No pegues documentos largos en el chat.</strong> Súbelos a la carpeta y dile dónde están.</li>
+</ol>
+<p class="muted" style="margin-top: 8px; font-size: 0.75rem;"><strong>No hay un resumen guardado.</strong> Cada conversación parte de cero. La carpeta es lo que permite "volver a saber" sobre tu negocio.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ============ SLIDE 10: SONNET / OPUS / HAIKU ============ -->
+<section>
+<div class="slide">
+<div class="header">
+<div class="header__logo">
+<img src="assets/fiba_labs_monogram.png" alt="Fiba Labs" style="width: 22px; height: 22px; object-fit: contain;">
+fiba labs
+</div>
+<div class="header__meta">09 // Modelos Claude</div>
+</div>
+<div class="content">
+<p class="kicker">Sonnet, Opus, Haiku</p>
+<h2>El mismo sistema, en tres versiones.</h2>
+<table class="table" style="margin-top: 24px;">
+<thead>
+<tr><th>Modelo</th><th>Velocidad</th><th>Calidad</th><th>Cuándo usarlo</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Haiku</strong></td><td>Rápido</td><td>Suficiente para cosas simples</td><td>Triage, etiquetas, listas</td></tr>
+<tr class="featured"><td><strong>Sonnet</strong></td><td>Balanceado</td><td>Excelente</td><td>Default: 95% del trabajo</td></tr>
+<tr><td><strong>Opus</strong></td><td>Más lento</td><td>Mejor en tareas densas</td><td>Voz, análisis profundo, primera escritura de CLAUDE.md</td></tr>
+</tbody>
+</table>
+<p class="callout" style="margin-top: 28px;">
+<strong>Regla:</strong> arranca con Sonnet. Si el output sale plano, subes a Opus. Después vuelves.
+</p>
+</div>
+</div>
+</section>
+
+<!-- ============ SLIDE 11: LA CARPETA ============ -->
+<section>
+<div class="slide">
+<div class="header">
+<div class="header__logo">
+<img src="assets/fiba_labs_monogram.png" alt="Fiba Labs" style="width: 22px; height: 22px; object-fit: contain;">
+fiba labs
+</div>
+<div class="header__meta">10 // La carpeta</div>
+</div>
+<div class="content">
+<div class="split">
+<div>
+<p class="kicker">Tu workspace seguro</p>
+<h2>La carpeta es el límite.</h2>
+<p class="body-text" style="margin-top: 12px;">Tu carpeta-empresa montada en Cowork. <strong>Adentro: trabajo. Afuera: tu vida personal.</strong></p>
+<p class="callout" style="margin-top: 18px;">
+Lo que está en esta carpeta, Cowork lo ve. <strong>Lo que está afuera, no existe para él.</strong>
+</p>
+<p class="body-text" style="margin-top: 12px; font-size: 0.85rem;">Por eso puedes darle acceso a tu negocio sin paranoia.</p>
+<p class="muted" style="margin-top: 14px; font-size: 0.8rem;">Tip: pídele a Cowork cada cierto tiempo: <em>"organiza esto, no quiero archivos sueltos."</em> Mantiene tu carpeta limpia.</p>
+</div>
+<div>
+<pre class="diagram"><code>&lt;tu-empresa&gt;/
+├── CLAUDE.md
+├── about-me/
+│   ├── about-me.md
+│   ├── voice.md
+│   ├── preferences.md
+│   └── memory.md
+├── customers/
+├── projects/
+├── outputs/
+└── archive/</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ============ SLIDE 12: CLAUDE.md ============ -->
+<section>
+<div class="slide">
+<div class="header">
+<div class="header__logo">
+<img src="assets/fiba_labs_monogram.png" alt="Fiba Labs" style="width: 22px; height: 22px; object-fit: contain;">
+fiba labs
+</div>
+<div class="header__meta">11 // CLAUDE.md</div>
+</div>
+<div class="content">
+<p class="kicker">CLAUDE.md</p>
+<h2>El cerebro operativo en un archivo.</h2>
+<p class="body-text" style="margin-top: 14px;">Es el archivo que Cowork lee <strong>siempre que entra a tu carpeta</strong>, antes de hacer nada.</p>
+<p class="body-text" style="margin-top: 10px;">Adentro:</p>
+<ul class="list" style="margin-top: 6px;">
+<li>Qué hace tu empresa</li>
+<li>Quién es tu cliente típico</li>
+<li>Cómo le gusta trabajar a tu equipo</li>
+<li>Qué NUNCA hacer sin pedir permiso</li>
+</ul>
+<p class="callout" style="margin-top: 18px;">
+Es como onboardear a un asistente nuevo. Solo que ese asistente lo va a leer <strong>cada vez que vuelva.</strong>
+</p>
+<p class="muted" style="margin-top: 14px; font-size: 0.8rem;">Hoy lo escribimos juntos en 15 minutos. Después lo sigues editando tú.</p>
+<p class="muted" style="margin-top: 6px; font-size: 0.78rem;">El estándar emergente entre herramientas (Cowork, Codex, Gemini) es <strong>AGENTS.md</strong>. Mismo archivo, otro nombre. Lo importante es la estructura, no la herramienta.</p>
+</div>
+</div>
+</section>
+
+<!-- ============ SLIDE 13: SANDBOX ============ -->
+<section>
+<div class="slide">
+<div class="header">
+<div class="header__logo">
+<img src="assets/fiba_labs_monogram.png" alt="Fiba Labs" style="width: 22px; height: 22px; object-fit: contain;">
+fiba labs
+</div>
+<div class="header__meta">12 // Sandbox</div>
+</div>
+<div class="content">
+<div class="split">
+<div>
+<p class="kicker">Sandbox</p>
+<h2>Por qué es seguro.</h2>
+<p class="body-text" style="margin-top: 12px;">Cowork no corre cosas en tu computador directamente. Corre en un <strong>entorno virtual aislado</strong> que vive arriba de tu sistema.</p>
+<p class="callout" style="margin-top: 18px;">
+Si Cowork rompe algo, lo rompe en la sandbox. <strong>Tu computador queda intacto.</strong>
+</p>
+<p class="body-text" style="margin-top: 12px; font-size: 0.85rem;">Por eso puedes darle acceso a documentos de tu negocio sin paranoia.</p>
+</div>
+<div>
+<pre class="diagram"><code>┌────────────────────────────────┐
+│  TU COMPUTADOR                 │
+│                                │
+│   ┌────────────────────────┐   │
+│   │  SANDBOX DE COWORK     │   │
+│   │  - Lee tu carpeta      │   │
+│   │  - Ejecuta scripts     │   │
+│   │  - No toca lo que no   │   │
+│   │    le diste acceso     │   │
+│   └────────────────────────┘   │
+│                                │
+└────────────────────────────────┘</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ============ SLIDE 14: SKILL ============ -->
+<section>
+<div class="slide">
+<div class="header">
+<div class="header__logo">
+<img src="assets/fiba_labs_monogram.png" alt="Fiba Labs" style="width: 22px; height: 22px; object-fit: contain;">
+fiba labs
+</div>
+<div class="header__meta">13 // Skill</div>
+</div>
+<div class="content">
+<p class="kicker">Skill</p>
+<h2>Como un catálogo de skills.</h2>
+<p class="body-text" style="margin-top: 10px;">Un skill es un archivo <code>.md</code> que le dice a Cowork: <em>"cada vez que te pida X, hazlo así."</em></p>
+<div class="split" style="margin-top: 16px;">
+<div>
+<pre class="diagram" style="font-size: 0.78em;"><code>       [ Catálogo de skills ]
+       /         |         \
+  [Skill A]  [Skill B]  [Skill C]
+   nombre     nombre     nombre
+       \        /  \       /
+        (abre el que necesita)</code></pre>
+</div>
+<div>
+<ul class="list" style="font-size: 0.88rem;">
+<li>Cowork ve el <strong>nombre</strong> de cada skill siempre.</li>
+<li>Solo lee las <strong>instrucciones</strong> cuando alguno se activa.</li>
+<li>Solo carga los <strong>recursos</strong> cuando ese skill los necesita.</li>
+</ul>
+<p class="callout" style="margin-top: 12px; font-size: 0.85rem;">
+Puedes tener 50 skills guardados y Cowork no se confunde.
+</p>
+<p class="muted" style="margin-top: 10px; font-size: 0.78rem;">Cada uno se va con 2-3 skill skeletons ya armados. Los construimos en Sesión 2.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ============ SLIDE 15: TÉRMINOS S2 ============ -->
+<section>
+<div class="slide">
+<div class="header">
+<div class="header__logo">
+<img src="assets/fiba_labs_monogram.png" alt="Fiba Labs" style="width: 22px; height: 22px; object-fit: contain;">
+fiba labs
+</div>
+<div class="header__meta">14 // Términos S2</div>
+</div>
+<div class="content">
+<p class="kicker">Términos que vas a escuchar en Sesión 2</p>
+<h2>No los necesitas hoy. Los vamos a usar en la próxima sesión.</h2>
+<table class="table" style="margin-top: 24px;">
+<thead>
+<tr><th>Término</th><th>Qué es, en una línea</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Embeddings</strong></td><td>Convertir texto a números que capturan significado.</td></tr>
+<tr><td><strong>Búsqueda semántica</strong></td><td>Buscar por significado, no por palabras exactas.</td></tr>
+<tr><td><strong>RAG</strong></td><td>Mezclar búsqueda + generación. La técnica detrás de "buscar en todos tus documentos".</td></tr>
+<tr><td><strong>Base vectorial</strong></td><td>Donde se guarda esa búsqueda. Supabase, Pinecone, Convex.</td></tr>
+</tbody>
+</table>
+<p class="callout callout--center" style="margin-top: 28px;">
+La próxima sesión lo instalamos. <strong>Hoy basta con conocer el término en general.</strong>
+</p>
+</div>
+</div>
+</section>
+
+<!-- ============ SLIDE 16: FLUJO DE LA SESIÓN ============ -->
+<section>
+<div class="slide">
+<div class="header">
+<div class="header__logo">
+<img src="assets/fiba_labs_monogram.png" alt="Fiba Labs" style="width: 22px; height: 22px; object-fit: contain;">
+fiba labs
+</div>
+<div class="header__meta">15 // Flujo</div>
+</div>
+<div class="content">
+<p class="kicker">Cómo va a fluir el resto</p>
+<h2>Ocho bloques hands-on.</h2>
+<table class="table" style="margin-top: 16px; font-size: 0.88rem;">
+<thead>
+<tr><th>Bloque</th><th>Qué hacemos</th><th>Tiempo</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>1</strong></td><td>Montar tu carpeta-empresa</td><td>25 min</td></tr>
+<tr><td><strong>2</strong></td><td>CLAUDE.md vivo (Cowork te entrevista)</td><td>15 min</td></tr>
+<tr><td><strong>3</strong></td><td>Conectar correo (Gmail o Microsoft)</td><td>25 min</td></tr>
+<tr><td><strong>4</strong></td><td>Calibrar tu voz con correos reales</td><td>25 min</td></tr>
+<tr><td><strong>5</strong></td><td>Primer correo en tu voz</td><td>15 min</td></tr>
+<tr><td><strong>6</strong></td><td>Conectar una app por API o conector</td><td>15 min</td></tr>
+<tr><td><strong>7</strong></td><td>Tu primer skill (esqueleto)</td><td>15 min</td></tr>
+<tr><td><strong>8</strong></td><td>Cierre + puente a Sesión 2</td><td>5 min</td></tr>
+</tbody>
+</table>
+<p class="muted" style="margin-top: 12px; text-align: center; font-size: 0.85rem;">Break de 10 min entre los bloques 2 y 3.</p>
+<p class="callout callout--center" style="margin-top: 16px;">
+Cualquier duda concreta: <strong>ahora.</strong> Vamos.
+</p>
+</div>
+</div>
+</section>
+
+<!-- ============ SLIDE 17: PARA ENTRE SESIONES ============ -->
+<section>
+<div class="slide">
+<div class="header">
+<div class="header__logo">
+<img src="assets/fiba_labs_monogram.png" alt="Fiba Labs" style="width: 22px; height: 22px; object-fit: contain;">
+fiba labs
+</div>
+<div class="header__meta">16 // Tarea</div>
+</div>
+<div class="content">
+<p class="kicker">Trabajo sugerido antes de la próxima sesión, según lo que pusiste en el formulario</p>
+<h2 style="font-size: 2.2rem;">Salir de aquí y usar lo que armaste.</h2>
+
+<h3 style="margin-top: 22px; font-size: 1.15rem; color: var(--accent);">Asignación universal</h3>
+<p class="body-text" style="font-size: 1.05rem;"><strong>Usa Cowork en tres tareas reales esta semana.</strong> Anota qué funcionó, qué no, qué te sorprendió. Llegas a Sesión 2 con preguntas concretas, no con teoría.</p>
+
+<h3 style="margin-top: 22px; font-size: 1.15rem; color: var(--accent);">Asignación personalizada</h3>
+<table class="table" style="margin-top: 10px; font-size: 1rem;">
+<thead>
+<tr><th style="padding: 10px 14px;">Persona</th><th style="padding: 10px 14px;">Tarea extra</th></tr>
+</thead>
+<tbody>
+<tr><td style="padding: 10px 14px;"><strong>José Miguel</strong></td><td style="padding: 10px 14px;">Instala Claude Code, escribe un skill ahí, lo traes a S2.</td></tr>
+<tr><td style="padding: 10px 14px;"><strong>Andrés</strong></td><td style="padding: 10px 14px;">Conecta Slack o tu CRM por conector, úsalo una vez.</td></tr>
+<tr><td style="padding: 10px 14px;"><strong>Anto</strong></td><td style="padding: 10px 14px;">Conecta Canva, genera un post de Instagram con tu brand kit.</td></tr>
+<tr><td style="padding: 10px 14px;"><strong>Stefano</strong></td><td style="padding: 10px 14px;">Conecta SharePoint o OneDrive a un proyecto activo.</td></tr>
+<tr><td style="padding: 10px 14px;"><strong>Rodrigo</strong></td><td style="padding: 10px 14px;">Toma una propuesta vieja y sus datos de costos. Métela en tu carpeta. Pídele a Cowork un primer borrador para un proyecto similar. Trae a S2 cuánto tiempo te ahorró.</td></tr>
+</tbody>
+</table>
+<p class="callout" style="margin-top: 18px; font-size: 1rem;">
+No es trabajo extra, es ver qué pasa cuando lo usas en tu vida real. Lo que descubras lo trabajamos en Sesión 2.
+</p>
+</div>
+</div>
+</section>
+
+<!-- ============ SLIDE 18: TEASER SESIÓN 2 ============ -->
+<section>
+<div class="slide">
+<div class="header">
+<div class="header__logo">
+<img src="assets/fiba_labs_monogram.png" alt="Fiba Labs" style="width: 22px; height: 22px; object-fit: contain;">
+fiba labs
+</div>
+<div class="header__meta">17 // Sesión 2</div>
+</div>
+<div class="content">
+<p class="kicker">Sesión 2, la próxima semana</p>
+<h2 style="font-size: 2.2rem;">Lo que dejamos pendiente para la próxima.</h2>
+<table class="table" style="margin-top: 16px; font-size: 0.95rem;">
+<thead>
+<tr><th style="padding: 9px 14px;">Capa</th><th style="padding: 9px 14px;">Qué agregamos</th></tr>
+</thead>
+<tbody>
+<tr><td style="padding: 9px 14px;"><strong>Skills propios</strong></td><td style="padding: 9px 14px;">Cada uno ya tiene 2-3 skills armados, los construimos en vivo.</td></tr>
+<tr><td style="padding: 9px 14px;"><strong>Routines / Scheduled tasks</strong></td><td style="padding: 9px 14px;">Skills que corren solos en horario. Daily brief 7am, reportes los lunes.</td></tr>
+<tr><td style="padding: 9px 14px;"><strong>Conectores (MCP)</strong></td><td style="padding: 9px 14px;">Cowork llegando a Gmail, Drive, Notion, Slack. Permisos granulares por app.</td></tr>
+<tr><td style="padding: 9px 14px;"><strong>Dispatch</strong></td><td style="padding: 9px 14px;">Le mandas tareas desde el celular, la IA las hace en tu computador y te avisa cuando termina.</td></tr>
+<tr><td style="padding: 9px 14px;"><strong>Live Artifacts</strong></td><td style="padding: 9px 14px;">Dashboard interactivo de tu negocio en una sola pantalla.</td></tr>
+<tr><td style="padding: 9px 14px;"><strong>Memoria semántica</strong></td><td style="padding: 9px 14px;">Buscar en miles de documentos por significado (Supabase, gratis).</td></tr>
+<tr><td style="padding: 9px 14px;"><strong>NotebookLM (cuándo sí, cuándo no)</strong></td><td style="padding: 9px 14px;">Herramienta de Google muy potente. Sirve para resumir libros, papers, YouTube. Poco control. Buena como paso uno, después refinas en Cowork. Por ejemplo: generas un deck en NotebookLM, Cowork lo rehace editable en PowerPoint.</td></tr>
+<tr><td style="padding: 9px 14px;"><strong>Claude para Office</strong></td><td style="padding: 9px 14px;">Cowork dentro de Excel y PowerPoint, directo.</td></tr>
+<tr><td style="padding: 9px 14px;"><strong>Claude Design</strong></td><td style="padding: 9px 14px;">Le pides en palabras o le subes un Excel y genera presentaciones, landing pages, dashboards interactivos. Ajustas con sliders. Exportas a Canva, PowerPoint o PDF.</td></tr>
+</tbody>
+</table>
+<p class="callout callout--center" style="margin-top: 18px; font-size: 1.05rem;">
+Hoy te llevas la base. <strong>La próxima semana agregaremos capas sobre esta base que potenciará el sistema.</strong>
+</p>
+</div>
+</div>
+</section>
+
+</div>
+</div>
+
+<!-- Reveal.js Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.js"></script>
+
+<script>
+Reveal.initialize({
+hash: true,
+slideNumber: 'c/t',
+controls: true,
+controlsLayout: 'bottom-right',
+controlsBackArrows: 'faded',
+progress: true,
+center: false,
+transition: 'slide',
+backgroundTransition: 'fade',
+width: 1280,
+height: 720,
+margin: 0,
+minScale: 0.2,
+maxScale: 2,
+plugins: [RevealHighlight]
+});
+
+lucide.createIcons();
+</script>
+</body>
+</html>
