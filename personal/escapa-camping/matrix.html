@@ -26,7 +26,12 @@
     .btn { padding: 5px 12px; border: 1px solid #ddd; border-radius: 6px; background: #fff; cursor: pointer; font-size: 0.8rem; transition: all 0.15s; }
     .btn:hover { background: #f0f0f0; }
     .btn.active { background: #37474f; color: #fff; border-color: #37474f; }
+    .btn.print-btn { background: #1565c0; color: #fff; border-color: #1565c0; font-weight: 600; }
+    .btn.print-btn:hover { background: #0d47a1; }
     select.filter-select { padding: 5px 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 0.8rem; background: #fff; }
+
+    /* Print-only single-camp roster (hidden on screen) */
+    .print-roster { display: none; }
 
     .table-wrapper { border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); background: #fff; }
     table { width: 100%; border-collapse: collapse; min-width: 800px; }
@@ -97,6 +102,53 @@
       thead .camp-logo { height: 36px; }
       .controls { flex-direction: column; align-items: flex-start; }
     }
+
+    /* ===== Print styles ===== */
+    @media print {
+      @page { margin: 12mm; }
+      body { background: #fff !important; padding: 0; color: #000; }
+      .controls, .header .banner { display: none !important; }
+      .header { margin-bottom: 8px; }
+      .header h1 { font-size: 1.2rem; }
+      .header p { font-size: 0.85rem; }
+      tbody tr:hover { background: transparent; }
+      tbody tr { cursor: default; }
+      .detail-row { display: none !important; }
+
+      /* Default (todos): print the matrix in landscape */
+      .table-wrapper { box-shadow: none; }
+      table { min-width: unset; width: 100%; }
+      thead th { padding: 6px 4px; font-size: 0.75rem; }
+      thead .camp-logo { height: 28px; }
+      thead .camp-name { font-size: 0.85rem; }
+      thead .camp-meta { font-size: 0.65rem; }
+      tbody td { padding: 4px 6px; font-size: 0.75rem; }
+      .parent-size, .kid-size { font-size: 0.65rem; }
+      tfoot td { padding: 6px 4px; font-size: 0.75rem; }
+      tr { page-break-inside: avoid; }
+
+      /* Single-camp print mode: hide matrix, show roster */
+      body.print-single .table-wrapper { display: none !important; }
+      body.print-single .header { display: none !important; }
+      body.print-single .print-roster { display: block !important; }
+    }
+
+    /* ===== Print roster layout (used in @media print when single camp) ===== */
+    .print-roster .roster-header { display: flex; align-items: center; gap: 16px; padding-bottom: 10px; border-bottom: 2px solid #000; margin-bottom: 12px; }
+    .print-roster .roster-header img { height: 64px; }
+    .print-roster .roster-title { flex: 1; }
+    .print-roster .roster-title h2 { font-size: 1.6rem; font-weight: 800; margin: 0; }
+    .print-roster .roster-title .roster-meta { font-size: 0.95rem; color: #333; margin-top: 4px; }
+    .print-roster .roster-count { font-size: 0.9rem; font-weight: 600; text-align: right; }
+    .print-roster table.roster-table { width: 100%; border-collapse: collapse; }
+    .print-roster table.roster-table thead th { background: #263238 !important; color: #fff !important; padding: 8px 10px; font-size: 0.85rem; text-align: left; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .print-roster table.roster-table tbody td { padding: 6px 10px; font-size: 0.85rem; border-bottom: 1px solid #ddd; vertical-align: top; }
+    .print-roster table.roster-table tbody tr { page-break-inside: avoid; }
+    .print-roster table.roster-table tbody tr:nth-child(even) { background: #f5f5f5; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .print-roster .roster-kid { display: block; }
+    .print-roster .roster-kid + .roster-kid { margin-top: 2px; }
+    .print-roster .roster-size { color: #555; font-weight: 400; font-size: 0.78rem; margin-left: 6px; }
+    .print-roster .roster-footer { margin-top: 12px; padding-top: 8px; border-top: 1px solid #999; font-size: 0.75rem; color: #555; display: flex; justify-content: space-between; }
   </style>
 </head>
 <body>
@@ -135,10 +187,15 @@
       </select>
     </div>
     <div class="control-group"><label>Buscar:</label><input type="text" id="search-box" class="filter-select" placeholder="Nombre..." oninput="render()" style="min-width:140px;"></div>
+    <div class="control-group">
+      <button class="btn print-btn" onclick="doPrint()" title="Imprime la vista actual. Si filtras por una camping, imprime un listado limpio de esa camping.">🖨 Imprimir</button>
+    </div>
     <div class="control-group" style="margin-left:auto;">
       <span id="count-display" style="font-size:0.85rem;color:#666;"></span>
     </div>
   </div>
+
+  <div class="print-roster" id="print-roster"></div>
 
   <div class="table-wrapper">
     <table>
@@ -326,6 +383,82 @@ function detailHtml(d, rowIdx) {
     '<div class="detail-comment"><span class="detail-label">Comentario</span><br>' + d.cm + '</div>' +
     '</div></td></tr>';
 }
+
+// Camp metadata used by the print roster
+const CAMP_META = {
+  esploratori: {key: 'e', name: 'Esploratori', grade: '1° Básico', dates: '20-22 Noviembre 2026', img: 'img/esploratori.png'},
+  campeggio:   {key: 'c', name: 'Campeggio',   grade: '2° Básico', dates: '06-08 Noviembre 2026', img: 'img/campeggio.png'},
+  campisti:    {key: 'k', name: 'Campisti',    grade: '4° Básico', dates: '13-15 Noviembre 2026', img: 'img/campisti.png'},
+  papimono:    {key: 'm', name: 'Papimono',    grade: '6° Básico', dates: '27-29 Noviembre 2026', img: 'img/papimono.png'}
+};
+
+function buildPrintRoster(camp) {
+  const meta = CAMP_META[camp];
+  if (!meta) return '';
+  const searchTerm = (function(){
+    const v = document.getElementById('search-box').value.trim();
+    return v.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  })();
+  const sizeFilter = document.getElementById('filter-size').value;
+
+  let rows = DATA.filter(d => d[meta.key].length > 0);
+  if (searchTerm) {
+    rows = rows.filter(d => d.p.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().includes(searchTerm));
+  }
+  if (sizeFilter !== 'todas') {
+    rows = rows.filter(d => hasSize(d, sizeFilter));
+  }
+
+  const sortFn = sortBy === 'apellido' ? getLastName : getFirstName;
+  rows.sort((a, b) => sortFn(a.p).localeCompare(sortFn(b.p), 'es', {sensitivity: 'base'}) * sortDir);
+
+  const totalParents = rows.length;
+  let totalKids = 0;
+  const bodyHtml = rows.map(d => {
+    const kids = d[meta.key];
+    totalKids += kids.length;
+    const kidCell = kids.map(k => '<span class="roster-kid">' + k.n + '<span class="roster-size">Talla: ' + k.s + '</span></span>').join('');
+    return '<tr>' +
+      '<td><strong>' + d.p + '</strong><span class="roster-size">Talla: ' + d.ps + '</span></td>' +
+      '<td>' + kidCell + '</td>' +
+      '<td>' + d.ph + '</td>' +
+      '</tr>';
+  }).join('');
+
+  return (
+    '<div class="roster-header">' +
+      '<img src="' + meta.img + '" alt="">' +
+      '<div class="roster-title">' +
+        '<h2>' + meta.name + '</h2>' +
+        '<div class="roster-meta">' + meta.grade + ' · ' + meta.dates + ' · Scuola Italiana Vittorio Montiglio</div>' +
+      '</div>' +
+      '<div class="roster-count">' + totalParents + ' apoderados<br>' + totalKids + ' niños/as<br><strong>' + (totalParents + totalKids) + ' campistas</strong></div>' +
+    '</div>' +
+    '<table class="roster-table">' +
+      '<thead><tr><th style="width:34%">Apoderado</th><th style="width:46%">Niños/as</th><th style="width:20%">Teléfono</th></tr></thead>' +
+      '<tbody>' + bodyHtml + '</tbody>' +
+    '</table>' +
+    '<div class="roster-footer"><span>Actualizado: ' + LAST_UPDATED + '</span><span>ES CA PA — Camping Padre-Hijo SIVM 2026</span></div>'
+  );
+}
+
+function doPrint() {
+  const campFilter = document.getElementById('filter-camp').value;
+  if (campFilter !== 'todos' && CAMP_META[campFilter]) {
+    document.getElementById('print-roster').innerHTML = buildPrintRoster(campFilter);
+    document.body.classList.add('print-single');
+  } else {
+    document.body.classList.remove('print-single');
+  }
+  setTimeout(function() {
+    window.print();
+    setTimeout(function() { document.body.classList.remove('print-single'); }, 500);
+  }, 50);
+}
+
+window.addEventListener('afterprint', function() {
+  document.body.classList.remove('print-single');
+});
 
 function render() {
   const campFilter = document.getElementById('filter-camp').value;
