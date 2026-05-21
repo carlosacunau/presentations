@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tactica Web + Fiba Labs · Claude como herramienta diaria</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/monokai.css">
+  <link rel="stylesheet" href="assets/fibalabs.css">
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- 1. PORTADA -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <div class="content flex-center" style="flex-direction: column; text-align: center;">
+            <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs" style="width: 72px; height: 72px; margin-bottom: 24px; object-fit: contain;">
+            <p class="kicker" style="justify-content: center;">Tactica Web × Fiba Labs · 21 may 2026</p>
+            <h1>Claude como<br><span class="accent-text">herramienta diaria</span></h1>
+            <p class="lead" style="max-width: 680px; margin: 0 auto;">
+              Notas de la conversación con Yorhman y Luis: VSCode + Claude Code, Cowork como sistema operativo de empresa, hidden APIs, Partner Network y el modelo de monetización que estamos armando.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. CONTEXTO -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+              fiba labs
+            </div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">01 // Punto de partida</p>
+              <h2>Tactica Web<br>entra a Claude</h2>
+              <p class="lead">Luis ya compró la licencia de 100 USD y le está ahorrando tiempo en serio. La comunidad de Claude es la más grande, y eso pesa.</p>
+            </div>
+            <div>
+              <ul class="list">
+                <li><strong>Luis</strong>: ya adentro, usando VSCode con Claude para el trabajo de Onyx.</li>
+                <li><strong>Yorhman</strong>: observando, todavía no lo está usando hands on.</li>
+                <li><strong>Decisión</strong>: probar los próximos 2 a 3 meses con foco.</li>
+                <li><strong>Razón</strong>: la comunidad de Claude está empujando más cosas que la de Google.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. VSCODE COMO HERRAMIENTA DIARIA -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+              fiba labs
+            </div>
+          </div>
+          <div class="content">
+            <p class="kicker">02 // Lo que cambió</p>
+            <h2>VSCode + Claude Code es mi día a día</h2>
+            <p class="lead" style="max-width: 760px;">
+              En diciembre de 2025 yo ni sabía qué era VSCode. No soy developer. Hoy es mi herramienta diaria. Con un poco de estructura mental, sin código de fondo, se puede hacer lo que necesites para ti mismo.
+            </p>
+            <div class="grid-2" style="margin-top: 32px;">
+              <div class="card">
+                <div class="card__icon"><i data-lucide="check-circle"></i></div>
+                <h4 class="card__title">Funciona para uso propio</h4>
+                <p class="card__text">Procesos, análisis, reportes, automatizaciones internas. Todo lo que antes hacía a mano hoy lo arma Claude conmigo.</p>
+              </div>
+              <div class="card">
+                <div class="card__icon"><i data-lucide="alert-triangle"></i></div>
+                <h4 class="card__title">El salto a producto sí pide equipo</h4>
+                <p class="card__text">Vender un software empresarial completo ya no es tan directo sin un equipo de desarrolladores que respalde la entrega.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. CASO HERZEK -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+              fiba labs
+            </div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">03 // Caso real (de Yorhman)</p>
+              <h2>Herzek:<br>cero developer,<br>tres minutos</h2>
+              <p class="lead">El gerente compró Claude. Abrió su dashboard de Odoo, mandó analizar los datos de avance de proyectos de instalación solar y generó los informes técnicos formateados en el momento. Puro lenguaje natural.</p>
+            </div>
+            <div>
+              <div class="metrics">
+                <div class="metric">
+                  <div class="metric__value">30 s</div>
+                  <div class="metric__label">Análisis de datos</div>
+                </div>
+                <div class="metric">
+                  <div class="metric__value">3 min</div>
+                  <div class="metric__label">Informe entregado</div>
+                </div>
+                <div class="metric">
+                  <div class="metric__value">2</div>
+                  <div class="metric__label">Ingenieros reemplazados</div>
+                </div>
+                <div class="metric">
+                  <div class="metric__value">3 días</div>
+                  <div class="metric__label">Tiempo anterior</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. STACK AGNÓSTICO -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+              fiba labs
+            </div>
+          </div>
+          <div class="content">
+            <p class="kicker">04 // Cómo lo armo</p>
+            <h2>Un stack agnóstico, no casado con un solo modelo</h2>
+            <div class="grid-3" style="margin-top: 32px;">
+              <div class="card">
+                <div class="card__icon"><i data-lucide="cpu"></i></div>
+                <h4 class="card__title">Claude Code</h4>
+                <p class="card__text">El driver del día a día. Suscripción de 100 USD, vive dentro de VSCode.</p>
+              </div>
+              <div class="card">
+                <div class="card__icon"><i data-lucide="search"></i></div>
+                <h4 class="card__title">Codex (OpenAI)</h4>
+                <p class="card__text">Llamado vía API desde Claude. Le pido que revise el código que Claude acaba de escribir y entregue feedback de peer review.</p>
+              </div>
+              <div class="card">
+                <div class="card__icon"><i data-lucide="sparkles"></i></div>
+                <h4 class="card__title">Gemini</h4>
+                <p class="card__text">También vía API cuando necesito otra mirada o análisis de video.</p>
+              </div>
+            </div>
+            <p class="muted" style="margin-top: 32px; max-width: 720px;">
+              La gracia de VSCode es que es abierto. Hasta se puede engañar a Claude Code para que use modelos locales al 90 % de Opus y pagar cero. La herramienta de hoy es Claude, pero la arquitectura no me amarra.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. CLAUDE SKILLS -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+              fiba labs
+            </div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">05 // Skills</p>
+              <h2>SOPs<br>automatizados</h2>
+              <p class="lead">Cuando algo lo hago dos veces, le digo a Claude que me lo arme como skill. La próxima vez ya lo dispara solo, con mis preferencias guardadas.</p>
+              <p class="muted" style="margin-top: 16px;">El 90 % de mis skills los he hecho yo. El resto los saco de repos ajenos, le pido a Claude que los analice y me quedo con lo que sirve.</p>
+            </div>
+            <div>
+              <ul class="list list--numbered">
+                <li><strong>Facturación</strong><br><span class="muted">Generar facturas para cobros internacionales con mis datos ya fijos.</span></li>
+                <li><strong>YouTube digest</strong><br><span class="muted">7 formas distintas de bajar transcripciones, resumen y carga a mi base de conocimiento.</span></li>
+                <li><strong>Presentaciones</strong><br><span class="muted">Esta misma presentación salió de un skill. Granola transcribe, Claude estructura.</span></li>
+                <li><strong>Hidden API</strong><br><span class="muted">Cuando una app no expone API, intercepta la consola y la documenta.</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. CLAUDE COWORK -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+              fiba labs
+            </div>
+          </div>
+          <div class="content">
+            <p class="kicker">06 // Para los no developers</p>
+            <h2>Claude Cowork es la pieza para el resto del equipo</h2>
+            <p class="lead" style="max-width: 760px;">
+              VSCode con Claude no es para todos. A mi esposa no le va a interesar abrir un IDE. Cowork, la pestaña dentro de Claude Desktop, sí. Es un asistente de trabajo de verdad, donde los skills viven, se conectan al Gmail y al calendario, y se disparan sin salir del chat.
+            </p>
+            <div class="grid-3" style="margin-top: 40px;">
+              <div class="card">
+                <h4 class="card__title">Chat</h4>
+                <p class="card__text">El uso clásico. Conversación libre.</p>
+              </div>
+              <div class="card card--featured">
+                <span class="badge" style="margin-bottom: 12px;">Donde está el potencial</span>
+                <h4 class="card__title">Cowork</h4>
+                <p class="card__text">Asistente de trabajo. Aquí conectas skills, MCPs, Gmail, calendario y carpetas, sin tocar código.</p>
+              </div>
+              <div class="card">
+                <h4 class="card__title">Code</h4>
+                <p class="card__text">El equivalente a Claude Code, dentro del desktop.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. ENSEÑAR A PESCAR VS ENTREGAR PESCADO -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+              fiba labs
+            </div>
+          </div>
+          <div class="content">
+            <p class="kicker">07 // La metáfora</p>
+            <h2>Enseñar a pescar vs. entregar el pescado</h2>
+            <div class="grid-2" style="margin-top: 32px;">
+              <div class="card">
+                <div class="card__icon"><i data-lucide="book-open"></i></div>
+                <h4 class="card__title">VSCode = enseñar a pescar</h4>
+                <p class="card__text">Workshops. La persona aprende a estructurar pedidos, a generar sus propios skills, a pensar en automatización. Útil para quien quiere meterse de verdad.</p>
+              </div>
+              <div class="card card--featured">
+                <div class="card__icon"><i data-lucide="package"></i></div>
+                <h4 class="card__title">Cowork = entregar el pescado</h4>
+                <p class="card__text">Le instalamos su sistema operativo de empresa. Carpetas, skills, conectores ya armados. La persona presiona un botón y trabaja. Es donde está el servicio recurrente.</p>
+              </div>
+            </div>
+            <p class="muted" style="margin-top: 24px; max-width: 760px;">
+              La gente no adopta inteligencia artificial a nivel empresa. La adopta a nivel personal. Por eso Cowork se instala en el equipo de cada uno, y cada uno siente que tiene su asistente.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 9. SISTEMA OPERATIVO DE EMPRESA -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+              fiba labs
+            </div>
+          </div>
+          <div class="content">
+            <p class="kicker">08 // El delivery</p>
+            <h2>Sistema operativo de empresa, montado en Cowork</h2>
+            <p class="lead" style="max-width: 800px;">
+              Auditamos la compañía, mapeamos sus procesos y armamos una carpeta empresa con sus skills, conectores y reglas de seguridad. Eso vive en Cowork de cada persona y se vuelve su inteligencia artificial propia.
+            </p>
+            <div class="workflow" style="margin-top: 40px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+              <div class="card" style="flex: 1; min-width: 200px;">
+                <h4 class="card__title">1. Auditoría</h4>
+                <p class="card__text">Entrevistas, formulario de tareas repetitivas, audios de procesos.</p>
+              </div>
+              <div class="card" style="flex: 1; min-width: 200px;">
+                <h4 class="card__title">2. Carpeta empresa</h4>
+                <p class="card__text">Cotizaciones, propuestas, plantillas, históricos. Todo curado.</p>
+              </div>
+              <div class="card" style="flex: 1; min-width: 200px;">
+                <h4 class="card__title">3. Skills + conectores</h4>
+                <p class="card__text">HubSpot, PayPal, DocuSign, G Suite, Canva ya vienen prearmados por Claude.</p>
+              </div>
+              <div class="card" style="flex: 1; min-width: 200px;">
+                <h4 class="card__title">4. Install por persona</h4>
+                <p class="card__text">Cowork en el equipo de cada uno, con reglas para que no rompan nada.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 10. HIDDEN API + PRINTING PRESS -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+              fiba labs
+            </div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">09 // El truco técnico</p>
+              <h2>Hidden API +<br>printing-press</h2>
+              <p class="lead">Cuando la herramienta del cliente no expone API pública, no nos quedamos atascados.</p>
+              <ul class="list" style="margin-top: 16px;">
+                <li><strong>Hidden API</strong>: Playwright + consola de desarrollador. Claude observa cómo se habla la app consigo misma y documenta sus endpoints.</li>
+                <li><strong>printing-press</strong>: repo nuevo, ~2 semanas, ~2.300 stars. Convierte cualquier app sin API en un CLI con el que Claude Code se comunica directo.</li>
+              </ul>
+            </div>
+            <div>
+              <div class="card">
+                <div class="card__icon"><i data-lucide="lock"></i></div>
+                <h4 class="card__title">El valor agregado</h4>
+                <p class="card__text">Yo me conecto a las fuentes de datos del cliente desde el backend. El cliente no ve la complejidad ni asume el riesgo de seguridad. Nosotros lo cubrimos, ellos solo consultan desde Cowork.</p>
+              </div>
+              <div class="card" style="margin-top: 16px;">
+                <div class="card__icon"><i data-lucide="alert-octagon"></i></div>
+                <h4 class="card__title">El riesgo del open</h4>
+                <p class="card__text">Hace poco se filtraron ~40.000 contraseñas por instalaciones mal hechas. Por eso Cowork le gana a soluciones tipo OpenCloud para empresas medianas: punto medio seguro.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 11. SECCIÓN: MONETIZACIÓN -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <p class="kicker" style="justify-content: center;">10 // Plata</p>
+          <h2>Modelo de cobro<br>y dos tipos de cliente</h2>
+          <p class="lead muted">Cómo lo estructuramos para que se sostenga.</p>
+        </div>
+      </section>
+
+      <!-- 12. PRICING -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+              fiba labs
+            </div>
+          </div>
+          <div class="content">
+            <h2 style="text-align: center;">Setup + recurrente</h2>
+            <div class="pricing" style="margin-top: 32px;">
+              <div class="pricing__card">
+                <div class="pricing__name">Setup</div>
+                <div class="pricing__price">$6K</div>
+                <div class="pricing__period">único</div>
+                <ul class="pricing__features">
+                  <li>Auditoría de la empresa</li>
+                  <li>Carpeta empresa montada</li>
+                  <li>Cowork conectado a correos</li>
+                  <li>Reglas de seguridad puestas</li>
+                </ul>
+              </div>
+              <div class="pricing__card pricing__card--featured">
+                <span class="badge" style="margin-bottom: 12px;">Núcleo</span>
+                <div class="pricing__name">Skill recurrente</div>
+                <div class="pricing__price">$1.5K</div>
+                <div class="pricing__period">por mes</div>
+                <ul class="pricing__features">
+                  <li>Una automatización viva</li>
+                  <li>Reportes y alertas</li>
+                  <li>Mantenimiento del skill</li>
+                  <li>Marketplace MCP: si dejan de pagar, se desconecta</li>
+                </ul>
+              </div>
+              <div class="pricing__card">
+                <div class="pricing__name">Skills adicionales</div>
+                <div class="pricing__price">+$2-3K</div>
+                <div class="pricing__period">por mes / cada uno</div>
+                <ul class="pricing__features">
+                  <li>Se suman al recurrente</li>
+                  <li>Asistente personal del gerente</li>
+                  <li>Monitoreo de correos comerciales</li>
+                  <li>Reportes lunes / viernes automáticos</li>
+                </ul>
+              </div>
+            </div>
+            <p class="muted" style="margin-top: 24px; text-align: center; max-width: 800px; margin-left: auto; margin-right: auto;">
+              Apuntamos a 30, 40, 50 clientes fáciles de administrar. La meta: ser el proveedor de confianza, no el más barato.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 13. DOS TIPOS DE CLIENTE -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+              fiba labs
+            </div>
+          </div>
+          <div class="content">
+            <p class="kicker">11 // Yorhman lo aterrizó</p>
+            <h2>Hay dos tipos de cliente</h2>
+            <div class="grid-2" style="margin-top: 32px;">
+              <div class="card">
+                <div class="card__icon"><i data-lucide="user-check"></i></div>
+                <h4 class="card__title">Cliente elaborado</h4>
+                <p class="card__text muted" style="margin-bottom: 12px;">Tiene estructura, ya vio cosas, confía después de demostrarle. Pide su asistente virtual a la medida.</p>
+                <p class="card__text"><strong>Ticket</strong>: 2K a 4K USD / mes.</p>
+              </div>
+              <div class="card card--featured">
+                <div class="card__icon"><i data-lucide="database"></i></div>
+                <h4 class="card__title">Cliente con data dormida</h4>
+                <p class="card__text muted" style="margin-bottom: 12px;">Tiene ERP, CRM, sistema de manufactura, y no sabe qué hacer con la data. La mayoría del mercado. Ejemplo: la gente de Onyx.</p>
+                <p class="card__text"><strong>Argumento</strong>: "una persona en USA te cuesta $2.5K-3K al mes. Nosotros te cobramos $1K, con alertas, 24/7." Sin tecnicismos.</p>
+              </div>
+            </div>
+            <p class="muted" style="margin-top: 24px; max-width: 800px;">
+              "A la larga, a ellos no les importa cómo funciona. Lo importante es que funcione." (Yorhman)
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 14. SECCIÓN PARTNER NETWORK -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <p class="kicker" style="justify-content: center;">12 // Lo concreto a accionar ya</p>
+          <h2>Claude Partner Network</h2>
+          <p class="lead muted">El programa donde se suma Tactica Web.</p>
+        </div>
+      </section>
+
+      <!-- 15. PARTNER NETWORK - QUÉ ES -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+              fiba labs
+            </div>
+          </div>
+          <div class="content">
+            <p class="kicker">13 // Anthropic Partner Network</p>
+            <h2>Programa nuevo, vitrina real</h2>
+            <div class="grid-2" style="margin-top: 32px;">
+              <div class="card">
+                <div class="card__icon"><i data-lucide="calendar"></i></div>
+                <h4 class="card__title">Lanzado hace un mes</h4>
+                <p class="card__text">Anthropic le metió ~100 millones de dólares al programa.</p>
+              </div>
+              <div class="card">
+                <div class="card__icon"><i data-lucide="award"></i></div>
+                <h4 class="card__title">Badge Claude Certified</h4>
+                <p class="card__text">Vitrina pública, posibles leads dirigidos, acceso a soporte de Anthropic.</p>
+              </div>
+              <div class="card">
+                <div class="card__icon"><i data-lucide="dollar-sign"></i></div>
+                <h4 class="card__title">Sin pago para entrar</h4>
+                <p class="card__text">No hay fee de partner. Si te aceptan, solo hay que certificar a 10 personas de tu empresa.</p>
+              </div>
+              <div class="card">
+                <div class="card__icon"><i data-lucide="book-open"></i></div>
+                <h4 class="card__title">Certificación basada en cursos gratis</h4>
+                <p class="card__text">El contenido es público. Lo difícil es entrar al programa, no aprobar el examen.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 16. ESTADO + ALIASES -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+              fiba labs
+            </div>
+          </div>
+          <div class="split">
+            <div>
+              <p class="kicker">14 // Dónde vamos</p>
+              <h2>Fiba Labs ya<br>está aceptado</h2>
+              <p class="lead">Llené el formulario, muchos lo intentan y se lo niegan, a mí me aprobaron. La condición: certificar 10 personas con el dominio de Fiba Labs.</p>
+              <p class="muted" style="margin-top: 16px;">Un solo Workspace pago + hasta 30 aliases. Cada persona se certifica como individual con su alias @fibalabs.</p>
+            </div>
+            <div>
+              <ul class="list list--check">
+                <li><strong>Aceptación de Fiba Labs</strong><br><span class="muted">Acceso al Google Doc del programa.</span></li>
+                <li><strong>Plan operativo</strong><br><span class="muted">Pagar un Workspace y crear aliases para los 10 puestos.</span></li>
+                <li><strong>Track activo</strong><br><span class="muted">4 personas ya en el proceso, faltan 6 para completar.</span></li>
+                <li><strong>Tactica Web suma 3</strong><br><span class="muted">Yorhman + Luis + 1 más. Quedan abiertos a sumar otros 2 desarrolladores de su red.</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 17. ROADMAP TÁCTICO -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+              fiba labs
+            </div>
+          </div>
+          <div class="content">
+            <p class="kicker">15 // Roadmap inmediato</p>
+            <h2>De aquí a la próxima semana</h2>
+            <div class="timeline" style="margin-top: 48px;">
+              <div class="timeline__item">
+                <div class="timeline__year">Hoy</div>
+                <div class="timeline__dot"></div>
+                <div class="timeline__content">Reunión Carlos + Yorhman cerrada</div>
+              </div>
+              <div class="timeline__item">
+                <div class="timeline__year">Mañana</div>
+                <div class="timeline__dot"></div>
+                <div class="timeline__content">Definir los 3 nombres de Tactica Web</div>
+              </div>
+              <div class="timeline__item">
+                <div class="timeline__year">Esta semana</div>
+                <div class="timeline__dot"></div>
+                <div class="timeline__content">Workspace + aliases creados; subidos al Google Doc</div>
+              </div>
+              <div class="timeline__item">
+                <div class="timeline__year">Próxima</div>
+                <div class="timeline__dot"></div>
+                <div class="timeline__content">Arranque de la certificación</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 18. NEXT STEPS -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo">
+              <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+              fiba labs
+            </div>
+          </div>
+          <div class="content">
+            <p class="kicker">16 // Próximos pasos acordados</p>
+            <h2>Quién hace qué</h2>
+            <ul class="list list--numbered" style="margin-top: 24px;">
+              <li><strong>Carlos</strong><br><span class="muted">Crea el alias del Workspace para Tactica Web y los sube al Google Doc del Partner Program.</span></li>
+              <li><strong>Yorhman</strong><br><span class="muted">Cubre el costo del dominio / track de Google asociado. Define los 3 nombres del lado de Tactica.</span></li>
+              <li><strong>Carlos + Yorhman</strong><br><span class="muted">Definir mañana quién arranca y abrir la certificación la próxima semana.</span></li>
+              <li><strong>Carlos</strong><br><span class="muted">Compartir el workshop dictado de Cowork (sesión 1) y el material de la sesión 2 cuando esté listo.</span></li>
+              <li><strong>Carlos</strong><br><span class="muted">Mostrarle a Luis printing-press y el patrón Hidden API en una próxima sesión técnica.</span></li>
+              <li><strong>Ambos equipos</strong><br><span class="muted">Aprovechamos el momento. El programa está fresco y todavía hay poca competencia certificada en la región.</span></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 19. CIERRE -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <div class="content flex-center" style="flex-direction: column;">
+            <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs" style="width: 64px; height: 64px; margin-bottom: 24px; object-fit: contain;">
+            <p class="kicker" style="justify-content: center;">Tactica Web + Fiba Labs</p>
+            <h1>Aprovechemos<br><span class="accent-text">el momento</span></h1>
+            <p class="lead" style="margin-bottom: 40px; max-width: 640px;">
+              Sumamos a Tactica Web al Partner Network, armamos la certificación junta y dejamos a los dos equipos parados con badge antes de que el programa se llene. En paralelo, empezamos a ofrecer Cowork como sistema operativo de empresa a clientes en USA y la región.
+            </p>
+            <div class="contact-grid" style="width: 100%; max-width: 680px;">
+              <div class="contact-item">
+                <div class="contact-item__label">Reunión</div>
+                <div class="contact-item__value">21 may 2026</div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-item__label">Próxima acción</div>
+                <div class="contact-item__value">Alias Workspace + 3 nombres</div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-item__label">Contacto</div>
+                <div class="contact-item__value">comercial@tacticaweb.com</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.js"></script>
+
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: true,
+      controls: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      center: false,
+      transition: 'slide',
+      backgroundTransition: 'fade',
+      width: 1280,
+      height: 720,
+      margin: 0,
+      minScale: 0.2,
+      maxScale: 2,
+      autoAnimate: true,
+      autoAnimateDuration: 0.7,
+      plugins: [RevealHighlight]
+    });
+
+    lucide.createIcons();
+  </script>
+</body>
+</html>
