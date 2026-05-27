@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fiba Labs :: Salomón</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/monokai.css">
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+:root {
+  --bg-dark: #0A0A14;
+  --bg-card: #12121E;
+  --bg-card-hover: #1A1A2A;
+  --accent: #8B5CF6;
+  --accent-light: #A78BFA;
+  --accent-glow: rgba(139, 92, 246, 0.15);
+  --secondary: #4C2D91;
+  --secondary-light: #6D4DB8;
+  --success: #34D399;
+  --warning: #FBBF24;
+  --error: #F87171;
+  --text-primary: #E8E4F0;
+  --text-secondary: #9B95A8;
+  --text-muted: #5C5670;
+  --border: #2A2A3A;
+  --font-serif: 'Instrument Serif', Georgia, serif;
+  --font-sans: 'Space Grotesk', sans-serif;
+  --font-mono: 'Fira Code', monospace;
+  --spacing-xs: 8px;
+  --spacing-sm: 16px;
+  --spacing-md: 24px;
+  --spacing-lg: 40px;
+  --spacing-xl: 60px;
+}
+html, body { background: var(--bg-dark) !important; color: var(--text-primary); margin: 0; height: 100%; }
+body { font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+.reveal-viewport {
+  background: var(--bg-dark) !important;
+  background-image: linear-gradient(rgba(139, 92, 246, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(139, 92, 246, 0.03) 1px, transparent 1px) !important;
+  background-size: 60px 60px !important;
+}
+.reveal { background: var(--bg-dark); font-family: var(--font-sans); font-size: 22px; color: var(--text-primary); }
+.reveal .slides { text-align: left; }
+.reveal .slides section { padding: 0; background: var(--bg-dark); }
+.slide { height: 100%; width: 100%; padding: var(--spacing-xl); box-sizing: border-box; display: flex; flex-direction: column; background: transparent; position: relative; }
+.slide > * { position: relative; z-index: 1; }
+.slide.section { background: transparent; align-items: center; justify-content: center; text-align: center; }
+.slide.section::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 600px; height: 600px; background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%); pointer-events: none; z-index: 0; }
+.header { display: flex; justify-content: flex-end; align-items: center; padding-bottom: var(--spacing-md); margin-bottom: var(--spacing-lg); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.cover-logo { display: flex; justify-content: center; margin-bottom: var(--spacing-lg); }
+.cover-logo img { width: 96px; height: 96px; object-fit: contain; }
+.header__logo { font-family: var(--font-sans); font-size: 0.9rem; font-weight: 500; color: var(--text-secondary); display: flex; align-items: center; gap: 10px; letter-spacing: 0.1em; text-transform: lowercase; }
+.header__logo img { width: 24px; height: 24px; object-fit: contain; }
+.kicker { font-size: 0.7rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.25em; margin-bottom: var(--spacing-sm); font-weight: 500; display: flex; align-items: center; gap: 12px; }
+.kicker::after { content: ''; width: 40px; height: 1px; background: var(--accent); opacity: 0.5; }
+h1 { font-family: var(--font-serif); font-size: 4rem; font-weight: 400; font-style: italic; line-height: 1.1; margin: 0 0 var(--spacing-md) 0; color: var(--text-primary); }
+h2 { font-family: var(--font-serif); font-size: 2.5rem; font-weight: 400; line-height: 1.15; margin: 0 0 var(--spacing-md) 0; }
+h3 { font-family: var(--font-sans); font-size: 1.5rem; font-weight: 500; line-height: 1.3; margin: 0 0 var(--spacing-sm) 0; letter-spacing: 0.05em; }
+h4 { font-family: var(--font-sans); font-size: 1.1rem; font-weight: 500; margin: 0 0 var(--spacing-xs) 0; letter-spacing: 0.05em; }
+.lead { font-size: 1.1rem; color: var(--text-secondary); line-height: 1.7; max-width: 720px; letter-spacing: 0.02em; }
+.muted { color: var(--text-muted); }
+.highlight, .accent-text { color: var(--accent); }
+.content { flex: 1; display: flex; flex-direction: column; }
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-xl); align-items: center; flex: 1; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-md); }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-md); }
+.flex-center { display: flex; align-items: center; justify-content: center; }
+.card { background: transparent; border: 1px solid var(--border); padding: var(--spacing-md); transition: all 0.3s ease; border-radius: 2px; }
+.card:hover { background: var(--bg-card); border-color: var(--accent); }
+.card.is-featured { border-color: var(--accent); }
+.card__icon { width: 40px; height: 40px; margin-bottom: var(--spacing-sm); color: var(--accent); }
+.card__icon svg { width: 100%; height: 100%; stroke-width: 1.5; }
+.card__title { font-family: var(--font-sans); font-size: 1rem; font-weight: 500; margin-bottom: var(--spacing-xs); letter-spacing: 0.03em; }
+.card__text { font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; }
+.metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--spacing-md); }
+.metric { text-align: center; padding: var(--spacing-md); border: 1px solid var(--border); transition: all 0.3s ease; border-radius: 2px; }
+.metric:hover { border-color: var(--accent); }
+.metric__value { font-family: var(--font-sans); font-size: 2.5rem; font-weight: 500; color: var(--accent); line-height: 1; margin-bottom: var(--spacing-xs); letter-spacing: -0.02em; }
+.metric__label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.15em; }
+.list { list-style: none; padding: 0; margin: 0; }
+.list li { padding: var(--spacing-sm) 0; padding-left: var(--spacing-lg); position: relative; border-bottom: 1px solid var(--border); }
+.list li:last-child { border-bottom: none; }
+.list li::before { content: '\2014'; position: absolute; left: 0; top: var(--spacing-sm); color: var(--accent); font-weight: 400; }
+.list.numbered { counter-reset: list-counter; }
+.list.numbered li { counter-increment: list-counter; }
+.list.numbered li::before { content: counter(list-counter, decimal-leading-zero); color: var(--accent); font-size: 0.8rem; font-weight: 500; letter-spacing: 0.05em; }
+.badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; font-size: 0.7rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; background: transparent; color: var(--accent); border: 1px solid var(--accent); border-radius: 2px; }
+.contact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-lg); margin-top: var(--spacing-xl); }
+.contact-item { text-align: center; }
+.contact-item__label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: var(--spacing-xs); }
+.contact-item__value { font-size: 0.95rem; color: var(--text-secondary); }
+.reveal .controls { color: var(--accent); }
+.reveal .progress { background: var(--border); height: 2px; }
+.reveal .progress span { background: var(--accent); }
+.reveal .slide-number { background: transparent; color: var(--text-muted); font-size: 16px; font-family: var(--font-mono); left: 20px; right: auto; bottom: 20px; }
+.reveal .slides section .fragment { opacity: 0; transition: all 0.4s ease; }
+.reveal .slides section .fragment.visible { opacity: 1; }
+::selection { background: var(--accent); color: var(--bg-dark); }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- 1. COVER -->
+      <section>
+        <div class="slide section">
+          <div class="content flex-center" style="flex-direction: column; text-align: center;">
+            <div class="cover-logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs"></div>
+            <p class="kicker" style="justify-content: center;">Salomón :: Carlos // Mayo 2026</p>
+            <h1>Fiba Labs<br><span class="accent-text">en una conversación</span></h1>
+            <p class="lead" style="max-width: 640px; margin: 0 auto;">Treinta años después del colegio. Lo que estoy construyendo, cómo leo el mercado, y por dónde podemos seguir cruzando notas.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. SECTION: CONTEXTO -->
+      <section>
+        <div class="slide section">
+          <p class="kicker" style="justify-content: center;">01 // Contexto</p>
+          <h2>De dónde vengo</h2>
+          <p class="lead muted">22 años en ventas corporativas. Un cambio de carril en febrero de este año.</p>
+        </div>
+      </section>
+
+      <!-- 3. BACKGROUND -->
+      <section>
+        <div class="slide">
+          <div class="header"><div class="header__logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">fiba labs</div></div>
+          <div class="split">
+            <div>
+              <p class="kicker">01 // Background</p>
+              <h2>Ventas y CS<br>en B2B global</h2>
+              <p class="lead">IBM, Oracle, Red Hat, Trellix, Xerox, Vertiv. El último capítulo fue Remote.com en customer success: entré en 2021, ya éramos unicornio. Ahí vi de cerca cómo la categoría EOR explotó después de la pandemia.</p>
+            </div>
+            <div>
+              <ul class="list">
+                <li><strong>Santiago desde 2014</strong><br><span class="muted">Por Paola, mi esposa colombiana. Dos hijos chilenísimos: Isabela (10) y Federico (8).</span></li>
+                <li><strong>MBA dual</strong><br><span class="muted">Thunderbird y Tec de Monterrey. Ingeniería Electrónica en Los Andes.</span></li>
+                <li><strong>Comercial puro</strong><br><span class="muted">Ventas, canal y CS en LATAM y global. Sin background técnico formal.</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. THE SHIFT -->
+      <section>
+        <div class="slide">
+          <div class="header"><div class="header__logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">fiba labs</div></div>
+          <div class="content">
+            <p class="kicker">02 // El cambio</p>
+            <h2>Febrero 2026: <span class="accent-text">me senté con Claude Code</span></h2>
+            <p class="lead" style="margin-bottom: 32px;">Llevaba más de un año mirando herramientas. Estuvo de moda n8n, después Make, después otra cosa. El día que arranqué con Claude Code dentro de VS Code entendí que el juego cambió de fondo.</p>
+            <div class="grid-3" style="margin-top: 24px;">
+              <div class="card">
+                <div class="card__icon"><i data-lucide="code"></i></div>
+                <h4 class="card__title">VS Code + Claude Code</h4>
+                <p class="card__text">No soy developer. Aun así puedo construir casi cualquier cosa que necesite.</p>
+              </div>
+              <div class="card">
+                <div class="card__icon"><i data-lucide="git-branch"></i></div>
+                <h4 class="card__title">Multi modelo</h4>
+                <p class="card__text">Desde Claude Code llamo a Codex, a Gemini, al que sirva. Claude es el conductor.</p>
+              </div>
+              <div class="card">
+                <div class="card__icon"><i data-lucide="layers"></i></div>
+                <h4 class="card__title">Skills reutilizables</h4>
+                <p class="card__text">Esta misma presentación salió de un skill mío con el transcript de nuestra llamada.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. SECTION: TESIS -->
+      <section>
+        <div class="slide section">
+          <p class="kicker" style="justify-content: center;">02 // La Tesis</p>
+          <h2>El espacio que veo</h2>
+          <p class="lead muted">No son bots. No son automatizaciones con cinta pegante. Es algo más estructural.</p>
+        </div>
+      </section>
+
+      <!-- 6. THESIS -->
+      <section>
+        <div class="slide">
+          <div class="header"><div class="header__logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">fiba labs</div></div>
+          <div class="split">
+            <div>
+              <p class="kicker">03 // Tesis</p>
+              <h2>AI Operating Systems<br>para SMBs</h2>
+              <p class="lead">Las grandes consultoras se pelean por la cuenta corporativa. Los emprendedores y las empresas pequeñas no tienen pies ni cabeza, cargan todos los sombreros, y nadie los voltea a mirar. <span class="accent-text">Esa es la ventana.</span></p>
+            </div>
+            <div>
+              <ul class="list numbered">
+                <li><strong>SMB gringo</strong><br><span class="muted">Menos de diez millones de dólares en ventas. Dolor real, presupuesto, decisiones rápidas.</span></li>
+                <li><strong>Approach consultivo</strong><br><span class="muted">Diagnose, Map, Architect. Nunca vendemos una automatización suelta de entrada.</span></li>
+                <li><strong>Sistema, no parche</strong><br><span class="muted">Si mañana sale un plugin que reemplaza al agente, la base operativa ya está montada.</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. ANTI-POSITIONING -->
+      <section>
+        <div class="slide">
+          <div class="header"><div class="header__logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">fiba labs</div></div>
+          <div class="content">
+            <p class="kicker">04 // Posicionamiento</p>
+            <h2>Lo que <span class="accent-text">no</span> es Fiba Labs</h2>
+            <div class="grid-2" style="margin-top: 32px;">
+              <div class="card">
+                <h4 class="card__title">No es una agencia de bots</h4>
+                <p class="card__text">El bot es la consecuencia, no el producto. Lo que se compra es claridad operativa.</p>
+              </div>
+              <div class="card">
+                <h4 class="card__title">No es automatización con cinta pegante</h4>
+                <p class="card__text">Workflows armados a la carrera se rompen. El sistema tiene que sostenerse solo.</p>
+              </div>
+              <div class="card is-featured">
+                <h4 class="card__title">Sí es audit first</h4>
+                <p class="card__text">Primero entendemos el negocio. Después se decide qué se automatiza y qué se deja quieto.</p>
+              </div>
+              <div class="card is-featured">
+                <h4 class="card__title">Sí es un OS</h4>
+                <p class="card__text">Una base que compone. No proyectos sueltos que viven y mueren en aislamiento.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. SECTION: EJECUCIÓN -->
+      <section>
+        <div class="slide section">
+          <p class="kicker" style="justify-content: center;">03 // Ejecución</p>
+          <h2>Cómo lo estoy construyendo</h2>
+          <p class="lead muted">Proyectos sueltos como ingreso, workshops como I+D, partner program como tracción.</p>
+        </div>
+      </section>
+
+      <!-- 9. CURRENT WORK -->
+      <section>
+        <div class="slide">
+          <div class="header"><div class="header__logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">fiba labs</div></div>
+          <div class="content">
+            <p class="kicker">05 // En la cancha</p>
+            <h2>Proyectos vivos hoy</h2>
+            <div class="grid-2" style="margin-top: 32px;">
+              <div class="card">
+                <div class="card__icon"><i data-lucide="mail"></i></div>
+                <h4 class="card__title">Cold email</h4>
+                <p class="card__text">Sistema de outbound para un cliente de servicios.</p>
+              </div>
+              <div class="card">
+                <div class="card__icon"><i data-lucide="file-text"></i></div>
+                <h4 class="card__title">PDF a base de datos</h4>
+                <p class="card__text">Procesamiento de facturas en PDF hacia una base estructurada para un cliente recurrente.</p>
+              </div>
+              <div class="card">
+                <div class="card__icon"><i data-lucide="home"></i></div>
+                <h4 class="card__title">Roofing webapp</h4>
+                <p class="card__text">App para una empresa de techos: foto del techo, propuesta, carta al cliente.</p>
+              </div>
+              <div class="card">
+                <div class="card__icon"><i data-lucide="users"></i></div>
+                <h4 class="card__title">Workshops en Chile</h4>
+                <p class="card__text">Dueños de negocio. Ellos aprenden adopción, yo aprendo sus dolores.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 10. WORKSHOP LOOP -->
+      <section>
+        <div class="slide">
+          <div class="header"><div class="header__logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">fiba labs</div></div>
+          <div class="split">
+            <div>
+              <p class="kicker">06 // El loop</p>
+              <h2>Workshops <span class="accent-text">como I+D</span></h2>
+              <p class="lead">Cada workshop me deja tres cosas: una librería de skills reutilizables, visibilidad de cuellos de botella reales en SMBs, y candidatos a proyectos más grandes.</p>
+            </div>
+            <div>
+              <ul class="list numbered">
+                <li><strong>Intake</strong><br><span class="muted">Auditoría previa. Entiendo el negocio antes de tocar nada.</span></li>
+                <li><strong>Workshop</strong><br><span class="muted">Generamos skills en vivo que resuelven sus dolores concretos.</span></li>
+                <li><strong>Librería</strong><br><span class="muted">Cada skill se vuelve un activo reutilizable para el próximo cliente.</span></li>
+                <li><strong>Productización</strong><br><span class="muted">Los patrones que se repiten se empaquetan como oferta.</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 11. PARTNER NETWORK -->
+      <section>
+        <div class="slide">
+          <div class="header"><div class="header__logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">fiba labs</div></div>
+          <div class="content">
+            <p class="kicker">07 // Tracción</p>
+            <h2>Claude Partner Network</h2>
+            <p class="lead" style="margin-bottom: 32px;">Fiba Labs ya fue aceptado. El requisito: certificar a diez personas internas en los cuatro cursos base. Mi hermano se metió a desarrollar y entró por el mismo programa.</p>
+            <div class="metrics" style="margin-top: 24px;">
+              <div class="metric"><div class="metric__value">10</div><div class="metric__label">Personas a certificar</div></div>
+              <div class="metric"><div class="metric__value">4</div><div class="metric__label">Cursos: API, MCP, Skills, Agent SDK</div></div>
+              <div class="metric"><div class="metric__value">CCAB</div><div class="metric__label">Siguiente certificación (la tuya)</div></div>
+              <div class="metric"><div class="metric__value">Jun</div><div class="metric__label">Abren el programa formal</div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 12. SECTION: MERCADO -->
+      <section>
+        <div class="slide section">
+          <p class="kicker" style="justify-content: center;">04 // Lectura del mercado</p>
+          <h2>Por qué ahora</h2>
+          <p class="lead muted">Si Karpathy se siente quedado, los demás vamos corriendo. Y aun así la oportunidad es real.</p>
+        </div>
+      </section>
+
+      <!-- 13. KARPATHY / SPEED -->
+      <section>
+        <div class="slide">
+          <div class="header"><div class="header__logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">fiba labs</div></div>
+          <div class="split">
+            <div>
+              <p class="kicker">08 // Velocidad</p>
+              <h2>La curva ya<br>es vertical</h2>
+              <p class="lead">Anthropic está soltando plugins por industria a un ritmo brutal: legal, Adobe, mainframes IBM, hasta agentes para COBOL. Lo que uno construye hoy puede ser plugin la otra semana. <span class="accent-text">No importa.</span></p>
+            </div>
+            <div>
+              <ul class="list">
+                <li><strong>Karpathy se acaba de mover a Anthropic</strong><br><span class="muted">Y él mismo dice que se siente quedado. Imagínese el resto.</span></li>
+                <li><strong>AI usando AI para avanzar AI</strong><br><span class="muted">La curva ya no es lineal. Los próximos saltos vienen rápido y grandes.</span></li>
+                <li><strong>Modelos top en acceso restringido</strong><br><span class="muted">Hay un círculo cerrado que prueba modelos antes del release público.</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 14. CONSULTING FUTURE -->
+      <section>
+        <div class="slide">
+          <div class="header"><div class="header__logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">fiba labs</div></div>
+          <div class="content">
+            <p class="kicker">09 // Las consultoras</p>
+            <h2>Mixed feelings con el futuro de la consultoría</h2>
+            <div class="grid-2" style="margin-top: 32px;">
+              <div class="card">
+                <h4 class="card__title">Lo que las protege</h4>
+                <p class="card__text">La confianza. Bancos y gobierno se demoran seis meses en decidir, pero cuando deciden, cierran multimillonarios con la firma de siempre. Esa muralla no la tumba un solopreneur.</p>
+              </div>
+              <div class="card">
+                <h4 class="card__title">Lo que las erosiona</h4>
+                <p class="card__text">Empresas pequeñas con capacidades comparables a costos completamente distintos. La acción de Accenture cayó cerca de 50 por ciento en año y medio. La señal está ahí.</p>
+              </div>
+              <div class="card is-featured">
+                <h4 class="card__title">El gap del SMB</h4>
+                <p class="card__text">Accenture no baja a empresas de diez millones. Yo no me meto con bancos top tier. En el medio queda un mercado enorme sin atender.</p>
+              </div>
+              <div class="card is-featured">
+                <h4 class="card__title">Plugins arriba, consultoría abajo</h4>
+                <p class="card__text">Mañana mi automatización es un plugin de Anthropic. Bien. El cliente ya pasó por la implementación y aprendió a pensar en sistema.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 15. TARGET MARKET -->
+      <section>
+        <div class="slide">
+          <div class="header"><div class="header__logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">fiba labs</div></div>
+          <div class="content">
+            <p class="kicker">10 // ICP</p>
+            <h2>A quién le sirve esto</h2>
+            <div class="grid-3" style="margin-top: 32px;">
+              <div class="card">
+                <h4 class="card__title">Emprendedor solo</h4>
+                <p class="muted" style="margin-bottom: 12px;">Cargando todos los sombreros</p>
+                <ul class="list">
+                  <li>Workshops y entrenamiento</li>
+                  <li>Skills personales en Cowork</li>
+                  <li>Entrada al funnel grande</li>
+                </ul>
+              </div>
+              <div class="card is-featured">
+                <span class="badge" style="margin-bottom: 12px;">Sweet Spot</span>
+                <h4 class="card__title">Service business</h4>
+                <p class="muted" style="margin-bottom: 12px;">Techos, contadores, abogados, agencias</p>
+                <ul class="list">
+                  <li>Procesos repetibles claros</li>
+                  <li>Margen para pagar 10K a 25K</li>
+                  <li>Dolor evidente, ROI fácil</li>
+                </ul>
+              </div>
+              <div class="card">
+                <h4 class="card__title">SMB gringo</h4>
+                <p class="muted" style="margin-bottom: 12px;">Menos de 10M en ventas</p>
+                <ul class="list">
+                  <li>Generador de propuestas: 4K a 5K</li>
+                  <li>Sistema de cold outbound</li>
+                  <li>Procesamiento de documentos</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 16. SECTION: COLABORACIÓN -->
+      <section>
+        <div class="slide section">
+          <p class="kicker" style="justify-content: center;">05 // Por dónde cruzarnos</p>
+          <h2>Salomón + Carlos</h2>
+          <p class="lead muted">Usted adentro de Accenture mirando bancos en Canadá. Yo afuera mirando SMBs en LATAM y Estados Unidos. Hay aire compartido.</p>
+        </div>
+      </section>
+
+      <!-- 17. COLLAB ANGLES -->
+      <section>
+        <div class="slide">
+          <div class="header"><div class="header__logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">fiba labs</div></div>
+          <div class="content">
+            <p class="kicker">11 // Posibles ángulos</p>
+            <h2>Dónde podría tener sentido</h2>
+            <div class="grid-2" style="margin-top: 32px;">
+              <div class="card">
+                <div class="card__icon"><i data-lucide="message-circle"></i></div>
+                <h4 class="card__title">Sparring técnico</h4>
+                <p class="card__text">Usted explorando agentes para underwriting y análisis financiero en bancos canadienses. Yo ensuciándome las manos diario en Cowork. Vale la pena comparar notas con calma.</p>
+              </div>
+              <div class="card">
+                <div class="card__icon"><i data-lucide="briefcase"></i></div>
+                <h4 class="card__title">Su proyecto al lado</h4>
+                <p class="card__text">Usted mencionó que quiere arrancar algo aparte. Cuando aparezca el tiempo, esa conversación está abierta.</p>
+              </div>
+              <div class="card">
+                <div class="card__icon"><i data-lucide="share-2"></i></div>
+                <h4 class="card__title">Referidos cruzados</h4>
+                <p class="card__text">Los SMBs no son su cancha, pero le llegan. Sus contactos en banca y gobierno no son la mía, pero los tengo cerca.</p>
+              </div>
+              <div class="card">
+                <div class="card__icon"><i data-lucide="graduation-cap"></i></div>
+                <h4 class="card__title">Educación todavía tiene calle</h4>
+                <p class="card__text">Luis Guillermo Serrano acaba de lanzar un curso de agentes con cien personas en el webinar. Enseñar adopción y poner gente a empezar sigue siendo un canal vivo.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 18. CLOSING -->
+      <section>
+        <div class="slide section">
+          <div class="content flex-center" style="flex-direction: column;">
+            <h1>Seguimos<br><span class="accent-text">en contacto</span></h1>
+            <p class="lead" style="margin-bottom: 40px; max-width: 600px;">Treinta años de graduados. No los dejemos pasar de largo. Cuarto de huéspedes listo en Santiago, y el suyo en Toronto. Hablamos cuando guste, por WhatsApp o cara a cara.</p>
+            <div class="contact-grid" style="width: 100%; max-width: 640px;">
+              <div class="contact-item"><div class="contact-item__label">Carlos</div><div class="contact-item__value">Santiago, Chile</div></div>
+              <div class="contact-item"><div class="contact-item__label">Fiba Labs</div><div class="contact-item__value">fibalabs.com</div></div>
+              <div class="contact-item"><div class="contact-item__label">Canal abierto</div><div class="contact-item__value">WhatsApp cuando guste</div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true, slideNumber: true, controls: true,
+      controlsLayout: 'bottom-right', controlsBackArrows: 'faded',
+      progress: true, center: false, transition: 'slide',
+      backgroundTransition: 'fade', width: 1280, height: 720,
+      margin: 0, minScale: 0.2, maxScale: 2,
+      autoAnimate: true, autoAnimateDuration: 0.7,
+      plugins: [RevealHighlight]
+    });
+    lucide.createIcons();
+  </script>
+</body>
+</html>
