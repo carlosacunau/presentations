@@ -194,6 +194,20 @@ def process_rows(raw_rows):
                         entry[lowest].append({"n": name, "s": s})
                         size_idx += 1
 
+                else:
+                    # Fallback: one kid per camp, highest grade first.
+                    # Majors get the highest camps, minors fill the rest going down.
+                    # Covers e.g. 1 major + 2 minors across 3 camps (Piero).
+                    size_idx = 0
+                    sorted_camps = sorted(camps, key=lambda x: grade_order.get(x, 0), reverse=True)
+                    camp_idx = 0
+                    for name in major_kids + minor_kids:
+                        camp = sorted_camps[camp_idx] if camp_idx < len(sorted_camps) else sorted_camps[-1]
+                        s = kid_sizes[size_idx] if size_idx < len(kid_sizes) else "—"
+                        entry[camp].append({"n": name, "s": s})
+                        size_idx += 1
+                        camp_idx += 1
+
         data.append(entry)
 
     data.sort(key=lambda d: norm(d['p'].split()[0]))
