@@ -27,17 +27,16 @@
   .sub { font-size: 0.85rem; color: #666; margin-bottom: 12px; }
 
   .paybox {
-    background: #fff; border: 1px solid #e3e6ea; border-radius: 12px;
-    padding: 12px 14px; margin-bottom: 12px;
+    background: #fff; border: 1px solid #e3e6ea; border-radius: 10px;
+    padding: 10px 12px; margin-bottom: 12px;
   }
-  .paybox h2 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; color: #888; margin-bottom: 8px; }
-  .pay-grid { display: grid; grid-template-columns: auto 1fr; gap: 2px 12px; font-size: 0.9rem; }
-  .pay-grid .k { color: #888; }
-  .pay-grid .v { font-weight: 600; font-variant-numeric: tabular-nums; }
+  .paybox h2 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.5px; color: #888; margin-bottom: 6px; }
+  .pay-lines { font-size: 0.85rem; line-height: 1.35; }
+  .pay-lines div { font-weight: 600; font-variant-numeric: tabular-nums; }
   .copy-btn {
-    margin-top: 10px; width: 100%;
+    margin-top: 8px; width: 100%;
     background: #2196f3; color: #fff; border: none; border-radius: 8px;
-    padding: 10px; font-size: 0.9rem; font-weight: 600; cursor: pointer;
+    padding: 9px; font-size: 0.85rem; font-weight: 600; cursor: pointer;
   }
   .copy-btn:active { background: #1976d2; }
   .copy-btn.copied { background: #2e7d32; }
@@ -82,23 +81,20 @@
       <h1>Campeggio 2026</h1>
       <div class="sub">06-08 Nov · $30.000 por persona · revisa si tu pago ya quedó registrado</div>
 
-      <div class="paybox">
-        <h2>Datos para transferir</h2>
-        <div class="pay-grid">
-          <div class="k">Nombre</div><div class="v">Carlos Andres Acuña Uribe</div>
-          <div class="k">RUT</div><div class="v">24887162-8</div>
-          <div class="k">Banco</div><div class="v">Banco Itaú</div>
-          <div class="k">Tipo</div><div class="v">Cuenta corriente</div>
-          <div class="k">Cuenta</div><div class="v">0210255527</div>
-          <div class="k">Correo</div><div class="v">acuna.carlosandres@gmail.com</div>
-        </div>
-        <button class="copy-btn" id="copyBtn" onclick="copyPay()">Copiar datos de transferencia</button>
-      </div>
-
       <div class="stats">
         <div class="stat"><div class="label">Familias</div><div class="value">47</div></div>
         <div class="stat paid"><div class="label">Pagadas</div><div class="value" id="paidCount"></div></div>
         <div class="stat pending"><div class="label">Pendientes</div><div class="value" id="pendCount"></div></div>
+      </div>
+
+      <div class="paybox">
+        <h2>Datos para transferir · Banco Itaú</h2>
+        <div class="pay-lines">
+          <div>Carlos Andres Acuña Uribe</div>
+          <div>RUT 24887162-8</div>
+          <div>Cuenta corriente 0210255527</div>
+        </div>
+        <button class="copy-btn" id="copyBtn" onclick="copyPay()">Copiar datos de transferencia</button>
       </div>
 
       <input class="search" id="search" type="search" placeholder="Busca tu nombre o el de tu hijo(a)..." oninput="filter()" autocomplete="off">
@@ -625,12 +621,12 @@
         </div>
       </div>
       <div class="empty" id="empty" style="display:none">Sin resultados. Revisa cómo escribiste el nombre.</div>
-      <div class="meta">Actualizado: 2026-06-01 14:47</div>
+      <div class="meta">Actualizado: 2026-06-01 14:52</div>
     </div>
   </div>
 
 <script>
-  const PAY_TEXT = "Carlos Andres Acuña Uribe\nRUT 24887162-8\nBanco Itaú\nCuenta corriente\n0210255527\nacuna.carlosandres@gmail.com";
+  const PAY_TEXT = "Banco Itaú\nCarlos Andres Acuña Uribe\nRUT 24887162-8\nCuenta corriente 0210255527";
   function copyPay() {
     const btn = document.getElementById('copyBtn');
     navigator.clipboard.writeText(PAY_TEXT).then(() => {
