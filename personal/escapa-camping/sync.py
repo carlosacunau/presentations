@@ -8,6 +8,7 @@ Runs both locally and in GitHub Actions.
 import json, re, os, sys, datetime, unicodedata, zoneinfo
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
+from namecase import name_case
 
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
 SPREADSHEET_ID = os.environ.get('SPREADSHEET_ID', '1NutvWUnFoWsD0atbk9XYp02AIlxfotYGqMcweyqndSQ')
@@ -113,7 +114,7 @@ def process_rows(raw_rows):
                 parent_size = sizes[0]
                 kid_sizes = sizes[1:]
 
-        entry = {"p": parent, "ps": parent_size, "ph": phone, "ex": exp, "rt": rating, "cm": comment,
+        entry = {"p": name_case(parent), "ps": parent_size, "ph": phone, "ex": exp, "rt": rating, "cm": comment,
                  "e": [], "c": [], "k": [], "m": []}
 
         # Check for explicit camp labels in kid names
