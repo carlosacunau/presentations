@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5">
+<meta name="theme-color" content="#0b0a14">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Angel Numbers">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<title>Angel Number Sequences</title>
+<style>
+  :root{
+    --bg:#0b0a14; --bg2:#15132a; --card:#1b1830; --line:#2c2845;
+    --ink:#ece9f5; --muted:#a39fc0; --gold:#e7c873; --gold-dim:#b8a25a;
+    --accent:#9b8cff;
+    --fs:1.18rem; --lh:1.7;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{ -webkit-text-size-adjust:100%; }
+  body{
+    margin:0; font-family:Georgia,'Iowan Old Style','Palatino Linotype',serif;
+    background:radial-gradient(140% 120% at 50% 0%,#171432 0%,var(--bg) 55%);
+    color:var(--ink); line-height:var(--lh); font-size:var(--fs);
+    padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    min-height:100vh;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:22px 18px 90px}
+  header{text-align:center;padding:14px 0 6px}
+  header h1{font-size:1.7rem;margin:.2em 0;letter-spacing:.3px;font-weight:600}
+  header .sub{color:var(--muted);font-size:.95rem;font-style:italic;margin:0}
+  .star{color:var(--gold);font-size:1.4rem;display:block;margin-bottom:2px}
+
+  /* search */
+  .searchbar{position:sticky;top:0;z-index:20;padding:12px 0 14px;
+    background:linear-gradient(to bottom,var(--bg) 70%,rgba(11,10,20,0));}
+  .searchrow{display:flex;gap:8px}
+  #q{flex:1;font-size:1.5rem;font-family:inherit;text-align:center;letter-spacing:4px;
+     padding:14px 12px;border-radius:14px;border:1px solid var(--line);
+     background:var(--card);color:var(--ink);outline:none}
+  #q::placeholder{letter-spacing:1px;color:#6f6b90;font-size:1rem}
+  #q:focus{border-color:var(--accent)}
+  .go{font-size:1.3rem;border:1px solid var(--line);background:var(--bg2);color:var(--gold);
+      border-radius:14px;padding:0 18px;font-family:inherit;cursor:pointer}
+  .hint{text-align:center;color:var(--muted);font-size:.82rem;margin:8px 2px 0}
+  .chips{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:11px}
+  .chip{border:1px solid var(--line);background:var(--bg2);color:var(--ink);
+        border-radius:999px;padding:6px 13px;font-size:1rem;cursor:pointer;font-family:inherit;letter-spacing:1px}
+  .chip:active{background:var(--accent);color:#0b0a14}
+
+  /* result */
+  #result{margin-top:14px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;
+        padding:20px 18px;margin-bottom:16px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+  .num{font-size:3.2rem;color:var(--gold);text-align:center;line-height:1.05;
+       letter-spacing:6px;margin:2px 0 0;font-weight:600}
+  .ttl{text-align:center;color:var(--ink);font-style:italic;font-size:1.35rem;margin:2px 0 14px}
+  .seq-list{text-align:center;color:var(--muted);font-size:.9rem;margin:-8px 0 16px;letter-spacing:1px}
+  .lbl{color:var(--gold-dim);font-weight:bold;font-size:.78rem;letter-spacing:1.5px;
+       text-transform:uppercase;display:block;margin:18px 0 5px}
+  .card p{margin:0 0 12px}
+  .card p:last-child{margin-bottom:0}
+
+  /* universe message */
+  .universe{background:linear-gradient(135deg,#231b3f,#181430);
+    border:1px solid #3a2f63;border-radius:18px;padding:20px 18px;margin-bottom:18px;
+    position:relative;overflow:hidden}
+  .universe .lbl{color:var(--accent);text-align:center}
+  .universe .msg{font-size:1.3rem;font-style:italic;text-align:center;line-height:1.55;margin:6px 4px 0;color:#f3f0ff}
+  .reroll{display:block;margin:16px auto 0;background:transparent;border:1px solid #4a3f78;
+    color:var(--accent);border-radius:999px;padding:7px 18px;font-family:inherit;font-size:.92rem;cursor:pointer}
+
+  .notfound{text-align:center;color:var(--muted);padding:30px 10px}
+  .notfound b{color:var(--gold)}
+
+  /* intro / browse-all */
+  .intro{color:var(--muted);font-style:italic;font-size:1.02rem;border-left:2px solid var(--gold-dim);
+         padding:2px 0 2px 16px;margin:6px 0 22px}
+  .section-title{color:var(--gold);font-size:1.15rem;letter-spacing:1px;margin:26px 0 10px;text-align:center}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:9px}
+  .gnum{background:var(--bg2);border:1px solid var(--line);border-radius:12px;text-align:center;
+        padding:13px 4px;cursor:pointer}
+  .gnum b{color:var(--gold);font-size:1.4rem;letter-spacing:2px;display:block}
+  .gnum span{color:var(--muted);font-size:.68rem;display:block;margin-top:3px;line-height:1.25}
+  .gnum:active{border-color:var(--accent)}
+  .outro{color:var(--muted);font-style:italic;text-align:center;font-size:1rem;margin:28px 8px 0;
+         padding-top:18px;border-top:1px solid var(--line)}
+
+  .offline-pill{position:fixed;left:50%;transform:translateX(-50%);bottom:14px;z-index:30;
+    background:#2a2540;border:1px solid var(--line);color:var(--muted);font-family:system-ui,sans-serif;
+    font-size:.78rem;padding:6px 14px;border-radius:999px;display:none}
+  .top-btn{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--bg2);
+    border:1px solid var(--line);color:var(--gold);border-radius:50%;width:46px;height:46px;
+    font-size:1.2rem;cursor:pointer;display:none}
+  /* font size control */
+  .fontctl{display:flex;gap:8px;justify-content:center;align-items:center;margin-top:10px;color:var(--muted);font-size:.8rem;font-family:system-ui,sans-serif}
+  .fontctl button{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--bg2);color:var(--ink);font-size:1.1rem;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="star">✦</span>
+    <h1>Angel Number Sequences</h1>
+    <p class="sub">A mirror, not a command</p>
+    <div class="fontctl">
+      <span>Text</span>
+      <button id="fsdown" aria-label="Smaller text">A−</button>
+      <button id="fsup" aria-label="Bigger text">A+</button>
+    </div>
+  </header>
+
+  <div class="searchbar">
+    <div class="searchrow">
+      <input id="q" inputmode="numeric" autocomplete="off" autocapitalize="off"
+             placeholder="Type a number · 111 · 1+5 · 312" aria-label="Search a number sequence">
+      <button class="go" id="goBtn" aria-label="Search">✦</button>
+    </div>
+    <div class="hint">Triplet (111) · combination (1+5 or 115) · or any number you saw (312)</div>
+    <div class="chips" id="chips"></div>
+  </div>
+
+  <div id="result"></div>
+
+  <div id="browse"></div>
+</div>
+
+<div class="offline-pill" id="offlinePill">offline · saved on device</div>
+<button class="top-btn" id="topBtn" aria-label="Back to top">↑</button>
+
+<script src="data.js"></script>
+<script src="messages.js"></script>
+<script>
+(function(){
+  "use strict";
+  const $ = s => document.querySelector(s);
+  const resultEl = $("#result");
+  const browseEl = $("#browse");
+  const qEl = $("#q");
+
+  // ---------- helpers ----------
+  const tripleByN = {}; TRIPLES.forEach(t => tripleByN[t.n] = t);
+  const comboByPair = {}; COMBOS.forEach(c => comboByPair[c.pair] = c);
+  const comboByEx = {}; COMBOS.forEach(c => c.ex.forEach(e => comboByEx[e] = c));
+
+  function pickUniverse(){ return UNIVERSE[Math.floor(Math.random()*UNIVERSE.length)]; }
+  function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+  function paras(arr){ return arr.map(p=>"<p>"+esc(p)+"</p>").join(""); }
+
+  // collapse a multi-digit number to its digit sum reduced to 0-9
+  function digitSum(str){
+    let s = str.split("").reduce((a,d)=>a+(+d),0);
+    while(s>9) s = String(s).split("").reduce((a,d)=>a+(+d),0);
+    return String(s);
+  }
+  function pairKey(a,b){
+    a=+a; b=+b;
+    // doc lists combos as smaller+larger, with 0 always last (e.g. 1+0, 2+0)
+    if(a===b) return null;
+    if(a===0) return b+"+0";
+    if(b===0) return a+"+0";
+    const lo=Math.min(a,b), hi=Math.max(a,b);
+    return lo+"+"+hi;
+  }
+
+  // ---------- renderers ----------
+  function universeBlock(){
+    return '<div class="universe"><span class="lbl">✦ Message from the universe</span>'+
+      '<div class="msg" id="umsg">'+esc(pickUniverse())+'</div>'+
+      '<button class="reroll" id="reroll">another ✦</button></div>';
+  }
+
+  function renderTriple(t, note){
+    let html = universeBlock();
+    html += '<div class="card"><div class="num">'+t.n+'</div><div class="ttl">'+esc(t.title)+'</div>';
+    if(note) html += '<div class="seq-list">'+esc(note)+'</div>';
+    html += '<span class="lbl">Traditions</span><p>'+esc(t.traditions)+'</p>';
+    html += '<span class="lbl">The signal</span><p>'+esc(t.signal)+'</p>';
+    if(t.body && t.body.length) html += paras(t.body);
+    html += '<span class="lbl">What it asks of you</span><p>'+esc(t.asks)+'</p>';
+    html += '</div>';
+    show(html);
+  }
+
+  function renderCombo(c, note){
+    let html = universeBlock();
+    html += '<div class="card"><div class="num">'+c.pair.replace("+"," + ")+'</div>';
+    html += '<div class="seq-list">'+(note?esc(note)+' · ':'')+'appears as '+c.ex.join(", ")+'</div>';
+    html += '<p>'+esc(c.text)+'</p></div>';
+    show(html);
+  }
+
+  function show(html){
+    resultEl.innerHTML = html;
+    const rr = $("#reroll");
+    if(rr) rr.addEventListener("click", ()=>{ $("#umsg").textContent = pickUniverse(); });
+    resultEl.scrollIntoView({behavior:"smooth", block:"start"});
+  }
+
+  function notFound(raw){
+    resultEl.innerHTML = '<div class="card notfound">No reading for <b>'+esc(raw)+'</b>.<br><br>'+
+      'Try a triplet like <b>111</b>, a combination like <b>1+5</b>, or any number you saw such as <b>312</b>.</div>';
+  }
+
+  // ---------- search ----------
+  function search(rawInput){
+    let raw = (rawInput||"").trim();
+    if(!raw){ renderBrowse(); resultEl.innerHTML=""; return; }
+
+    // explicit a+b form
+    let m = raw.match(/^\s*(\d)\s*\+\s*(\d)\s*$/);
+    if(m){
+      const a=m[1], b=m[2];
+      if(a===b){ // 1+1 means the triple
+        const n=a+a+a;
+        if(tripleByN[n]) return renderTriple(tripleByN[n]);
+      }
+      const key=pairKey(a,b);
+      if(key && comboByPair[key]) return renderCombo(comboByPair[key]);
+      if(a===b && tripleByN[a+a+a]) return renderTriple(tripleByN[a+a+a]);
+      return notFound(raw);
+    }
+
+    // strip non-digits
+    const digits = raw.replace(/\D/g,"");
+    if(!digits){ return notFound(raw); }
+
+    // exact triple (111, 000...)
+    if(digits.length===3 && tripleByN[digits]) return renderTriple(tripleByN[digits]);
+
+    // exact combo example (e.g. 115, 411, 822)
+    if(comboByEx[digits]) return renderCombo(comboByEx[digits]);
+
+    // 2-digit combo like "15"
+    if(digits.length===2){
+      const key=pairKey(digits[0],digits[1]);
+      if(digits[0]===digits[1] && tripleByN[digits[0].repeat(3)]) return renderTriple(tripleByN[digits[0].repeat(3)]);
+      if(key && comboByPair[key]) return renderCombo(comboByPair[key]);
+    }
+
+    // single digit -> its triple
+    if(digits.length===1 && tripleByN[digits.repeat(3)]) return renderTriple(tripleByN[digits.repeat(3)]);
+
+    // general N-digit mix: read the strongest pairs + the digit-sum theme
+    if(digits.length>=2){
+      const sum = digitSum(digits);
+      const sumTriple = tripleByN[sum.repeat(3)];
+      let html = universeBlock();
+      html += '<div class="card"><div class="num">'+esc(digits)+'</div>';
+      html += '<div class="ttl">A blended sequence</div>';
+      html += '<div class="seq-list">Reduces to '+sum+' &nbsp;·&nbsp; read the parts, then the whole</div>';
+      html += '<span class="lbl">Overarching theme ('+sum.repeat(3)+(sumTriple?' · '+esc(sumTriple.title):'')+')</span>';
+      if(sumTriple) html += '<p>'+esc(sumTriple.signal)+'</p>';
+      // adjacent pairs
+      const seen={};
+      for(let i=0;i<digits.length-1;i++){
+        const a=digits[i], b=digits[i+1];
+        const key=pairKey(a,b);
+        if(a===b){ const tt=tripleByN[a.repeat(3)]; if(tt && !seen['t'+a]){seen['t'+a]=1;
+          html+='<span class="lbl">'+a+a+' echo ('+esc(tt.title)+')</span><p>'+esc(tt.signal)+'</p>'; } continue; }
+        if(key && comboByPair[key] && !seen[key]){ seen[key]=1; const c=comboByPair[key];
+          html += '<span class="lbl">'+key+' within '+esc(digits)+'</span><p>'+esc(c.text.split(". ").slice(0,2).join(". "))+'.</p>'; }
+      }
+      html += '<p style="color:var(--muted);font-style:italic;margin-top:14px">'+esc(COMBO_INTRO)+'</p>';
+      html += '</div>';
+      return show(html);
+    }
+    notFound(raw);
+  }
+
+  // ---------- browse / intro ----------
+  function renderBrowse(){
+    let h = '<p class="intro">'+esc(INTRO)+'</p>';
+    h += '<div class="section-title">Triple Sequences</div><div class="grid">';
+    TRIPLES.forEach(t=>{ h+='<div class="gnum" data-go="'+t.n+'"><b>'+t.n+'</b><span>'+esc(t.title)+'</span></div>'; });
+    h += '</div>';
+    h += '<div class="section-title">Combinations</div><div class="grid">';
+    COMBOS.forEach(c=>{ h+='<div class="gnum" data-go="'+c.pair+'"><b>'+c.pair+'</b><span>'+c.ex[0]+'…</span></div>'; });
+    h += '</div>';
+    h += '<p class="outro">'+esc(OUTRO)+'</p>';
+    browseEl.innerHTML = h;
+    browseEl.querySelectorAll("[data-go]").forEach(el=>{
+      el.addEventListener("click", ()=>{ const v=el.getAttribute("data-go"); qEl.value=v; search(v);
+        window.scrollTo({top:0,behavior:"smooth"}); });
+    });
+  }
+
+  // ---------- quick chips ----------
+  const chipEl = $("#chips");
+  ["111","222","333","444","555","777","888","999","000"].forEach(n=>{
+    const b=document.createElement("button"); b.className="chip"; b.textContent=n;
+    b.addEventListener("click",()=>{ qEl.value=n; search(n); }); chipEl.appendChild(b);
+  });
+
+  // ---------- events ----------
+  let t=null;
+  qEl.addEventListener("input", ()=>{ clearTimeout(t); t=setTimeout(()=>{
+    const v=qEl.value.trim();
+    if(v.length>=2 || /^\d\+\d$/.test(v)) search(v);
+    else if(v.length===0){ resultEl.innerHTML=""; }
+  },180); });
+  qEl.addEventListener("keydown", e=>{ if(e.key==="Enter"){ e.preventDefault(); qEl.blur(); search(qEl.value); } });
+  $("#goBtn").addEventListener("click", ()=>{ search(qEl.value); });
+
+  // font size control (persisted)
+  const root=document.documentElement;
+  let fs = parseFloat(localStorage.getItem("an_fs")||"1.18");
+  function applyFs(){ root.style.setProperty("--fs", fs+"rem"); localStorage.setItem("an_fs",fs); }
+  applyFs();
+  $("#fsup").addEventListener("click",()=>{ fs=Math.min(1.6,fs+0.08); applyFs(); });
+  $("#fsdown").addEventListener("click",()=>{ fs=Math.max(0.95,fs-0.08); applyFs(); });
+
+  // back to top + offline pill
+  const topBtn=$("#topBtn"), pill=$("#offlinePill");
+  window.addEventListener("scroll", ()=>{ topBtn.style.display = window.scrollY>400?"block":"none"; });
+  topBtn.addEventListener("click", ()=>window.scrollTo({top:0,behavior:"smooth"}));
+  function netState(){ pill.style.display = navigator.onLine?"none":"block"; }
+  window.addEventListener("online",netState); window.addEventListener("offline",netState); netState();
+
+  renderBrowse();
+
+  // ---------- service worker ----------
+  if("serviceWorker" in navigator){
+    window.addEventListener("load", ()=>{ navigator.serviceWorker.register("sw.js").catch(()=>{}); });
+  }
+})();
+</script>
+</body>
+</html>
