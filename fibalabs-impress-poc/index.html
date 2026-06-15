@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>Fiba Labs Prezi-style POC</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='12' fill='%230A0A14'/%3E%3Crect x='28' y='20' width='34' height='12' rx='3' fill='%238B5CF6'/%3E%3Crect x='28' y='20' width='12' height='52' rx='3' fill='%238B5CF6'/%3E%3Crect x='62' y='20' width='12' height='12' rx='3' fill='%234C2D91'/%3E%3Crect x='62' y='40' width='12' height='32' rx='3' fill='%234C2D91'/%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --violet: #8B5CF6;
+      --indigo: #4C2D91;
+      --void: #0A0A14;
+      --lavender: #E8E4F0;
+      --muted: #8a85a0;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--void);
+      color: var(--lavender);
+      font-family: 'Space Grotesk', 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+    }
+
+    /* Subtle command-center grid on the canvas background */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(139,92,246,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(139,92,246,0.05) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Fallback message for browsers impress.js does not support */
+    .fallback-message {
+      font-family: 'Inter', sans-serif;
+      line-height: 1.5;
+      width: 640px;
+      margin: 80px auto;
+      padding: 24px;
+      border: 1px solid var(--indigo);
+      border-radius: 8px;
+      background: rgba(76,45,145,0.15);
+    }
+    .impress-supported .fallback-message { display: none; }
+
+    /* The infinite canvas */
+    #impress {
+      position: relative;
+      z-index: 1;
+    }
+
+    .step {
+      width: 900px;
+      box-sizing: border-box;
+      padding: 40px;
+      /* Steps are dimmed until active, classic impress.js focus effect */
+      opacity: 0.18;
+      transition: opacity 0.6s ease;
+    }
+    .step.active { opacity: 1; }
+
+    /* Typographic system */
+    .eyebrow {
+      font-size: 14px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--violet);
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-size: 64px;
+      line-height: 1.05;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin: 0 0 24px;
+    }
+    h2 {
+      font-size: 44px;
+      line-height: 1.1;
+      font-weight: 500;
+      margin: 0 0 20px;
+    }
+    .lead {
+      font-size: 28px;
+      line-height: 1.4;
+      font-weight: 400;
+      color: var(--lavender);
+      max-width: 760px;
+    }
+    .sub {
+      font-size: 20px;
+      line-height: 1.5;
+      color: var(--muted);
+      font-family: 'Inter', sans-serif;
+      max-width: 680px;
+      margin-top: 18px;
+    }
+    .accent { color: var(--violet); }
+    .pill {
+      display: inline-block;
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--lavender);
+      border: 1px solid var(--indigo);
+      border-radius: 4px;
+      padding: 6px 12px;
+      margin: 0 8px 8px 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Cover monogram */
+    .monogram {
+      width: 120px;
+      height: 120px;
+      margin-bottom: 36px;
+    }
+
+    /* Hint footer */
+    .hint {
+      position: fixed;
+      bottom: 18px;
+      right: 22px;
+      z-index: 5;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+    }
+    .hint kbd {
+      background: rgba(139,92,246,0.15);
+      border: 1px solid var(--indigo);
+      border-radius: 3px;
+      padding: 1px 6px;
+      color: var(--lavender);
+      font-family: inherit;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="fallback-message">
+    <p><b>Your browser is not supported for this presentation.</b></p>
+    <p>Use a recent version of Chrome, Safari, or Firefox to view the zooming canvas.</p>
+  </div>
+
+  <!--
+    THE CANVAS.
+    Each .step is an element placed somewhere on an infinite plane.
+    data-x / data-y  = position (pixels) on the plane
+    data-scale       = how big the camera frames it (3 = zoomed out / big picture, 1 = detail)
+    data-rotate      = rotation in degrees
+    The "presentation" is the camera flying between these steps in DOM order.
+  -->
+  <div id="impress" data-transition-duration="900">
+
+    <!-- 1. COVER. Big and central. -->
+    <div id="cover" class="step" data-x="0" data-y="0" data-scale="2">
+      <svg class="monogram" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1047 936">
+        <rect x="0" y="0" width="1047" height="936" rx="40" ry="40" fill="#0A0A14"/>
+        <g transform="translate(258.7,80)">
+          <rect x="0" y="0" width="360" height="125" rx="6" ry="6" fill="#8B5CF6"/>
+          <rect x="0" y="0" width="125" height="530" rx="6" ry="6" fill="#8B5CF6"/>
+          <rect x="120" y="210" width="215" height="120" rx="6" ry="6" fill="#8B5CF6"/>
+          <rect x="405" y="0" width="125" height="125" rx="6" ry="6" fill="#4C2D91"/>
+          <rect x="405" y="175" width="125" height="355" rx="6" ry="6" fill="#4C2D91"/>
+          <rect x="170" y="375" width="165" height="155" rx="6" ry="6" fill="#4C2D91"/>
+        </g>
+      </svg>
+      <div class="eyebrow">fiba labs</div>
+      <h1>We make the meaning of your work <span class="accent">legible to agents.</span></h1>
+      <p class="sub">Without that, every AI tool you buy stays at the demo level.</p>
+    </div>
+
+    <!-- 2. THE PROBLEM. Off to the right, same scale. A pan. -->
+    <div id="problem" class="step" data-x="1600" data-y="200" data-scale="2">
+      <div class="eyebrow">The problem</div>
+      <h2>Most AI projects fail before they start.</h2>
+      <p class="lead">Companies can't describe their own work at the resolution AI needs. So the tools never leave the demo.</p>
+    </div>
+
+    <!-- 3. ZOOM INTO THE ROOT CAUSE. A small detail inside the problem. -->
+    <div id="rootcause" class="step" data-x="1850" data-y="640" data-scale="0.7">
+      <div class="eyebrow">Root cause</div>
+      <h2 style="font-size:32px;">It's not a tool problem. It's a <span class="accent">legibility</span> problem.</h2>
+      <p class="sub">The work lives in people's heads. Agents can't read heads.</p>
+    </div>
+
+    <!-- 4. PULL WAY BACK. The big idea, large scale, new region. -->
+    <div id="approach" class="step" data-x="800" data-y="1900" data-scale="3">
+      <div class="eyebrow">The Fiba Labs approach</div>
+      <h1>Diagnose. Map. Architect.</h1>
+      <p class="lead">We fix readiness first, then build the operating system on top.</p>
+    </div>
+
+    <!-- 5-7. Three steps of the method, arranged in a line below, detail scale. -->
+    <div id="diagnose" class="step" data-x="-200" data-y="3000" data-scale="0.9">
+      <div class="eyebrow">01 · Diagnose</div>
+      <h2 style="font-size:34px;">The Audit</h2>
+      <p class="sub">We surface how your work actually flows, where the friction is, and where AI can read it.</p>
+    </div>
+
+    <div id="map" class="step" data-x="800" data-y="3000" data-scale="0.9">
+      <div class="eyebrow">02 · Map</div>
+      <h2 style="font-size:34px;">The System of Intelligence</h2>
+      <p class="sub">We make the meaning of the work explicit, so agents can act on it, not just chat about it.</p>
+    </div>
+
+    <div id="architect" class="step" data-x="1800" data-y="3000" data-scale="0.9">
+      <div class="eyebrow">03 · Architect</div>
+      <h2 style="font-size:34px;">The Command Center</h2>
+      <p class="sub">A unified CEO war room. Structured, actionable intelligence, not another dashboard.</p>
+    </div>
+
+    <!-- 8. THE CLOSE. Pull all the way out for the overview. -->
+    <div id="close" class="step" data-x="800" data-y="1500" data-scale="6" data-rotate="0">
+      <div class="eyebrow">fiba labs</div>
+      <h1>The system of intelligence<br>for executive leadership.</h1>
+    </div>
+
+    <!-- The overview step: scale large enough to frame the whole canvas at once. -->
+    <div id="overview" class="step" data-x="800" data-y="1500" data-scale="10"></div>
+
+  </div>
+
+  <div class="hint">
+    <kbd>&rarr;</kbd> next &nbsp; <kbd>&larr;</kbd> back &nbsp; <kbd>Space</kbd> advance &nbsp; <kbd>O</kbd> overview
+  </div>
+
+  <!-- impress.js vendored locally. Self-contained, no CDN, no build step. -->
+  <script src="impress.js"></script>
+  <script>
+    var api = impress();
+    api.init();
+
+    // impress.js 2.x binds Esc to fullscreen, not overview.
+    // We provide overview as a dedicated zoomed-out step, reachable with the "O" key.
+    document.addEventListener( "keydown", function( event ) {
+      if ( event.key === "o" || event.key === "O" ) {
+        event.preventDefault();
+        api.goto( document.getElementById( "overview" ) );
+      }
+    }, false );
+  </script>
+
+</body>
+</html>
