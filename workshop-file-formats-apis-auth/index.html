@@ -1,0 +1,1805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>File Formats, APIs &amp; MCPs, and Auth Methods</title>
+
+  <!-- Google Fonts - Fiba Labs Style -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Reveal.js -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/monokai.css">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+/*
+ * FibaLabs Presentation Theme
+ * HUD-style, geometric, Electric Violet accent
+ * For use with Reveal.js 4.5+
+ */
+
+/* ===== CSS VARIABLES - FIBALABS PALETTE ===== */
+:root {
+  /* Backgrounds - "Void + Electric Violet" */
+  --bg-dark: #0A0A14;
+  --bg-card: #12121E;
+  --bg-card-hover: #1A1A2A;
+
+  /* Accent - Electric Violet */
+  --accent: #8B5CF6;
+  --accent-light: #A78BFA;
+  --accent-glow: rgba(139, 92, 246, 0.15);
+
+  /* Secondary - Deep Indigo */
+  --secondary: #4C2D91;
+  --secondary-light: #6D4DB8;
+
+  /* Semantic Colors */
+  --success: #34D399;
+  --warning: #FBBF24;
+  --error: #F87171;
+
+  /* Text Colors - Lavender White system */
+  --text-primary: #E8E4F0;
+  --text-secondary: #9B95A8;
+  --text-muted: #5C5670;
+
+  /* Borders */
+  --border: #2A2A3A;
+
+  /* Typography */
+  --font-serif: 'Instrument Serif', Georgia, serif;
+  --font-sans: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Fira Code', monospace;
+
+  /* Spacing */
+  --spacing-xs: 8px;
+  --spacing-sm: 16px;
+  --spacing-md: 24px;
+  --spacing-lg: 40px;
+  --spacing-xl: 60px;
+}
+
+/* ===== BASE STYLES ===== */
+/* CRITICAL: These styles prevent white borders/flicker in Reveal.js */
+html, body {
+  background: var(--bg-dark) !important;
+  color: var(--text-primary);
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* CRITICAL: .reveal-viewport must have !important to override Reveal.js defaults */
+.reveal-viewport {
+  background: var(--bg-dark) !important;
+  background-image:
+    linear-gradient(rgba(139, 92, 246, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139, 92, 246, 0.03) 1px, transparent 1px) !important;
+  background-size: 60px 60px !important;
+}
+
+.reveal {
+  background: var(--bg-dark);
+  font-family: var(--font-sans);
+  font-size: 22px;
+  color: var(--text-primary);
+}
+
+.reveal .slides {
+  text-align: left;
+}
+
+.reveal .slides section {
+  padding: 0;
+  background: var(--bg-dark);
+}
+
+/* ===== SLIDE BASE ===== */
+.slide {
+  height: 100%;
+  width: 100%;
+  padding: var(--spacing-xl);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  position: relative;
+}
+
+.slide > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== SLIDE VARIANTS ===== */
+.slide--center {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Section divider slides - violet glow */
+.slide--section {
+  background: transparent;
+}
+
+.slide--section::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ===== HEADER BAR ===== */
+.header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.header--split {
+  justify-content: space-between;
+}
+
+/* ===== COVER LOGO (title slide) ===== */
+.cover-logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.cover-logo img {
+  width: 96px;
+  height: 96px;
+  object-fit: contain;
+}
+
+.header__logo {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: 0.1em;
+  text-transform: lowercase;
+}
+
+.header__logo img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.header__logo svg {
+  width: 18px;
+  height: 18px;
+  color: var(--accent);
+}
+
+.header__nav {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: center;
+}
+
+.header__nav-item {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+}
+
+.header__cta {
+  background: transparent;
+  border: 1px solid var(--text-primary);
+  color: var(--text-primary);
+  padding: 8px 16px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+}
+
+/* ===== TYPOGRAPHY - HUD / COMMAND CENTER STYLE ===== */
+.kicker {
+  font-size: 0.7rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  margin-bottom: var(--spacing-sm);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.kicker::after {
+  content: '';
+  width: 40px;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.5;
+}
+
+h1, .h1 {
+  font-family: var(--font-serif);
+  font-size: 4rem;
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.1;
+  margin: 0 0 var(--spacing-md) 0;
+  color: var(--text-primary);
+}
+
+h2, .h2 {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  font-weight: 400;
+  line-height: 1.15;
+  margin: 0 0 var(--spacing-md) 0;
+}
+
+h3, .h3 {
+  font-family: var(--font-sans);
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1.3;
+  margin: 0 0 var(--spacing-sm) 0;
+  letter-spacing: 0.05em;
+}
+
+h4, .h4 {
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0 0 var(--spacing-xs) 0;
+  letter-spacing: 0.05em;
+}
+
+.lead {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 600px;
+  letter-spacing: 0.02em;
+}
+
+.muted {
+  color: var(--text-muted);
+}
+
+/* Accent text - Electric Violet */
+.highlight, .accent-text {
+  color: var(--accent);
+}
+
+/* Secondary accent - Deep Indigo */
+.secondary-text {
+  color: var(--secondary-light);
+}
+
+/* ===== CODE STYLING ===== */
+code, .code {
+  font-family: var(--font-mono);
+  background: rgba(139, 92, 246, 0.1);
+  padding: 2px 8px;
+  font-size: 0.85em;
+  color: var(--accent-light);
+  border: 1px solid var(--border);
+}
+
+pre {
+  background: #08080F;
+  border: 1px solid var(--border);
+  padding: var(--spacing-md);
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  line-height: 1.6;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  border: none;
+  color: var(--text-secondary);
+}
+
+.command {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  padding: 12px 16px;
+  margin: 8px 0;
+  transition: all 0.3s ease;
+}
+
+.command:hover {
+  background: var(--bg-card);
+}
+
+.command__prompt {
+  color: var(--accent);
+  font-family: var(--font-mono);
+}
+
+.command__text {
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+}
+
+.command__desc {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  margin-left: auto;
+  font-style: italic;
+}
+
+/* ===== LAYOUT UTILITIES ===== */
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-xl);
+  align-items: center;
+  flex: 1;
+}
+
+.split--60-40 {
+  grid-template-columns: 1.5fr 1fr;
+}
+
+.split--40-60 {
+  grid-template-columns: 1fr 1.5fr;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-md);
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-md);
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-md);
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gap-sm { gap: var(--spacing-sm); }
+.gap-md { gap: var(--spacing-md); }
+.gap-lg { gap: var(--spacing-lg); }
+
+/* ===== CARDS - TRANSPARENT, GEOMETRIC ===== */
+.card {
+  background: transparent;
+  border: 1px solid var(--border);
+  padding: var(--spacing-md);
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+.card:hover {
+  background: var(--bg-card);
+  border-color: var(--accent);
+}
+
+.card--featured {
+  border-color: var(--accent);
+}
+
+.card__icon {
+  width: 40px;
+  height: 40px;
+  margin-bottom: var(--spacing-sm);
+  color: var(--accent);
+}
+
+.card__icon svg {
+  width: 100%;
+  height: 100%;
+  stroke-width: 1.5;
+}
+
+.card__title {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: var(--spacing-xs);
+  letter-spacing: 0.03em;
+}
+
+.card__text {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ===== METRICS - HUD STYLE ===== */
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.metric {
+  text-align: center;
+  padding: var(--spacing-md);
+  border: 1px solid var(--border);
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+.metric:hover {
+  border-color: var(--accent);
+}
+
+.metric__value {
+  font-family: var(--font-sans);
+  font-size: 2.5rem;
+  font-weight: 500;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: var(--spacing-xs);
+  letter-spacing: -0.02em;
+}
+
+.metric__label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+/* ===== LISTS - DASH STYLE ===== */
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.list li {
+  padding: var(--spacing-sm) 0;
+  padding-left: var(--spacing-lg);
+  position: relative;
+  border-bottom: 1px solid var(--border);
+}
+
+.list li:last-child {
+  border-bottom: none;
+}
+
+.list li::before {
+  content: '\2014';
+  position: absolute;
+  left: 0;
+  top: var(--spacing-sm);
+  color: var(--accent);
+  font-weight: 400;
+}
+
+.list--check li::before {
+  content: '\2713';
+  color: var(--success);
+}
+
+.list--numbered {
+  counter-reset: list-counter;
+}
+
+.list--numbered li {
+  counter-increment: list-counter;
+}
+
+.list--numbered li::before {
+  content: counter(list-counter, decimal-leading-zero);
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+/* ===== BADGES - OUTLINED ===== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+}
+
+.badge--success {
+  color: var(--success);
+  border-color: var(--success);
+}
+
+.badge--warning {
+  color: var(--warning);
+  border-color: var(--warning);
+}
+
+.badge--danger {
+  color: var(--error);
+  border-color: var(--error);
+}
+
+/* ===== TIMELINE - GEOMETRIC ===== */
+.timeline {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: var(--spacing-lg) 0;
+  position: relative;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  bottom: 60px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--border);
+}
+
+.timeline__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  flex: 1;
+}
+
+.timeline__year {
+  font-family: var(--font-sans);
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--accent);
+  margin-bottom: var(--spacing-sm);
+  letter-spacing: 0.05em;
+}
+
+.timeline__dot {
+  width: 10px;
+  height: 10px;
+  background: var(--accent);
+  margin-bottom: var(--spacing-sm);
+  position: relative;
+  z-index: 1;
+  /* Geometric: square dot, not round */
+  border-radius: 0;
+}
+
+.timeline__content {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  max-width: 150px;
+}
+
+/* ===== PRICING - GEOMETRIC ===== */
+.pricing {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-md);
+}
+
+.pricing__card {
+  background: transparent;
+  border: 1px solid var(--border);
+  padding: var(--spacing-lg);
+  text-align: center;
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+.pricing__card:hover {
+  background: var(--bg-card);
+}
+
+.pricing__card--featured {
+  border-color: var(--accent);
+}
+
+.pricing__name {
+  font-family: var(--font-sans);
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-bottom: var(--spacing-sm);
+  letter-spacing: 0.05em;
+}
+
+.pricing__price {
+  font-family: var(--font-sans);
+  font-size: 2.5rem;
+  font-weight: 500;
+  color: var(--accent);
+  margin-bottom: var(--spacing-xs);
+}
+
+.pricing__period {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: var(--spacing-md);
+}
+
+.pricing__features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--spacing-md) 0;
+  text-align: left;
+}
+
+.pricing__features li {
+  padding: var(--spacing-xs) 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.pricing__features li:last-child {
+  border-bottom: none;
+}
+
+/* ===== BUTTONS - OUTLINED, GEOMETRIC ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 28px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid var(--text-primary);
+  background: transparent;
+  color: var(--text-primary);
+  border-radius: 2px;
+}
+
+.btn:hover {
+  background: var(--text-primary);
+  color: var(--bg-dark);
+}
+
+.btn--accent {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn--accent:hover {
+  background: var(--accent);
+  color: var(--bg-dark);
+}
+
+/* ===== TESTIMONIALS ===== */
+.testimonial {
+  display: flex;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+}
+
+.testimonial__avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 2px;
+  overflow: hidden;
+  flex-shrink: 0;
+  filter: grayscale(30%);
+}
+
+.testimonial__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.testimonial__content {
+  flex: 1;
+}
+
+.testimonial__text {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: var(--spacing-sm);
+  font-style: italic;
+}
+
+.testimonial__author {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.testimonial__role {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* ===== CONTACT/CTA ===== */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-xl);
+}
+
+.contact-item {
+  text-align: center;
+}
+
+.contact-item__label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: var(--spacing-xs);
+}
+
+.contact-item__value {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+/* ===== IMAGE CONTAINERS ===== */
+.image-container {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+}
+
+.image-container img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: grayscale(30%);
+  transition: filter 0.3s ease;
+}
+
+.image-container:hover img {
+  filter: grayscale(0%);
+}
+
+/* ===== REVEAL.JS OVERRIDES ===== */
+.reveal .controls {
+  color: var(--accent);
+}
+
+.reveal .progress {
+  background: var(--border);
+  height: 2px;
+}
+
+.reveal .progress span {
+  background: var(--accent);
+}
+
+.reveal .slide-number {
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 16px;
+  font-family: var(--font-mono);
+  left: 20px;
+  right: auto;
+  bottom: 20px;
+}
+
+/* ===== FRAGMENT ANIMATIONS ===== */
+.reveal .slides section .fragment {
+  opacity: 0;
+  transition: all 0.4s ease;
+}
+
+.reveal .slides section .fragment.visible {
+  opacity: 1;
+}
+
+.reveal .slides section .fragment.fade-up {
+  transform: translateY(20px);
+}
+
+.reveal .slides section .fragment.fade-up.visible {
+  transform: translateY(0);
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg-dark);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  h1 { font-size: 2.5rem; }
+  h2 { font-size: 2rem; }
+
+  .split {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+
+  .grid-4, .grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Workflow diagram (template 14) */
+.workflow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-md);
+}
+
+.workflow__step {
+  flex: 0 0 auto;
+}
+
+.workflow__box {
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  padding: 24px 32px;
+  text-align: center;
+  min-width: 160px;
+  transition: all 0.3s ease;
+}
+
+.workflow__box:hover {
+  background: var(--bg-card);
+  border-color: var(--accent);
+}
+
+.workflow__label {
+  font-family: var(--font-sans);
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  letter-spacing: 0.05em;
+}
+
+.workflow__sublabel {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-top: 6px;
+}
+
+.workflow__arrow {
+  color: var(--accent);
+  font-size: 1.5rem;
+}
+
+
+/* ============================================================ */
+/* LIGHT THEME OVERRIDE — workshop deck (hand-drawn light images) */
+/* Appended AFTER fibalabs.css. Remaps the Void palette to a warm */
+/* off-white surface so the light diagrams read as one canvas.    */
+/* Keeps all geometry, typography, kicker/HUD structure intact.    */
+/* ============================================================ */
+
+:root {
+  --bg-dark: #F7F6F2;        /* warm paper */
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #FBFAFF;
+  --accent: #7C3AED;         /* keep electric violet, slightly deeper for contrast on light */
+  --accent-light: #8B5CF6;
+  --accent-glow: rgba(124, 58, 237, 0.12);
+  --secondary: #4C2D91;
+  --secondary-light: #6D4DB8;
+  --text-primary: #14121C;   /* near-black ink */
+  --text-secondary: #4A4658;
+  --text-muted: #8A8598;
+  --border: #E2DFEA;
+}
+
+html, body { background: var(--bg-dark) !important; color: var(--text-primary); }
+
+.reveal-viewport {
+  background: var(--bg-dark) !important;
+  background-image:
+    linear-gradient(rgba(124, 58, 237, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(124, 58, 237, 0.04) 1px, transparent 1px) !important;
+  background-size: 60px 60px !important;
+}
+.reveal { background: var(--bg-dark); color: var(--text-primary); }
+.reveal .slides section { background: var(--bg-dark); }
+
+/* Headlines stay ink, accent stays violet */
+.reveal h1, .reveal h2, .reveal h3, .reveal h4 { color: var(--text-primary); }
+.accent-text, .highlight { color: var(--accent); }
+
+/* Header rule + logo: monogram is dark-on-transparent, reads fine on light.
+   Do NOT invert it. Just give the wordmark ink color. */
+.header { border-bottom: 1px solid var(--border); }
+.header__logo { color: var(--text-primary); }
+.header__logo img { filter: none; }
+
+/* Kicker label — violet on light */
+.kicker { color: var(--accent); }
+.kicker::after { background: var(--accent); }
+
+/* Cards: white fill, soft border, subtle shadow instead of glow */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 3px rgba(20,18,28,0.05);
+}
+.card:hover { background: var(--bg-card-hover); border-color: var(--accent); }
+.card__text, .muted, .lead.muted { color: var(--text-secondary); }
+.lead { color: var(--text-secondary); }
+
+/* IMAGE CONTAINER — the centerpiece. Frame the light diagram on white,
+   thin border, gentle shadow so it sits on the paper, not floating. */
+.image-container {
+  background: #FFFFFF;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-shadow: 0 6px 24px rgba(20,18,28,0.08);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+}
+.image-container img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 4px;
+  filter: none;
+}
+.image-container:hover img { transform: none; }
+
+/* Full-bleed diagram slide: image is the hero, near edge-to-edge */
+.diagram-stage {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  margin-top: 8px;
+}
+.diagram-stage .image-container {
+  max-height: 100%;
+  max-width: 100%;
+  box-shadow: 0 8px 30px rgba(20,18,28,0.10);
+}
+.diagram-stage .image-container img {
+  max-height: 540px;
+  width: auto;
+  max-width: 100%;
+}
+
+/* Caption row under image */
+.caption-bullets {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+  display: flex;
+  gap: 28px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.caption-bullets li {
+  position: relative;
+  padding-left: 16px;
+  color: var(--text-secondary);
+  font-size: 16px;
+  letter-spacing: 0.01em;
+  max-width: 320px;
+}
+.caption-bullets li::before {
+  content: '\2014';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+.caption-bullets li strong { color: var(--text-primary); }
+
+/* List markers on light */
+.list li::before, .list--check li::before { color: var(--accent); }
+.list li, .list--numbered li, .list--check li { color: var(--text-secondary); }
+.list--numbered li strong, .list--check li strong { color: var(--text-primary); }
+
+/* Section divider glow softer on light */
+.slide--section::before {
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+}
+
+/* Slide number / progress on light */
+.reveal .progress { color: var(--accent); }
+.reveal .slide-number { background: rgba(124,58,237,0.08); color: var(--accent); }
+.reveal .controls { color: var(--accent); }
+
+/* Badge */
+.badge { background: var(--accent); color: #fff; }
+
+/* A small "takeaway" pill used on a few slides */
+.takeaway {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  padding: 8px 16px;
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  color: var(--accent);
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* Tighten slide title block on diagram slides so image gets room */
+.slide--diagram h2 { margin: 0 0 2px; font-size: 30px; line-height: 1.15; }
+.slide--diagram .kicker { margin-bottom: 6px; }
+
+/* ===== FIT-TO-FRAME: keep the whole diagram slide inside 720px ===== */
+/* The deck frame is 1280x720. Default .slide padding (60px) + header margin (40px)
+   pushed the image + bullets off the bottom. Tighten everything and cap the image. */
+.slide--diagram {
+  padding: 26px 56px 22px;
+  height: 720px;
+  overflow: hidden;
+}
+.slide--diagram .header {
+  padding-bottom: 12px;
+  margin-bottom: 14px;
+}
+.slide--diagram .diagram-stage {
+  margin-top: 6px;
+}
+/* Cap the image to the remaining vertical budget so bullets/takeaway always show */
+.slide--diagram .diagram-stage .image-container {
+  max-height: 470px;
+}
+.slide--diagram .diagram-stage .image-container img {
+  max-height: 454px;
+  width: auto;
+  max-width: 100%;
+}
+.slide--diagram .caption-bullets {
+  margin-top: 12px;
+}
+.slide--diagram .caption-bullets li { font-size: 15px; }
+.slide--diagram .takeaway { margin-top: 4px; font-size: 14px; }
+
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+<section>
+  <div class="slide slide--section slide--center">
+    <div class="content flex-center" style="flex-direction: column; text-align: center;">
+      <div class="cover-logo">
+        <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+      </div>
+      <p class="kicker" style="justify-content: center;">Fiba Labs Workshop</p>
+      <h1>How Your Files, Tools &amp;<br><span class="accent-text">Logins</span> Actually Work</h1>
+      <p class="lead" style="max-width: 720px; margin: 0 auto;">A plain-language tour of the three things every AI workflow runs on: file formats, APIs &amp; MCPs, and authentication. No code required.</p>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="slide slide--section slide--center">
+    <p class="kicker" style="justify-content: center;">01 // Section One</p>
+    <h2>File Formats</h2>
+    <p class="lead muted">What's inside a file, why some open clean and some look like garbage, and the special files that run your AI.</p>
+  </div>
+</section>
+<section>
+  <div class="slide slide--diagram">
+    <div class="header">
+        <div class="header__logo">
+          <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+          fiba labs
+        </div>
+      </div>
+    <p class="kicker">01 // The Mental Model</p>
+    <h2>.txt &mdash; Plain Text (and Every File's Three Steps)</h2>
+    <div class="diagram-stage">
+      <div class="image-container">
+        <img src="assets/diagrams/1_txt.jpg" alt=".txt Plain Text">
+      </div>
+    </div>
+    <ul class="caption-bullets">
+          <li><strong>Raw bytes</strong> &rarr; <strong>processor</strong> &rarr; <strong>what you see</strong>: every file works this way</li>
+          <li>Plain text has no rules: the file <strong>is</strong> exactly what you see</li>
+          <li>Open it anywhere, nothing to translate</li>
+    </ul>
+      <div style="text-align:center;"><span class="takeaway">If you can read the raw file, your AI can too</span></div>
+  </div>
+</section>
+<section>
+  <div class="slide slide--diagram">
+    <div class="header">
+        <div class="header__logo">
+          <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+          fiba labs
+        </div>
+      </div>
+    <p class="kicker">01 // Readable Formats</p>
+    <h2>.md &mdash; Markdown</h2>
+    <div class="diagram-stage">
+      <div class="image-container">
+        <img src="assets/diagrams/2_md.jpg" alt=".md &amp;mdash; Markdown">
+      </div>
+    </div>
+    <ul class="caption-bullets">
+          <li>Plain text plus a few symbols (<strong>#</strong> = heading)</li>
+          <li>Still readable raw, but turns into a clean formatted doc</li>
+          <li>The format your AI lives in</li>
+    </ul>
+  </div>
+</section>
+<section>
+  <div class="slide slide--diagram">
+    <div class="header">
+        <div class="header__logo">
+          <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+          fiba labs
+        </div>
+      </div>
+    <p class="kicker">01 // Readable Formats</p>
+    <h2>.html &mdash; Web Page</h2>
+    <div class="diagram-stage">
+      <div class="image-container">
+        <img src="assets/diagrams/3_html.jpg" alt=".html &amp;mdash; Web Page">
+      </div>
+    </div>
+    <ul class="caption-bullets">
+          <li>Tags describe the <strong>structure</strong> of a page</li>
+          <li>HTML = the structure, CSS = the look (color, font, layout)</li>
+          <li>A real web page you can open in any browser</li>
+    </ul>
+  </div>
+</section>
+<section>
+  <div class="slide slide--diagram">
+    <div class="header">
+        <div class="header__logo">
+          <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+          fiba labs
+        </div>
+      </div>
+    <p class="kicker">01 // Going Deeper</p>
+    <h2>.html + Data &mdash; Two Ways to Get Numbers</h2>
+    <div class="diagram-stage">
+      <div class="image-container">
+        <img src="assets/diagrams/3b_html-data.jpg" alt=".html + Data &amp;mdash; Two Ways to Get Numbers">
+      </div>
+    </div>
+    <ul class="caption-bullets">
+          <li><strong>Rebuild:</strong> a script bakes the data in on a schedule (fast, but can be stale)</li>
+          <li><strong>Live fetch:</strong> the file asks a database every time you open it (always current)</li>
+          <li>Same file, two ways to stay up to date</li>
+    </ul>
+  </div>
+</section>
+<section>
+  <div class="slide slide--diagram">
+    <div class="header">
+        <div class="header__logo">
+          <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+          fiba labs
+        </div>
+      </div>
+    <p class="kicker">01 // In Practice</p>
+    <h2>Cowork Artifacts = an .html Claude Builds for You</h2>
+    <div class="diagram-stage">
+      <div class="image-container">
+        <img src="assets/diagrams/3c_cowork-artifacts.jpg" alt="Cowork Artifacts = an .html Claude Builds for You">
+      </div>
+    </div>
+    <ul class="caption-bullets">
+          <li><strong>Classic:</strong> a snapshot Claude rewrites when you ask again</li>
+          <li><strong>Live (2026):</strong> connected to your real data via MCP, always current</li>
+          <li>This is the bridge to the next section</li>
+    </ul>
+  </div>
+</section>
+<section>
+  <div class="slide slide--diagram">
+    <div class="header">
+        <div class="header__logo">
+          <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+          fiba labs
+        </div>
+      </div>
+    <p class="kicker">01 // Readable Formats</p>
+    <h2>.csv &mdash; Comma Values</h2>
+    <div class="diagram-stage">
+      <div class="image-container">
+        <img src="assets/diagrams/4_csv.jpg" alt=".csv &amp;mdash; Comma Values">
+      </div>
+    </div>
+    <ul class="caption-bullets">
+          <li>Still plain text: the <strong>commas</strong> do the work</li>
+          <li>Each comma = a new column, each line = a new row</li>
+          <li>A spreadsheet in its simplest, most portable form</li>
+    </ul>
+  </div>
+</section>
+<section>
+  <div class="slide slide--diagram">
+    <div class="header">
+        <div class="header__logo">
+          <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+          fiba labs
+        </div>
+      </div>
+    <p class="kicker">01 // Binary Formats</p>
+    <h2>.docx &mdash; Word (Binary)</h2>
+    <div class="diagram-stage">
+      <div class="image-container">
+        <img src="assets/diagrams/5_docx.jpg" alt=".docx &amp;mdash; Word (Binary)">
+      </div>
+    </div>
+    <ul class="caption-bullets">
+          <li>Open it raw and you see <strong>garbage</strong>: it's a zipped bundle of files</li>
+          <li>The clean look is locked to Word (or a compatible app)</li>
+          <li>Looks polished, but needs a translator to read</li>
+    </ul>
+  </div>
+</section>
+<section>
+  <div class="slide slide--diagram">
+    <div class="header">
+        <div class="header__logo">
+          <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+          fiba labs
+        </div>
+      </div>
+    <p class="kicker">01 // Binary Formats</p>
+    <h2>.xlsx &mdash; Excel (Binary)</h2>
+    <div class="diagram-stage">
+      <div class="image-container">
+        <img src="assets/diagrams/6_xlsx.jpg" alt=".xlsx &amp;mdash; Excel (Binary)">
+      </div>
+    </div>
+    <ul class="caption-bullets">
+          <li>Same trick as Word: a zipped bundle, not readable raw</li>
+          <li>Carries formulas and charts, not just values</li>
+          <li>A heavy-duty version of a .csv</li>
+    </ul>
+  </div>
+</section>
+<section>
+  <div class="slide slide--diagram">
+    <div class="header">
+        <div class="header__logo">
+          <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+          fiba labs
+        </div>
+      </div>
+    <p class="kicker">01 // Binary Formats</p>
+    <h2>.pdf &mdash; Portable Doc (Binary)</h2>
+    <div class="diagram-stage">
+      <div class="image-container">
+        <img src="assets/diagrams/7_pdf.jpg" alt=".pdf &amp;mdash; Portable Doc (Binary)">
+      </div>
+    </div>
+    <ul class="caption-bullets">
+          <li>Also binary, but built to <strong>never change</strong></li>
+          <li>Looks the same on every device and every app</li>
+          <li>A frozen printout: great for sharing, hard to edit</li>
+    </ul>
+      <div style="text-align:center;"><span class="takeaway">Readable = AI reads it directly. Garbage = it needs a translator</span></div>
+  </div>
+</section>
+<section>
+  <div class="slide slide--diagram">
+    <div class="header">
+        <div class="header__logo">
+          <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+          fiba labs
+        </div>
+      </div>
+    <p class="kicker">01 // Markdown's Many Jobs</p>
+    <h2>Special .md Files: One Format, Many Jobs</h2>
+    <div class="diagram-stage">
+      <div class="image-container">
+        <img src="assets/diagrams/8_md-overview.jpg" alt="Special .md Files: One Format, Many Jobs">
+      </div>
+    </div>
+    <ul class="caption-bullets">
+          <li>All the same Markdown format under the hood</li>
+          <li>The <strong>filename</strong> decides the job</li>
+          <li>Six special files run your AI workspace</li>
+    </ul>
+  </div>
+</section>
+<section>
+  <div class="slide slide--diagram">
+    <div class="header">
+        <div class="header__logo">
+          <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+          fiba labs
+        </div>
+      </div>
+    <p class="kicker">01 // Special .md Files</p>
+    <h2>CLAUDE.md &mdash; Project Instructions</h2>
+    <div class="diagram-stage">
+      <div class="image-container">
+        <img src="assets/diagrams/9_md-claude.jpg" alt="CLAUDE.md &amp;mdash; Project Instructions">
+      </div>
+    </div>
+    <ul class="caption-bullets">
+          <li>Rules and context the AI <strong>loads every session</strong></li>
+          <li>Tech stack, conventions, commands, do's and don'ts</li>
+          <li>Your standing brief to the assistant</li>
+    </ul>
+  </div>
+</section>
+<section>
+  <div class="slide slide--diagram">
+    <div class="header">
+        <div class="header__logo">
+          <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+          fiba labs
+        </div>
+      </div>
+    <p class="kicker">01 // Special .md Files</p>
+    <h2>AGENTS.md &mdash; The Open Standard</h2>
+    <div class="diagram-stage">
+      <div class="image-container">
+        <img src="assets/diagrams/10_md-agents.jpg" alt="AGENTS.md &amp;mdash; The Open Standard">
+      </div>
+    </div>
+    <ul class="caption-bullets">
+          <li>One instructions file <strong>every AI tool</strong> can read</li>
+          <li>Works across Codex, Gemini CLI, Cursor, Aider</li>
+          <li>Write your rules once, every tool obeys</li>
+    </ul>
+  </div>
+</section>
+<section>
+  <div class="slide slide--diagram">
+    <div class="header">
+        <div class="header__logo">
+          <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+          fiba labs
+        </div>
+      </div>
+    <p class="kicker">01 // Special .md Files</p>
+    <h2>MEMORY.md &mdash; Facts That Persist</h2>
+    <div class="diagram-stage">
+      <div class="image-container">
+        <img src="assets/diagrams/11_md-memory.jpg" alt="MEMORY.md &amp;mdash; Facts That Persist">
+      </div>
+    </div>
+    <ul class="caption-bullets">
+          <li>Carries knowledge from <strong>one session to the next</strong></li>
+          <li>Who you are, project facts, decisions already made</li>
+          <li>So you never re-explain yourself</li>
+    </ul>
+  </div>
+</section>
+<section>
+  <div class="slide slide--diagram">
+    <div class="header">
+        <div class="header__logo">
+          <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+          fiba labs
+        </div>
+      </div>
+    <p class="kicker">01 // Special .md Files</p>
+    <h2>rules.md &mdash; Policy + Conventions</h2>
+    <div class="diagram-stage">
+      <div class="image-container">
+        <img src="assets/diagrams/12_md-rules.jpg" alt="rules.md &amp;mdash; Policy + Conventions">
+      </div>
+    </div>
+    <ul class="caption-bullets">
+          <li>Shared policy, <strong>pulled in when referenced</strong></li>
+          <li>Security, git, file-handling conventions</li>
+          <li>The house rules your AI follows</li>
+    </ul>
+  </div>
+</section>
+<section>
+  <div class="slide slide--diagram">
+    <div class="header">
+        <div class="header__logo">
+          <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+          fiba labs
+        </div>
+      </div>
+    <p class="kicker">01 // Special .md Files</p>
+    <h2>SKILL.md &mdash; A Callable Skill</h2>
+    <div class="diagram-stage">
+      <div class="image-container">
+        <img src="assets/diagrams/13_md-skill.jpg" alt="SKILL.md &amp;mdash; A Callable Skill">
+      </div>
+    </div>
+    <ul class="caption-bullets">
+          <li>The <strong>label at the top</strong> tells the AI when to use it</li>
+          <li>The body tells it exactly what to do, step by step</li>
+          <li>A reusable capability you can trigger by name</li>
+    </ul>
+  </div>
+</section>
+<section>
+  <div class="slide slide--diagram">
+    <div class="header">
+        <div class="header__logo">
+          <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+          fiba labs
+        </div>
+      </div>
+    <p class="kicker">01 // Special .md Files</p>
+    <h2>A Skill Is a Whole Folder</h2>
+    <div class="diagram-stage">
+      <div class="image-container">
+        <img src="assets/diagrams/13b_md-skill-structure.jpg" alt="A Skill Is a Whole Folder">
+      </div>
+    </div>
+    <ul class="caption-bullets">
+          <li><strong>SKILL.md is the brain</strong> (entry point + instructions)</li>
+          <li>scripts/ run the work, templates/ are files it uses</li>
+          <li>connectors/ link it to outside tools (the next section)</li>
+    </ul>
+  </div>
+</section>
+<section>
+  <div class="slide slide--diagram">
+    <div class="header">
+        <div class="header__logo">
+          <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+          fiba labs
+        </div>
+      </div>
+    <p class="kicker">01 // Special .md Files</p>
+    <h2>README.md &mdash; Just for Humans</h2>
+    <div class="diagram-stage">
+      <div class="image-container">
+        <img src="assets/diagrams/14_md-readme.jpg" alt="README.md &amp;mdash; Just for Humans">
+      </div>
+    </div>
+    <ul class="caption-bullets">
+          <li>Explains the project <strong>to people</strong></li>
+          <li>Install, run, license: the basics</li>
+          <li>No special AI behavior, just plain documentation</li>
+    </ul>
+  </div>
+</section>
+<section>
+  <div class="slide slide--section slide--center">
+    <p class="kicker" style="justify-content: center;">02 // Section Two</p>
+    <h2>APIs &amp; MCPs</h2>
+    <p class="lead muted">How software talks to other software, the integration mess that created, and the standard that fixed it.</p>
+  </div>
+</section>
+<section>
+  <div class="slide slide--diagram">
+    <div class="header">
+        <div class="header__logo">
+          <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+          fiba labs
+        </div>
+      </div>
+    <p class="kicker">02 // The Foundation</p>
+    <h2>What Is an API? The Waiter Analogy</h2>
+    <div class="diagram-stage">
+      <div class="image-container">
+        <img src="assets/diagrams/01_api-restaurant-analogy.jpg" alt="What Is an API? The Waiter Analogy">
+      </div>
+    </div>
+    <ul class="caption-bullets">
+          <li><strong>You</strong> (the app) ask the <strong>waiter</strong> (the API)</li>
+          <li>The waiter carries your request to the <strong>kitchen</strong> (the server) and brings the answer back</li>
+          <li>GET = bring me, POST = place an order, SELECT = what's on the menu</li>
+    </ul>
+  </div>
+</section>
+<section>
+  <div class="slide slide--diagram">
+    <div class="header">
+        <div class="header__logo">
+          <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+          fiba labs
+        </div>
+      </div>
+    <p class="kicker">02 // The Problem</p>
+    <h2>Scene 1: Every Kitchen, Its Own Language</h2>
+    <div class="diagram-stage">
+      <div class="image-container">
+        <img src="assets/diagrams/02_mcp-analogy-scene1-api.jpg" alt="Scene 1: Every Kitchen, Its Own Language">
+      </div>
+    </div>
+    <ul class="caption-bullets">
+          <li>Each service (GitHub, Stripe, Postgres) speaks its <strong>own dialect</strong></li>
+          <li>Your AI has to learn every one of them, separately</li>
+          <li>Many tools &times; many services = a custom-integration mess</li>
+    </ul>
+  </div>
+</section>
+<section>
+  <div class="slide slide--diagram">
+    <div class="header">
+        <div class="header__logo">
+          <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+          fiba labs
+        </div>
+      </div>
+    <p class="kicker">02 // A Partial Fix</p>
+    <h2>Scene 2: Coding Assistants Are Faster, Still Rigid</h2>
+    <div class="diagram-stage">
+      <div class="image-container">
+        <img src="assets/diagrams/03_mcp-analogy-scene2-coding-assistants.jpg" alt="Scene 2: Coding Assistants Are Faster, Still Rigid">
+      </div>
+    </div>
+    <ul class="caption-bullets">
+          <li>AI can <strong>write</strong> the integration code for you, cheaply</li>
+          <li>But the result is still hard-wired and brittle</li>
+          <li>Cheaper to build, but the mess doesn't go away</li>
+    </ul>
+  </div>
+</section>
+<section>
+  <div class="slide slide--diagram">
+    <div class="header">
+        <div class="header__logo">
+          <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+          fiba labs
+        </div>
+      </div>
+    <p class="kicker">02 // Same Problem, Shipping Analogy</p>
+    <h2>Break-Bulk World: Every Factory Packs Differently</h2>
+    <div class="diagram-stage">
+      <div class="image-container">
+        <img src="assets/diagrams/04_mcp-analogy-container1-breakbulk.jpg" alt="Break-Bulk World: Every Factory Packs Differently">
+      </div>
+    </div>
+    <ul class="caption-bullets">
+          <li>Before shipping containers, every factory packed its own way</li>
+          <li>Every dock had to <strong>learn every factory</strong></li>
+          <li>The exact same many&times;many training problem</li>
+    </ul>
+  </div>
+</section>
+<section>
+  <div class="slide slide--diagram">
+    <div class="header">
+        <div class="header__logo">
+          <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+          fiba labs
+        </div>
+      </div>
+    <p class="kicker">02 // The Insight</p>
+    <h2>The Container Era: Wrap It Once</h2>
+    <div class="diagram-stage">
+      <div class="image-container">
+        <img src="assets/diagrams/05_mcp-analogy-container2-era.jpg" alt="The Container Era: Wrap It Once">
+      </div>
+    </div>
+    <ul class="caption-bullets">
+          <li>The container <strong>standardized the box</strong>, the cargo didn't change</li>
+          <li>The API is still inside, just wrapped in a standard shell</li>
+          <li>Factory wraps once, the whole world can handle it</li>
+    </ul>
+  </div>
+</section>
+<section>
+  <div class="slide slide--diagram">
+    <div class="header">
+        <div class="header__logo">
+          <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+          fiba labs
+        </div>
+      </div>
+    <p class="kicker">02 // The Payoff</p>
+    <h2>Scene 3: The MCP World</h2>
+    <div class="diagram-stage">
+      <div class="image-container">
+        <img src="assets/diagrams/06_mcp-analogy-scene3-mcp.jpg" alt="Scene 3: The MCP World">
+      </div>
+    </div>
+    <ul class="caption-bullets">
+          <li>MCP is the <strong>container for AI tools</strong></li>
+          <li>Your AI speaks one language and asks each tool live: "what do you offer?"</li>
+          <li>Build once, connect everywhere</li>
+    </ul>
+      <div style="text-align:center;"><span class="takeaway">This is why your AI can suddenly talk to Gmail, your CRM, your calendar</span></div>
+  </div>
+</section>
+<section>
+  <div class="slide slide--section slide--center">
+    <p class="kicker" style="justify-content: center;">03 // Section Three</p>
+    <h2>Authentication Methods</h2>
+    <p class="lead muted">How an app proves who you are and what it's allowed to do, explained with everyday objects.</p>
+  </div>
+</section>
+<section>
+  <div class="slide slide--diagram">
+    <div class="header">
+        <div class="header__logo">
+          <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+          fiba labs
+        </div>
+      </div>
+    <p class="kicker">03 // Overview</p>
+    <h2>Five Ways to Prove Who You Are</h2>
+    <div class="diagram-stage">
+      <div class="image-container">
+        <img src="assets/diagrams/auth-methods-comparison-flow.jpg" alt="Five Ways to Prove Who You Are">
+      </div>
+    </div>
+    <ul class="caption-bullets">
+          <li><strong>API key</strong> (a key), <strong>token</strong> (a wristband), <strong>JWT</strong> (a signed badge)</li>
+          <li><strong>Session+cookie</strong> (a coat-check stub), <strong>OAuth</strong> (a hotel keycard)</li>
+          <li>Two questions: who are you? (authentication) and what can you do? (authorization)</li>
+    </ul>
+  </div>
+</section>
+<section>
+  <div class="slide slide--diagram">
+    <div class="header">
+        <div class="header__logo">
+          <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+          fiba labs
+        </div>
+      </div>
+    <p class="kicker">03 // The Detail</p>
+    <h2>How Each One Actually Works</h2>
+    <div class="diagram-stage">
+      <div class="image-container">
+        <img src="assets/diagrams/auth-methods-how-each-works.jpg" alt="How Each One Actually Works">
+      </div>
+    </div>
+    <ul class="caption-bullets">
+          <li><strong>Key:</strong> one secret, no expiry &mdash; if leaked, it works forever</li>
+          <li><strong>Badge/JWT:</strong> carries its own info, no lookup needed</li>
+          <li><strong>OAuth:</strong> scoped, expiring, revocable, your password never shared</li>
+    </ul>
+  </div>
+</section>
+<section>
+  <div class="slide slide--diagram">
+    <div class="header">
+        <div class="header__logo">
+          <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+          fiba labs
+        </div>
+      </div>
+    <p class="kicker">03 // The Flow You Already Use</p>
+    <h2>How OAuth Works: "Sign in with Google"</h2>
+    <div class="diagram-stage">
+      <div class="image-container">
+        <img src="assets/diagrams/auth-methods-comparison-flow.jpg" alt="How OAuth Works: &quot;Sign in with Google&quot;">
+      </div>
+    </div>
+    <ul class="caption-bullets">
+          <li>You approve at the <strong>provider</strong> (Google), not the app</li>
+          <li>The app gets a limited token, never your password</li>
+          <li>You can revoke it anytime</li>
+    </ul>
+      <div style="text-align:center;"><span class="takeaway">When an app bounces you to a Google approval screen, that's OAuth, the safe one</span></div>
+  </div>
+</section>
+<section>
+  <div class="slide slide--section slide--center">
+    <div class="content flex-center" style="flex-direction: column;">
+      <p class="kicker" style="justify-content:center;">Recap</p>
+      <h1>Three Layers,<br><span class="accent-text">One Picture</span></h1>
+      <p class="lead" style="max-width: 760px; margin: 0 auto 8px;">
+        <strong>Files</strong> hold your work &mdash; readable ones your AI reads directly.
+        <strong>APIs &amp; MCPs</strong> let your tools talk &mdash; build once, connect everywhere.
+        <strong>Auth</strong> proves who you are &mdash; and OAuth keeps your password yours.
+      </p>
+    </div>
+  </div>
+</section>
+    </div>
+  </div>
+
+  <!-- Reveal.js Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.js"></script>
+
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: true,
+      controls: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      center: false,
+      transition: 'slide',
+      backgroundTransition: 'fade',
+      width: 1280,
+      height: 720,
+      margin: 0,
+      minScale: 0.2,
+      maxScale: 2,
+      autoAnimate: true,
+      autoAnimateDuration: 0.7,
+      plugins: [RevealHighlight]
+    });
+
+    // Initialize Lucide icons
+    lucide.createIcons();
+  </script>
+
+  <!--
+    CLICKABLE BUTTONS - IMPORTANT!
+    Reveal.js blocks all click events inside slides.
+    Place any clickable links/buttons HERE, outside the <div class="reveal"> container.
+    Use position: fixed to position them where needed.
+  -->
+
+</body>
+</html>
