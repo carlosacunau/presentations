@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<!--
+  prezi-deck template. Self-contained impress.js zooming/panning deck.
+  Works by double-clicking this file (file://). No CDN, no build step.
+
+  HOW TO AUTHOR A DECK FROM THIS TEMPLATE:
+  1. Pick a theme: copy the contents of one themes/*.css file into the
+     :root block below (the --vars). neutral-dark / neutral-light / fiba-labs.
+  2. Replace File Formats, APIs &amp; MCPs, Auth Methods and the favicon monogram (or keep the generic one).
+  3. Lay out the .step elements following the GRID CONVENTION in SKILL.md.
+     data-x / data-y  = position on the infinite plane (px)
+     data-scale       = camera frame size (big = zoomed out, small = detail)
+     data-rotate      = rotation in degrees (use sparingly)
+  4. Keep the #overview step LAST, scaled large enough to frame everything.
+  Camera path = DOM order of the steps. Reorder steps to re-choreograph.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+  <title>File Formats, APIs &amp; MCPs, Auth Methods</title>
+
+  <!-- Inline SVG favicon (no 404 console noise). Swap for a brand monogram if available. -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='12' fill='%230A0A14'/%3E%3Crect x='28' y='20' width='34' height='12' rx='3' fill='%238B5CF6'/%3E%3Crect x='28' y='20' width='12' height='52' rx='3' fill='%238B5CF6'/%3E%3Crect x='62' y='20' width='12' height='12' rx='3' fill='%234C2D91'/%3E%3Crect x='62' y='40' width='12' height='32' rx='3' fill='%234C2D91'/%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* THEME TOKENS (replace this :root block from themes/*.css) */
+    :root {
+      --accent:    #8B5CF6;
+      --accent-2:  #C9BEEA;
+      --bg:        #F7F6FB;
+      --fg:        #1A1A1A;
+      --muted:     #6b6b75;
+      --font-head: 'Space Grotesk', 'Inter', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --grid-rgba: rgba(139,92,246,0.05);
+    }
+
+    html, body {
+      margin: 0; padding: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-head);
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+    }
+
+    /* Subtle command-center grid on the canvas background */
+    body::before {
+      content: "";
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(var(--grid-rgba) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-rgba) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .fallback-message {
+      font-family: var(--font-body);
+      line-height: 1.5;
+      width: min(640px, 88vw);
+      margin: 80px auto;
+      padding: 24px;
+      border: 1px solid var(--accent-2);
+      border-radius: 8px;
+      background: rgba(76,45,145,0.15);
+    }
+    .impress-supported .fallback-message { display: none; }
+
+    #impress { position: relative; z-index: 1; }
+
+    .step {
+      width: 900px;
+      box-sizing: border-box;
+      padding: 40px;
+      opacity: 0.18;
+      transition: opacity 0.6s ease;
+    }
+    .step.active { opacity: 1; }
+
+    /* Typographic system. clamp(min, preferred-vw, max) keeps text readable on
+       small screens (preferred scales with viewport width, clamped both ends so
+       it never goes microscopic on mobile nor absurd on desktop). */
+    .eyebrow {
+      font-size: clamp(12px, 1.4vw, 14px);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-size: clamp(34px, 6.5vw, 64px);
+      line-height: 1.05;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin: 0 0 24px;
+    }
+    h2 {
+      font-size: clamp(26px, 4.6vw, 44px);
+      line-height: 1.1;
+      font-weight: 500;
+      margin: 0 0 20px;
+    }
+    .lead {
+      font-size: clamp(18px, 2.9vw, 28px);
+      line-height: 1.4;
+      font-weight: 400;
+      color: var(--fg);
+      max-width: 760px;
+    }
+    .sub {
+      font-size: clamp(15px, 2.1vw, 20px);
+      line-height: 1.5;
+      color: var(--muted);
+      font-family: var(--font-body);
+      max-width: 680px;
+      margin-top: 18px;
+    }
+    .accent { color: var(--accent); }
+    .pill {
+      display: inline-block;
+      font-size: clamp(11px, 1.3vw, 13px);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--fg);
+      border: 1px solid var(--accent-2);
+      border-radius: 4px;
+      padding: 6px 12px;
+      margin: 0 8px 8px 0;
+      font-family: var(--font-body);
+    }
+
+    /* Big faint THEME WORD that detail steps zoom into (the signature overlap move).
+       Place one per region; details sit on top of it at smaller scale. */
+    .theme-word {
+      font-size: clamp(80px, 18vw, 320px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--accent);
+      opacity: 0.06;
+      line-height: 0.9;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .monogram { width: clamp(72px, 12vw, 120px); height: auto; margin-bottom: 36px; }
+
+    .hint {
+      position: fixed;
+      bottom: 18px; right: 22px;
+      z-index: 5;
+      font-family: var(--font-body);
+      font-size: 12px;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+    }
+    .hint kbd {
+      background: rgba(139,92,246,0.15);
+      border: 1px solid var(--accent-2);
+      border-radius: 3px;
+      padding: 1px 6px;
+      color: var(--fg);
+      font-family: inherit;
+    }
+
+    /* Responsive: keep the .step narrower than the viewport on phones so
+       impress.js can scale it up to fill the screen instead of leaving it tiny. */
+    @media (max-width: 820px) {
+      .step { width: 92vw; padding: 24px; }
+      .hint { font-size: 10px; bottom: 10px; right: 12px; }
+    }
+
+    /* ---- Prezi image deck (light) ---- */
+    .step { width: 1180px; padding: 24px; }
+    .imgstep { width: 1180px; text-align: center; }
+    .imgcard {
+      background: #fff;
+      border: 1px solid var(--accent-2);
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: 0 18px 50px rgba(40,20,90,0.10);
+    }
+    .imgcard img {
+      display: block; width: 100%; height: auto;
+      border-radius: 8px;
+    }
+    .cap {
+      font-family: var(--font-body);
+      font-size: clamp(16px, 2.0vw, 22px);
+      line-height: 1.4;
+      color: var(--fg);
+      max-width: 1040px;
+      margin: 20px auto 0;
+    }
+    .cover { width: 1180px; }
+    .cover h1 { font-size: clamp(40px, 6.5vw, 70px); }
+    .section-step { width: 900px; }
+    .section-title { font-size: clamp(40px, 7vw, 72px); color: var(--accent); }
+    .section-step .lead, .close .lead { color: var(--muted); }
+    .close { width: 900px; text-align: center; }
+    .close .monogram, .cover .monogram { margin-bottom: 28px; }
+    /* smaller logo as a chapter mark on section title cards */
+    .monogram--sm { width: clamp(48px, 6vw, 64px); margin-bottom: 18px; }
+    /* persistent brand watermark: fixed to the viewport, OUTSIDE the impress
+       canvas, so it stays put while the camera flies. Subtle, bottom-left. */
+    .brand-watermark {
+      position: fixed;
+      bottom: 18px; left: 20px;
+      z-index: 5;
+      display: flex; align-items: center; gap: 8px;
+      opacity: 0.5;
+      pointer-events: none;
+      font-family: var(--font-head);
+      font-size: 13px; letter-spacing: 0.04em;
+      color: var(--muted);
+    }
+    .brand-watermark img { width: 28px; height: auto; display: block; }
+    @media (max-width: 820px) {
+      .step, .imgstep, .cover { width: 92vw; }
+      .cap { font-size: clamp(14px, 3.4vw, 18px); }
+      .brand-watermark { font-size: 11px; bottom: 10px; left: 12px; }
+      .brand-watermark img { width: 22px; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="fallback-message">
+    <p><b>Your browser is not supported for this presentation.</b></p>
+    <p>Use a recent version of Chrome, Safari, or Firefox to view the zooming canvas.</p>
+  </div>
+
+  <!--
+    THE CANVAS. Each .step is placed on an infinite plane.
+    The presentation is the camera flying between steps in DOM order.
+    Follow the GRID CONVENTION in SKILL.md when choosing data-x/y/scale.
+  -->
+  <!--
+    data-width / data-height define the reference canvas impress.js fits to the
+    window. data-min-scale is a FLOOR on the window scale so content never gets
+    crushed to microscopic on narrow phones (gotcha #6). The pre-init script
+    below lowers data-width on portrait phones so the fit math targets the phone.
+  -->
+  <div id="impress" data-transition-duration="900" data-width="1920" data-height="1080" data-min-scale="0.55">
+
+
+    <div class="step cover" data-x="0" data-y="-3000" data-scale="3.0" data-rotate="0">
+      <img class="monogram" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+      <p class="eyebrow">Fiba Labs · Systems Literacy</p>
+      <h1>How your files, tools,<br>and logins actually work</h1>
+    </div>
+
+    <div class="step section-step" data-x="3000" data-y="0" data-scale="3.0" data-rotate="0">
+      <img class="monogram monogram--sm" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+      <p class="eyebrow">01</p>
+      <h2 class="section-title">File Formats</h2>
+      <p class="lead">Every file is the same three steps.</p>
+    </div>
+
+    <div class="step imgstep" data-x="120" data-y="1590" data-scale="1.7" data-rotate="-12">
+      <div class="imgcard"><img src="assets/diagrams/1_txt.jpg" alt="Every file is the same 3 steps: raw bytes, a processor, then what you see"></div>
+      <p class="cap">Every file is the same 3 steps: raw bytes, a processor, then what you see</p>
+    </div>
+
+    <div class="step imgstep" data-x="1820" data-y="1840" data-scale="0.7" data-rotate="9">
+      <div class="imgcard"><img src="assets/diagrams/3_html.jpg" alt=".html: a page your browser renders"></div>
+      <p class="cap">.html: a page your browser renders</p>
+    </div>
+
+    <div class="step imgstep" data-x="4090" data-y="1620" data-scale="1.2" data-rotate="-6">
+      <div class="imgcard"><img src="assets/diagrams/3b_html-data.jpg" alt="Two ways an HTML file gets its numbers: baked-in (rebuilt on a schedule) vs live fetch"></div>
+      <p class="cap">Two ways an HTML file gets its numbers: baked-in (rebuilt on a schedule) vs live fetch</p>
+    </div>
+
+    <div class="step imgstep" data-x="5860" data-y="1830" data-scale="0.6" data-rotate="14">
+      <div class="imgcard"><img src="assets/diagrams/3c_cowork-artifacts.jpg" alt="A Cowork Artifact is just an .html file Claude builds for you, and lives in Claude Cowork where it's always updated"></div>
+      <p class="cap">A Cowork Artifact is just an .html file Claude builds for you, and lives in Claude Cowork where it's always updated</p>
+    </div>
+
+    <div class="step imgstep" data-x="6160" data-y="3240" data-scale="1.5" data-rotate="-10">
+      <div class="imgcard"><img src="assets/diagrams/4_csv.jpg" alt=".csv: a table as plain text, one row per line"></div>
+      <p class="cap">.csv: a table as plain text, one row per line</p>
+    </div>
+
+    <div class="step imgstep" data-x="3900" data-y="3500" data-scale="0.8" data-rotate="7">
+      <div class="imgcard"><img src="assets/diagrams/5_docx.jpg" alt=".docx: a zipped bundle of files in disguise"></div>
+      <p class="cap">.docx: a zipped bundle of files in disguise</p>
+    </div>
+
+    <div class="step imgstep" data-x="2120" data-y="3290" data-scale="1.3" data-rotate="-14">
+      <div class="imgcard"><img src="assets/diagrams/6_xlsx.jpg" alt=".xlsx: same trick as docx, but for spreadsheets"></div>
+      <p class="cap">.xlsx: same trick as docx, but for spreadsheets</p>
+    </div>
+
+    <div class="step imgstep" data-x="-180" data-y="3540" data-scale="0.65" data-rotate="11">
+      <div class="imgcard"><img src="assets/diagrams/7_pdf.jpg" alt=".pdf: a snapshot for printing, hard for software to read back"></div>
+      <p class="cap">.pdf: a snapshot for printing, hard for software to read back</p>
+    </div>
+
+    <div class="step imgstep" data-x="90" data-y="5020" data-scale="1.6" data-rotate="-4">
+      <div class="imgcard"><img src="assets/diagrams/2_md.jpg" alt=".md: plain text with light formatting. The language Claude prefers"></div>
+      <p class="cap">.md: plain text with light formatting. The language Claude prefers</p>
+    </div>
+
+    <div class="step imgstep" data-x="1860" data-y="5230" data-scale="0.75" data-rotate="13">
+      <div class="imgcard"><img src="assets/diagrams/8_md-overview.jpg" alt="One format, many jobs: instructions, memory, rules, skills"></div>
+      <p class="cap">One format, many jobs: instructions, memory, rules, skills</p>
+    </div>
+
+    <div class="step imgstep" data-x="4160" data-y="4940" data-scale="1.7" data-rotate="-12">
+      <div class="imgcard"><img src="assets/diagrams/14_md-readme.jpg" alt="README.md: the front door of any project, the short intro"></div>
+      <p class="cap">README.md: the front door of any project, the short intro</p>
+    </div>
+
+    <div class="step imgstep" data-x="5900" data-y="5200" data-scale="0.7" data-rotate="9">
+      <div class="imgcard"><img src="assets/diagrams/9_md-claude.jpg" alt="CLAUDE.md: the standing instructions for a project"></div>
+      <p class="cap">CLAUDE.md: the standing instructions for a project</p>
+    </div>
+
+    <div class="step imgstep" data-x="6120" data-y="6690" data-scale="1.2" data-rotate="-6">
+      <div class="imgcard"><img src="assets/diagrams/10_md-agents.jpg" alt="AGENTS.md: same file, tool-agnostic name"></div>
+      <p class="cap">AGENTS.md: same file, tool-agnostic name</p>
+    </div>
+
+    <div class="step imgstep" data-x="3820" data-y="6940" data-scale="0.6" data-rotate="14">
+      <div class="imgcard"><img src="assets/diagrams/11_md-memory.jpg" alt="MEMORY.md: what the agent remembers across sessions"></div>
+      <p class="cap">MEMORY.md: what the agent remembers across sessions</p>
+    </div>
+
+    <div class="step imgstep" data-x="2090" data-y="6720" data-scale="1.5" data-rotate="-10">
+      <div class="imgcard"><img src="assets/diagrams/12_md-rules.jpg" alt="rules.md: the hard constraints"></div>
+      <p class="cap">rules.md: the hard constraints</p>
+    </div>
+
+    <div class="step imgstep" data-x="-140" data-y="6930" data-scale="0.8" data-rotate="7">
+      <div class="imgcard"><img src="assets/diagrams/13_md-skill.jpg" alt="A skill is just a markdown file with instructions"></div>
+      <p class="cap">A skill is just a markdown file with instructions</p>
+    </div>
+
+    <div class="step imgstep" data-x="160" data-y="8340" data-scale="1.3" data-rotate="-14">
+      <div class="imgcard"><img src="assets/diagrams/13b_md-skill-structure.jpg" alt="...plus the folder around it"></div>
+      <p class="cap">...plus the folder around it</p>
+    </div>
+
+    <div class="step section-step" data-x="3000" data-y="11100" data-scale="3.0" data-rotate="0">
+      <img class="monogram monogram--sm" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+      <p class="eyebrow">02</p>
+      <h2 class="section-title">APIs &amp; MCPs</h2>
+      <p class="lead">One standard box solves the tangle.</p>
+    </div>
+
+    <div class="step imgstep" data-x="-100" data-y="12900" data-scale="0.65" data-rotate="11">
+      <div class="imgcard"><img src="assets/diagrams/01_api-restaurant-analogy-v2.jpg" alt="An API is the waiter: you order from a menu, the kitchen stays hidden"></div>
+      <p class="cap">An API is the waiter: you order from a menu, the kitchen stays hidden</p>
+    </div>
+
+    <div class="step imgstep" data-x="2120" data-y="12690" data-scale="1.6" data-rotate="-4">
+      <div class="imgcard"><img src="assets/diagrams/02_mcp-analogy-scene1-api.jpg" alt="Every app speaks its own API, a different waiter per restaurant"></div>
+      <p class="cap">Every app speaks its own API, a different waiter per restaurant</p>
+    </div>
+
+    <div class="step imgstep" data-x="3820" data-y="12940" data-scale="0.75" data-rotate="13">
+      <div class="imgcard"><img src="assets/diagrams/03_mcp-analogy-scene2-coding-assistants.jpg" alt="N tools by M assistants = a tangle of custom connections"></div>
+      <p class="cap">N tools by M assistants = a tangle of custom connections</p>
+    </div>
+
+    <div class="step imgstep" data-x="6090" data-y="12720" data-scale="1.7" data-rotate="-12">
+      <div class="imgcard"><img src="assets/diagrams/06_mcp-analogy-scene3-mcp.jpg" alt="MCP is the standard box for AI: one protocol, plug any tool into any assistant"></div>
+      <p class="cap">MCP is the standard box for AI: one protocol, plug any tool into any assistant</p>
+    </div>
+
+    <div class="step imgstep" data-x="5860" data-y="14630" data-scale="0.7" data-rotate="9">
+      <div class="imgcard"><img src="assets/diagrams/04_mcp-analogy-container1-breakbulk.jpg" alt="Why it works, before shipping containers: every cargo loaded by hand, every port different"></div>
+      <p class="cap">Why it works, before shipping containers: every cargo loaded by hand, every port different</p>
+    </div>
+
+    <div class="step imgstep" data-x="4160" data-y="14340" data-scale="1.2" data-rotate="-6">
+      <div class="imgcard"><img src="assets/diagrams/05_mcp-analogy-container2-era.jpg" alt="The container standardized the box: any crane, any ship, any port. MCP did that for tools"></div>
+      <p class="cap">The container standardized the box: any crane, any ship, any port. MCP did that for tools</p>
+    </div>
+
+    <div class="step section-step" data-x="1000" data-y="17100" data-scale="3.0" data-rotate="0">
+      <img class="monogram monogram--sm" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+      <p class="eyebrow">03</p>
+      <h2 class="section-title">Authentication</h2>
+      <p class="lead">How software proves who it is.</p>
+    </div>
+
+    <div class="step imgstep" data-x="-100" data-y="18900" data-scale="0.6" data-rotate="14">
+      <div class="imgcard"><img src="assets/diagrams/auth-methods-how-each-works.jpg" alt="API keys vs tokens vs OAuth: what each actually does"></div>
+      <p class="cap">API keys vs tokens vs OAuth: what each actually does</p>
+    </div>
+
+    <div class="step imgstep" data-x="2120" data-y="18690" data-scale="1.5" data-rotate="-10">
+      <div class="imgcard"><img src="assets/diagrams/auth-methods-comparison-flow.jpg" alt="When to use which, and why OAuth is the safe default"></div>
+      <p class="cap">When to use which, and why OAuth is the safe default</p>
+    </div>
+
+    <div class="step close" data-x="0" data-y="21400" data-scale="3.0" data-rotate="0">
+      <img class="monogram" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+      <h2 class="section-title">Files. Tools. Trust.</h2>
+      <p class="lead">That's the stack.</p>
+    </div>
+
+    <!-- Overview step: LAST, scaled to frame the whole canvas. Reached with O. -->
+    <div id="overview" class="step" data-x="2871" data-y="9200" data-scale="28"></div>
+
+  </div>
+
+  <div class="brand-watermark">
+    <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+    <span>fiba labs</span>
+  </div>
+
+  <div class="hint">
+    <kbd>&rarr;</kbd> next &nbsp; <kbd>&larr;</kbd> back &nbsp; <kbd>Space</kbd> advance &nbsp; <kbd>O</kbd> overview
+  </div>
+
+  <script src="impress.js"></script>
+  <script>
+    // Responsive (gotcha #6, the real fix). impress.js computes its window
+    // scale as min(innerW / data-width, innerH / data-height). With the default
+    // 1920x1080 canvas, a narrow phone (e.g. 390px) collapses the scale to ~0.2
+    // and every step renders microscopic, no matter the font sizes. Before init,
+    // shrink the reference canvas on portrait/narrow viewports so the fit math
+    // targets the phone, and let data-min-scale hold the floor. Recompute on
+    // orientation change by re-initialising.
+    var root = document.getElementById("impress");
+    function fitCanvasToViewport() {
+      var w = window.innerWidth, h = window.innerHeight;
+      var portrait = w < 820;
+      if (portrait) {
+        // Map the phone's short side to a ~700px reference so wScale lands near
+        // the min-scale floor instead of 0.2. Keep the authored aspect ratio.
+        root.setAttribute("data-width", "760");
+        root.setAttribute("data-height", String(Math.round(760 * (h / w))));
+      } else {
+        root.setAttribute("data-width", "1920");
+        root.setAttribute("data-height", "1080");
+      }
+    }
+    fitCanvasToViewport();
+
+    var api = impress();
+    api.init();
+
+    // impress.js 2.x binds Esc to fullscreen, NOT overview.
+    // Overview is a dedicated zoomed-out step, reached with the "O" key.
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "o" || event.key === "O") {
+        event.preventDefault();
+        api.goto(document.getElementById("overview"));
+      }
+    }, false);
+
+    // On resize / orientation change, recompute the reference canvas and re-fit
+    // the active step. impress.js reads data-width at init, so we update the
+    // attributes and re-goto the current step to apply the new window scale.
+    var current = function () {
+      return document.querySelector(".step.active") || document.getElementById("overview");
+    };
+    var resizeTimer;
+    window.addEventListener("resize", function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () {
+        fitCanvasToViewport();
+        var step = current();
+        if (step) { api.goto(step); }
+      }, 250);
+    });
+  </script>
+
+</body>
+</html>
