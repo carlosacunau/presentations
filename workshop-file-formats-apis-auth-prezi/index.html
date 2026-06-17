@@ -84,6 +84,13 @@
     }
     .step.active { opacity: 1; }
 
+    /* In overview (O key), every step is inactive, so the default 0.18 makes
+       the whole deck ghostly. Bump inactive opacity only while in overview so
+       the slides read clearly against the light background. The normal
+       slide-to-slide fade (0.18 above) is left untouched. */
+    body.impress-on-overview .step { opacity: 0.75; }
+    body.impress-on-overview #overview { opacity: 0; }
+
     /* Typographic system. clamp(min, preferred-vw, max) keeps text readable on
        small screens (preferred scales with viewport width, clamped both ends so
        it never goes microscopic on mobile nor absurd on desktop). */
@@ -252,7 +259,7 @@
   <div id="impress" data-transition-duration="900" data-width="1920" data-height="1080" data-min-scale="0.55">
 
 
-    <div class="step cover" data-x="0" data-y="-3000" data-scale="3.0" data-rotate="0">
+    <div class="step cover" data-x="1500" data-y="-3000" data-scale="3.0" data-rotate="0">
       <img class="monogram" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
       <p class="eyebrow">Fiba Labs · Systems Literacy</p>
       <h1>How your files, tools,<br>and logins actually work</h1>
@@ -350,68 +357,68 @@
       <p class="cap">...plus the folder around it</p>
     </div>
 
-    <div class="step section-step" data-x="3000" data-y="11100" data-scale="3.0" data-rotate="0">
+    <div class="step section-step" data-x="7000" data-y="11100" data-scale="3.0" data-rotate="0">
       <img class="monogram monogram--sm" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
       <p class="eyebrow">02</p>
       <h2 class="section-title">APIs &amp; MCPs</h2>
       <p class="lead">One standard box solves the tangle.</p>
     </div>
 
-    <div class="step imgstep" data-x="-100" data-y="12900" data-scale="0.65" data-rotate="11">
+    <div class="step imgstep" data-x="3900" data-y="12900" data-scale="0.65" data-rotate="11">
       <div class="imgcard"><img src="assets/diagrams/01_api-restaurant-analogy-v2.jpg" alt="An API is the waiter: you order from a menu, the kitchen stays hidden"></div>
       <p class="cap">An API is the waiter: you order from a menu, the kitchen stays hidden</p>
     </div>
 
-    <div class="step imgstep" data-x="2120" data-y="12690" data-scale="1.6" data-rotate="-4">
+    <div class="step imgstep" data-x="6120" data-y="12690" data-scale="1.6" data-rotate="-4">
       <div class="imgcard"><img src="assets/diagrams/02_mcp-analogy-scene1-api.jpg" alt="Every app speaks its own API, a different waiter per restaurant"></div>
       <p class="cap">Every app speaks its own API, a different waiter per restaurant</p>
     </div>
 
-    <div class="step imgstep" data-x="3820" data-y="12940" data-scale="0.75" data-rotate="13">
+    <div class="step imgstep" data-x="7820" data-y="12940" data-scale="0.75" data-rotate="13">
       <div class="imgcard"><img src="assets/diagrams/03_mcp-analogy-scene2-coding-assistants.jpg" alt="N tools by M assistants = a tangle of custom connections"></div>
       <p class="cap">N tools by M assistants = a tangle of custom connections</p>
     </div>
 
-    <div class="step imgstep" data-x="6090" data-y="12720" data-scale="1.7" data-rotate="-12">
+    <div class="step imgstep" data-x="10090" data-y="12720" data-scale="1.7" data-rotate="-12">
       <div class="imgcard"><img src="assets/diagrams/06_mcp-analogy-scene3-mcp.jpg" alt="MCP is the standard box for AI: one protocol, plug any tool into any assistant"></div>
       <p class="cap">MCP is the standard box for AI: one protocol, plug any tool into any assistant</p>
     </div>
 
-    <div class="step imgstep" data-x="5860" data-y="14630" data-scale="0.7" data-rotate="9">
+    <div class="step imgstep" data-x="9860" data-y="14630" data-scale="0.7" data-rotate="9">
       <div class="imgcard"><img src="assets/diagrams/04_mcp-analogy-container1-breakbulk.jpg" alt="Why it works, before shipping containers: every cargo loaded by hand, every port different"></div>
       <p class="cap">Why it works, before shipping containers: every cargo loaded by hand, every port different</p>
     </div>
 
-    <div class="step imgstep" data-x="4160" data-y="14340" data-scale="1.2" data-rotate="-6">
+    <div class="step imgstep" data-x="8160" data-y="14340" data-scale="1.2" data-rotate="-6">
       <div class="imgcard"><img src="assets/diagrams/05_mcp-analogy-container2-era.jpg" alt="The container standardized the box: any crane, any ship, any port. MCP did that for tools"></div>
       <p class="cap">The container standardized the box: any crane, any ship, any port. MCP did that for tools</p>
     </div>
 
-    <div class="step section-step" data-x="1000" data-y="17100" data-scale="3.0" data-rotate="0">
+    <div class="step section-step" data-x="9000" data-y="17100" data-scale="3.0" data-rotate="0">
       <img class="monogram monogram--sm" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
       <p class="eyebrow">03</p>
       <h2 class="section-title">Authentication</h2>
       <p class="lead">How software proves who it is.</p>
     </div>
 
-    <div class="step imgstep" data-x="-100" data-y="18900" data-scale="0.6" data-rotate="14">
+    <div class="step imgstep" data-x="7900" data-y="18900" data-scale="0.6" data-rotate="14">
       <div class="imgcard"><img src="assets/diagrams/auth-methods-how-each-works.jpg" alt="API keys vs tokens vs OAuth: what each actually does"></div>
       <p class="cap">API keys vs tokens vs OAuth: what each actually does</p>
     </div>
 
-    <div class="step imgstep" data-x="2120" data-y="18690" data-scale="1.5" data-rotate="-10">
+    <div class="step imgstep" data-x="10120" data-y="18690" data-scale="1.5" data-rotate="-10">
       <div class="imgcard"><img src="assets/diagrams/auth-methods-comparison-flow.jpg" alt="When to use which, and why OAuth is the safe default"></div>
       <p class="cap">When to use which, and why OAuth is the safe default</p>
     </div>
 
-    <div class="step close" data-x="0" data-y="21400" data-scale="3.0" data-rotate="0">
+    <div class="step close" data-x="10000" data-y="21400" data-scale="3.0" data-rotate="0">
       <img class="monogram" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
       <h2 class="section-title">Files. Tools. Trust.</h2>
       <p class="lead">That's the stack.</p>
     </div>
 
     <!-- Overview step: LAST, scaled to frame the whole canvas. Reached with O. -->
-    <div id="overview" class="step" data-x="2871" data-y="9200" data-scale="28"></div>
+    <div id="overview" class="step" data-x="5200" data-y="9300" data-scale="19"></div>
 
   </div>
 
