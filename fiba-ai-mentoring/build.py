@@ -5,7 +5,7 @@
 
 import html, os
 
-DEST = "/Users/carlosacuna/OS/presentations/workshop-file-formats-apis-auth-prezi"
+DEST = "/Users/carlosacuna/OS/presentations/fiba-ai-mentoring"
 TEMPLATE = "/Users/carlosacuna/OS/.claude/skills/prezi-deck/assets/template.html"
 
 # ---- Camera path (from the approved order table) -------------------------
