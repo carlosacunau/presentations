@@ -246,11 +246,20 @@ def render(s):
     rot = s.get("rotate", 0)
     attrs = f'data-x="{x}" data-y="{y}" data-scale="{sc}" data-rotate="{rot}"'
     if k == "cover":
+        # Subtle one-line teaser of the closing two-tier flow:
+        # human steps (indigo) then AI steps (violet), arrow-separated.
+        human = ["Plan", "Design", "Connect"]
+        ai = ["Collect", "Interpret", "Execute", "Display"]
+        sep = '<span class="cf-sep">&rarr;</span>'
+        cover_flow = sep.join(
+            [f'<span class="cf-h">{w}</span>' for w in human] +
+            [f'<span class="cf-a">{w}</span>' for w in ai])
         return f'''
     <div class="step cover" {attrs}>
       <img class="monogram" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
       <p class="eyebrow">{s["eyebrow"]}</p>
       <h1>{s["title"]}</h1>
+      <p class="cover-flow">{cover_flow}</p>
     </div>'''
     if k == "section":
         return f'''
@@ -345,6 +354,21 @@ EXTRA_CSS = """
     .flow-human { color: #4C2D91; }   /* Deep Indigo: the human steps */
     .flow-ai    { color: #8B5CF6; }   /* Electric Violet: the AI steps */
     .flow-sep   { opacity: 0.55; font-weight: 400; }
+
+    /* Cover teaser: subtle one-line preview of the closing flow. Same two
+       colors (human indigo -> AI violet), small and quiet under the title. */
+    .cover-flow {
+      margin-top: 18px;
+      font-family: var(--font-head);
+      font-weight: 500;
+      font-size: clamp(13px, 1.5vw, 17px);
+      letter-spacing: 0.04em;
+      display: flex; flex-wrap: wrap; align-items: center; gap: 0.5em;
+      opacity: 0.6;
+    }
+    .cover-flow .cf-h   { color: #4C2D91; }   /* human steps */
+    .cover-flow .cf-a   { color: #8B5CF6; }   /* AI steps */
+    .cover-flow .cf-sep { color: var(--muted); font-weight: 400; }
     .flow-arrow {
       font-size: clamp(28px, 3.4vw, 40px);
       color: var(--muted);

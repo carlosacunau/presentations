@@ -226,6 +226,21 @@
     .flow-human { color: #4C2D91; }   /* Deep Indigo: the human steps */
     .flow-ai    { color: #8B5CF6; }   /* Electric Violet: the AI steps */
     .flow-sep   { opacity: 0.55; font-weight: 400; }
+
+    /* Cover teaser: subtle one-line preview of the closing flow. Same two
+       colors (human indigo -> AI violet), small and quiet under the title. */
+    .cover-flow {
+      margin-top: 18px;
+      font-family: var(--font-head);
+      font-weight: 500;
+      font-size: clamp(13px, 1.5vw, 17px);
+      letter-spacing: 0.04em;
+      display: flex; flex-wrap: wrap; align-items: center; gap: 0.5em;
+      opacity: 0.6;
+    }
+    .cover-flow .cf-h   { color: #4C2D91; }   /* human steps */
+    .cover-flow .cf-a   { color: #8B5CF6; }   /* AI steps */
+    .cover-flow .cf-sep { color: var(--muted); font-weight: 400; }
     .flow-arrow {
       font-size: clamp(28px, 3.4vw, 40px);
       color: var(--muted);
@@ -282,6 +297,7 @@
       <img class="monogram" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
       <p class="eyebrow">Fiba Labs · AI Mentoring</p>
       <h1>Understanding AI, and how to work with it</h1>
+      <p class="cover-flow"><span class="cf-h">Plan</span><span class="cf-sep">&rarr;</span><span class="cf-h">Design</span><span class="cf-sep">&rarr;</span><span class="cf-h">Connect</span><span class="cf-sep">&rarr;</span><span class="cf-a">Collect</span><span class="cf-sep">&rarr;</span><span class="cf-a">Interpret</span><span class="cf-sep">&rarr;</span><span class="cf-a">Execute</span><span class="cf-sep">&rarr;</span><span class="cf-a">Display</span></p>
     </div>
 
     <div class="step section-step" data-x="3000" data-y="0" data-scale="3.0" data-rotate="0">
