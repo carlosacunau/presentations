@@ -125,19 +125,29 @@ if SEGMENT and SEGMENT not in ("full", "all"):
     _sections = kept
 
 # Flatten parsed structure back into the flat STEPS list the layout engine expects.
+# Each step gets a STABLE, readable id used for deep-links and the TOC:
+#   home            = cover
+#   1, 2, 3...      = section openers (whole number = the section)
+#   1.1, 1.2 ...    = the slides inside section 1
+#   thank-you       = close
+# overview is appended later by the template (DOM-last), so the loop runs
+# home -> 1 -> 1.1 ... -> thank-you -> overview -> (wraps) home.
 STEPS = []
 if cover:
-    STEPS.append(dict(kind="cover", title=cover["title"], eyebrow=cover["eyebrow"]))
-for s in _sections:
-    STEPS.append(dict(kind="section", num=s["num"], title=s["title"], sub=s["sub"]))
-    for im in s["images"]:
-        STEPS.append(dict(kind="image", img=im["img"], cap=im["cap"]))
+    STEPS.append(dict(kind="cover", sid="home",
+                      title=cover["title"], eyebrow=cover["eyebrow"]))
+for si, s in enumerate(_sections, start=1):
+    STEPS.append(dict(kind="section", sid=str(si),
+                      num=s["num"], title=s["title"], sub=s["sub"]))
+    for ii, im in enumerate(s["images"], start=1):
+        STEPS.append(dict(kind="image", sid=f"{si}.{ii}",
+                          img=im["img"], cap=im["cap"]))
 if close:
     if close.get("flow"):
-        STEPS.append(dict(kind="close", flow=True,
+        STEPS.append(dict(kind="close", sid="thank-you", flow=True,
                           top=close["top"], bottom=close["bottom"]))
     else:
-        STEPS.append(dict(kind="close", flow=False,
+        STEPS.append(dict(kind="close", sid="thank-you", flow=False,
                           title=close["title"], sub=close["sub"]))
 
 # ---- Cinematic layout engine ---------------------------------------------
@@ -149,13 +159,18 @@ if close:
 #     in to read them) -> the zoom itself becomes the drama
 # Deterministic (no RNG): all variation is index-driven so the build is stable.
 
-COL_DX = 2000            # base horizontal spacing
-ROW_DY = 1700            # base vertical spacing between serpentine rows
-COLS   = 4               # images per serpentine row
+# Layout aspect: the deck is navigated one slide at a time, so these only shape
+# the OVERVIEW "view". Goal = a balanced, landscape-ish bounding box (closer to
+# the 16:9 screen) instead of a tall narrow column with big empty side margins.
+# Levers: more columns + wider COL_DX widen the canvas; smaller ROW_DY/BLOCK_GAP
+# shorten it. Vertical stacking is kept (Carlos wants to use vertical space too).
+COL_DX = 2600            # base horizontal spacing (wider -> more horizontal span)
+ROW_DY = 1500            # base vertical spacing between serpentine rows (tighter)
+COLS   = 5               # images per serpentine row (more cols -> wider bands)
 SECTION_SCALE = 3.0      # big pull-back for section openers
 COVER_SCALE   = 3.0
 CLOSE_SCALE   = 3.0
-BLOCK_GAP = 2600         # vertical gap from end of a block to next opener
+BLOCK_GAP = 1900         # vertical gap from end of a block to next opener (tighter)
 
 # Bold cycles. data-scale here is the camera FRAME size at that step:
 #   small frame (0.6) = zoomed IN tight; large frame (1.8) = pulled back.
@@ -231,7 +246,10 @@ h_span = right - left
 ov_x = (left + right) / 2
 ov_y = (top + bottom) / 2
 # 16:9 frame: fit whichever is binding (vertical / 1080 vs horizontal / 1920).
-ov_scale = max(round(span / 980), round(h_span / 1750), 9)
+# TIGHTNESS < 1.0 pulls the overview camera closer (accepts slight border clip).
+OVERVIEW_TIGHTNESS = 0.78
+ov_scale = max(round(span / 1080 * OVERVIEW_TIGHTNESS),
+               round(h_span / 1920 * OVERVIEW_TIGHTNESS), 9)
 
 # ---- Render steps --------------------------------------------------------
 def esc(t): return t  # captions already use safe glyphs (visible text)
@@ -244,7 +262,9 @@ def render(s):
     k = s["kind"]
     x, y, sc = int(s["x"]), int(s["y"]), s["scale"]
     rot = s.get("rotate", 0)
-    attrs = f'data-x="{x}" data-y="{y}" data-scale="{sc}" data-rotate="{rot}"'
+    sid = s.get("sid", "")
+    idattr = f'id="{sid}" ' if sid else ""
+    attrs = f'{idattr}data-x="{x}" data-y="{y}" data-scale="{sc}" data-rotate="{rot}"'
     if k == "cover":
         # Subtle one-line teaser of the closing two-tier flow:
         # human steps (indigo) then AI steps (violet), arrow-separated.
@@ -424,7 +444,91 @@ tpl = tpl.replace("{{OVERVIEW_SCALE}}", str(int(ov_scale)))
 out = os.path.join(DEST, "index.html")
 open(out, "w").write(tpl)
 
+# ---- Companion table of contents (toc.html) ------------------------------
+# Regenerated on every build, so it never drifts from the deck. Sections are
+# headings; every slide is a clickable link that opens the deck in a NEW TAB at
+# that slide's stable id (home / 1 / 1.1 / ... / thank-you). Mirrors INDEX.md.
+def toc_html():
+    rows = []
+    rows.append('<li class="toc-home"><a href="index.html#/home" target="_blank" '
+                'rel="noopener">Home</a><span class="toc-sub">'
+                f'{attr(cover["title"]) if cover else ""}</span></li>')
+    for si, s in enumerate(_sections, start=1):
+        rows.append(f'<li class="toc-section"><a href="index.html#/{si}" '
+                    f'target="_blank" rel="noopener"><span class="toc-num">{si}</span>'
+                    f'{attr(s["title"])}</a></li>')
+        for ii, im in enumerate(s["images"], start=1):
+            sid = f"{si}.{ii}"
+            rows.append(f'<li class="toc-slide"><a href="index.html#/{sid}" '
+                        f'target="_blank" rel="noopener"><span class="toc-num">{sid}'
+                        f'</span>{attr(im["cap"])}</a></li>')
+    if close:
+        rows.append('<li class="toc-section toc-end"><a href="index.html#/thank-you" '
+                    'target="_blank" rel="noopener"><span class="toc-num">&#9733;</span>'
+                    'Thank you</a></li>')
+    rows.append('<li class="toc-section"><a href="index.html#/overview" '
+                'target="_blank" rel="noopener"><span class="toc-num">&#9633;</span>'
+                'Overview (whole canvas)</a></li>')
+    deck_title = attr(cover["title"]) if cover else "Presentation"
+    items = "\n      ".join(rows)
+    return f'''<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contents &middot; {deck_title}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {{ --accent:#8B5CF6; --indigo:#4C2D91; --bg:#F7F6FB; --fg:#1A1A1A; --muted:#6b6b75; }}
+    html,body {{ margin:0; background:var(--bg); color:var(--fg);
+      font-family:'Inter',sans-serif; }}
+    .wrap {{ max-width:820px; margin:0 auto; padding:56px 28px 80px; }}
+    header {{ display:flex; align-items:center; gap:14px; margin-bottom:8px; }}
+    header img {{ width:44px; height:auto; }}
+    h1 {{ font-family:'Space Grotesk',sans-serif; font-size:30px; margin:0; }}
+    .eyebrow {{ color:var(--accent); font-size:13px; letter-spacing:.06em;
+      text-transform:uppercase; margin:0 0 28px; }}
+    ul {{ list-style:none; padding:0; margin:0; }}
+    li a {{ display:flex; align-items:baseline; gap:12px; text-decoration:none;
+      color:var(--fg); padding:7px 10px; border-radius:8px; }}
+    li a:hover {{ background:#ece9f7; color:var(--indigo); }}
+    .toc-num {{ font-family:'Space Grotesk',sans-serif; color:var(--accent);
+      min-width:46px; font-weight:500; }}
+    .toc-home a {{ font-family:'Space Grotesk',sans-serif; font-weight:700;
+      font-size:19px; }}
+    .toc-home .toc-sub {{ display:block; color:var(--muted); font-size:13px;
+      padding:0 10px 6px 10px; }}
+    .toc-section {{ margin-top:18px; }}
+    .toc-section a {{ font-family:'Space Grotesk',sans-serif; font-weight:700;
+      font-size:20px; color:var(--indigo); }}
+    .toc-slide a {{ font-size:15px; color:#333; }}
+    .toc-slide .toc-num {{ color:var(--muted); font-weight:400; }}
+    .hint {{ margin-top:40px; color:var(--muted); font-size:13px; }}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+      <div>
+        <p class="eyebrow">{attr(cover["eyebrow"]) if cover else "Fiba Labs"}</p>
+        <h1>{deck_title}</h1>
+      </div>
+    </header>
+    <ul>
+      {items}
+    </ul>
+    <p class="hint">Each link opens the deck in a new tab at that slide. Generated from INDEX.md on every build.</p>
+  </div>
+</body>
+</html>'''
+
+toc_out = os.path.join(DEST, "toc.html")
+open(toc_out, "w").write(toc_html())
+
 print("WROTE", out)
+print("WROTE", toc_out)
 print("steps:", len(placed))
-print("overview: x=%d y=%d scale=%d  (span %d)" % (ov_x, ov_y, ov_scale, span))
+print("overview: x=%d y=%d scale=%d  (v-span %d, h-span %d, ratio w/h %.2f)" % (
+    ov_x, ov_y, ov_scale, span, h_span, h_span / span))
 print("remaining placeholders:", tpl.count("{{"))
