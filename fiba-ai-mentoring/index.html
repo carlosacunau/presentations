@@ -536,6 +536,22 @@
       }
     }, false);
 
+    // Mouse-wheel / trackpad navigation (additive: arrows, space, click still work).
+    // Down = next, Up = back, on every step including the overview (wraps via impress).
+    // A cooldown swallows the burst of wheel events one gesture fires, so a single
+    // scroll flick advances exactly ONE slide instead of skipping several.
+    var wheelLocked = false;
+    document.addEventListener("wheel", function (event) {
+      event.preventDefault();               // don't let the page scroll behind the canvas
+      if (wheelLocked) return;
+      var dy = event.deltaY;
+      if (Math.abs(dy) < 8) return;         // ignore tiny/noisy deltas
+      wheelLocked = true;
+      if (dy > 0) { api.next(); } else { api.prev(); }
+      // release after the transition settles (impress default transition ~1s)
+      window.setTimeout(function () { wheelLocked = false; }, 900);
+    }, { passive: false });
+
     // On resize / orientation change, recompute the reference canvas and re-fit
     // the active step. impress.js reads data-width at init, so we update the
     // attributes and re-goto the current step to apply the new window scale.
