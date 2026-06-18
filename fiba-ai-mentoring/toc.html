@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contents &middot; Understanding AI, and how to work with it</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root { --accent:#8B5CF6; --indigo:#4C2D91; --bg:#F7F6FB; --fg:#1A1A1A; --muted:#6b6b75; }
+    html,body { margin:0; background:var(--bg); color:var(--fg);
+      font-family:'Inter',sans-serif; }
+    .wrap { max-width:820px; margin:0 auto; padding:56px 28px 80px; }
+    header { display:flex; align-items:center; gap:14px; margin-bottom:8px; }
+    header img { width:44px; height:auto; }
+    h1 { font-family:'Space Grotesk',sans-serif; font-size:30px; margin:0; }
+    .eyebrow { color:var(--accent); font-size:13px; letter-spacing:.06em;
+      text-transform:uppercase; margin:0 0 28px; }
+    ul { list-style:none; padding:0; margin:0; }
+    li a { display:flex; align-items:baseline; gap:12px; text-decoration:none;
+      color:var(--fg); padding:7px 10px; border-radius:8px; }
+    li a:hover { background:#ece9f7; color:var(--indigo); }
+    .toc-num { font-family:'Space Grotesk',sans-serif; color:var(--accent);
+      min-width:46px; font-weight:500; }
+    .toc-home a { font-family:'Space Grotesk',sans-serif; font-weight:700;
+      font-size:19px; }
+    .toc-home .toc-sub { display:block; color:var(--muted); font-size:13px;
+      padding:0 10px 6px 10px; }
+    .toc-section { margin-top:18px; }
+    .toc-section a { font-family:'Space Grotesk',sans-serif; font-weight:700;
+      font-size:20px; color:var(--indigo); }
+    .toc-slide a { font-size:15px; color:#333; }
+    .toc-slide .toc-num { color:var(--muted); font-weight:400; }
+    .hint { margin-top:40px; color:var(--muted); font-size:13px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+      <div>
+        <p class="eyebrow">Fiba Labs · AI Mentoring</p>
+        <h1>Understanding AI, and how to work with it</h1>
+      </div>
+    </header>
+    <ul>
+      <li class="toc-home"><a href="index.html#/home" target="_blank" rel="noopener">Home</a><span class="toc-sub">Understanding AI, and how to work with it</span></li>
+      <li class="toc-section"><a href="index.html#/1" target="_blank" rel="noopener"><span class="toc-num">1</span>File Formats</a></li>
+      <li class="toc-slide"><a href="index.html#/1.1" target="_blank" rel="noopener"><span class="toc-num">1.1</span>Every file is the same 3 steps: raw bytes, a processor, then what you see</a></li>
+      <li class="toc-slide"><a href="index.html#/1.2" target="_blank" rel="noopener"><span class="toc-num">1.2</span>.csv: a table as plain text, one row per line</a></li>
+      <li class="toc-slide"><a href="index.html#/1.3" target="_blank" rel="noopener"><span class="toc-num">1.3</span>.docx: a zipped bundle of files in disguise</a></li>
+      <li class="toc-slide"><a href="index.html#/1.4" target="_blank" rel="noopener"><span class="toc-num">1.4</span>.xlsx: same trick as docx, but for spreadsheets</a></li>
+      <li class="toc-slide"><a href="index.html#/1.5" target="_blank" rel="noopener"><span class="toc-num">1.5</span>.pdf: a snapshot for printing, hard for software to read back</a></li>
+      <li class="toc-slide"><a href="index.html#/1.6" target="_blank" rel="noopener"><span class="toc-num">1.6</span>.html: a page your browser renders</a></li>
+      <li class="toc-slide"><a href="index.html#/1.7" target="_blank" rel="noopener"><span class="toc-num">1.7</span>Two ways an HTML file gets its numbers: baked-in (rebuilt on a schedule) vs live fetch</a></li>
+      <li class="toc-slide"><a href="index.html#/1.8" target="_blank" rel="noopener"><span class="toc-num">1.8</span>A Cowork Artifact is just an .html file Claude builds for you, and lives in Claude Cowork where it&#x27;s always updated</a></li>
+      <li class="toc-slide"><a href="index.html#/1.9" target="_blank" rel="noopener"><span class="toc-num">1.9</span>.json: data with every value carrying its type (the format machines read)</a></li>
+      <li class="toc-slide"><a href="index.html#/1.10" target="_blank" rel="noopener"><span class="toc-num">1.10</span>.py: plain text that runs. Code takes inputs, computes, and shows a result</a></li>
+      <li class="toc-slide"><a href="index.html#/1.11" target="_blank" rel="noopener"><span class="toc-num">1.11</span>.md: plain text with light formatting. The language Claude prefers</a></li>
+      <li class="toc-slide"><a href="index.html#/1.12" target="_blank" rel="noopener"><span class="toc-num">1.12</span>One format, many jobs: instructions, memory, rules, skills</a></li>
+      <li class="toc-slide"><a href="index.html#/1.13" target="_blank" rel="noopener"><span class="toc-num">1.13</span>README.md: the front door of any project, the short intro</a></li>
+      <li class="toc-slide"><a href="index.html#/1.14" target="_blank" rel="noopener"><span class="toc-num">1.14</span>CLAUDE.md: the standing instructions for a project</a></li>
+      <li class="toc-slide"><a href="index.html#/1.15" target="_blank" rel="noopener"><span class="toc-num">1.15</span>AGENTS.md: same file, tool-agnostic name</a></li>
+      <li class="toc-slide"><a href="index.html#/1.16" target="_blank" rel="noopener"><span class="toc-num">1.16</span>MEMORY.md: what the agent remembers across sessions</a></li>
+      <li class="toc-slide"><a href="index.html#/1.17" target="_blank" rel="noopener"><span class="toc-num">1.17</span>rules.md: the hard constraints</a></li>
+      <li class="toc-slide"><a href="index.html#/1.18" target="_blank" rel="noopener"><span class="toc-num">1.18</span>A skill is just a markdown file with instructions</a></li>
+      <li class="toc-slide"><a href="index.html#/1.19" target="_blank" rel="noopener"><span class="toc-num">1.19</span>...plus the folder around it</a></li>
+      <li class="toc-section"><a href="index.html#/2" target="_blank" rel="noopener"><span class="toc-num">2</span>Prompting</a></li>
+      <li class="toc-slide"><a href="index.html#/2.1" target="_blank" rel="noopener"><span class="toc-num">2.1</span>Same task, better ask: an unstructured prompt gives a vague answer; a structured one (role, goal, example) gives a complete one</a></li>
+      <li class="toc-slide"><a href="index.html#/2.2" target="_blank" rel="noopener"><span class="toc-num">2.2</span>Don&#x27;t memorize frameworks: tell AI what you need and why, and it writes the prompt you paste into a new chat</a></li>
+      <li class="toc-section"><a href="index.html#/3" target="_blank" rel="noopener"><span class="toc-num">3</span>Authentication</a></li>
+      <li class="toc-slide"><a href="index.html#/3.1" target="_blank" rel="noopener"><span class="toc-num">3.1</span>&quot;Token&quot; is an overused word: an AI token is a chunk of text the model reads; an auth token is a secret key that proves who you are</a></li>
+      <li class="toc-slide"><a href="index.html#/3.2" target="_blank" rel="noopener"><span class="toc-num">3.2</span>API keys vs tokens vs OAuth: what each actually does</a></li>
+      <li class="toc-slide"><a href="index.html#/3.3" target="_blank" rel="noopener"><span class="toc-num">3.3</span>When to use which, and why OAuth is the safe default</a></li>
+      <li class="toc-section"><a href="index.html#/4" target="_blank" rel="noopener"><span class="toc-num">4</span>APIs &amp; MCPs</a></li>
+      <li class="toc-slide"><a href="index.html#/4.1" target="_blank" rel="noopener"><span class="toc-num">4.1</span>An API is the waiter: you order from a menu, the kitchen stays hidden</a></li>
+      <li class="toc-slide"><a href="index.html#/4.2" target="_blank" rel="noopener"><span class="toc-num">4.2</span>Every app speaks its own API, a different waiter per restaurant</a></li>
+      <li class="toc-slide"><a href="index.html#/4.3" target="_blank" rel="noopener"><span class="toc-num">4.3</span>N tools by M assistants = a tangle of custom connections</a></li>
+      <li class="toc-slide"><a href="index.html#/4.4" target="_blank" rel="noopener"><span class="toc-num">4.4</span>MCP is the standard box for AI: one protocol, plug any tool into any assistant</a></li>
+      <li class="toc-slide"><a href="index.html#/4.5" target="_blank" rel="noopener"><span class="toc-num">4.5</span>Why it works, before shipping containers: every cargo loaded by hand, every port different</a></li>
+      <li class="toc-slide"><a href="index.html#/4.6" target="_blank" rel="noopener"><span class="toc-num">4.6</span>The container standardized the box: any crane, any ship, any port. MCP did that for tools</a></li>
+      <li class="toc-section toc-end"><a href="index.html#/thank-you" target="_blank" rel="noopener"><span class="toc-num">&#9733;</span>Thank you</a></li>
+      <li class="toc-section"><a href="index.html#/overview" target="_blank" rel="noopener"><span class="toc-num">&#9633;</span>Overview (whole canvas)</a></li>
+    </ul>
+    <p class="hint">Each link opens the deck in a new tab at that slide. Generated from INDEX.md on every build.</p>
+  </div>
+</body>
+</html>
