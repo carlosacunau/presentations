@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fiba Labs para Mónica · AI Mentoring</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/monokai.css">
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <link rel="stylesheet" href="assets/fibalabs.css">
+  <style>
+    /* Deck-specific touches */
+    .eyebrow-row { display:flex; gap:12px; align-items:center; margin-bottom: var(--spacing-md); flex-wrap:wrap; }
+    .tag { font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.15em; border:1px solid var(--border); padding:5px 12px; border-radius:2px; }
+    .two-col { display:grid; grid-template-columns:1fr 1fr; gap: var(--spacing-lg); flex:1; align-items:start; }
+    .vs-table { width:100%; border-collapse:collapse; }
+    .vs-table th, .vs-table td { text-align:left; padding:14px 16px; border-bottom:1px solid var(--border); font-size:0.9rem; }
+    .vs-table th { color:var(--text-muted); text-transform:uppercase; letter-spacing:0.12em; font-size:0.7rem; font-weight:500; }
+    .vs-table td:first-child { color:var(--text-muted); width:30%; }
+    .vs-table .mine { color:var(--accent-light); }
+    .vs-table .them { color:var(--text-secondary); }
+    .lead-tight { font-size:1.05rem; color:var(--text-secondary); line-height:1.6; max-width:760px; }
+    .step-row { display:flex; align-items:flex-start; gap:16px; padding:14px 0; border-bottom:1px solid var(--border); }
+    .step-row:last-child { border-bottom:none; }
+    .step-num { font-family:var(--font-mono); color:var(--accent); font-size:0.85rem; min-width:32px; padding-top:2px; }
+    .step-body h4 { margin-bottom:4px; }
+    .step-body p { font-size:0.85rem; color:var(--text-muted); margin:0; line-height:1.5; }
+    .pill-list { display:flex; flex-direction:column; gap:10px; }
+    .quote-big { font-family:var(--font-serif); font-style:italic; font-size:1.6rem; line-height:1.4; color:var(--text-primary); max-width:820px; }
+    .quote-src { margin-top:var(--spacing-md); font-size:0.8rem; color:var(--text-muted); letter-spacing:0.1em; text-transform:uppercase; }
+    .small-note { font-size:0.8rem; color:var(--text-muted); margin-top:var(--spacing-md); }
+    .ask-card { border:1px solid var(--border); border-left:3px solid var(--accent); padding:20px 24px; }
+    .ask-card h4 { color:var(--text-primary); }
+    .ask-card p { font-size:0.88rem; color:var(--text-secondary); line-height:1.55; margin:6px 0 0; }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- 1. COVER -->
+      <section data-auto-animate>
+        <div class="slide slide--center slide--section">
+          <div class="cover-logo">
+            <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+          </div>
+          <div class="kicker" style="justify-content:center;">Fiba Labs · para Mónica Rementería</div>
+          <h1 style="text-align:center; max-width:900px;">No te enseño a usar la IA. Te enseño a dirigirla.</h1>
+          <p class="lead" style="text-align:center; margin:0 auto;">Resumen de lo que conversamos: qué estoy haciendo, en qué se diferencia, y cómo podríamos trabajar juntos.</p>
+          <div class="small-note">22 de junio, 2026</div>
+        </div>
+      </section>
+
+      <!-- 2. SECTION: el contexto -->
+      <section>
+        <div class="slide slide--center slide--section">
+          <div class="kicker" style="justify-content:center;">01 // Punto de partida</div>
+          <h2 style="text-align:center;">De dónde salió esto</h2>
+        </div>
+      </section>
+
+      <!-- 3. El giro -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">fiba labs</div>
+          </div>
+          <div class="content">
+            <div class="kicker">El giro</div>
+            <h2>Desde febrero, la gente no quiere otra herramienta. Quiere saber dirigir a Claude.</h2>
+            <p class="lead-tight" style="margin-bottom:var(--spacing-lg);">Con los sistemas agénticos de Claude se disparó la demanda. Todo el mundo quiere usarlo, pero la curva de aprendizaje no es menor. Ahí apareció la necesidad real.</p>
+            <ul class="list">
+              <li>Antes trabajaba en automatizaciones aplicadas: lectura de facturas, generación de demanda, órdenes de compra.</li>
+              <li>Empecé a dictar workshops para empresarios (partió en el chat del colegio de mis hijos).</li>
+              <li>De una sesión salió otra, y otra. Hoy tengo propuestas afuera con empresas más grandes.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. Tracción / prueba -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">fiba labs</div>
+          </div>
+          <div class="content">
+            <div class="kicker">La señal que me confirmó esto</div>
+            <div class="quote-big">"Entendí muchas cosas que ya había hecho sin saber cómo, y otras que no quedaron bien estructuradas. Ahora las puedo arreglar."</div>
+            <div class="quote-src">Un arquitecto, después de la primera sesión</div>
+            <p class="lead-tight" style="margin-top:var(--spacing-lg);">No pudo asistir al primer taller, tomó un documento que les pasé, empezó solo, y terminó contratándome un workshop para su oficina. Todo ha sido boca a boca.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. SECTION: qué es -->
+      <section>
+        <div class="slide slide--center slide--section">
+          <div class="kicker" style="justify-content:center;">02 // La propuesta</div>
+          <h2 style="text-align:center;">Qué es lo que hago</h2>
+        </div>
+      </section>
+
+      <!-- 6. AI Mentoring definición -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">fiba labs</div>
+          </div>
+          <div class="content">
+            <div class="eyebrow-row">
+              <span class="tag">AI Mentoring</span>
+              <span class="tag">Done with you</span>
+              <span class="tag">Hands-on</span>
+            </div>
+            <h2 style="max-width:900px;">Te doy el modelo mental y los frameworks para que construyas tus propias herramientas.</h2>
+            <p class="lead-tight">Pienso a Claude como un empleado que pueden ser muchos empleados. Tú eres el gerente. Pero para dirigirlos bien tienes que aprender a hablar su idioma. Eso es lo que enseño.</p>
+            <div class="grid-2" style="margin-top:var(--spacing-lg);">
+              <div class="card card--featured">
+                <div class="card__title accent-text">Done with you</div>
+                <div class="card__text">Lo mío. Acompaño a la persona para que cree sus bases y sus tools. La capacidad queda en ella.</div>
+              </div>
+              <div class="card">
+                <div class="card__title">Done for you</div>
+                <div class="card__text">El otro modelo (tipo Kabeli): te instalo agentes y yo sigo siendo el dueño del desarrollo. No es lo que ofrezco aquí.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. Lo que NO es -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">fiba labs</div>
+          </div>
+          <div class="content">
+            <div class="kicker">Para que quede claro</div>
+            <div class="two-col">
+              <div>
+                <h3 class="muted">Esto NO es</h3>
+                <ul class="list" style="margin-top:var(--spacing-sm);">
+                  <li>"Te enseño a que la IA te escriba un correo como tú."</li>
+                  <li>Un curso masivo de 200 o 500 personas.</li>
+                  <li>Contenido genérico que sirve para todos y para nadie.</li>
+                  <li>Un webinar de venta que termina en un curso de USD 200.</li>
+                </ul>
+              </div>
+              <div>
+                <h3 class="accent-text">Esto SÍ es</h3>
+                <ul class="list list--check" style="margin-top:var(--spacing-sm);">
+                  <li>Miramos tus procesos reales, en tu rol y tu empresa.</li>
+                  <li>Aprendes qué se automatiza, qué se delega y qué se elimina.</li>
+                  <li>Grupos chicos (máximo 6) o uno a uno, muy personalizado.</li>
+                  <li>Salimos con herramientas construidas por ti.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. SECTION: metodología -->
+      <section>
+        <div class="slide slide--center slide--section">
+          <div class="kicker" style="justify-content:center;">03 // Cómo funciona</div>
+          <h2 style="text-align:center;">La metodología</h2>
+        </div>
+      </section>
+
+      <!-- 9. El recorrido -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">fiba labs</div>
+          </div>
+          <div class="content">
+            <div class="kicker">El recorrido</div>
+            <div class="step-row">
+              <div class="step-num">00</div>
+              <div class="step-body">
+                <h4>Intake corto</h4>
+                <p>Una primera lectura rápida: qué IA conocen, cómo trabajan, dónde están parados. Corto a propósito.</p>
+              </div>
+            </div>
+            <div class="step-row">
+              <div class="step-num">01</div>
+              <div class="step-body">
+                <h4>Sesión de fundamentos (3 a 4 horas)</h4>
+                <p>Las bases, con ejemplos prácticos y resolviendo dudas. Aquí la persona pasa de "¿se puede?" a "¿puedo hacer todo eso?".</p>
+              </div>
+            </div>
+            <div class="step-row">
+              <div class="step-num">02</div>
+              <div class="step-body">
+                <h4>Intake ajustado</h4>
+                <p>Después de la primera sesión salen muchas más oportunidades. Ahí recién afino el alcance de las siguientes.</p>
+              </div>
+            </div>
+            <div class="step-row">
+              <div class="step-num">03</div>
+              <div class="step-body">
+                <h4>Sus procesos, en vivo</h4>
+                <p>Levantamos su trabajo real. Pueden grabar un video de un proceso y de ahí genero un SOP para automatizarlo, cortando lo que no funcione.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 10. SECTION: diferenciación -->
+      <section>
+        <div class="slide slide--center slide--section">
+          <div class="kicker" style="justify-content:center;">04 // El mapa</div>
+          <h2 style="text-align:center;">En qué me diferencio</h2>
+        </div>
+      </section>
+
+      <!-- 11. Tabla comparativa -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">fiba labs</div>
+          </div>
+          <div class="content">
+            <div class="kicker">Yo vs. el resto del mercado</div>
+            <table class="vs-table">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>El mercado (cursos masivos, universidades, consultoras)</th>
+                  <th>Fiba Labs</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Formato</td><td class="them">Masivo, 100 a 500 personas</td><td class="mine">Grupos de máximo 6, o uno a uno</td></tr>
+                <tr><td>Contenido</td><td class="them">Genérico, sirve para todos</td><td class="mine">Sobre tus procesos y tu rol</td></tr>
+                <tr><td>Resultado</td><td class="them">Sabes "usar" la IA</td><td class="mine">Sales con tools construidas por ti</td></tr>
+                <tr><td>Modelo</td><td class="them">Curso o webinar de venta</td><td class="mine">Mentoring done-with-you, acompañado</td></tr>
+                <tr><td>Compromiso</td><td class="them">Pagas y entras</td><td class="mine">Comprometido con tu resultado</td></tr>
+              </tbody>
+            </table>
+            <p class="small-note">Referencias del mapa que vimos: Eduardo Vásquez (masivo), UDD / eClass y otras universidades, Big Four. Otra categoría es Kabeli (instala agentes). Yo estoy en adopción y capacidad instalada en la persona.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 12. Precio / garantía -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">fiba labs</div>
+          </div>
+          <div class="content">
+            <div class="kicker">Cómo lo estructuro hoy</div>
+            <div class="two-col">
+              <div>
+                <h3>El formato</h3>
+                <ul class="list" style="margin-top:var(--spacing-sm);">
+                  <li>Por horas: por ejemplo, 10 horas de consultoría.</li>
+                  <li>O un workshop de 5 a 6 sesiones, para un grupo chico.</li>
+                  <li>Lo calculo en horas, pero te lo presento por lo que vas a lograr.</li>
+                </ul>
+              </div>
+              <div>
+                <h3 class="accent-text">La garantía</h3>
+                <ul class="list list--check" style="margin-top:var(--spacing-sm);">
+                  <li>Satisfacción garantizada.</li>
+                  <li>Si después de la primera sesión no te encanta, no me pagas y lo dejamos ahí.</li>
+                  <li>Estoy empezando, así que todavía no hay precio de lista (eso es justo lo que quiero afinar contigo).</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 13. SECTION: la propuesta para Mónica -->
+      <section>
+        <div class="slide slide--center slide--section">
+          <div class="kicker" style="justify-content:center;">05 // Para ti</div>
+          <h2 style="text-align:center;">Lo que te propongo</h2>
+        </div>
+      </section>
+
+      <!-- 14. Las 3 cartas -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">fiba labs</div>
+          </div>
+          <div class="content">
+            <div class="kicker">Una propuesta abierta</div>
+            <div class="pill-list">
+              <div class="ask-card">
+                <h4>1. Tú me das feedback</h4>
+                <p>Conoces este mercado mejor que nadie: universidades, cursos masivos, go to market. Quiero tu lectura sobre cómo paquetizar y segmentar esto.</p>
+              </div>
+              <div class="ask-card">
+                <h4>2. Si tienes una empresa interesada, hacemos un piloto</h4>
+                <p>Si aparece alguien de tu red para un programa, afinamos juntos el pricing y lo corremos. Garantía de por medio: cero costo si no les gusta.</p>
+              </div>
+              <div class="ask-card">
+                <h4>3. Te sumas a la primera sesión</h4>
+                <p>Una más en el grupo, para que veas el método de primera mano. Desde ahí podemos hablar de referral fee o de trabajar juntos.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 15. Próximos pasos -->
+      <section>
+        <div class="slide">
+          <div class="header">
+            <div class="header__logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">fiba labs</div>
+          </div>
+          <div class="content">
+            <div class="kicker">Próximos pasos</div>
+            <h2>Quedamos en esto</h2>
+            <div class="grid-2" style="margin-top:var(--spacing-md);">
+              <div class="card">
+                <div class="card__title accent-text">Yo, hoy</div>
+                <div class="card__text">Te envío esta presentación de lo que conversamos.</div>
+              </div>
+              <div class="card">
+                <div class="card__title accent-text">Yo, miércoles o jueves</div>
+                <div class="card__text">Te paso el brochure con la propuesta de valor y la diferenciación, para que lo puedas referir bien.</div>
+              </div>
+              <div class="card">
+                <div class="card__title">Tú</div>
+                <div class="card__text">Me das tu feedback e identificas quién de tu red podría ser un buen piloto.</div>
+              </div>
+              <div class="card">
+                <div class="card__title">Juntos</div>
+                <div class="card__text">Si aparece un piloto, alineamos pricing, te sumas a la sesión, y revisamos referral.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 16. Cierre -->
+      <section data-auto-animate>
+        <div class="slide slide--center slide--section">
+          <div class="cover-logo">
+            <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+          </div>
+          <h1 style="text-align:center; max-width:850px;">Gracias, Mónica.</h1>
+          <p class="lead" style="text-align:center; margin:0 auto;">Cualquier empresa que veas para un piloto, la revisamos sin compromiso. Hablamos.</p>
+          <div class="contact-grid" style="max-width:760px;">
+            <div class="contact-item">
+              <div class="contact-item__label">Quién</div>
+              <div class="contact-item__value">Carlos Acuña · Fiba Labs</div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-item__label">Qué</div>
+              <div class="contact-item__value">AI Mentoring, done with you</div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-item__label">Cuándo</div>
+              <div class="contact-item__value">Brochure: mié / jue</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: true,
+      controls: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      center: false,
+      transition: 'slide',
+      backgroundTransition: 'fade',
+      width: 1280,
+      height: 720,
+      margin: 0,
+      minScale: 0.2,
+      maxScale: 2,
+      autoAnimate: true,
+      autoAnimateDuration: 0.7,
+      plugins: [RevealHighlight]
+    });
+    lucide.createIcons();
+  </script>
+</body>
+</html>
