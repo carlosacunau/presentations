@@ -75,6 +75,36 @@ pre, code, .command {
 /* Image containers: lighter frame */
 .image-container, .image-container img { border-color: var(--border) !important; }
 
+/* Reveal.js puts a .slide-background-content layer ON TOP of slide content
+   that intercepts clicks. Make it click-through so links underneath work. */
+.reveal .backgrounds,
+.reveal .slide-background,
+.reveal .slide-background-content { pointer-events: none !important; }
+
+/* Clickable resource links inside slides.
+   Reveal.js swallows clicks, so links need pointer-events + z-index. */
+.reveal a.resource-link {
+  pointer-events: auto;
+  position: relative;
+  z-index: 30;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 12px 16px;
+  text-decoration: none;
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  transition: border-color 0.15s, background 0.15s;
+}
+.reveal a.resource-link:hover {
+  border-color: var(--accent);
+  background: var(--bg-card-hover);
+}
+.resource-link__name { font-weight: 600; color: var(--accent); }
+.resource-link__desc { color: var(--text-secondary); font-size: 0.82em; }
+.resource-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px; }
+
 /* Reveal controls + progress: tint to accent so they show on light */
 .reveal .controls { color: var(--accent); }
 .reveal .progress { color: var(--accent); }
