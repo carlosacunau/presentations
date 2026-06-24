@@ -1,0 +1,82 @@
+/* ============================================================
+   LIGHT THEME OVERRIDE for the Remote Cohort 1 findings deck.
+   Appended after fibalabs.css so these rules win by cascade.
+   Keeps the Electric Violet accent; flips the Deep Void canvas
+   to a warm off-white. Fiba-branded, light mode.
+   ============================================================ */
+
+:root {
+  --bg-dark: #F7F6FB;        /* warm off-white canvas */
+  --bg-card: #FFFFFF;        /* white cards */
+  --bg-card-hover: #F0EDFA;  /* faint violet tint on hover */
+
+  --accent: #7C3AED;         /* slightly deeper violet for contrast on light */
+  --accent-light: #8B5CF6;
+  --accent-glow: rgba(124, 58, 237, 0.10);
+
+  --secondary: #4C2D91;
+  --secondary-light: #6D4DB8;
+
+  --success: #059669;
+  --warning: #B45309;
+  --error: #DC2626;
+
+  --text-primary: #1A1726;   /* near-black, slightly violet */
+  --text-secondary: #4A4458;
+  --text-muted: #837C92;
+
+  --border: #E2DEF0;
+}
+
+/* Viewport + body: the original rule is hardcoded with !important and
+   violet grid lines, so we must override with !important too. */
+html, body {
+  background: var(--bg-dark) !important;
+  color: var(--text-primary);
+}
+
+.reveal-viewport {
+  background: var(--bg-dark) !important;
+  background-image:
+    linear-gradient(rgba(124, 58, 237, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(124, 58, 237, 0.04) 1px, transparent 1px) !important;
+  background-size: 60px 60px !important;
+}
+
+.reveal { background: var(--bg-dark); color: var(--text-primary); }
+.reveal .slides section { background: var(--bg-dark); }
+
+/* Cards: give them a soft border + subtle shadow so they read on white */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 3px rgba(26, 23, 38, 0.04);
+}
+.card--featured {
+  border-color: var(--accent);
+  box-shadow: 0 2px 10px rgba(124, 58, 237, 0.12);
+}
+
+/* Section-divider glow: lighter, so it doesn't muddy the white */
+.slide--section::before {
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+}
+
+/* Header logo wordmark + kicker stay readable on light */
+.header__logo { color: var(--text-secondary); }
+.kicker { color: var(--accent); }
+
+/* Code/command blocks: light surface instead of near-black */
+pre, code, .command {
+  background: #F0EDFA;
+  color: var(--text-primary);
+}
+
+/* Image containers: lighter frame */
+.image-container, .image-container img { border-color: var(--border) !important; }
+
+/* Reveal controls + progress: tint to accent so they show on light */
+.reveal .controls { color: var(--accent); }
+.reveal .progress { color: var(--accent); }
+.reveal .progress span { background: var(--accent); }
+.reveal .slide-number { background: rgba(124,58,237,0.08); color: var(--text-secondary); }
