@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discovery: Sierra Richey · Fiba Labs</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/monokai.css">
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+:root {
+  --bg-dark: #0A0A14;
+  --bg-card: #12121E;
+  --bg-card-hover: #1A1A2A;
+  --accent: #8B5CF6;
+  --accent-light: #A78BFA;
+  --accent-glow: rgba(139, 92, 246, 0.15);
+  --secondary: #4C2D91;
+  --secondary-light: #6D4DB8;
+  --success: #34D399;
+  --warning: #FBBF24;
+  --error: #F87171;
+  --text-primary: #E8E4F0;
+  --text-secondary: #9B95A8;
+  --text-muted: #5C5670;
+  --border: #2A2A3A;
+  --font-serif: 'Instrument Serif', Georgia, serif;
+  --font-sans: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Fira Code', monospace;
+  --spacing-xs: 8px;
+  --spacing-sm: 16px;
+  --spacing-md: 24px;
+  --spacing-lg: 40px;
+  --spacing-xl: 60px;
+}
+html, body { background: var(--bg-dark) !important; color: var(--text-primary); margin: 0; height: 100%; }
+body { font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+.reveal-viewport {
+  background: var(--bg-dark) !important;
+  background-image:
+    linear-gradient(rgba(139, 92, 246, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139, 92, 246, 0.03) 1px, transparent 1px) !important;
+  background-size: 60px 60px !important;
+}
+.reveal { background: var(--bg-dark); font-family: var(--font-sans); font-size: 22px; color: var(--text-primary); }
+.reveal .slides { text-align: left; }
+.reveal .slides section { padding: 0; background: var(--bg-dark); }
+.slide { height: 100%; width: 100%; padding: var(--spacing-xl); box-sizing: border-box; display: flex; flex-direction: column; background: transparent; position: relative; }
+.slide > * { position: relative; z-index: 1; }
+.slide--center { align-items: center; justify-content: center; text-align: center; }
+.slide--section { background: transparent; }
+.slide--section::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 600px; height: 600px; background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%); pointer-events: none; z-index: 0; }
+.header { display: flex; justify-content: flex-end; align-items: center; padding-bottom: var(--spacing-md); margin-bottom: var(--spacing-lg); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.cover-logo { display: flex; justify-content: center; margin-bottom: var(--spacing-lg); }
+.cover-logo img { width: 96px; height: 96px; object-fit: contain; }
+.header__logo { font-family: var(--font-sans); font-size: 0.9rem; font-weight: 500; color: var(--text-secondary); display: flex; align-items: center; gap: 10px; letter-spacing: 0.1em; text-transform: lowercase; }
+.header__logo img { width: 24px; height: 24px; object-fit: contain; }
+.kicker { font-size: 0.7rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.25em; margin-bottom: var(--spacing-sm); font-weight: 500; display: flex; align-items: center; gap: 12px; }
+.kicker::after { content: ''; width: 40px; height: 1px; background: var(--accent); opacity: 0.5; }
+h1, .h1 { font-family: var(--font-serif); font-size: 4rem; font-weight: 400; font-style: italic; line-height: 1.1; margin: 0 0 var(--spacing-md) 0; color: var(--text-primary); }
+h2, .h2 { font-family: var(--font-serif); font-size: 2.5rem; font-weight: 400; line-height: 1.15; margin: 0 0 var(--spacing-md) 0; }
+h3, .h3 { font-family: var(--font-sans); font-size: 1.5rem; font-weight: 500; line-height: 1.3; margin: 0 0 var(--spacing-sm) 0; letter-spacing: 0.05em; }
+h4, .h4 { font-family: var(--font-sans); font-size: 1.1rem; font-weight: 500; margin: 0 0 var(--spacing-xs) 0; letter-spacing: 0.05em; }
+.lead { font-size: 1.1rem; color: var(--text-secondary); line-height: 1.7; max-width: 600px; letter-spacing: 0.02em; }
+.muted { color: var(--text-muted); }
+.highlight, .accent-text { color: var(--accent); }
+.secondary-text { color: var(--secondary-light); }
+code, .code { font-family: var(--font-mono); background: rgba(139, 92, 246, 0.1); padding: 2px 8px; font-size: 0.85em; color: var(--accent-light); border: 1px solid var(--border); }
+.content { flex: 1; display: flex; flex-direction: column; }
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-xl); align-items: center; flex: 1; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-md); }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-md); }
+.flex-center { display: flex; align-items: center; justify-content: center; }
+.card { background: transparent; border: 1px solid var(--border); padding: var(--spacing-md); transition: all 0.3s ease; border-radius: 2px; }
+.card:hover { background: var(--bg-card); border-color: var(--accent); }
+.card--featured { border-color: var(--accent); }
+.card__icon { width: 40px; height: 40px; margin-bottom: var(--spacing-sm); color: var(--accent); }
+.card__icon svg { width: 100%; height: 100%; stroke-width: 1.5; }
+.card__title { font-family: var(--font-sans); font-size: 1rem; font-weight: 500; margin-bottom: var(--spacing-xs); letter-spacing: 0.03em; }
+.card__text { font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; }
+.metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--spacing-md); }
+.metric { text-align: center; padding: var(--spacing-md); border: 1px solid var(--border); transition: all 0.3s ease; border-radius: 2px; }
+.metric:hover { border-color: var(--accent); }
+.metric__value { font-family: var(--font-sans); font-size: 2.5rem; font-weight: 500; color: var(--accent); line-height: 1; margin-bottom: var(--spacing-xs); letter-spacing: -0.02em; }
+.metric__label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.15em; }
+.list { list-style: none; padding: 0; margin: 0; }
+.list li { padding: var(--spacing-sm) 0; padding-left: var(--spacing-lg); position: relative; border-bottom: 1px solid var(--border); }
+.list li:last-child { border-bottom: none; }
+.list li::before { content: '\2014'; position: absolute; left: 0; top: var(--spacing-sm); color: var(--accent); font-weight: 400; }
+.list--check li::before { content: '\2713'; color: var(--success); }
+.list--numbered { counter-reset: list-counter; }
+.list--numbered li { counter-increment: list-counter; }
+.list--numbered li::before { content: counter(list-counter, decimal-leading-zero); color: var(--accent); font-size: 0.8rem; font-weight: 500; letter-spacing: 0.05em; }
+.pill { display:inline-block; font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--accent); border-radius: 2px; padding: 3px 10px; margin-bottom: 12px; }
+.workflow { display: flex; align-items: center; justify-content: center; gap: var(--spacing-md); }
+.workflow__step { flex: 0 0 auto; }
+.workflow__box { border: 1px solid var(--border); border-left: 3px solid var(--accent); padding: 24px 32px; text-align: center; min-width: 160px; transition: all 0.3s ease; }
+.workflow__box:hover { background: var(--bg-card); border-color: var(--accent); }
+.workflow__label { font-family: var(--font-sans); font-size: 1.25rem; font-weight: 500; color: var(--text-primary); letter-spacing: 0.05em; }
+.workflow__sublabel { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.15em; margin-top: 6px; }
+.workflow__arrow { color: var(--accent); font-size: 1.5rem; }
+.contact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-lg); margin-top: var(--spacing-xl); }
+.contact-item { text-align: center; }
+.contact-item__label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: var(--spacing-xs); }
+.contact-item__value { font-size: 0.95rem; color: var(--text-secondary); }
+.reveal .controls { color: var(--accent); }
+.reveal .progress { background: var(--border); height: 2px; }
+.reveal .progress span { background: var(--accent); }
+.reveal .slide-number { background: transparent; color: var(--text-muted); font-size: 16px; font-family: var(--font-mono); left: 20px; right: auto; bottom: 20px; }
+.reveal .slides section .fragment { opacity: 0; transition: all 0.4s ease; }
+.reveal .slides section .fragment.visible { opacity: 1; }
+.reveal .slides section .fragment.fade-up { transform: translateY(20px); }
+.reveal .slides section .fragment.fade-up.visible { transform: translateY(0); }
+::selection { background: var(--accent); color: var(--bg-dark); }
+.note { font-size: 0.7rem; color: var(--text-muted); font-style: italic; margin-top: var(--spacing-md); }
+@media (max-width: 1024px) { h1 { font-size: 2.5rem; } h2 { font-size: 2rem; } .split { grid-template-columns: 1fr; gap: var(--spacing-lg); } .grid-3 { grid-template-columns: repeat(2, 1fr); } }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- COVER -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <div class="content flex-center" style="flex-direction: column; text-align: center;">
+            <div class="cover-logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs"></div>
+            <p class="kicker" style="justify-content: center;">Reunión de Descubrimiento</p>
+            <h1>Sierra Richey<br><span class="accent-text">Exportación de Granos y Etanol</span></h1>
+            <p class="lead" style="max-width: 660px; margin: 0 auto;">
+              Resumen de la conversación: dónde están con IA, dónde duele,
+              y dos caminos para arrancar con Fiba Labs.
+            </p>
+            <p class="muted" style="margin-top: 28px; font-size: 0.85rem; letter-spacing: 0.1em;">
+              17 de junio · Carlos Acuña × Sierra Richey · Panamá
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 01 -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <p class="kicker" style="justify-content: center;">01 // Contexto</p>
+          <h2>Con quién hablamos</h2>
+          <p class="lead muted">La organización, su misión y cómo trabaja el equipo</p>
+        </div>
+      </section>
+
+      <!-- Org -->
+      <section>
+        <div class="slide">
+          <div class="header"><div class="header__logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">fiba labs</div></div>
+          <div class="split">
+            <div>
+              <p class="kicker">01 // La organización</p>
+              <h2>Promueven la<br>exportación de granos</h2>
+              <p class="lead">
+                Organización con sede en Panamá que promueve la exportación de maíz y sorgo
+                para alimento animal, y etanol como combustible.
+              </p>
+              <p class="note">Nombre exacto por confirmar (posible US Grains Council / Consejo de Granos). El audio venía algo confuso.</p>
+            </div>
+            <div>
+              <ul class="list">
+                <li><strong>Dos pilares.</strong> Granos (feed) y etanol.</li>
+                <li><strong>Misión.</strong> Promoción, no venta directa: trabajan con gobierno, ministerios y la industria.</li>
+                <li><strong>Presencia constante.</strong> Cada semana hay un evento o congreso (camarón, alimento de vacas, plantas de balanceado).</li>
+                <li><strong>Equipo dividido</strong> entre los dos pilares; viajan mucho.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Team metrics -->
+      <section>
+        <div class="slide">
+          <div class="header"><div class="header__logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">fiba labs</div></div>
+          <div class="content">
+            <p class="kicker">01 // El equipo</p>
+            <h2>Tamaño y stack actual</h2>
+            <div class="metrics" style="margin-top: 48px;">
+              <div class="metric fragment"><div class="metric__value">~12</div><div class="metric__label">Personas en el equipo</div></div>
+              <div class="metric fragment"><div class="metric__value">&lt;10</div><div class="metric__label">Usuarios reales esperados</div></div>
+              <div class="metric fragment"><div class="metric__value">ChatGPT</div><div class="metric__label">Workspace, la mayoría tiene acceso</div></div>
+              <div class="metric fragment"><div class="metric__value">SharePoint</div><div class="metric__label">Microsoft 365, no Google</div></div>
+            </div>
+            <p class="note" style="margin-top: 40px;">Nivel de adopción autodeclarado: bajo. Hasta hoy, capacitación interna de ~1 hora cada 6 meses.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 02 -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <p class="kicker" style="justify-content: center;">02 // Estado actual</p>
+          <h2>Dónde están con IA hoy</h2>
+          <p class="lead muted">Qué han intentado y por qué no terminó de funcionar</p>
+        </div>
+      </section>
+
+      <!-- AI state -->
+      <section>
+        <div class="slide">
+          <div class="header"><div class="header__logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">fiba labs</div></div>
+          <div class="split">
+            <div>
+              <p class="kicker">02 // Lo que han probado</p>
+              <h2>Exploración sin<br>adopción sostenida</h2>
+              <p class="lead">Hubo intentos, pero nada se volvió hábito de equipo.</p>
+            </div>
+            <div>
+              <ul class="list list--numbered">
+                <li class="fragment"><strong>Sesiones de exploración</strong><br><span class="muted">Probaron subir documentos al workspace para consultarlos. Funcionó al inicio.</span></li>
+                <li class="fragment"><strong>Se quedó en el camino</strong><br><span class="muted">Mantener los documentos actualizados se volvió carga; casi nadie lo usa ya.</span></li>
+                <li class="fragment"><strong>Uso individual, no transversal</strong><br><span class="muted">Hoy cada quien usa ChatGPT por su cuenta. No hay una IA adoptada como equipo.</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 03 -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <p class="kicker" style="justify-content: center;">03 // El problema</p>
+          <h2>El conocimiento se<br>queda con quien viaja</h2>
+          <p class="lead muted">El reto central que ellos mismos nombraron</p>
+        </div>
+      </section>
+
+      <!-- Pain quote -->
+      <section>
+        <div class="slide">
+          <div class="header"><div class="header__logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">fiba labs</div></div>
+          <div class="split">
+            <div>
+              <p class="kicker">03 // El reto central</p>
+              <h2>Conocimiento<br>atrapado</h2>
+              <p class="lead">
+                Mucha información, muchos datos, pero la persona que viaja se queda con todo.
+                Lo aprendido en un congreso se menciona en una llamada y desaparece.
+              </p>
+            </div>
+            <div>
+              <div class="card card--featured" style="font-style: italic;">
+                <p style="color: var(--text-secondary); line-height: 1.7; font-size: 1.05rem;">
+                  "Si alguien en dos años quiere saber cómo ha crecido el sector porcino en Panamá,
+                  debería poder acceder a mi reporte. Hoy toca buscar carpeta por carpeta en SharePoint,
+                  recordar qué actividad fue, qué presupuesto se usó. No es <em>readily accessible</em>."
+                </p>
+                <p class="muted" style="margin-top: 16px; font-style: normal; font-size: 0.8rem; letter-spacing: 0.1em;">SIERRA RICHEY</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Pain flow -->
+      <section>
+        <div class="slide">
+          <div class="header"><div class="header__logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">fiba labs</div></div>
+          <div class="content">
+            <p class="kicker">03 // El flujo actual</p>
+            <h2>Cómo viaja la información hoy</h2>
+            <div class="workflow" style="margin-top: 56px;">
+              <div class="workflow__step fragment"><div class="workflow__box"><div class="workflow__label">Viaje</div><div class="workflow__sublabel">Congreso / evento</div></div></div>
+              <div class="workflow__arrow">&rarr;</div>
+              <div class="workflow__step fragment"><div class="workflow__box"><div class="workflow__label">Reporte</div><div class="workflow__sublabel">A carpeta SharePoint</div></div></div>
+              <div class="workflow__arrow">&rarr;</div>
+              <div class="workflow__step fragment"><div class="workflow__box" style="border-left-color: var(--error);"><div class="workflow__label">Se pierde</div><div class="workflow__sublabel">Nadie lo encuentra</div></div></div>
+            </div>
+            <p class="note" style="text-align: center; margin-top: 48px;">El reporte existe, pero buscarlo después es casi imposible. El conocimiento no se vuelve un activo compartido.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 04 -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <p class="kicker" style="justify-content: center;">04 // La oportunidad</p>
+          <h2>De carpetas muertas a<br>conocimiento consultable</h2>
+          <p class="lead muted">Lo que la IA hace posible hoy</p>
+        </div>
+      </section>
+
+      <!-- Semantic search -->
+      <section>
+        <div class="slide">
+          <div class="header"><div class="header__logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">fiba labs</div></div>
+          <div class="split">
+            <div>
+              <p class="kicker">04 // La idea técnica</p>
+              <h2>Búsqueda por<br>significado, no por palabra</h2>
+              <p class="lead">
+                La búsqueda tradicional solo encuentra la palabra exacta. Pasando los documentos
+                por IA se crea una base que entiende el <em>significado</em>.
+              </p>
+              <p class="lead" style="margin-top: 16px;">
+                Si buscas "Apple", entiende que hablas de tecnología, no de fruta.
+                Cada documento se vuelve parte de un conocimiento vivo.
+              </p>
+            </div>
+            <div>
+              <div class="grid-2">
+                <div class="card fragment fade-up"><div class="card__icon"><i data-lucide="search"></i></div><h4 class="card__title">Consultar</h4><p class="card__text">Preguntar en lenguaje natural y recibir la respuesta, sin buscar carpeta por carpeta.</p></div>
+                <div class="card fragment fade-up"><div class="card__icon"><i data-lucide="layers"></i></div><h4 class="card__title">Acumular</h4><p class="card__text">Cada reporte nuevo suma al conocimiento del equipo, no se pierde.</p></div>
+                <div class="card fragment fade-up"><div class="card__icon"><i data-lucide="users"></i></div><h4 class="card__title">Compartir</h4><p class="card__text">Lo que aprende quien viaja queda disponible para todo el equipo.</p></div>
+                <div class="card fragment fade-up"><div class="card__icon"><i data-lucide="clock"></i></div><h4 class="card__title">Perdurar</h4><p class="card__text">En dos años, ese reporte sigue siendo consultable y útil.</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 05 -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <p class="kicker" style="justify-content: center;">05 // El enfoque</p>
+          <h2>Cómo trabaja<br>Fiba Labs</h2>
+          <p class="lead muted">No es otro curso de IA. Es enseñar al equipo a adoptarla.</p>
+        </div>
+      </section>
+
+      <!-- Approach -->
+      <section>
+        <div class="slide">
+          <div class="header"><div class="header__logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">fiba labs</div></div>
+          <div class="content">
+            <p class="kicker">05 // La diferencia</p>
+            <h2>Capacitación a la medida, no un curso masivo</h2>
+            <div class="grid-3" style="margin-top: 36px;">
+              <div class="card fragment fade-up"><div class="card__icon"><i data-lucide="user-check"></i></div><h4 class="card__title">Las personas adoptan, no las empresas</h4><p class="card__text">La empresa marca el rumbo, pero quienes implementan la IA son las personas. Por eso el foco es enseñarles a usarla.</p></div>
+              <div class="card fragment fade-up"><div class="card__icon"><i data-lucide="settings-2"></i></div><h4 class="card__title">A la medida del equipo</h4><p class="card__text">La adopción de abogados, ingenieros o ventas es distinta. El coaching se ajusta a la empresa y a quién lo recibe.</p></div>
+              <div class="card fragment fade-up"><div class="card__icon"><i data-lucide="wrench"></i></div><h4 class="card__title">Ustedes construyen la herramienta</h4><p class="card__text">Quienes conocen la empresa son ustedes. Aprendiendo, arman algo más acertado que un proyecto de implementación cerrado.</p></div>
+            </div>
+            <p class="note" style="margin-top: 36px;">Carlos: ingeniero electrónico, MBA, 20+ años en ventas (IBM, Oracle, Sun, McAfee, Remote.com / customer success). Hoy 100% enfocado en IA.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Recommendation: Cowork -->
+      <section>
+        <div class="slide">
+          <div class="header"><div class="header__logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">fiba labs</div></div>
+          <div class="split">
+            <div>
+              <p class="kicker">05 // Recomendación de hoy</p>
+              <h2>Empezar con<br>Claude (Cowork)</h2>
+              <p class="lead">
+                Lo más <em>user friendly</em>, sin implementación pesada. Un salto frente al chat tradicional.
+              </p>
+            </div>
+            <div>
+              <ul class="list">
+                <li class="fragment"><strong>Apuntar a una carpeta</strong><br><span class="muted">"Analiza esta carpeta y dime qué hay."</span></li>
+                <li class="fragment"><strong>Proyectos con contexto</strong><br><span class="muted">Cada vez que abres la carpeta, llega con el contexto de lo que trabajas ahí.</span></li>
+                <li class="fragment"><strong>Conectores</strong><br><span class="muted">Se conecta a Microsoft 365: búsqueda en SharePoint, Outlook, Calendario, PowerPoint y Excel.</span></li>
+                <li class="fragment"><strong>Automatizaciones</strong><br><span class="muted">Enseñarle tus procesos y optimizarlos.</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Why Claude over ChatGPT -->
+      <section>
+        <div class="slide">
+          <div class="header"><div class="header__logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">fiba labs</div></div>
+          <div class="content">
+            <p class="kicker">05 // Pregunta de Sierra: ¿por qué Claude y no ChatGPT?</p>
+            <h2>Agnóstico, con una ventaja concreta</h2>
+            <div class="grid-3" style="margin-top: 32px;">
+              <div class="card fragment fade-up"><h4 class="card__title">Code</h4><p class="card__text">Pestaña que pocos usan, pero muy útil. Control real del entorno.</p></div>
+              <div class="card fragment fade-up"><h4 class="card__title">Chats</h4><p class="card__text">Lo que todos conocen. Problema: las conversaciones quedan desconectadas y cuesta reencontrarlas.</p></div>
+              <div class="card fragment fade-up card--featured"><h4 class="card__title">Cowork</h4><p class="card__text">Carpetas con contexto + conectores a Microsoft 365. La diferencia que no tiene el escritorio de ChatGPT.</p></div>
+            </div>
+            <p class="note" style="margin-top: 32px;">Mensaje: cada herramienta tiene su ventaja. La de Claude para este caso es Cowork conectado a su SharePoint.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Security -->
+      <section>
+        <div class="slide">
+          <div class="header"><div class="header__logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">fiba labs</div></div>
+          <div class="split">
+            <div>
+              <span class="pill">Preocupación clave de Sierra</span>
+              <h2>Seguridad de<br>datos sensibles</h2>
+              <p class="lead">
+                Manejan pasaportes, datos bancarios e info de logística por correo.
+                La pregunta fue directa: ¿hay riesgo al conectar la IA?
+              </p>
+            </div>
+            <div>
+              <ul class="list list--check">
+                <li class="fragment">No crea una vulnerabilidad que no exista ya.</li>
+                <li class="fragment">Tú decides el alcance: solo le das acceso a la carpeta o cuenta que quieres.</li>
+                <li class="fragment">Guardrails: puedes prohibirle que toque el correo o ciertas carpetas.</li>
+                <li class="fragment">Buena práctica: una carpeta "meetings" limpia, nunca la de pasaportes.</li>
+                <li class="fragment">El riesgo aparece si conectas todo sin cuidado, no por conectar bien.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Plaud recommendation -->
+      <section>
+        <div class="slide">
+          <div class="header"><div class="header__logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">fiba labs</div></div>
+          <div class="split">
+            <div>
+              <span class="pill">Recomendación extra</span>
+              <h2>Plaud, para<br>capturar eventos</h2>
+              <p class="lead">
+                Grabadora con IA (~USD 160 en Amazon). Pensada justo para su realidad de
+                congresos y eventos semanales.
+              </p>
+              <p class="note">Captura 4 a 5 horas de audio. Al terminar, genera resumen, mapa mental y notas por plantilla. Para reuniones presenciales reemplaza el tomar apuntes.</p>
+            </div>
+            <div>
+              <ul class="list">
+                <li class="fragment"><strong>4 a 5 horas</strong> de grabación continua por evento.</li>
+                <li class="fragment"><strong>Resumen automático</strong> de la conferencia, no hay que volver a oír todo.</li>
+                <li class="fragment"><strong>Plantillas</strong> para extraer solo lo relevante (responde a su molestia de "no necesito cada detalle").</li>
+                <li class="fragment"><strong>Plan</strong> desde gratis; pro ~USD 8/mes; team plan disponible.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 06 -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <p class="kicker" style="justify-content: center;">06 // La propuesta</p>
+          <h2>Dos caminos<br>para arrancar</h2>
+          <p class="lead muted">Sierra pidió ver ambas opciones lado a lado</p>
+        </div>
+      </section>
+
+      <!-- Two options -->
+      <section>
+        <div class="slide">
+          <div class="header"><div class="header__logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">fiba labs</div></div>
+          <div class="content">
+            <p class="kicker">06 // Opciones de capacitación</p>
+            <h2>Kick start vs. programa completo</h2>
+            <div class="grid-2" style="margin-top: 28px;">
+              <div class="card fragment fade-up">
+                <span class="pill">Opción A</span>
+                <h4 class="card__title">Kick start (2 a 3 horas)</h4>
+                <p class="card__text">Una sesión. Dejamos Cowork definido, mostramos qué se puede hacer de la forma más condensada y entregamos un documento con tutoriales para arrancar solos. Buen punto de partida, no herramienta 100% funcional.</p>
+              </div>
+              <div class="card fragment fade-up card--featured">
+                <span class="pill">Opción B</span>
+                <h4 class="card__title">Programa completo (4 semanas)</h4>
+                <p class="card__text">Cuatro sesiones de 2 horas, una por semana, con homework. Fundamentos, montar las carpetas de Cowork, ordenar SharePoint y dejar que cada quien pase sus reuniones a la base consultable.</p>
+              </div>
+            </div>
+            <p class="note" style="margin-top: 28px;">Grupos de máximo 5 a 6 personas para que sea personalizado. Se pueden encadenar: arrancar con A y seguir a B si gusta.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Option C: mentoring -->
+      <section>
+        <div class="slide">
+          <div class="header"><div class="header__logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">fiba labs</div></div>
+          <div class="split">
+            <div>
+              <span class="pill">Opción C</span>
+              <h2>Mentoring 1:1<br>para Sierra</h2>
+              <p class="lead">
+                Si Sierra es quien lidera la adopción, en vez de un workshop grupal: sesiones 1:1.
+                Antes de cada charla interna, se reúnen un par de horas, ella trae lo investigado
+                y Carlos la complementa con herramientas y qué presentar.
+              </p>
+            </div>
+            <div>
+              <ul class="list">
+                <li class="fragment"><strong>Encaja con su rol.</strong> Ella ya prepara talleres internos cada 6 meses.</li>
+                <li class="fragment"><strong>Aprender para enseñar.</strong> La habilita a transmitirlo al resto.</li>
+                <li class="fragment"><strong>Posible vía de fondos.</strong> Podría calar como "professional development" (presupuesto de cursos con aprobación).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Constraints / reality -->
+      <section>
+        <div class="slide">
+          <div class="header"><div class="header__logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">fiba labs</div></div>
+          <div class="content">
+            <p class="kicker">06 // A tener en cuenta</p>
+            <h2>Realidad de presupuesto y tiempo</h2>
+            <div class="grid-3" style="margin-top: 32px;">
+              <div class="card fragment fade-up"><div class="card__icon"><i data-lucide="user"></i></div><h4 class="card__title">Sierra no es experta en IA</h4><p class="card__text">Investiga la semana antes de cada charla. Nivel de uso del equipo, bajo.</p></div>
+              <div class="card fragment fade-up"><div class="card__icon"><i data-lucide="briefcase"></i></div><h4 class="card__title">La jefa está interesada</h4><p class="card__text">Quiere que sigan usando estas herramientas, pero el tiempo y presupuesto para "semanas" no está confirmado.</p></div>
+              <div class="card fragment fade-up"><div class="card__icon"><i data-lucide="wallet"></i></div><h4 class="card__title">Posibles fondos</h4><p class="card__text">Existe un esquema de permiso/aprobación para desarrollo. Límite por confirmar; Sierra nunca lo ha usado.</p></div>
+            </div>
+            <p class="note" style="margin-top: 32px;">Lectura: empezar liviano y demostrar valor baja la fricción de aprobación. El encadenamiento A luego B encaja con esto.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 07 -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <p class="kicker" style="justify-content: center;">07 // Siguiente paso</p>
+          <h2>Qué sigue<br>ahora</h2>
+        </div>
+      </section>
+
+      <!-- Next steps -->
+      <section>
+        <div class="slide">
+          <div class="header"><div class="header__logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">fiba labs</div></div>
+          <div class="split">
+            <div>
+              <p class="kicker">07 // Acciones acordadas</p>
+              <h2>Compromisos<br>de la llamada</h2>
+              <p class="lead">Lo que quedó pactado para mover esto adelante.</p>
+            </div>
+            <div>
+              <ul class="list list--numbered">
+                <li class="fragment"><strong>Carlos envía un intake form</strong><br><span class="muted">Ajustado a esta audiencia (no el de empresarios), para capturar su input.</span></li>
+                <li class="fragment"><strong>Carlos arma la propuesta con ambas opciones</strong><br><span class="muted">Kick start vs. programa completo, más el ángulo de mentoring 1:1.</span></li>
+                <li class="fragment"><strong>Mientras tanto, Sierra explora Cowork</strong><br><span class="muted">Empezar a usar Claude Cowork y aprender más de la herramienta.</span></li>
+                <li class="fragment"><strong>Carlos comparte esta presentación</strong><br><span class="muted">Generada en vivo desde el transcript de la llamada.</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section>
+        <div class="slide slide--section slide--center">
+          <div class="content flex-center" style="flex-direction: column;">
+            <div class="cover-logo"><img src="assets/fiba_labs_monogram.png" alt="Fiba Labs"></div>
+            <h1>Que el conocimiento<br><span class="accent-text">deje de perderse</span></h1>
+            <p class="lead" style="margin-bottom: 8px; text-align: center;">Convertir lo que el equipo ya sabe en un activo que crece.</p>
+            <div class="contact-grid" style="width: 100%; max-width: 640px;">
+              <div class="contact-item"><div class="contact-item__label">Quién</div><div class="contact-item__value">Carlos Acuña · Fiba Labs</div></div>
+              <div class="contact-item"><div class="contact-item__label">Enfoque</div><div class="contact-item__value">Adopción de IA a la medida</div></div>
+              <div class="contact-item"><div class="contact-item__label">Siguiente</div><div class="contact-item__value">Intake form + propuesta</div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true, slideNumber: true, controls: true,
+      controlsLayout: 'bottom-right', controlsBackArrows: 'faded',
+      progress: true, center: false, transition: 'slide',
+      backgroundTransition: 'fade', width: 1280, height: 720,
+      margin: 0, minScale: 0.2, maxScale: 2,
+      autoAnimate: true, autoAnimateDuration: 0.7,
+      plugins: [RevealHighlight]
+    });
+    lucide.createIcons();
+  </script>
+</body>
+</html>
