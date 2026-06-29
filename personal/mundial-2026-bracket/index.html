@@ -37,13 +37,15 @@
 
   .tie{display:flex;flex-direction:column;gap:0;background:var(--panel);border:1px solid var(--line);
     border-radius:10px;overflow:hidden;width:var(--card-w)}
-  .tie .meta{font-size:10px;color:var(--muted);padding:4px 8px 2px;display:flex;justify-content:space-between;gap:6px;
-    background:var(--panel2);border-bottom:1px solid var(--line);cursor:pointer}
+  .tie .meta{font-size:10px;color:var(--muted);padding:3px 8px;display:flex;align-items:center;gap:6px;
+    flex-wrap:nowrap;background:var(--panel2);border-bottom:1px solid var(--line);cursor:pointer;line-height:1.25}
   .tie .meta:hover{color:var(--text)}
   .tie .meta:hover .venue{color:var(--accent)}
+  .tie .meta .dt{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1 1 auto}
   .third-card .meta{cursor:pointer}
   .third-card .meta:hover .venue{color:var(--accent)}
-  .tie .meta .venue{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:115px}
+  .tie .meta .venue{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:60px;flex:0 0 auto;
+    color:var(--accent2);font-weight:700;text-align:right}
 
   .venue-modal{position:fixed;inset:0;z-index:100;background:rgba(4,7,12,.72);
     display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(2px)}
@@ -57,11 +59,11 @@
   .venue-close{position:absolute;top:10px;right:14px;background:none;border:none;color:var(--muted);
     font-size:26px;line-height:1;cursor:pointer}
   .venue-close:hover{color:#fff}
-  .slot{display:flex;align-items:center;gap:8px;padding:7px 9px;cursor:pointer;user-select:none;
-    border-bottom:1px solid var(--line);transition:background .12s;min-height:30px}
+  .slot{display:flex;align-items:center;gap:7px;padding:4px 9px;cursor:pointer;user-select:none;
+    border-bottom:1px solid var(--line);transition:background .12s;min-height:26px}
   .slot:last-child{border-bottom:none}
   .slot:hover{background:var(--panel2)}
-  .slot .flag{font-size:16px;width:20px;text-align:center;flex:0 0 auto}
+  .slot .flag{font-size:15px;width:19px;text-align:center;flex:0 0 auto}
   .slot .name{font-size:13px;font-weight:600;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .slot.tbd .name{color:var(--muted);font-weight:500;font-style:italic}
   .slot.picked{background:var(--pickbg)}
@@ -89,11 +91,20 @@
 
   .third-card{width:230px;border:1px solid var(--line);border-radius:12px;background:var(--panel);margin-top:4px;overflow:hidden}
   .third-card .col-title{color:var(--muted);padding-top:8px}
+  .third-card .meta{font-size:10px;color:var(--muted);padding:3px 8px;display:flex;align-items:center;gap:6px;
+    flex-wrap:nowrap;background:var(--panel2);border-bottom:1px solid var(--line);line-height:1.25}
+  .final-card .meta{flex-wrap:nowrap}
 
   @media (max-width:720px){
-    :root{--card-w:158px;--col-gap:18px}
+    :root{--card-w:150px;--col-gap:14px}
     header h1{font-size:15px}
+    .wrap{padding:14px 10px 50px}
+    .col{gap:10px}
+    .slot{padding:3px 8px;min-height:24px}
     .slot .name{font-size:12px}
+    .slot .flag{font-size:14px;width:18px}
+    .tie .meta{font-size:9px;padding:3px 7px}
+    .tie .meta .venue{max-width:52px}
   }
 </style>
 </head>
@@ -317,15 +328,24 @@ function slotHTML(mid, slot){
   return `<div class="${cls.join(' ')}" ${clickable}>
     <span class="flag">${flag}</span><span class="name">${name}</span></div>`;
 }
+function venueShort(v){
+  if(!v) return "Sede";
+  // City-only short label for the compact header tag.
+  const map={
+    "Los Angeles":"LA","New York/New Jersey":"NY/NJ","San Francisco Bay Area":"SF Bay",
+    "BC Place Vancouver":"Vancouver","Mexico City":"CDMX","Kansas City":"KC"
+  };
+  return map[v] || v;
+}
 function tieHTML(mid, finalStyle){
   const m=MATCHES[mid];
-  const venue = m.v ? m.v : "Sede por definir";
+  const venue = m.v ? venueShort(m.v) : "Sede";
   const lockCls = isLocked(mid) ? " is-locked" : "";
   const cls = (finalStyle ? "tie final-card" : "tie") + lockCls;
   const badge = isLocked(mid) ? `<span class="final-badge">FINAL</span>` : "";
   return `<div class="${cls}" data-mid="${mid}">
-    <div class="meta" onclick="showVenue('${mid}')" title="Ver sede">
-      <span>${m.d} · ${m.t} 🇨🇱 / ${colTime(m.t)} 🇨🇴 ${badge}</span>
+    <div class="meta" onclick="showVenue('${mid}')" title="Ver sede e info">
+      <span class="dt">${m.d} · ${m.t} 🇨🇱 / ${colTime(m.t)} 🇨🇴 ${badge}</span>
       <span class="venue">${venue}</span>
     </div>
     ${slotHTML(mid,"a")}
@@ -353,7 +373,7 @@ function render(){
       </div>
       <div class="third-card">
         <div class="col-title">Tercer Puesto</div>
-        <div class="meta" onclick="showVenue('M103')" title="Ver sede"><span>${m103.d} · ${m103.t} 🇨🇱 / ${colTime(m103.t)} 🇨🇴</span><span class="venue">${m103.v}</span></div>
+        <div class="meta" onclick="showVenue('M103')" title="Ver sede e info"><span class="dt">${m103.d} · ${m103.t} 🇨🇱 / ${colTime(m103.t)} 🇨🇴</span><span class="venue">${venueShort(m103.v)}</span></div>
         ${slotHTML("M103","a")}${slotHTML("M103","b")}
       </div>
     </div>`;
