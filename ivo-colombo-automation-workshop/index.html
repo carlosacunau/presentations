@@ -1,0 +1,1591 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fiba Labs · Automatización + Taller · Para Ivo Colombo</title>
+
+  <!-- Google Fonts - Fiba Labs Style -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Reveal.js -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/monokai.css">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+/*
+ * FibaLabs Presentation Theme
+ * HUD-style, geometric, Electric Violet accent
+ * For use with Reveal.js 4.5+
+ */
+
+/* ===== CSS VARIABLES - FIBALABS PALETTE ===== */
+:root {
+  /* Backgrounds - "Void + Electric Violet" */
+  --bg-dark: #0A0A14;
+  --bg-card: #12121E;
+  --bg-card-hover: #1A1A2A;
+
+  /* Accent - Electric Violet */
+  --accent: #8B5CF6;
+  --accent-light: #A78BFA;
+  --accent-glow: rgba(139, 92, 246, 0.15);
+
+  /* Secondary - Deep Indigo */
+  --secondary: #4C2D91;
+  --secondary-light: #6D4DB8;
+
+  /* Semantic Colors */
+  --success: #34D399;
+  --warning: #FBBF24;
+  --error: #F87171;
+
+  /* Text Colors - Lavender White system */
+  --text-primary: #E8E4F0;
+  --text-secondary: #9B95A8;
+  --text-muted: #5C5670;
+
+  /* Borders */
+  --border: #2A2A3A;
+
+  /* Typography */
+  --font-serif: 'Instrument Serif', Georgia, serif;
+  --font-sans: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Fira Code', monospace;
+
+  /* Spacing */
+  --spacing-xs: 8px;
+  --spacing-sm: 16px;
+  --spacing-md: 24px;
+  --spacing-lg: 40px;
+  --spacing-xl: 60px;
+}
+
+/* ===== BASE STYLES ===== */
+/* CRITICAL: These styles prevent white borders/flicker in Reveal.js */
+html, body {
+  background: var(--bg-dark) !important;
+  color: var(--text-primary);
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* CRITICAL: .reveal-viewport must have !important to override Reveal.js defaults */
+.reveal-viewport {
+  background: var(--bg-dark) !important;
+  background-image:
+    linear-gradient(rgba(139, 92, 246, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139, 92, 246, 0.03) 1px, transparent 1px) !important;
+  background-size: 60px 60px !important;
+}
+
+.reveal {
+  background: var(--bg-dark);
+  font-family: var(--font-sans);
+  font-size: 22px;
+  color: var(--text-primary);
+}
+
+.reveal .slides {
+  text-align: left;
+}
+
+.reveal .slides section {
+  padding: 0;
+  background: var(--bg-dark);
+}
+
+/* ===== SLIDE BASE ===== */
+.slide {
+  height: 100%;
+  width: 100%;
+  padding: var(--spacing-xl);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  position: relative;
+}
+
+.slide > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== SLIDE VARIANTS ===== */
+.slide--center {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Section divider slides - violet glow */
+.slide--section {
+  background: transparent;
+}
+
+.slide--section::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ===== HEADER BAR ===== */
+.header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.header--split {
+  justify-content: space-between;
+}
+
+/* ===== COVER LOGO (title slide) ===== */
+.cover-logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.cover-logo img {
+  width: 96px;
+  height: 96px;
+  object-fit: contain;
+}
+
+.header__logo {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: 0.1em;
+  text-transform: lowercase;
+}
+
+.header__logo img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.header__logo svg {
+  width: 18px;
+  height: 18px;
+  color: var(--accent);
+}
+
+.header__nav {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: center;
+}
+
+.header__nav-item {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+}
+
+.header__cta {
+  background: transparent;
+  border: 1px solid var(--text-primary);
+  color: var(--text-primary);
+  padding: 8px 16px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+}
+
+/* ===== TYPOGRAPHY - HUD / COMMAND CENTER STYLE ===== */
+.kicker {
+  font-size: 0.7rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  margin-bottom: var(--spacing-sm);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.kicker::after {
+  content: '';
+  width: 40px;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.5;
+}
+
+h1, .h1 {
+  font-family: var(--font-serif);
+  font-size: 4rem;
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.1;
+  margin: 0 0 var(--spacing-md) 0;
+  color: var(--text-primary);
+}
+
+h2, .h2 {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  font-weight: 400;
+  line-height: 1.15;
+  margin: 0 0 var(--spacing-md) 0;
+}
+
+h3, .h3 {
+  font-family: var(--font-sans);
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1.3;
+  margin: 0 0 var(--spacing-sm) 0;
+  letter-spacing: 0.05em;
+}
+
+h4, .h4 {
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0 0 var(--spacing-xs) 0;
+  letter-spacing: 0.05em;
+}
+
+.lead {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 600px;
+  letter-spacing: 0.02em;
+}
+
+.muted {
+  color: var(--text-muted);
+}
+
+/* Accent text - Electric Violet */
+.highlight, .accent-text {
+  color: var(--accent);
+}
+
+/* Secondary accent - Deep Indigo */
+.secondary-text {
+  color: var(--secondary-light);
+}
+
+/* ===== CODE STYLING ===== */
+code, .code {
+  font-family: var(--font-mono);
+  background: rgba(139, 92, 246, 0.1);
+  padding: 2px 8px;
+  font-size: 0.85em;
+  color: var(--accent-light);
+  border: 1px solid var(--border);
+}
+
+pre {
+  background: #08080F;
+  border: 1px solid var(--border);
+  padding: var(--spacing-md);
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  line-height: 1.6;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  border: none;
+  color: var(--text-secondary);
+}
+
+.command {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  padding: 12px 16px;
+  margin: 8px 0;
+  transition: all 0.3s ease;
+}
+
+.command:hover {
+  background: var(--bg-card);
+}
+
+.command__prompt {
+  color: var(--accent);
+  font-family: var(--font-mono);
+}
+
+.command__text {
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+}
+
+.command__desc {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  margin-left: auto;
+  font-style: italic;
+}
+
+/* ===== LAYOUT UTILITIES ===== */
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-xl);
+  align-items: center;
+  flex: 1;
+}
+
+.split--60-40 {
+  grid-template-columns: 1.5fr 1fr;
+}
+
+.split--40-60 {
+  grid-template-columns: 1fr 1.5fr;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-md);
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-md);
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-md);
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gap-sm { gap: var(--spacing-sm); }
+.gap-md { gap: var(--spacing-md); }
+.gap-lg { gap: var(--spacing-lg); }
+
+/* ===== CARDS - TRANSPARENT, GEOMETRIC ===== */
+.card {
+  background: transparent;
+  border: 1px solid var(--border);
+  padding: var(--spacing-md);
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+.card:hover {
+  background: var(--bg-card);
+  border-color: var(--accent);
+}
+
+.card--featured {
+  border-color: var(--accent);
+}
+
+.card__icon {
+  width: 40px;
+  height: 40px;
+  margin-bottom: var(--spacing-sm);
+  color: var(--accent);
+}
+
+.card__icon svg {
+  width: 100%;
+  height: 100%;
+  stroke-width: 1.5;
+}
+
+.card__title {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: var(--spacing-xs);
+  letter-spacing: 0.03em;
+}
+
+.card__text {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ===== METRICS - HUD STYLE ===== */
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.metric {
+  text-align: center;
+  padding: var(--spacing-md);
+  border: 1px solid var(--border);
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+.metric:hover {
+  border-color: var(--accent);
+}
+
+.metric__value {
+  font-family: var(--font-sans);
+  font-size: 2.5rem;
+  font-weight: 500;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: var(--spacing-xs);
+  letter-spacing: -0.02em;
+}
+
+.metric__label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+/* ===== LISTS - DASH STYLE ===== */
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.list li {
+  padding: var(--spacing-sm) 0;
+  padding-left: var(--spacing-lg);
+  position: relative;
+  border-bottom: 1px solid var(--border);
+}
+
+.list li:last-child {
+  border-bottom: none;
+}
+
+.list li::before {
+  content: '\2014';
+  position: absolute;
+  left: 0;
+  top: var(--spacing-sm);
+  color: var(--accent);
+  font-weight: 400;
+}
+
+.list--check li::before {
+  content: '\2713';
+  color: var(--success);
+}
+
+.list--numbered {
+  counter-reset: list-counter;
+}
+
+.list--numbered li {
+  counter-increment: list-counter;
+}
+
+.list--numbered li::before {
+  content: counter(list-counter, decimal-leading-zero);
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+/* ===== BADGES - OUTLINED ===== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+}
+
+.badge--success {
+  color: var(--success);
+  border-color: var(--success);
+}
+
+.badge--warning {
+  color: var(--warning);
+  border-color: var(--warning);
+}
+
+.badge--danger {
+  color: var(--error);
+  border-color: var(--error);
+}
+
+/* ===== TIMELINE - GEOMETRIC ===== */
+.timeline {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: var(--spacing-lg) 0;
+  position: relative;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  bottom: 60px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--border);
+}
+
+.timeline__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  flex: 1;
+}
+
+.timeline__year {
+  font-family: var(--font-sans);
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--accent);
+  margin-bottom: var(--spacing-sm);
+  letter-spacing: 0.05em;
+}
+
+.timeline__dot {
+  width: 10px;
+  height: 10px;
+  background: var(--accent);
+  margin-bottom: var(--spacing-sm);
+  position: relative;
+  z-index: 1;
+  /* Geometric: square dot, not round */
+  border-radius: 0;
+}
+
+.timeline__content {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  max-width: 150px;
+}
+
+/* ===== PRICING - GEOMETRIC ===== */
+.pricing {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-md);
+}
+
+.pricing__card {
+  background: transparent;
+  border: 1px solid var(--border);
+  padding: var(--spacing-lg);
+  text-align: center;
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+.pricing__card:hover {
+  background: var(--bg-card);
+}
+
+.pricing__card--featured {
+  border-color: var(--accent);
+}
+
+.pricing__name {
+  font-family: var(--font-sans);
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-bottom: var(--spacing-sm);
+  letter-spacing: 0.05em;
+}
+
+.pricing__price {
+  font-family: var(--font-sans);
+  font-size: 2.5rem;
+  font-weight: 500;
+  color: var(--accent);
+  margin-bottom: var(--spacing-xs);
+}
+
+.pricing__period {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: var(--spacing-md);
+}
+
+.pricing__features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--spacing-md) 0;
+  text-align: left;
+}
+
+.pricing__features li {
+  padding: var(--spacing-xs) 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.pricing__features li:last-child {
+  border-bottom: none;
+}
+
+/* ===== BUTTONS - OUTLINED, GEOMETRIC ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 28px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid var(--text-primary);
+  background: transparent;
+  color: var(--text-primary);
+  border-radius: 2px;
+}
+
+.btn:hover {
+  background: var(--text-primary);
+  color: var(--bg-dark);
+}
+
+.btn--accent {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn--accent:hover {
+  background: var(--accent);
+  color: var(--bg-dark);
+}
+
+/* ===== TESTIMONIALS ===== */
+.testimonial {
+  display: flex;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+}
+
+.testimonial__avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 2px;
+  overflow: hidden;
+  flex-shrink: 0;
+  filter: grayscale(30%);
+}
+
+.testimonial__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.testimonial__content {
+  flex: 1;
+}
+
+.testimonial__text {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: var(--spacing-sm);
+  font-style: italic;
+}
+
+.testimonial__author {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.testimonial__role {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* ===== CONTACT/CTA ===== */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-xl);
+}
+
+.contact-item {
+  text-align: center;
+}
+
+.contact-item__label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: var(--spacing-xs);
+}
+
+.contact-item__value {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+/* ===== IMAGE CONTAINERS ===== */
+.image-container {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+}
+
+.image-container img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: grayscale(30%);
+  transition: filter 0.3s ease;
+}
+
+.image-container:hover img {
+  filter: grayscale(0%);
+}
+
+/* ===== REVEAL.JS OVERRIDES ===== */
+.reveal .controls {
+  color: var(--accent);
+}
+
+.reveal .progress {
+  background: var(--border);
+  height: 2px;
+}
+
+.reveal .progress span {
+  background: var(--accent);
+}
+
+.reveal .slide-number {
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 16px;
+  font-family: var(--font-mono);
+  left: 20px;
+  right: auto;
+  bottom: 20px;
+}
+
+/* ===== FRAGMENT ANIMATIONS ===== */
+.reveal .slides section .fragment {
+  opacity: 0;
+  transition: all 0.4s ease;
+}
+
+.reveal .slides section .fragment.visible {
+  opacity: 1;
+}
+
+.reveal .slides section .fragment.fade-up {
+  transform: translateY(20px);
+}
+
+.reveal .slides section .fragment.fade-up.visible {
+  transform: translateY(0);
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg-dark);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  h1 { font-size: 2.5rem; }
+  h2 { font-size: 2rem; }
+
+  .split {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+
+  .grid-4, .grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Workflow diagram (template 14) */
+.workflow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-md);
+}
+
+.workflow__step {
+  flex: 0 0 auto;
+}
+
+.workflow__box {
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  padding: 24px 32px;
+  text-align: center;
+  min-width: 160px;
+  transition: all 0.3s ease;
+}
+
+.workflow__box:hover {
+  background: var(--bg-card);
+  border-color: var(--accent);
+}
+
+.workflow__label {
+  font-family: var(--font-sans);
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  letter-spacing: 0.05em;
+}
+
+.workflow__sublabel {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-top: 6px;
+}
+
+.workflow__arrow {
+  color: var(--accent);
+  font-size: 1.5rem;
+}
+
+/* Local override: 5-step flow must fit within 1280px slide width */
+.workflow--five {
+  gap: var(--spacing-sm);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.workflow--five .workflow__step {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.workflow--five .workflow__box {
+  min-width: 0;
+  padding: 20px 12px;
+}
+
+.workflow--five .workflow__arrow {
+  flex: 0 0 auto;
+  font-size: 1.15rem;
+}
+
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<!-- ======================= COVER ======================= -->
+<section>
+  <div class="slide slide--section slide--center">
+    <div class="content flex-center" style="flex-direction: column; text-align: center;">
+      <div class="cover-logo">
+        <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+      </div>
+      <p class="kicker" style="justify-content: center;">Para Ivo Colombo</p>
+      <h1>De la reuni&oacute;n<br><span class="accent-text">a la propuesta lista</span></h1>
+      <p class="lead" style="max-width: 640px; margin: 0 auto;">
+        Lo que puede pasar autom&aacute;ticamente despu&eacute;s de cada reuni&oacute;n,
+        y c&oacute;mo aprender a usar la IA en tu propio trabajo.
+      </p>
+      <p class="muted" style="margin-top: 32px; font-size: 0.85rem; letter-spacing: 0.1em;">FIBA LABS &middot; 3 de julio, 2026</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= RESUMEN DE LA CONVERSACION ======================= -->
+<section>
+  <div class="slide">
+    <div class="header">
+      <div class="header__logo">
+        <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+        fiba labs
+      </div>
+    </div>
+    <div class="content">
+      <p class="kicker">Resumen de nuestra conversaci&oacute;n</p>
+      <h2>Lo que me contaste</h2>
+      <div class="grid-2" style="margin-top: 28px;">
+        <div class="card fragment fade-up">
+          <div class="card__icon"><i data-lucide="building-2"></i></div>
+          <h4 class="card__title">La empresa de tu suegro</h4>
+          <p class="card__text">HCA Miner&iacute;a, que le vende a las mineras. Quieren usar IA, pero no tienen claro para qu&eacute;: se han reunido con varias empresas y nadie entendi&oacute; bien la necesidad, as&iacute; que no cerraron nada.</p>
+        </div>
+        <div class="card fragment fade-up">
+          <div class="card__icon"><i data-lucide="users"></i></div>
+          <h4 class="card__title">Tres socios, una fuerza comercial</h4>
+          <p class="card__text">Son tres socios de unos sesenta a&ntilde;os, todo el d&iacute;a en terreno. No van a ponerse a aprender la herramienta, pero tienen un equipo comercial que s&iacute; se beneficiar&iacute;a de automatizar.</p>
+        </div>
+        <div class="card fragment fade-up">
+          <div class="card__icon"><i data-lucide="file-signature"></i></div>
+          <h4 class="card__title">La idea de las propuestas</h4>
+          <p class="card__text">Tu suegro pensaba en enviarlas autom&aacute;ticas. T&uacute; prefieres dejar un borrador para que lo revisen antes de enviar. Coincidimos: siempre con validaci&oacute;n humana.</p>
+        </div>
+        <div class="card fragment fade-up">
+          <div class="card__icon"><i data-lucide="graduation-cap"></i></div>
+          <h4 class="card__title">Y lo tuyo</h4>
+          <p class="card__text">Aparte de la empresa, a ti te gustar&iacute;a aprender: usas Claude en el chat para tus an&aacute;lisis de M&amp;A, pero se te desordena y pierdes trabajo. Ese es el segundo camino.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= INDICE / DOS CAMINOS ======================= -->
+<section>
+  <div class="slide">
+    <div class="header">
+      <div class="header__logo">
+        <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+        fiba labs
+      </div>
+    </div>
+    <div class="content">
+      <p class="kicker">Lo que conversamos</p>
+      <h2>Dos caminos, uno para cada necesidad</h2>
+      <div class="grid-2" style="margin-top: 40px;">
+        <div class="card card--featured">
+          <div class="card__icon"><i data-lucide="workflow"></i></div>
+          <span class="badge" style="margin-bottom: 12px;">Camino 1</span>
+          <h4 class="card__title">Automatizaci&oacute;n para la empresa</h4>
+          <p class="card__text">Despu&eacute;s de cada reuni&oacute;n, una propuesta queda redactada y lista para que tu equipo comercial la revise y env&iacute;e. Pensado para la fuerza de ventas de HCA Miner&iacute;a.</p>
+        </div>
+        <div class="card card--featured">
+          <div class="card__icon"><i data-lucide="graduation-cap"></i></div>
+          <span class="badge" style="margin-bottom: 12px;">Camino 2</span>
+          <h4 class="card__title">Taller para ti</h4>
+          <p class="card__text">Aprender a usar Claude de verdad para tu trabajo de M&amp;A: proyectos organizados, skills y plugins, y dejar de perder tus an&aacute;lisis en el chat.</p>
+        </div>
+      </div>
+      <p class="muted" style="margin-top: 28px; font-size: 0.85rem;">Esta presentaci&oacute;n se enfoca en el Camino 1. El Camino 2 va al final.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= DIVIDER CAMINO 1 ======================= -->
+<section>
+  <div class="slide slide--section slide--center">
+    <p class="kicker" style="justify-content: center;">01 // Camino 1</p>
+    <h2>De la reuni&oacute;n a la propuesta</h2>
+    <p class="lead muted">Automatizaci&oacute;n para el equipo comercial</p>
+  </div>
+</section>
+
+<!-- ======================= EL PROBLEMA ======================= -->
+<section>
+  <div class="slide">
+    <div class="header">
+      <div class="header__logo">
+        <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+        fiba labs
+      </div>
+    </div>
+    <div class="split">
+      <div>
+        <p class="kicker">El problema</p>
+        <h2>La reuni&oacute;n<br>termina, y ah&iacute;<br>empieza el trabajo</h2>
+        <p class="lead">Cada conversaci&oacute;n con un cliente deja tareas manuales que consumen tiempo y se enfr&iacute;an r&aacute;pido.</p>
+      </div>
+      <div>
+        <ul class="list list--numbered">
+          <li class="fragment">
+            <strong>Recordar qu&eacute; se dijo</strong><br>
+            <span class="muted">Notas sueltas, memoria, y lo que qued&oacute; en el aire.</span>
+          </li>
+          <li class="fragment">
+            <strong>Redactar la propuesta desde cero</strong><br>
+            <span class="muted">Cada vez se arma a mano, con el riesgo de olvidar detalles.</span>
+          </li>
+          <li class="fragment">
+            <strong>El seguimiento se demora d&iacute;as</strong><br>
+            <span class="muted">Y una propuesta que llega tarde pierde fuerza.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= EL FLUJO (WORKFLOW) ======================= -->
+<section>
+  <div class="slide">
+    <div class="header">
+      <div class="header__logo">
+        <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+        fiba labs
+      </div>
+    </div>
+    <div class="content">
+      <p class="kicker">La soluci&oacute;n</p>
+      <h2>Qu&eacute; pasa autom&aacute;ticamente</h2>
+      <div class="workflow workflow--five" style="margin-top: 56px;">
+        <div class="workflow__step fragment">
+          <div class="workflow__box">
+            <div class="workflow__label">1</div>
+            <div class="workflow__sublabel">Reuni&oacute;n</div>
+          </div>
+        </div>
+        <div class="workflow__arrow">&rarr;</div>
+        <div class="workflow__step fragment">
+          <div class="workflow__box">
+            <div class="workflow__label">2</div>
+            <div class="workflow__sublabel">Transcripci&oacute;n</div>
+          </div>
+        </div>
+        <div class="workflow__arrow">&rarr;</div>
+        <div class="workflow__step fragment">
+          <div class="workflow__box">
+            <div class="workflow__label">3</div>
+            <div class="workflow__sublabel">Borrador</div>
+          </div>
+        </div>
+        <div class="workflow__arrow">&rarr;</div>
+        <div class="workflow__step fragment">
+          <div class="workflow__box">
+            <div class="workflow__label">4</div>
+            <div class="workflow__sublabel">Revisi&oacute;n humana</div>
+          </div>
+        </div>
+        <div class="workflow__arrow">&rarr;</div>
+        <div class="workflow__step fragment">
+          <div class="workflow__box">
+            <div class="workflow__label">5</div>
+            <div class="workflow__sublabel">Env&iacute;o</div>
+          </div>
+        </div>
+      </div>
+      <p class="muted fragment" style="margin-top: 48px; text-align: center; font-size: 0.9rem;">
+        La IA prepara el borrador. Una persona lo revisa y decide cu&aacute;ndo se env&iacute;a. Siempre.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= PASO A PASO DETALLE ======================= -->
+<section>
+  <div class="slide">
+    <div class="header">
+      <div class="header__logo">
+        <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+        fiba labs
+      </div>
+    </div>
+    <div class="content">
+      <p class="kicker">Paso a paso</p>
+      <h2>C&oacute;mo funciona por dentro</h2>
+      <div class="grid-2" style="margin-top: 28px;">
+        <div class="card fragment fade-up">
+          <div class="card__icon"><i data-lucide="mic"></i></div>
+          <h4 class="card__title">1 &middot; Se transcribe la reuni&oacute;n</h4>
+          <p class="card__text">Presencial o remota. Queda el texto completo de lo que se habl&oacute;, sin depender de la memoria.</p>
+        </div>
+        <div class="card fragment fade-up">
+          <div class="card__icon"><i data-lucide="file-text"></i></div>
+          <h4 class="card__title">2 &middot; Se extrae lo importante</h4>
+          <p class="card__text">Necesidad del cliente, productos que aplican, alcance y precios. La IA arma la estructura.</p>
+        </div>
+        <div class="card fragment fade-up">
+          <div class="card__icon"><i data-lucide="file-check-2"></i></div>
+          <h4 class="card__title">3 &middot; Se genera el borrador</h4>
+          <p class="card__text">Una propuesta en Word o Excel, con el formato de la empresa, lista para revisar.</p>
+        </div>
+        <div class="card fragment fade-up">
+          <div class="card__icon"><i data-lucide="send"></i></div>
+          <h4 class="card__title">4 &middot; La persona revisa y env&iacute;a</h4>
+          <p class="card__text">El equipo comercial ajusta lo que quiera y env&iacute;a. Nada sale sin validaci&oacute;n humana.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= VALIDACION HUMANA ======================= -->
+<section>
+  <div class="slide">
+    <div class="header">
+      <div class="header__logo">
+        <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+        fiba labs
+      </div>
+    </div>
+    <div class="split">
+      <div>
+        <p class="kicker">Un principio</p>
+        <h2>La IA prepara.<br>La persona decide.</h2>
+        <p class="lead">Coincidimos en esto en la llamada: el borrador se deja listo, pero nadie env&iacute;a en autom&aacute;tico. En servicios, cada propuesta merece una &uacute;ltima mirada humana antes de salir.</p>
+      </div>
+      <div>
+        <ul class="list list--check">
+          <li class="fragment"><strong>Cero errores enviados</strong> al cliente por descuido.</li>
+          <li class="fragment"><strong>El criterio comercial</strong> siempre manda sobre la m&aacute;quina.</li>
+          <li class="fragment"><strong>Velocidad sin perder control:</strong> minutos en vez de d&iacute;as.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= BENEFICIOS / METRICS ======================= -->
+<section>
+  <div class="slide">
+    <div class="header">
+      <div class="header__logo">
+        <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+        fiba labs
+      </div>
+    </div>
+    <div class="content">
+      <p class="kicker">Para el equipo comercial</p>
+      <h2>Qu&eacute; gana la fuerza de ventas</h2>
+      <div class="metrics" style="margin-top: 56px;">
+        <div class="metric fragment">
+          <div class="metric__value">Minutos</div>
+          <div class="metric__label">no d&iacute;as</div>
+        </div>
+        <div class="metric fragment">
+          <div class="metric__value">100%</div>
+          <div class="metric__label">de reuniones con seguimiento</div>
+        </div>
+        <div class="metric fragment">
+          <div class="metric__value">1 formato</div>
+          <div class="metric__label">consistente y profesional</div>
+        </div>
+        <div class="metric fragment">
+          <div class="metric__value">0</div>
+          <div class="metric__label">detalles olvidados</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= YA LO HAGO (PRUEBA) ======================= -->
+<section>
+  <div class="slide">
+    <div class="header">
+      <div class="header__logo">
+        <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+        fiba labs
+      </div>
+    </div>
+    <div class="content">
+      <p class="kicker">Esto no es teor&iacute;a</p>
+      <h2>Cosas que ya tengo funcionando</h2>
+      <div class="grid-3" style="margin-top: 36px;">
+        <div class="card fragment fade-up">
+          <div class="card__icon"><i data-lucide="phone-call"></i></div>
+          <h4 class="card__title">Transcribo mis llamadas</h4>
+          <p class="card__text">De cada reuni&oacute;n saco resumen, acuerdos y hasta presentaciones de lo que se convers&oacute;.</p>
+        </div>
+        <div class="card fragment fade-up">
+          <div class="card__icon"><i data-lucide="file-spreadsheet"></i></div>
+          <h4 class="card__title">Proceso &oacute;rdenes de compra</h4>
+          <p class="card__text">Lectura autom&aacute;tica de PDFs que quedan consolidados en Google Sheets para un cliente real.</p>
+        </div>
+        <div class="card fragment fade-up">
+          <div class="card__icon"><i data-lucide="file-output"></i></div>
+          <h4 class="card__title">Genero propuestas</h4>
+          <p class="card__text">Un procesador que arma propuestas en Word o Excel a partir de la informaci&oacute;n de entrada.</p>
+        </div>
+      </div>
+      <p class="muted fragment" style="margin-top: 32px; font-size: 0.9rem;">
+        La propuesta autom&aacute;tica despu&eacute;s de una reuni&oacute;n combina justamente estas tres piezas.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= COMO COBRO LA AUTOMATIZACION (10X) ======================= -->
+<section>
+  <div class="slide">
+    <div class="header">
+      <div class="header__logo">
+        <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+        fiba labs
+      </div>
+    </div>
+    <div class="split">
+      <div>
+        <p class="kicker">C&oacute;mo cobro la automatizaci&oacute;n</p>
+        <h2>La automatizaci&oacute;n<br>vale <span class="accent-text">10x</span><br>lo que cuesta</h2>
+        <p class="lead">No cobro por hora una automatizaci&oacute;n: cobro por el valor que genera. La regla es simple, si te ahorra diez, cuesta uno.</p>
+        <p class="muted" style="margin-top: 20px; font-size: 0.9rem;">Y si no entrego lo acordado, no cobro. As&iacute; el riesgo es m&iacute;o, no tuyo.</p>
+      </div>
+      <div>
+        <div class="metric" style="text-align:center; padding: 32px;">
+          <div class="metric__label" style="margin-bottom: 12px;">Ejemplo</div>
+          <div class="metric__value" style="font-size: 2rem;">$10M</div>
+          <div class="metric__label" style="margin-bottom: 24px;">que la empresa ahorra al a&ntilde;o</div>
+          <div class="workflow__arrow" style="font-size: 1.5rem;">&darr;</div>
+          <div class="metric__value" style="font-size: 2rem; margin-top: 12px;">$1M</div>
+          <div class="metric__label">lo que cobro por construirla</div>
+          <p class="muted" style="margin-top: 20px; font-size: 0.78rem;">Cifras en pesos chilenos, solo de ejemplo.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= DIVIDER CAMINO 2 ======================= -->
+<section>
+  <div class="slide slide--section slide--center">
+    <p class="kicker" style="justify-content: center;">02 // Camino 2</p>
+    <h2>Un taller para ti</h2>
+    <p class="lead muted">Usar la IA de verdad en tu propio trabajo</p>
+  </div>
+</section>
+
+<!-- ======================= TALLER: TU SITUACION ======================= -->
+<section>
+  <div class="slide">
+    <div class="header">
+      <div class="header__logo">
+        <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+        fiba labs
+      </div>
+    </div>
+    <div class="split">
+      <div>
+        <p class="kicker">Tu punto de partida</p>
+        <h2>Ya usas Claude,<br>pero en el chat</h2>
+        <p class="lead">Analizas muchos procesos de M&amp;A y generas informes, pero cuando todo vive en el chat cuesta encontrar las cosas y el trabajo por proyecto se complica.</p>
+      </div>
+      <div>
+        <ul class="list list--numbered">
+          <li class="fragment">
+            <strong>El chat no organiza por proyecto</strong><br>
+            <span class="muted">Los an&aacute;lisis se pierden entre conversaciones.</span>
+          </li>
+          <li class="fragment">
+            <strong>Skills y plugins que no aprovechas</strong><br>
+            <span class="muted">Claude ya los menciona, pero no los est&aacute;s usando.</span>
+          </li>
+          <li class="fragment">
+            <strong>Sin un sistema propio</strong><br>
+            <span class="muted">Cada an&aacute;lisis arranca casi de cero.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= TALLER: QUE VEMOS ======================= -->
+<section>
+  <div class="slide">
+    <div class="header">
+      <div class="header__logo">
+        <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+        fiba labs
+      </div>
+    </div>
+    <div class="content">
+      <p class="kicker">El taller</p>
+      <h2>Qu&eacute; aprender&iacute;as</h2>
+      <div class="grid-2" style="margin-top: 32px;">
+        <div class="card fragment fade-up">
+          <div class="card__icon"><i data-lucide="layout-grid"></i></div>
+          <h4 class="card__title">Pasar del chat a un espacio de trabajo</h4>
+          <p class="card__text">Organizar tus an&aacute;lisis de M&amp;A por proyecto, sin perder nada.</p>
+        </div>
+        <div class="card fragment fade-up">
+          <div class="card__icon"><i data-lucide="puzzle"></i></div>
+          <h4 class="card__title">Skills y plugins</h4>
+          <p class="card__text">Qu&eacute; son, para qu&eacute; sirven, y c&oacute;mo usarlos en tu d&iacute;a a d&iacute;a.</p>
+        </div>
+        <div class="card fragment fade-up">
+          <div class="card__icon"><i data-lucide="folder-tree"></i></div>
+          <h4 class="card__title">Tu sistema propio</h4>
+          <p class="card__text">Dejarte todo montado y avanzado para que sigas t&uacute; solo.</p>
+        </div>
+        <div class="card fragment fade-up">
+          <div class="card__icon"><i data-lucide="repeat-2"></i></div>
+          <h4 class="card__title">Sobre casos reales</h4>
+          <p class="card__text">Trabajamos con tus propios an&aacute;lisis, no con ejemplos gen&eacute;ricos.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= TALLER: FORMATO / PRECIO ======================= -->
+<section>
+  <div class="slide">
+    <div class="header">
+      <div class="header__logo">
+        <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+        fiba labs
+      </div>
+    </div>
+    <div class="content">
+      <h2 style="text-align: center;">Formato del taller</h2>
+      <p class="muted" style="text-align:center; max-width: 720px; margin: 12px auto 0; font-size: 0.92rem;">
+        Aqu&iacute; el impacto no se mide tan f&aacute;cil como en una automatizaci&oacute;n, as&iacute; que cobro por hora. Pero soy flexible.
+      </p>
+      <div class="pricing" style="margin-top: 32px;">
+        <div class="pricing__card fragment">
+          <div class="pricing__name">Individual</div>
+          <div class="pricing__price">$50k</div>
+          <div class="pricing__period">por hora &middot; CLP</div>
+          <ul class="pricing__features">
+            <li>Uno a uno, sobre tu trabajo</li>
+            <li>Sesiones a tu ritmo</li>
+            <li>Sin l&iacute;mite de horas pactadas</li>
+          </ul>
+        </div>
+        <div class="pricing__card pricing__card--featured fragment">
+          <span class="badge" style="margin-bottom: 12px;">Con m&aacute;s gente</span>
+          <div class="pricing__name">Grupo</div>
+          <div class="pricing__price">Mejor precio</div>
+          <div class="pricing__period">2 &oacute; 3 personas m&aacute;s</div>
+          <ul class="pricing__features">
+            <li>Varias sesiones</li>
+            <li>Beneficio por persona</li>
+            <li>Mismo enfoque pr&aacute;ctico</li>
+          </ul>
+        </div>
+        <div class="pricing__card fragment">
+          <div class="pricing__name">Empresa</div>
+          <div class="pricing__price">$80&ndash;100k</div>
+          <div class="pricing__period">por hora &middot; CLP</div>
+          <ul class="pricing__features">
+            <li>Para equipos de una compa&ntilde;&iacute;a</li>
+            <li>Enfoque a procesos del negocio</li>
+            <li>A convenir seg&uacute;n alcance</li>
+          </ul>
+        </div>
+      </div>
+      <p class="muted fragment" style="margin-top: 20px; text-align: center; font-size: 0.85rem;">
+        Los valores son una referencia para estimar; se ajustan seg&uacute;n lo que necesites. Y con m&aacute;s gente, mejor precio para cada uno.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= GARANTIA ======================= -->
+<section>
+  <div class="slide">
+    <div class="header">
+      <div class="header__logo">
+        <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+        fiba labs
+      </div>
+    </div>
+    <div class="split">
+      <div>
+        <p class="kicker">Sin riesgo para ti</p>
+        <h2>Mi garant&iacute;a</h2>
+        <p class="lead">Prefiero que pruebes antes de comprometerte. Si no aporta valor, no cobro.</p>
+      </div>
+      <div>
+        <ul class="list list--check">
+          <li class="fragment"><strong>Taller:</strong> si despu&eacute;s de la primera sesi&oacute;n no te gusta, no hay cobro.</li>
+          <li class="fragment"><strong>Automatizaci&oacute;n:</strong> si no entrego lo acordado, tampoco cobro.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= PROXIMOS PASOS ======================= -->
+<section>
+  <div class="slide">
+    <div class="header">
+      <div class="header__logo">
+        <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+        fiba labs
+      </div>
+    </div>
+    <div class="content">
+      <p class="kicker">C&oacute;mo seguimos</p>
+      <h2>Pr&oacute;ximos pasos</h2>
+      <div class="timeline" style="margin-top: 56px;">
+        <div class="timeline__item fragment">
+          <div class="timeline__year">01</div>
+          <div class="timeline__dot"></div>
+          <div class="timeline__content">Entender bien la necesidad de HCA Miner&iacute;a</div>
+        </div>
+        <div class="timeline__item fragment">
+          <div class="timeline__year">02</div>
+          <div class="timeline__dot"></div>
+          <div class="timeline__content">Una llamada corta, contigo o directo con tu suegro</div>
+        </div>
+        <div class="timeline__item fragment">
+          <div class="timeline__year">03</div>
+          <div class="timeline__dot"></div>
+          <div class="timeline__content">Definir un primer alcance concreto</div>
+        </div>
+        <div class="timeline__item fragment">
+          <div class="timeline__year">04</div>
+          <div class="timeline__dot"></div>
+          <div class="timeline__content">Empezar. Presencial antes del mi&eacute;rcoles, o remoto</div>
+        </div>
+      </div>
+      <p class="muted fragment" style="margin-top: 40px; text-align: center; font-size: 0.9rem;">
+        Como quieras: me pasas lo escrito o un audio, o hablamos de una vez.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= CIERRE ======================= -->
+<section>
+  <div class="slide slide--section slide--center">
+    <div class="content flex-center" style="flex-direction: column;">
+      <div class="cover-logo">
+        <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+      </div>
+      <h1>Conversemos<br><span class="accent-text">cuando quieras</span></h1>
+      <p class="lead" style="margin-bottom: 40px; text-align:center;">Gracias, Ivo. Quedo atento a lo que definas con tu suegro.</p>
+      <div class="contact-grid" style="width: 100%; max-width: 620px;">
+        <div class="contact-item">
+          <div class="contact-item__label">Carlos Acu&ntilde;a</div>
+          <div class="contact-item__value">Founder, Fiba Labs</div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item__label">Correo</div>
+          <div class="contact-item__value">carlos@fibalabs.com</div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item__label">Web</div>
+          <div class="contact-item__value">fibalabs.com</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+    </div>
+  </div>
+
+  <!-- Reveal.js Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.js"></script>
+
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: true,
+      controls: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      center: false,
+      transition: 'slide',
+      backgroundTransition: 'fade',
+      width: 1280,
+      height: 720,
+      margin: 0,
+      minScale: 0.2,
+      maxScale: 2,
+      autoAnimate: true,
+      autoAnimateDuration: 0.7,
+      plugins: [RevealHighlight]
+    });
+
+    // Initialize Lucide icons
+    lucide.createIcons();
+  </script>
+
+  <!--
+    CLICKABLE BUTTONS - IMPORTANT!
+    Reveal.js blocks all click events inside slides.
+    Place any clickable links/buttons HERE, outside the <div class="reveal"> container.
+    Use position: fixed to position them where needed.
+  -->
+
+</body>
+</html>
