@@ -940,6 +940,13 @@ pre code {
   font-size: 1.5rem;
 }
 
+/* Local override: recap 2x2 grid must fit within 720px slide height */
+.recap-grid { gap: 16px; margin-top: 20px !important; }
+.recap-grid .card { padding: 18px 20px; }
+.recap-grid .card__icon { width: 30px; height: 30px; margin-bottom: 10px; }
+.recap-grid .card__title { font-size: 0.98rem; margin-bottom: 6px; }
+.recap-grid .card__text { font-size: 0.82rem; line-height: 1.45; }
+
 /* Local override: 5-step flow must fit within 1280px slide width */
 .workflow--five {
   gap: var(--spacing-sm);
@@ -998,7 +1005,7 @@ pre code {
     <div class="content">
       <p class="kicker">Resumen de nuestra conversaci&oacute;n</p>
       <h2>Lo que me contaste</h2>
-      <div class="grid-2" style="margin-top: 28px;">
+      <div class="grid-2" style="margin-top: 32px;">
         <div class="card fragment fade-up">
           <div class="card__icon"><i data-lucide="building-2"></i></div>
           <h4 class="card__title">La empresa de tu suegro</h4>
@@ -1010,6 +1017,24 @@ pre code {
           <h4 class="card__title">Tres socios, una fuerza comercial</h4>
           <p class="card__text">Son tres socios de unos sesenta a&ntilde;os, todo el d&iacute;a en terreno. No van a ponerse a aprender la herramienta, pero tienen un equipo comercial que s&iacute; se beneficiar&iacute;a de automatizar.</p>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= RESUMEN (2 de 2) ======================= -->
+<section>
+  <div class="slide">
+    <div class="header">
+      <div class="header__logo">
+        <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+        fiba labs
+      </div>
+    </div>
+    <div class="content">
+      <p class="kicker">Resumen de nuestra conversaci&oacute;n</p>
+      <h2>Lo que me contaste</h2>
+      <div class="grid-2" style="margin-top: 32px;">
         <div class="card fragment fade-up">
           <div class="card__icon"><i data-lucide="file-signature"></i></div>
           <h4 class="card__title">La idea de las propuestas</h4>
