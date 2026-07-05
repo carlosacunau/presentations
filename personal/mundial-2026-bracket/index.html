@@ -33,11 +33,21 @@
   .wrap::-webkit-scrollbar-track{background:var(--bg)}
   .wrap::-webkit-scrollbar-thumb{background:var(--line);border-radius:6px;border:2px solid var(--bg)}
   .wrap::-webkit-scrollbar-thumb:hover{background:var(--muted)}
-  .bracket{display:flex;align-items:stretch;gap:var(--col-gap);min-width:max-content;justify-content:center}
-  .col{display:flex;flex-direction:column;justify-content:space-around;gap:14px;min-width:var(--card-w)}
+  .bracket{display:flex;align-items:stretch;gap:var(--col-gap);min-width:max-content;justify-content:center;min-height:600px}
+  .col{display:flex;flex-direction:column;min-width:var(--card-w)}
   .col-title{text-align:center;font-size:11px;letter-spacing:.6px;
-    text-transform:uppercase;color:var(--muted);margin-bottom:4px;font-weight:700}
-  .center-col{display:flex;flex-direction:column;justify-content:center;align-items:center;min-width:210px;gap:18px}
+    text-transform:uppercase;color:var(--muted);margin-bottom:4px;font-weight:700;flex:0 0 auto}
+  /* Each column fills the bracket height; its matches split it into equal cells
+     and center inside them, so a match in round N+1 lands exactly between the
+     two round-N matches that feed it. */
+  .col-cells{flex:1 1 auto;display:flex;flex-direction:column}
+  .cell{flex:1 1 auto;display:flex;align-items:center;justify-content:center}
+  .center-col{display:flex;flex-direction:column;align-items:center;min-width:240px}
+  .center-col .col-title{color:var(--gold)}
+  .center-cells{flex:1 1 auto;display:flex;flex-direction:column;justify-content:center;align-items:center;width:100%}
+  .final-wrap{position:relative;display:flex;flex-direction:column;align-items:center}
+  .final-below{position:absolute;top:100%;left:50%;transform:translateX(-50%);margin-top:12px;
+    display:flex;flex-direction:column;align-items:center;gap:10px;width:230px}
 
   .tie{display:flex;flex-direction:column;gap:0;background:var(--panel);border:1px solid var(--line);
     border-radius:10px;overflow:hidden;width:var(--card-w)}
@@ -101,6 +111,7 @@
 
   @media (max-width:720px){
     :root{--card-w:150px;--col-gap:14px}
+    .bracket{min-height:500px}
     header h1{font-size:15px}
     .wrap{padding:14px 10px 50px}
     .col{gap:10px}
@@ -116,7 +127,7 @@
 <header>
   <div>
     <h1>Mundial FIFA 2026, Bracket</h1>
-    <div class="sub">Dieciseisavos hasta la Final. Haz clic en el equipo ganador para avanzar.</div>
+    <div class="sub">Octavos hasta la Final. Haz clic en el equipo ganador para avanzar.</div>
   </div>
   <div class="spacer"></div>
   <div class="tz">Horas: <b>Chile</b> / <b>Colombia</b> <span style="opacity:.6">(Col = Chile menos 1h)</span></div>
@@ -373,8 +384,9 @@ function tieHTML(mid, finalStyle){
     ${slotHTML(mid,"b")}
   </div>`;
 }
-function colHTML(title, ids, finalStyle){
-  return `<div class="col"><div class="col-title">${title}</div>${ids.map(id=>tieHTML(id,finalStyle)).join("")}</div>`;
+function colHTML(title, ids){
+  return `<div class="col"><div class="col-title">${title}</div>`+
+    `<div class="col-cells">${ids.map(id=>`<div class="cell">${tieHTML(id)}</div>`).join("")}</div></div>`;
 }
 
 function render(){
@@ -386,29 +398,35 @@ function render(){
   const m103=MATCHES.M103;
   const center = `
     <div class="center-col">
-      <div class="final-label">Final</div>
-      ${tieHTML("M104", true)}
-      <div class="champ-box">
-        <div class="lbl">Campeón del Mundo</div>
-        <div class="who ${champ?'':'empty'}">${champ?TEAMS[champ].f+" "+TEAMS[champ].n:"por definir"}</div>
-      </div>
-      <div class="third-card">
-        <div class="col-title">Tercer Puesto</div>
-        <div class="meta" onclick="showVenue('M103')" title="Ver sede e info"><span class="dt">${m103.d} · ${m103.t} 🇨🇱 / ${colTime(m103.t)} 🇨🇴</span><span class="venue">${venueShort(m103.v)}</span></div>
-        ${slotHTML("M103","a")}${slotHTML("M103","b")}
+      <div class="col-title">Final</div>
+      <div class="center-cells">
+        <div class="final-wrap">
+          ${tieHTML("M104", true)}
+          <div class="final-below">
+            <div class="champ-box">
+              <div class="lbl">Campeón del Mundo</div>
+              <div class="who ${champ?'':'empty'}">${champ?TEAMS[champ].f+" "+TEAMS[champ].n:"por definir"}</div>
+            </div>
+            <div class="third-card">
+              <div class="col-title">Tercer Puesto</div>
+              <div class="meta" onclick="showVenue('M103')" title="Ver sede e info"><span class="dt">${m103.d} · ${m103.t} 🇨🇱 / ${colTime(m103.t)} 🇨🇴</span><span class="venue">${venueShort(m103.v)}</span></div>
+              ${slotHTML("M103","a")}${slotHTML("M103","b")}
+            </div>
+          </div>
+        </div>
       </div>
     </div>`;
 
+  // R32 (dieciseisavos) are complete — data kept, but the bracket now renders
+  // Octavos → Final for a cleaner view.
   document.getElementById("bracket").innerHTML =
-    colHTML(ROUND_TITLES.R32, LEFT.R32) +
     colHTML(ROUND_TITLES.R16, LEFT.R16) +
     colHTML(ROUND_TITLES.QF,  LEFT.QF) +
     colHTML(ROUND_TITLES.SF,  LEFT.SF) +
     center +
     colHTML(ROUND_TITLES.SF,  RIGHT.SF) +
     colHTML(ROUND_TITLES.QF,  RIGHT.QF) +
-    colHTML(ROUND_TITLES.R16, RIGHT.R16) +
-    colHTML(ROUND_TITLES.R32, RIGHT.R32);
+    colHTML(ROUND_TITLES.R16, RIGHT.R16);
 }
 
 function showVenue(mid){
