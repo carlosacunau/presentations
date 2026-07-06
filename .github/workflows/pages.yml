@@ -2,20 +2,23 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
-  workflow_run:
-    workflows: ["Sync Camping Matrix"]
-    types: [completed]
-    branches: [main]
+  # Called by sync-camping.yml only when the sync actually committed a change.
+  workflow_call: {}
+  # Manual re-deploy button (handy to retry a transient GitHub Pages failure).
+  workflow_dispatch: {}
 permissions:
   contents: read
   pages: write
   id-token: write
+# Serialize deploys so overlapping runs don't collide on the Pages backend.
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: false
 jobs:
   deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    if: ${{ github.event_name == 'push' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

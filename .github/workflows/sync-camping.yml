@@ -2,7 +2,8 @@ name: Sync Camping Matrix
 
 on:
   schedule:
-    - cron: '3 */2 * * *'  # Every 2 hours at :03
+    # 3x/day at :03 (07:03, 15:03, 23:03 UTC ≈ 03:03, 11:03, 19:03 Chile).
+    - cron: '3 7,15,23 * * *'
   workflow_dispatch: {}      # Manual trigger button
 
 permissions:
@@ -11,6 +12,8 @@ permissions:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.changes.outputs.changed }}
     steps:
       - uses: actions/checkout@v4
 
@@ -48,3 +51,13 @@ jobs:
           git commit -m "chore: auto-sync camping matrix from Google Forms"
           git pull --rebase
           git push
+
+  # Deploy Pages only when the sync actually committed a change.
+  deploy:
+    needs: sync
+    if: ${{ needs.sync.outputs.changed == 'true' }}
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    uses: ./.github/workflows/pages.yml
