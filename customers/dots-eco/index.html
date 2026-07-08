@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>dots.eco — Target Account Coverage</title>
+<style>
+  :root {
+    --bg:#0d1117; --card:#161b22; --line:#22303c; --txt:#e6edf3; --mut:#8b98a5;
+    --accent:#2fb170; --gap:#e0a13b; --t1:#3b82f6; --t2:#6b7280;
+  }
+  @media (prefers-color-scheme: light) {
+    :root { --bg:#f6f8fa; --card:#ffffff; --line:#e4e8ec; --txt:#1a2027; --mut:#5b6771; }
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--txt);
+    font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; }
+  .wrap { max-width:960px; margin:0 auto; padding:32px 20px 60px; }
+  header h1 { font-size:26px; margin:0 0 4px; letter-spacing:-.5px; }
+  header .sub { color:var(--mut); margin:0 0 4px; }
+  header .date { color:var(--mut); font-size:13px; }
+  .banner { background:linear-gradient(90deg,rgba(47,177,112,.14),rgba(47,177,112,.03));
+    border:1px solid rgba(47,177,112,.35); border-radius:12px; padding:16px 18px; margin:22px 0 8px;
+    display:flex; gap:12px; align-items:flex-start; }
+  .banner .dot { width:10px; height:10px; border-radius:50%; background:var(--accent);
+    margin-top:6px; flex:none; box-shadow:0 0 0 4px rgba(47,177,112,.18); }
+  .banner b { color:var(--accent); }
+  .pool { display:flex; align-items:center; gap:0; background:var(--card); border:1px solid var(--line);
+    border-radius:12px; padding:18px 8px; margin:16px 0 6px; }
+  .pstat { flex:1; text-align:center; }
+  .pnum { font-size:30px; font-weight:800; letter-spacing:-1px; color:var(--accent); }
+  .pstat:last-child .pnum { color:var(--txt); }
+  .plbl { color:var(--mut); font-size:12px; margin-top:3px; padding:0 8px; }
+  .pdiv { width:1px; align-self:stretch; background:var(--line); margin:4px 0; }
+  .poolnote { color:var(--mut); font-size:12.5px; margin:8px 2px 0; line-height:1.55; }
+  h2 { font-size:16px; margin:34px 0 6px; display:flex; align-items:center; gap:10px; }
+  h2 .tag { font-size:11px; font-weight:600; letter-spacing:.5px; text-transform:uppercase;
+    color:var(--mut); border:1px solid var(--line); border-radius:20px; padding:2px 10px; }
+  .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:14px 0 6px; }
+  .stat { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px; }
+  .stat .num { font-size:28px; font-weight:700; letter-spacing:-1px; }
+  .stat .num.accent { color:var(--accent); }
+  .stat .num.gap { color:var(--gap); }
+  .stat .lbl { color:var(--mut); font-size:12px; margin-top:2px; }
+  table { width:100%; border-collapse:collapse; background:var(--card);
+    border:1px solid var(--line); border-radius:12px; overflow:hidden; margin-top:12px; }
+  td { padding:9px 14px; border-bottom:1px solid var(--line); }
+  tr:last-child td { border-bottom:none; }
+  tr.seg td { background:rgba(127,127,127,.06); font-size:12px; font-weight:600;
+    text-transform:uppercase; letter-spacing:.6px; color:var(--mut); padding:8px 14px; }
+  td.co { font-weight:600; width:34%; }
+  td.right { text-align:right; width:80px; }
+  tr.row-next td.co { color:var(--mut); }
+  .tier { font-size:11px; font-weight:600; padding:2px 8px; border-radius:20px; }
+  .tier.t1 { color:#fff; background:var(--t1); }
+  .tier.t2 { color:var(--txt); background:rgba(127,127,127,.18); }
+  .pill { font-size:13px; font-weight:700; padding:2px 10px; border-radius:20px; }
+  .pill.have { color:var(--accent); background:rgba(47,177,112,.15); }
+  .pill.low { color:var(--gap); background:rgba(224,161,59,.15); }
+  .pill.next { color:var(--mut); background:rgba(127,127,127,.12); font-weight:600; }
+  td.bar { width:34%; }
+  .track { height:6px; background:rgba(127,127,127,.14); border-radius:6px; overflow:hidden; }
+  .fill { height:100%; background:var(--accent); border-radius:6px; }
+  tr.row-next .fill { background:var(--gap); opacity:.4; }
+  .foot { color:var(--mut); font-size:12px; margin-top:26px; line-height:1.6; }
+  .legend { display:flex; gap:18px; flex-wrap:wrap; margin:10px 0 0; font-size:12px; color:var(--mut); }
+  .legend span b { color:var(--txt); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>dots.eco &mdash; Target Account Coverage</h1>
+    <p class="sub">Who we're targeting, mapped to your Loyalty &amp; Gaming playbooks</p>
+    <p class="date">Updated 7 July 2026</p>
+  </header>
+
+  <div class="banner">
+    <div class="dot"></div>
+    <div><b>First positive reply from the social-casino segment came in today.</b>
+    DoubleDown is a strong ICP fit, exactly the account profile the Gaming outbound was built to reach. Now being worked as a warm lead.</div>
+  </div>
+
+  <div class="pool">
+    <div class="pstat"><div class="pnum">~11,400</div><div class="plbl">contacts in the full outbound pool</div></div>
+    <div class="pdiv"></div>
+    <div class="pstat"><div class="pnum">~7,300</div><div class="plbl">companies</div></div>
+    <div class="pdiv"></div>
+    <div class="pstat"><div class="pnum">~1,800</div><div class="plbl">in your named target accounts (below)</div></div>
+  </div>
+  <p class="poolnote">The table below is a focused cut: the accounts named in your three playbooks. The wider pool applies the same ICP to comparable companies your lists flag as fair game.</p>
+
+  <div class="legend">
+    <span><b>Green</b> = contacts ready</span>
+    <span><b>Amber</b> = few contacts</span>
+    <span><b>To source</b> = named on your list, sourcing next</span>
+    <span><b>Tier 1 / A1</b> = strategic priority</span>
+  </div>
+
+  <h2>Loyalty &amp; Rewards <span class="tag">~70% of outreach</span></h2>
+  <div class="stats">
+      <div class="stat"><div class="num">55</div><div class="lbl">Loyalty target accounts</div></div>
+      <div class="stat"><div class="num">32</div><div class="lbl">with contacts sourced</div></div>
+      <div class="stat"><div class="num accent">1,263</div><div class="lbl">contacts in these accounts</div></div>
+      <div class="stat"><div class="num gap">23</div><div class="lbl">accounts to source next</div></div>
+    </div>
+  <table><tr class="seg"><td colspan="4">Enterprise HR & ESG</td></tr>
+<tr class="row-next"><td class="co">Microsoft</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill next">To source</span></td><td class="bar"><div class="track"><div class="fill" style="width:0.0%"></div></div></td></tr>
+<tr class="row-next"><td class="co">Salesforce</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill next">To source</span></td><td class="bar"><div class="track"><div class="fill" style="width:0.0%"></div></div></td></tr>
+<tr class="row-next"><td class="co">Accenture</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill next">To source</span></td><td class="bar"><div class="track"><div class="fill" style="width:0.0%"></div></div></td></tr>
+<tr class=""><td class="co">Unilever</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill have">42</span></td><td class="bar"><div class="track"><div class="fill" style="width:21.0%"></div></div></td></tr>
+<tr class=""><td class="co">Coca-Cola</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill low">5</span></td><td class="bar"><div class="track"><div class="fill" style="width:2.5%"></div></div></td></tr>
+<tr class=""><td class="co">Nike</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill have">203</span></td><td class="bar"><div class="track"><div class="fill" style="width:100%"></div></div></td></tr>
+<tr class="row-next"><td class="co">Mastercard</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill next">To source</span></td><td class="bar"><div class="track"><div class="fill" style="width:0.0%"></div></div></td></tr>
+<tr class=""><td class="co">American Express</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill low">1</span></td><td class="bar"><div class="track"><div class="fill" style="width:0.5%"></div></div></td></tr>
+<tr class="row-next"><td class="co">TD Bank</td><td><span class="tier t2">Tier 2</span></td><td class="right"><span class="pill next">To source</span></td><td class="bar"><div class="track"><div class="fill" style="width:0.0%"></div></div></td></tr>
+<tr class="row-next"><td class="co">MetLife</td><td><span class="tier t2">Tier 2</span></td><td class="right"><span class="pill next">To source</span></td><td class="bar"><div class="track"><div class="fill" style="width:0.0%"></div></div></td></tr>
+<tr class="seg"><td colspan="4">Employee Rewards Platforms</td></tr>
+<tr class=""><td class="co">Achievers</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill have">56</span></td><td class="bar"><div class="track"><div class="fill" style="width:28.0%"></div></div></td></tr>
+<tr class=""><td class="co">BI Worldwide</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill have">35</span></td><td class="bar"><div class="track"><div class="fill" style="width:17.5%"></div></div></td></tr>
+<tr class=""><td class="co">O.C. Tanner</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill have">39</span></td><td class="bar"><div class="track"><div class="fill" style="width:19.5%"></div></div></td></tr>
+<tr class=""><td class="co">Perkbox</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill have">38</span></td><td class="bar"><div class="track"><div class="fill" style="width:19.0%"></div></div></td></tr>
+<tr class=""><td class="co">Reward Gateway</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill have">69</span></td><td class="bar"><div class="track"><div class="fill" style="width:34.5%"></div></div></td></tr>
+<tr class=""><td class="co">Awardco</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill have">54</span></td><td class="bar"><div class="track"><div class="fill" style="width:27.0%"></div></div></td></tr>
+<tr class=""><td class="co">Workhuman</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill have">70</span></td><td class="bar"><div class="track"><div class="fill" style="width:35.0%"></div></div></td></tr>
+<tr class=""><td class="co">Motivosity</td><td><span class="tier t2">Tier 2</span></td><td class="right"><span class="pill have">11</span></td><td class="bar"><div class="track"><div class="fill" style="width:5.5%"></div></div></td></tr>
+<tr class="row-next"><td class="co">Fond</td><td><span class="tier t2">Tier 2</span></td><td class="right"><span class="pill next">To source</span></td><td class="bar"><div class="track"><div class="fill" style="width:0.0%"></div></div></td></tr>
+<tr class=""><td class="co">Guusto</td><td><span class="tier t2">Tier 2</span></td><td class="right"><span class="pill low">4</span></td><td class="bar"><div class="track"><div class="fill" style="width:2.0%"></div></div></td></tr>
+<tr class="seg"><td colspan="4">B2C Loyalty Apps</td></tr>
+<tr class=""><td class="co">WeWard</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill have">18</span></td><td class="bar"><div class="track"><div class="fill" style="width:9.0%"></div></div></td></tr>
+<tr class="row-next"><td class="co">Trashie</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill next">To source</span></td><td class="bar"><div class="track"><div class="fill" style="width:0.0%"></div></div></td></tr>
+<tr class="row-next"><td class="co">Biscuit</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill next">To source</span></td><td class="bar"><div class="track"><div class="fill" style="width:0.0%"></div></div></td></tr>
+<tr class=""><td class="co">Fetch</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill have">25</span></td><td class="bar"><div class="track"><div class="fill" style="width:12.5%"></div></div></td></tr>
+<tr class=""><td class="co">Rakuten</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill have">29</span></td><td class="bar"><div class="track"><div class="fill" style="width:14.5%"></div></div></td></tr>
+<tr class=""><td class="co">Sweatcoin</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill low">6</span></td><td class="bar"><div class="track"><div class="fill" style="width:3.0%"></div></div></td></tr>
+<tr class="row-next"><td class="co">Drop</td><td><span class="tier t2">Tier 2</span></td><td class="right"><span class="pill next">To source</span></td><td class="bar"><div class="track"><div class="fill" style="width:0.0%"></div></div></td></tr>
+<tr class="row-next"><td class="co">Air Miles</td><td><span class="tier t2">Tier 2</span></td><td class="right"><span class="pill next">To source</span></td><td class="bar"><div class="track"><div class="fill" style="width:0.0%"></div></div></td></tr>
+<tr class=""><td class="co">Nectar</td><td><span class="tier t2">Tier 2</span></td><td class="right"><span class="pill have">24</span></td><td class="bar"><div class="track"><div class="fill" style="width:12.0%"></div></div></td></tr>
+<tr class="row-next"><td class="co">Flying Blue</td><td><span class="tier t2">Tier 2</span></td><td class="right"><span class="pill next">To source</span></td><td class="bar"><div class="track"><div class="fill" style="width:0.0%"></div></div></td></tr>
+<tr class="seg"><td colspan="4">Reward Aggregators</td></tr>
+<tr class=""><td class="co">Runa</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill low">2</span></td><td class="bar"><div class="track"><div class="fill" style="width:1.0%"></div></div></td></tr>
+<tr class=""><td class="co">Tillo</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill low">6</span></td><td class="bar"><div class="track"><div class="fill" style="width:3.0%"></div></div></td></tr>
+<tr class=""><td class="co">Blackhawk</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill have">20</span></td><td class="bar"><div class="track"><div class="fill" style="width:10.0%"></div></div></td></tr>
+<tr class=""><td class="co">Tremendous</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill have">20</span></td><td class="bar"><div class="track"><div class="fill" style="width:10.0%"></div></div></td></tr>
+<tr class=""><td class="co">Tango Card</td><td><span class="tier t2">Tier 2</span></td><td class="right"><span class="pill low">3</span></td><td class="bar"><div class="track"><div class="fill" style="width:1.5%"></div></div></td></tr>
+<tr class=""><td class="co">Giftbit</td><td><span class="tier t2">Tier 2</span></td><td class="right"><span class="pill low">2</span></td><td class="bar"><div class="track"><div class="fill" style="width:1.0%"></div></div></td></tr>
+<tr class=""><td class="co">Prezzee</td><td><span class="tier t2">Tier 2</span></td><td class="right"><span class="pill have">17</span></td><td class="bar"><div class="track"><div class="fill" style="width:8.5%"></div></div></td></tr>
+<tr class=""><td class="co">Xoxoday</td><td><span class="tier t2">Tier 2</span></td><td class="right"><span class="pill have">21</span></td><td class="bar"><div class="track"><div class="fill" style="width:10.5%"></div></div></td></tr>
+<tr class=""><td class="co">Cadooz</td><td><span class="tier t2">Tier 3</span></td><td class="right"><span class="pill have">21</span></td><td class="bar"><div class="track"><div class="fill" style="width:10.5%"></div></div></td></tr>
+<tr class="seg"><td colspan="4">Cashback</td></tr>
+<tr class="row-next"><td class="co">TopCashback</td><td><span class="tier t2">Tier 2</span></td><td class="right"><span class="pill next">To source</span></td><td class="bar"><div class="track"><div class="fill" style="width:0.0%"></div></div></td></tr>
+<tr class="row-next"><td class="co">Quidco</td><td><span class="tier t2">Tier 2</span></td><td class="right"><span class="pill next">To source</span></td><td class="bar"><div class="track"><div class="fill" style="width:0.0%"></div></div></td></tr>
+<tr class="seg"><td colspan="4">Owned Loyalty</td></tr>
+<tr class="row-next"><td class="co">Rituals</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill next">To source</span></td><td class="bar"><div class="track"><div class="fill" style="width:0.0%"></div></div></td></tr>
+<tr class=""><td class="co">Sephora</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill have">166</span></td><td class="bar"><div class="track"><div class="fill" style="width:83.0%"></div></div></td></tr>
+<tr class="row-next"><td class="co">IKEA</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill next">To source</span></td><td class="bar"><div class="track"><div class="fill" style="width:0.0%"></div></div></td></tr>
+<tr class=""><td class="co">Starbucks</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill have">197</span></td><td class="bar"><div class="track"><div class="fill" style="width:98.5%"></div></div></td></tr>
+<tr class="row-next"><td class="co">Decathlon</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill next">To source</span></td><td class="bar"><div class="track"><div class="fill" style="width:0.0%"></div></div></td></tr>
+<tr class="seg"><td colspan="4">Employers</td></tr>
+<tr class="row-next"><td class="co">DHL</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill next">To source</span></td><td class="bar"><div class="track"><div class="fill" style="width:0.0%"></div></div></td></tr>
+<tr class=""><td class="co">Deloitte</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill have">19</span></td><td class="bar"><div class="track"><div class="fill" style="width:9.5%"></div></div></td></tr>
+<tr class="row-next"><td class="co">EY</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill next">To source</span></td><td class="bar"><div class="track"><div class="fill" style="width:0.0%"></div></div></td></tr>
+<tr class="row-next"><td class="co">RELX</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill next">To source</span></td><td class="bar"><div class="track"><div class="fill" style="width:0.0%"></div></div></td></tr>
+<tr class=""><td class="co">Meijer</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill low">7</span></td><td class="bar"><div class="track"><div class="fill" style="width:3.5%"></div></div></td></tr>
+<tr class="row-next"><td class="co">Kellanova</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill next">To source</span></td><td class="bar"><div class="track"><div class="fill" style="width:0.0%"></div></div></td></tr>
+<tr class="row-next"><td class="co">General Motors</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill next">To source</span></td><td class="bar"><div class="track"><div class="fill" style="width:0.0%"></div></div></td></tr>
+<tr class=""><td class="co">Sobeys</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill have">33</span></td><td class="bar"><div class="track"><div class="fill" style="width:16.5%"></div></div></td></tr>
+<tr class="row-next"><td class="co">Scotiabank</td><td><span class="tier t1">Tier 1</span></td><td class="right"><span class="pill next">To source</span></td><td class="bar"><div class="track"><div class="fill" style="width:0.0%"></div></div></td></tr></table>
+
+  <h2>Gaming <span class="tag">~30% of outreach</span></h2>
+  <div class="stats">
+      <div class="stat"><div class="num">39</div><div class="lbl">Gaming target accounts</div></div>
+      <div class="stat"><div class="num">26</div><div class="lbl">with contacts sourced</div></div>
+      <div class="stat"><div class="num accent">541</div><div class="lbl">contacts in these accounts</div></div>
+      <div class="stat"><div class="num gap">13</div><div class="lbl">accounts to source next</div></div>
+    </div>
+  <table><tr class="seg"><td colspan="4">Enterprise studios</td></tr>
+<tr class=""><td class="co">Supercell</td><td><span class="tier t1">A1</span></td><td class="right"><span class="pill have">84</span></td><td class="bar"><div class="track"><div class="fill" style="width:42.0%"></div></div></td></tr>
+<tr class=""><td class="co">King</td><td><span class="tier t1">A1</span></td><td class="right"><span class="pill have">46</span></td><td class="bar"><div class="track"><div class="fill" style="width:23.0%"></div></div></td></tr>
+<tr class=""><td class="co">Zynga</td><td><span class="tier t1">A1</span></td><td class="right"><span class="pill have">113</span></td><td class="bar"><div class="track"><div class="fill" style="width:56.5%"></div></div></td></tr>
+<tr class=""><td class="co">Scopely</td><td><span class="tier t1">A1</span></td><td class="right"><span class="pill low">3</span></td><td class="bar"><div class="track"><div class="fill" style="width:1.5%"></div></div></td></tr>
+<tr class=""><td class="co">Playrix</td><td><span class="tier t1">A1</span></td><td class="right"><span class="pill have">13</span></td><td class="bar"><div class="track"><div class="fill" style="width:6.5%"></div></div></td></tr>
+<tr class=""><td class="co">Moon Active</td><td><span class="tier t1">A1</span></td><td class="right"><span class="pill have">71</span></td><td class="bar"><div class="track"><div class="fill" style="width:35.5%"></div></div></td></tr>
+<tr class=""><td class="co">Dream Games</td><td><span class="tier t1">A1</span></td><td class="right"><span class="pill have">10</span></td><td class="bar"><div class="track"><div class="fill" style="width:5.0%"></div></div></td></tr>
+<tr class=""><td class="co">Tencent</td><td><span class="tier t1">A1</span></td><td class="right"><span class="pill have">22</span></td><td class="bar"><div class="track"><div class="fill" style="width:11.0%"></div></div></td></tr>
+<tr class=""><td class="co">HoYoverse</td><td><span class="tier t1">A1</span></td><td class="right"><span class="pill have">12</span></td><td class="bar"><div class="track"><div class="fill" style="width:6.0%"></div></div></td></tr>
+<tr class=""><td class="co">NetEase</td><td><span class="tier t1">A1</span></td><td class="right"><span class="pill low">2</span></td><td class="bar"><div class="track"><div class="fill" style="width:1.0%"></div></div></td></tr>
+<tr class=""><td class="co">FunPlus</td><td><span class="tier t1">A1</span></td><td class="right"><span class="pill have">10</span></td><td class="bar"><div class="track"><div class="fill" style="width:5.0%"></div></div></td></tr>
+<tr class=""><td class="co">Century Games</td><td><span class="tier t1">A1</span></td><td class="right"><span class="pill low">5</span></td><td class="bar"><div class="track"><div class="fill" style="width:2.5%"></div></div></td></tr>
+<tr class=""><td class="co">Miniclip</td><td><span class="tier t1">A1</span></td><td class="right"><span class="pill low">2</span></td><td class="bar"><div class="track"><div class="fill" style="width:1.0%"></div></div></td></tr>
+<tr class="seg"><td colspan="4">Mid-market studios</td></tr>
+<tr class=""><td class="co">Tripledot</td><td><span class="tier t2">A2</span></td><td class="right"><span class="pill have">16</span></td><td class="bar"><div class="track"><div class="fill" style="width:8.0%"></div></div></td></tr>
+<tr class=""><td class="co">Jam City</td><td><span class="tier t2">A2</span></td><td class="right"><span class="pill have">20</span></td><td class="bar"><div class="track"><div class="fill" style="width:10.0%"></div></div></td></tr>
+<tr class=""><td class="co">Candivore</td><td><span class="tier t2">A2</span></td><td class="right"><span class="pill have">20</span></td><td class="bar"><div class="track"><div class="fill" style="width:10.0%"></div></div></td></tr>
+<tr class=""><td class="co">MobilityWare</td><td><span class="tier t2">A2</span></td><td class="right"><span class="pill have">20</span></td><td class="bar"><div class="track"><div class="fill" style="width:10.0%"></div></div></td></tr>
+<tr class=""><td class="co">Tilting Point</td><td><span class="tier t2">A2</span></td><td class="right"><span class="pill have">16</span></td><td class="bar"><div class="track"><div class="fill" style="width:8.0%"></div></div></td></tr>
+<tr class=""><td class="co">MY.GAMES</td><td><span class="tier t2">A2</span></td><td class="right"><span class="pill have">10</span></td><td class="bar"><div class="track"><div class="fill" style="width:5.0%"></div></div></td></tr>
+<tr class=""><td class="co">PeopleFun</td><td><span class="tier t2">A2</span></td><td class="right"><span class="pill have">10</span></td><td class="bar"><div class="track"><div class="fill" style="width:5.0%"></div></div></td></tr>
+<tr class=""><td class="co">East Side Games</td><td><span class="tier t2">A2</span></td><td class="right"><span class="pill low">8</span></td><td class="bar"><div class="track"><div class="fill" style="width:4.0%"></div></div></td></tr>
+<tr class=""><td class="co">Voodoo</td><td><span class="tier t2">A2</span></td><td class="right"><span class="pill low">6</span></td><td class="bar"><div class="track"><div class="fill" style="width:3.0%"></div></div></td></tr>
+<tr class=""><td class="co">ZiMAD</td><td><span class="tier t2">A2</span></td><td class="right"><span class="pill low">4</span></td><td class="bar"><div class="track"><div class="fill" style="width:2.0%"></div></div></td></tr>
+<tr class="row-next"><td class="co">Belka Games</td><td><span class="tier t2">A2</span></td><td class="right"><span class="pill next">To source</span></td><td class="bar"><div class="track"><div class="fill" style="width:0.0%"></div></div></td></tr>
+<tr class="row-next"><td class="co">Big Fish Games</td><td><span class="tier t2">A2</span></td><td class="right"><span class="pill next">To source</span></td><td class="bar"><div class="track"><div class="fill" style="width:0.0%"></div></div></td></tr>
+<tr class="row-next"><td class="co">Popcore</td><td><span class="tier t2">A2</span></td><td class="right"><span class="pill next">To source</span></td><td class="bar"><div class="track"><div class="fill" style="width:0.0%"></div></div></td></tr>
+<tr class="row-next"><td class="co">Homa</td><td><span class="tier t2">A2</span></td><td class="right"><span class="pill next">To source</span></td><td class="bar"><div class="track"><div class="fill" style="width:0.0%"></div></div></td></tr>
+<tr class=""><td class="co">SayGames</td><td><span class="tier t2">A2</span></td><td class="right"><span class="pill low">2</span></td><td class="bar"><div class="track"><div class="fill" style="width:1.0%"></div></div></td></tr>
+<tr class="row-next"><td class="co">Lion Studios</td><td><span class="tier t2">A2</span></td><td class="right"><span class="pill next">To source</span></td><td class="bar"><div class="track"><div class="fill" style="width:0.0%"></div></div></td></tr>
+<tr class="row-next"><td class="co">N3TWORK</td><td><span class="tier t2">A2</span></td><td class="right"><span class="pill next">To source</span></td><td class="bar"><div class="track"><div class="fill" style="width:0.0%"></div></div></td></tr>
+<tr class="row-next"><td class="co">Nordeus</td><td><span class="tier t2">A2</span></td><td class="right"><span class="pill next">To source</span></td><td class="bar"><div class="track"><div class="fill" style="width:0.0%"></div></div></td></tr>
+<tr class="row-next"><td class="co">Wildlife Studios</td><td><span class="tier t2">A2</span></td><td class="right"><span class="pill next">To source</span></td><td class="bar"><div class="track"><div class="fill" style="width:0.0%"></div></div></td></tr>
+<tr class="row-next"><td class="co">Pixel Federation</td><td><span class="tier t2">A2</span></td><td class="right"><span class="pill next">To source</span></td><td class="bar"><div class="track"><div class="fill" style="width:0.0%"></div></div></td></tr>
+<tr class="row-next"><td class="co">G5 Games</td><td><span class="tier t2">A2</span></td><td class="right"><span class="pill next">To source</span></td><td class="bar"><div class="track"><div class="fill" style="width:0.0%"></div></div></td></tr>
+<tr class="seg"><td colspan="4">Social casino</td></tr>
+<tr class="row-next"><td class="co">Product Madness</td><td><span class="tier t1">A1</span></td><td class="right"><span class="pill next">To source</span></td><td class="bar"><div class="track"><div class="fill" style="width:0.0%"></div></div></td></tr>
+<tr class="row-next"><td class="co">SciPlay</td><td><span class="tier t1">A1</span></td><td class="right"><span class="pill next">To source</span></td><td class="bar"><div class="track"><div class="fill" style="width:0.0%"></div></div></td></tr>
+<tr class=""><td class="co">DoubleDown Interactive</td><td><span class="tier t2">A2</span></td><td class="right"><span class="pill have">12</span></td><td class="bar"><div class="track"><div class="fill" style="width:6.0%"></div></div></td></tr>
+<tr class=""><td class="co">Murka</td><td><span class="tier t2">A2</span></td><td class="right"><span class="pill low">4</span></td><td class="bar"><div class="track"><div class="fill" style="width:2.0%"></div></div></td></tr>
+<tr class="seg"><td colspan="4">Sports</td></tr>
+<tr class="row-next"><td class="co">Nautilus Mobile</td><td><span class="tier t2">A2</span></td><td class="right"><span class="pill next">To source</span></td><td class="bar"><div class="track"><div class="fill" style="width:0.0%"></div></div></td></tr></table>
+
+  <p class="foot">
+    Counts are distinct contacts we currently hold for each named account across your three target lists
+    (Marketing Master, Loyalty SDR Playbook, Gaming SDR Playbook). "To source" accounts are on your lists
+    and are the focus of this week's second-pass sourcing. Enterprise accounts (Microsoft, Salesforce,
+    Accenture, TD, Amex) were freshly enriched this week and are being loaded into the sequences.
+    Owned-loyalty accounts are filtered to loyalty and CRM roles before outreach.
+  </p>
+</div>
+</body>
+</html>
