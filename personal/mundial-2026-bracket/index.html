@@ -127,7 +127,7 @@
 <header>
   <div>
     <h1>Mundial FIFA 2026, Bracket</h1>
-    <div class="sub">Octavos hasta la Final. Haz clic en el equipo ganador para avanzar.</div>
+    <div class="sub">Cuartos hasta la Final. Haz clic en el equipo ganador para avanzar.</div>
   </div>
   <div class="spacer"></div>
   <div class="tz">Horas: <b>Chile</b> / <b>Colombia</b> <span style="opacity:.6">(Col = Chile menos 1h)</span></div>
@@ -265,6 +265,7 @@ const RESULTS = {
   M95: "ARG",   // 07 Jul: Argentina 3-2 Egipto (R16)
   M96: "SUI",   // 07 Jul: Suiza 0-0 Colombia (4-3 pen) (R16)
   M97: "FRA",   // 09 Jul: Francia 2-0 Marruecos (QF)
+  M98: "ESP",   // 10 Jul: España 2-1 Bélgica (QF)
 };
 
 /* ---------- STATE ---------- */
@@ -424,16 +425,14 @@ function render(){
       </div>
     </div>`;
 
-  // R32 (dieciseisavos) are complete — data kept, but the bracket now renders
-  // Octavos → Final for a cleaner view.
+  // R32 (dieciseisavos) and R16 (octavos) are complete. Data kept, but the
+  // bracket now renders Cuartos through the Final for a cleaner view.
   document.getElementById("bracket").innerHTML =
-    colHTML(ROUND_TITLES.R16, LEFT.R16) +
     colHTML(ROUND_TITLES.QF,  LEFT.QF) +
     colHTML(ROUND_TITLES.SF,  LEFT.SF) +
     center +
     colHTML(ROUND_TITLES.SF,  RIGHT.SF) +
-    colHTML(ROUND_TITLES.QF,  RIGHT.QF) +
-    colHTML(ROUND_TITLES.R16, RIGHT.R16);
+    colHTML(ROUND_TITLES.QF,  RIGHT.QF);
 }
 
 function showVenue(mid){
