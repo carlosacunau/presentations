@@ -130,7 +130,7 @@
     <div class="sub">Cuartos hasta la Final. Haz clic en el equipo ganador para avanzar.</div>
   </div>
   <div class="spacer"></div>
-  <div class="tz">Horas: <b>Chile</b> / <b>Colombia</b> <span style="opacity:.6">(Col = Chile menos 1h)</span></div>
+  <div class="tz">Horas: <b>Colombia</b></div>
   <div id="champBanner" class="champ-banner"></div>
   <button class="reset" id="resetBtn">Reiniciar</button>
 </header>
@@ -150,7 +150,7 @@
 
 <script>
 /* ---------- DATA ---------- */
-/* Times are Chile (CLT). Colombia = CLT - 1h, computed automatically. */
+/* Match times stored as Chile (CLT) source values; displayed in Colombia time (CLT - 1h) via colTime(). */
 const TEAMS = {
   RSA:{n:"Sudáfrica",f:"🇿🇦"}, CAN:{n:"Canadá",f:"🇨🇦"},
   GER:{n:"Alemania",f:"🇩🇪"}, PAR:{n:"Paraguay",f:"🇵🇾"},
@@ -385,7 +385,7 @@ function tieHTML(mid, finalStyle){
   const badge = isLocked(mid) ? `<span class="final-badge">FINAL</span>` : "";
   return `<div class="${cls}" data-mid="${mid}">
     <div class="meta" onclick="showVenue('${mid}')" title="Ver sede e info">
-      <span class="dt">${m.d} · ${m.t} 🇨🇱 / ${colTime(m.t)} 🇨🇴 ${badge}</span>
+      <span class="dt">${m.d} · ${colTime(m.t)} 🇨🇴 ${badge}</span>
       <span class="venue">${venue}</span>
     </div>
     ${slotHTML(mid,"a")}
@@ -417,7 +417,7 @@ function render(){
             </div>
             <div class="third-card">
               <div class="col-title">Tercer Puesto</div>
-              <div class="meta" onclick="showVenue('M103')" title="Ver sede e info"><span class="dt">${m103.d} · ${m103.t} 🇨🇱 / ${colTime(m103.t)} 🇨🇴</span><span class="venue">${venueShort(m103.v)}</span></div>
+              <div class="meta" onclick="showVenue('M103')" title="Ver sede e info"><span class="dt">${m103.d} · ${colTime(m103.t)} 🇨🇴</span><span class="venue">${venueShort(m103.v)}</span></div>
               ${slotHTML("M103","a")}${slotHTML("M103","b")}
             </div>
           </div>
@@ -440,7 +440,7 @@ function showVenue(mid){
   const venue = m.v ? m.v : "Sede por definir";
   document.getElementById("venueName").textContent = venue;
   document.getElementById("venueDate").textContent =
-    m.d + " · " + m.t + " (Chile) / " + colTime(m.t) + " (Colombia)";
+    m.d + " · " + colTime(m.t) + " (Colombia)";
   document.getElementById("venueModal").classList.add("show");
 }
 function closeVenue(){ document.getElementById("venueModal").classList.remove("show"); }
