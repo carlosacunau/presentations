@@ -427,14 +427,12 @@ function render(){
       </div>
     </div>`;
 
-  // R32 (dieciseisavos) and R16 (octavos) are complete. Data kept, but the
-  // bracket now renders Cuartos through the Final for a cleaner view.
+  // R32 (dieciseisavos), R16 (octavos) and Cuartos are complete. Data kept, but
+  // the bracket now renders Semifinal through the Final for a cleaner view.
   document.getElementById("bracket").innerHTML =
-    colHTML(ROUND_TITLES.QF,  LEFT.QF) +
     colHTML(ROUND_TITLES.SF,  LEFT.SF) +
     center +
-    colHTML(ROUND_TITLES.SF,  RIGHT.SF) +
-    colHTML(ROUND_TITLES.QF,  RIGHT.QF);
+    colHTML(ROUND_TITLES.SF,  RIGHT.SF);
 }
 
 function showVenue(mid){
