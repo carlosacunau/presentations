@@ -10,8 +10,8 @@
     --accent:#2fb170; --gap:#e0a13b; --t1:#3b82f6; --t2:#6b7280; --reach:#58a6ff;
     --conv:#c07be0; --opp:#2fb170;
   }
-  @media (prefers-color-scheme: light) {
-    :root { --bg:#f6f8fa; --card:#ffffff; --line:#e4e8ec; --txt:#1a2027; --mut:#5b6771; --reach:#2563eb; }
+  :root[data-theme="light"] {
+    --bg:#f6f8fa; --card:#ffffff; --line:#e4e8ec; --txt:#1a2027; --mut:#5b6771; --reach:#2563eb;
   }
   * { box-sizing:border-box; }
   body { margin:0; background:var(--bg); color:var(--txt);
@@ -86,9 +86,17 @@
   .fill { height:100%; background:var(--reach); border-radius:6px; }
   .empty { text-align:center; color:var(--mut); padding:26px; font-size:13px; }
   .foot { color:var(--mut); font-size:12px; margin-top:26px; line-height:1.6; }
+
+  .themebtn { position:fixed; top:16px; right:16px; z-index:10;
+    background:var(--card); color:var(--txt); border:1px solid var(--line);
+    border-radius:999px; padding:7px 14px; font-size:13px; cursor:pointer;
+    display:flex; align-items:center; gap:7px; line-height:1;
+    box-shadow:0 1px 3px rgba(0,0,0,.15); transition:background .15s,border-color .15s; }
+  .themebtn:hover { border-color:var(--accent); }
 </style>
 </head>
 <body>
+<button class="themebtn" id="themebtn" type="button" aria-label="Toggle light or dark theme"><span id="themeicon">☀️</span><span id="themelabel">Light</span></button>
 <div class="wrap">
   <header>
     <h1>dots.eco &middot; Target Account Coverage</h1>
@@ -321,6 +329,23 @@ function render() {
     'Showing <b>' + rows.length + '</b> of ' + ACCOUNTS.length + ' accounts &middot; ' +
     '<b>' + totalSourced.toLocaleString() + '</b> sourced &middot; <b>' + totalReached.toLocaleString() + '</b> reached';
 }
+
+// theme toggle: dark default, light override, persisted
+function applyTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+  var next = theme === "light" ? "dark" : "light";
+  document.getElementById("themeicon").textContent = next === "light" ? "☀️" : "🌙";
+  document.getElementById("themelabel").textContent = next === "light" ? "Light" : "Dark";
+}
+var savedTheme = "dark";
+try { savedTheme = localStorage.getItem("dotseco-theme") || "dark"; } catch (e) {}
+applyTheme(savedTheme);
+document.getElementById("themebtn").onclick = function () {
+  var current = document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark";
+  var next = current === "light" ? "dark" : "light";
+  applyTheme(next);
+  try { localStorage.setItem("dotseco-theme", next); } catch (e) {}
+};
 
 render();
 </script>
