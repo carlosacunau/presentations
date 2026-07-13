@@ -22,7 +22,7 @@
   header .date { color:var(--mut); font-size:13px; }
 
   /* pipeline strip */
-  .pipe { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin:22px 0 6px; }
+  .pipe { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:22px 0 6px; }
   .pstep { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:15px 14px; position:relative; }
   .pstep .pn { font-size:24px; font-weight:800; letter-spacing:-1px; }
   .pstep .pl { color:var(--mut); font-size:11.5px; margin-top:2px; line-height:1.35; }
@@ -30,11 +30,9 @@
   .pstep.k-sourced  .pn { color:var(--txt); }
   .pstep.k-reached  .pn { color:var(--reach); }
   .pstep.k-conversation .pn { color:var(--conv); }
-  .pstep.k-opportunity  .pn { color:var(--opp); }
   .pstep .pk { position:absolute; top:12px; right:14px; width:8px; height:8px; border-radius:50%; }
   .k-tosource .pk{background:var(--mut)} .k-sourced .pk{background:var(--txt)}
   .k-reached .pk{background:var(--reach)} .k-conversation .pk{background:var(--conv)}
-  .k-opportunity .pk{background:var(--opp)}
   .funnelnote { color:var(--mut); font-size:12.5px; margin:8px 2px 0; line-height:1.55; }
 
   /* filter bar */
@@ -110,10 +108,9 @@
     <div class="pstep k-tosource"><span class="pk"></span><div class="pn" id="c-tosource">0</div><div class="pl">To source (named, not scraped yet)</div></div>
     <div class="pstep k-sourced"><span class="pk"></span><div class="pn" id="c-sourced">0</div><div class="pl">Sourced (contacts held, not emailed)</div></div>
     <div class="pstep k-reached"><span class="pk"></span><div class="pn" id="c-reached">0</div><div class="pl">Reached (emailed at least once)</div></div>
-    <div class="pstep k-conversation"><span class="pk"></span><div class="pn" id="c-conversation">0</div><div class="pl">In conversation (active thread)</div></div>
-    <div class="pstep k-opportunity"><span class="pk"></span><div class="pn">3</div><div class="pl">Flagged opportunities (early, no $ yet)</div></div>
+    <div class="pstep k-conversation"><span class="pk"></span><div class="pn">4</div><div class="pl">Active conversations being worked</div></div>
   </div>
-  <p class="funnelnote">Stages read left to right. An account is <b>Sourced</b> once we hold contacts for it, <b>Reached</b> once at least one has been emailed, and <b>In conversation</b> once someone there is replying and being worked. Across all sequences we have <b>30 replies</b> (plus 34 out-of-office / auto), of which <b>3-4</b> are live conversations. Opportunities are flagged inside the inbox and are early, so no dollar value is attached yet.</p>
+  <p class="funnelnote">Stages read left to right. An account is <b>Sourced</b> once we hold contacts for it, <b>Reached</b> once at least one has been emailed, and <b>In conversation</b> once someone there is replying and being worked. Across all sequences we have <b>30 replies</b> (plus 34 out-of-office / auto), of which <b>4</b> are active conversations we are working.</p>
 
   <div class="banner">
     <div class="dot"></div>
@@ -141,8 +138,7 @@
     at least once so far; the bar is reached &divide; sourced. Enterprise accounts (Microsoft, Accenture, Unilever, TD, Amex,
     Coca-Cola) were freshly enriched and several are still mid-ramp, so their sourced count is high while reached is still
     climbing. Accenture has 174 contacts scraped and is queued for sequencing. Of 30 replies, most are out-of-office,
-    not-interested, or wrong-contact notes; 3-4 are live conversations we are actively working, and 3 leads have been
-    flagged as early opportunities. These are conversations, not qualified pipeline, so no dollar value is attached yet.
+    not-interested, or wrong-contact notes; 4 are active conversations we are working.
   </p>
 </div>
 
@@ -288,7 +284,6 @@ function render() {
   document.getElementById("c-tosource").textContent = counts.tosource;
   document.getElementById("c-sourced").textContent = counts.sourced;
   document.getElementById("c-reached").textContent = counts.reached;
-  document.getElementById("c-conversation").textContent = counts.conversation;
 
   buildChips("f-vertical","vertical",[{val:"Loyalty",label:"Loyalty"},{val:"Gaming",label:"Gaming"}]);
   buildChips("f-stage","stage",STAGES.map(s => ({val:s.k,label:s.label})), v => v==="all"?"":"st-"+v);
