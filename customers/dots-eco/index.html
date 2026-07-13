@@ -139,16 +139,16 @@
 
 <script>
 const ACCOUNTS = [
-  {n:"Microsoft",v:"Loyalty",seg:"Enterprise HR & ESG",t:"t1",tl:"Tier 1",s:178,r:51,st:"reached"},
-  {n:"Salesforce",v:"Loyalty",seg:"Enterprise HR & ESG",t:"t1",tl:"Tier 1",s:43,r:22,st:"reached"},
-  {n:"Accenture",v:"Loyalty",seg:"Enterprise HR & ESG",t:"t1",tl:"Tier 1",s:174,r:0,st:"sourced"},
-  {n:"Unilever",v:"Loyalty",seg:"Enterprise HR & ESG",t:"t1",tl:"Tier 1",s:114,r:20,st:"reached"},
-  {n:"Coca-Cola",v:"Loyalty",seg:"Enterprise HR & ESG",t:"t1",tl:"Tier 1",s:122,r:97,st:"reached"},
-  {n:"Nike",v:"Loyalty",seg:"Enterprise HR & ESG",t:"t1",tl:"Tier 1",s:203,r:18,st:"reached"},
-  {n:"Mastercard",v:"Loyalty",seg:"Enterprise HR & ESG",t:"t1",tl:"Tier 1",s:1,r:1,st:"reached"},
-  {n:"American Express",v:"Loyalty",seg:"Enterprise HR & ESG",t:"t1",tl:"Tier 1",s:60,r:38,st:"reached"},
-  {n:"TD Bank",v:"Loyalty",seg:"Enterprise HR & ESG",t:"t2",tl:"Tier 2",s:57,r:12,st:"reached"},
-  {n:"MetLife",v:"Loyalty",seg:"Enterprise HR & ESG",t:"t2",tl:"Tier 2",s:29,r:12,st:"reached"},
+  {n:"Microsoft",v:"Employers",seg:"Enterprise HR & ESG",t:"t1",tl:"Tier 1",s:178,r:51,st:"reached"},
+  {n:"Salesforce",v:"Employers",seg:"Enterprise HR & ESG",t:"t1",tl:"Tier 1",s:43,r:22,st:"reached"},
+  {n:"Accenture",v:"Employers",seg:"Enterprise HR & ESG",t:"t1",tl:"Tier 1",s:174,r:0,st:"sourced"},
+  {n:"Unilever",v:"Employers",seg:"Enterprise HR & ESG",t:"t1",tl:"Tier 1",s:114,r:20,st:"reached"},
+  {n:"Coca-Cola",v:"Employers",seg:"Enterprise HR & ESG",t:"t1",tl:"Tier 1",s:122,r:97,st:"reached"},
+  {n:"Nike",v:"Employers",seg:"Enterprise HR & ESG",t:"t1",tl:"Tier 1",s:203,r:18,st:"reached"},
+  {n:"Mastercard",v:"Employers",seg:"Enterprise HR & ESG",t:"t1",tl:"Tier 1",s:1,r:1,st:"reached"},
+  {n:"American Express",v:"Employers",seg:"Enterprise HR & ESG",t:"t1",tl:"Tier 1",s:60,r:38,st:"reached"},
+  {n:"TD Bank",v:"Employers",seg:"Enterprise HR & ESG",t:"t2",tl:"Tier 2",s:57,r:12,st:"reached"},
+  {n:"MetLife",v:"Employers",seg:"Enterprise HR & ESG",t:"t2",tl:"Tier 2",s:29,r:12,st:"reached"},
   {n:"Achievers",v:"Loyalty",seg:"Employee Rewards Platforms",t:"t1",tl:"Tier 1",s:56,r:20,st:"reached"},
   {n:"BI Worldwide",v:"Loyalty",seg:"Employee Rewards Platforms",t:"t1",tl:"Tier 1",s:35,r:13,st:"reached"},
   {n:"O.C. Tanner",v:"Loyalty",seg:"Employee Rewards Platforms",t:"t1",tl:"Tier 1",s:39,r:15,st:"reached"},
@@ -185,15 +185,15 @@ const ACCOUNTS = [
   {n:"IKEA",v:"Loyalty",seg:"Owned Loyalty",t:"t1",tl:"Tier 1",s:null,r:null,st:"tosource"},
   {n:"Starbucks",v:"Loyalty",seg:"Owned Loyalty",t:"t1",tl:"Tier 1",s:197,r:4,st:"reached"},
   {n:"Decathlon",v:"Loyalty",seg:"Owned Loyalty",t:"t1",tl:"Tier 1",s:null,r:null,st:"tosource"},
-  {n:"DHL",v:"Loyalty",seg:"Employers",t:"t1",tl:"Tier 1",s:null,r:null,st:"tosource"},
-  {n:"Deloitte",v:"Loyalty",seg:"Employers",t:"t1",tl:"Tier 1",s:19,r:1,st:"reached"},
-  {n:"EY",v:"Loyalty",seg:"Employers",t:"t1",tl:"Tier 1",s:null,r:null,st:"tosource"},
-  {n:"RELX",v:"Loyalty",seg:"Employers",t:"t1",tl:"Tier 1",s:null,r:null,st:"tosource"},
-  {n:"Meijer",v:"Loyalty",seg:"Employers",t:"t1",tl:"Tier 1",s:7,r:0,st:"sourced"},
-  {n:"Kellanova",v:"Loyalty",seg:"Employers",t:"t1",tl:"Tier 1",s:null,r:null,st:"tosource"},
-  {n:"General Motors",v:"Loyalty",seg:"Employers",t:"t1",tl:"Tier 1",s:null,r:null,st:"tosource"},
-  {n:"Sobeys",v:"Loyalty",seg:"Employers",t:"t1",tl:"Tier 1",s:33,r:0,st:"sourced"},
-  {n:"Scotiabank",v:"Loyalty",seg:"Employers",t:"t1",tl:"Tier 1",s:null,r:null,st:"tosource"},
+  {n:"DHL",v:"Employers",seg:"Employers",t:"t1",tl:"Tier 1",s:null,r:null,st:"tosource"},
+  {n:"Deloitte",v:"Employers",seg:"Employers",t:"t1",tl:"Tier 1",s:19,r:1,st:"reached"},
+  {n:"EY",v:"Employers",seg:"Employers",t:"t1",tl:"Tier 1",s:null,r:null,st:"tosource"},
+  {n:"RELX",v:"Employers",seg:"Employers",t:"t1",tl:"Tier 1",s:null,r:null,st:"tosource"},
+  {n:"Meijer",v:"Employers",seg:"Employers",t:"t1",tl:"Tier 1",s:7,r:0,st:"sourced"},
+  {n:"Kellanova",v:"Employers",seg:"Employers",t:"t1",tl:"Tier 1",s:null,r:null,st:"tosource"},
+  {n:"General Motors",v:"Employers",seg:"Employers",t:"t1",tl:"Tier 1",s:null,r:null,st:"tosource"},
+  {n:"Sobeys",v:"Employers",seg:"Employers",t:"t1",tl:"Tier 1",s:33,r:0,st:"sourced"},
+  {n:"Scotiabank",v:"Employers",seg:"Employers",t:"t1",tl:"Tier 1",s:null,r:null,st:"tosource"},
   {n:"Supercell",v:"Gaming",seg:"Enterprise studios",t:"t1",tl:"A1",s:84,r:40,st:"reached"},
   {n:"King",v:"Gaming",seg:"Enterprise studios",t:"t1",tl:"A1",s:46,r:23,st:"reached"},
   {n:"Zynga",v:"Gaming",seg:"Enterprise studios",t:"t1",tl:"A1",s:113,r:0,st:"sourced"},
@@ -280,7 +280,7 @@ function render() {
   document.getElementById("c-sourced").textContent = counts.sourced;
   document.getElementById("c-reached").textContent = counts.reached;
 
-  buildChips("f-vertical","vertical",[{val:"Loyalty",label:"Loyalty"},{val:"Gaming",label:"Gaming"}]);
+  buildChips("f-vertical","vertical",[{val:"Loyalty",label:"Loyalty"},{val:"Gaming",label:"Gaming"},{val:"Employers",label:"Employers"}]);
   buildChips("f-stage","stage",STAGES.map(s => ({val:s.k,label:s.label})), v => v==="all"?"":"st-"+v);
   buildChips("f-tier","tier",[{val:"t1",label:"Tier 1 / A1"},{val:"t2",label:"Tier 2 / A2"}]);
   buildChips("f-segment","segment",segmentOrder().map(s => ({val:s,label:s})));
