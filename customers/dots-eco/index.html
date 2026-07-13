@@ -21,7 +21,7 @@
   header .date { color:var(--mut); font-size:13px; }
 
   /* funnel strip */
-  .funnel { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin:22px 0 6px; }
+  .funnel { display:grid; grid-template-columns:repeat(6,1fr); gap:10px; margin:22px 0 6px; }
   .fstep { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:15px 14px; position:relative; }
   .fstep .fn { font-size:24px; font-weight:800; letter-spacing:-1px; }
   .fstep .fl { color:var(--mut); font-size:11.5px; margin-top:2px; line-height:1.35; }
@@ -29,7 +29,8 @@
   .fstep.s2 .fn { color:var(--reach); }
   .fstep.s3 .fn { color:var(--accent); }
   .fstep.s4 .fn { color:var(--accent); }
-  .fstep.s5 .fn { color:var(--gap); }
+  .fstep.s5 .fn { color:var(--accent); }
+  .fstep.s6 .fn { color:var(--gap); }
   .funnelnote { color:var(--mut); font-size:12.5px; margin:8px 2px 0; line-height:1.55; }
 
   .banner { background:linear-gradient(90deg,rgba(47,177,112,.14),rgba(47,177,112,.03));
@@ -91,8 +92,9 @@
     <div class="fstep s1"><div class="fn">12,072</div><div class="fl">contacts sourced in the outbound pool</div></div>
     <div class="fstep s2"><div class="fn">6,403</div><div class="fl">contacts reached (emailed at least once)</div></div>
     <div class="fstep s3"><div class="fn">6,494</div><div class="fl">emails sent across all sequences</div></div>
-    <div class="fstep s4"><div class="fn">30</div><div class="fl">human replies</div></div>
-    <div class="fstep s5"><div class="fn">7</div><div class="fl">opportunities in progress (~$7K)</div></div>
+    <div class="fstep s4"><div class="fn">30</div><div class="fl">replies (plus 34 out-of-office / auto)</div></div>
+    <div class="fstep s5"><div class="fn">3-4</div><div class="fl">active conversations</div></div>
+    <div class="fstep s6"><div class="fn">3</div><div class="fl">leads flagged as opportunities (early)</div></div>
   </div>
   <p class="funnelnote">Read left to right: a <b>sourced contact</b> is one we hold and can email; a <b>reached contact</b> has been emailed at least once. Not every sourced contact is emailed at once, sends are paced across the week per mailbox. The account tables below show the same split per account.</p>
 
@@ -241,8 +243,9 @@
     (Marketing Master, Loyalty SDR Playbook, Gaming SDR Playbook). <b>Reached</b> is how many of those have been emailed
     at least once so far. The bar is reached &divide; sourced. Enterprise accounts (Microsoft, Unilever, TD, Amex, Coca-Cola)
     were freshly enriched this week and are mid-ramp, so their sourced count is high while reached is still climbing.
-    Owned-loyalty accounts are filtered to loyalty and CRM roles before outreach. Opportunity count and pipeline value are
-    tracked across email plus conference and warm threads.
+    Owned-loyalty accounts are filtered to loyalty and CRM roles before outreach. Of 30 replies, most are out-of-office,
+    not-interested, or wrong-contact notes; 3-4 are live conversations we are actively working, and 3 leads have been
+    flagged as early opportunities. These are conversations, not qualified pipeline, so no dollar value is attached yet.
   </p>
 </div>
 </body>
