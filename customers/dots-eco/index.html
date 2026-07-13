@@ -109,9 +109,9 @@
     <div class="pstep k-tosource"><span class="pk"></span><div class="pn" id="c-tosource">0</div><div class="pl">To source (named, not scraped yet)</div></div>
     <div class="pstep k-sourced"><span class="pk"></span><div class="pn" id="c-sourced">0</div><div class="pl">Sourced (contacts held, not emailed)</div></div>
     <div class="pstep k-reached"><span class="pk"></span><div class="pn" id="c-reached">0</div><div class="pl">Reached (emailed at least once)</div></div>
-    <div class="pstep k-conversation"><span class="pk"></span><div class="pn">3</div><div class="pl">Active conversations being worked</div></div>
+    <div class="pstep k-conversation"><span class="pk"></span><div class="pn">5</div><div class="pl">Active conversations being worked</div></div>
   </div>
-  <p class="funnelnote">Stages read left to right. An account is <b>Sourced</b> once we hold contacts for it, <b>Reached</b> once at least one has been emailed, and <b>In conversation</b> once someone there is replying and being worked. Across all sequences we have <b>30 replies</b> (plus 34 out-of-office / auto), of which <b>3</b> are active conversations we are working.</p>
+  <p class="funnelnote">Stages read left to right. An account is <b>Sourced</b> once we hold contacts for it, <b>Reached</b> once at least one has been emailed, and <b>In conversation</b> once someone there is replying and being worked. Across all sequences we have <b>30 replies</b> (plus 34 out-of-office / auto), of which <b>5</b> are active conversations we are working.</p>
 
   <!-- filters -->
   <div class="filters">
@@ -133,7 +133,7 @@
     at least once so far; the bar is reached &divide; sourced. Enterprise accounts (Microsoft, Accenture, Unilever, TD, Amex,
     Coca-Cola) were freshly enriched and several are still mid-ramp, so their sourced count is high while reached is still
     climbing. Accenture has 174 contacts scraped and is queued for sequencing. Of 30 replies, most are out-of-office,
-    not-interested, or wrong-contact notes; 3 are active conversations we are working.
+    not-interested, or wrong-contact notes; 5 are active conversations we are working.
   </p>
 </div>
 
@@ -175,7 +175,7 @@ const ACCOUNTS = [
   {n:"Tremendous",v:"Loyalty",seg:"Reward Aggregators",t:"t1",tl:"Tier 1",s:20,r:11,st:"reached"},
   {n:"Tango Card",v:"Loyalty",seg:"Reward Aggregators",t:"t2",tl:"Tier 2",s:3,r:3,st:"reached"},
   {n:"Giftbit",v:"Loyalty",seg:"Reward Aggregators",t:"t2",tl:"Tier 2",s:2,r:0,st:"sourced"},
-  {n:"Prezzee",v:"Loyalty",seg:"Reward Aggregators",t:"t2",tl:"Tier 2",s:17,r:8,st:"reached"},
+  {n:"Prezzee",v:"Loyalty",seg:"Reward Aggregators",t:"t2",tl:"Tier 2",s:17,r:8,st:"conversation"},
   {n:"Xoxoday",v:"Loyalty",seg:"Reward Aggregators",t:"t2",tl:"Tier 2",s:21,r:19,st:"reached"},
   {n:"Cadooz",v:"Loyalty",seg:"Reward Aggregators",t:"t2",tl:"Tier 3",s:21,r:1,st:"reached"},
   {n:"TopCashback",v:"Loyalty",seg:"Cashback",t:"t2",tl:"Tier 2",s:null,r:null,st:"tosource"},
@@ -235,6 +235,7 @@ const ACCOUNTS = [
   {n:"Nautilus Mobile",v:"Gaming",seg:"Sports",t:"t2",tl:"A2",s:null,r:null,st:"tosource"},
   {n:"LioLan",v:"Loyalty",seg:"Inbound / off-list",t:"t2",tl:"Inbound",s:1,r:1,st:"conversation"},
   {n:"Myles Wellbeing",v:"Loyalty",seg:"Inbound / off-list",t:"t2",tl:"Inbound",s:1,r:1,st:"conversation"},
+  {n:"Futureplay",v:"Gaming",seg:"Mid-market studios",t:"t2",tl:"A2",s:1,r:1,st:"conversation"},
 ];
 
 const STAGES = [
