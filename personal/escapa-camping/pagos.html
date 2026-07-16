@@ -84,7 +84,7 @@
       <div class="dates">Del 6 al 8 de Noviembre · Bordestero Catemú</div>
       <h1>Campeggio 2026</h1>
       <div class="sub">$30.000 por persona · revisa si tu pago ya quedó registrado</div>
-      <div class="updated">Actualizado: <b>2026-07-10 19:26</b></div>
+      <div class="updated">Actualizado: <b>2026-07-16 16:35</b></div>
 
       <div class="stats">
         <div class="stat"><div class="label">Familias</div><div class="value">47</div></div>
@@ -98,7 +98,6 @@
           <div>Carlos Andres Acuña Uribe</div>
           <div>RUT 24887162-8</div>
           <div>Cuenta corriente 0210255527</div>
-          <div>acuna.carlosandres@gmail.com</div>
         </div>
         <button class="copy-btn" id="copyBtn" onclick="copyPay()">Copiar datos de transferencia</button>
       </div>
@@ -186,6 +185,17 @@
           <div class="r-date">2026-06-01</div>
         </div>
       </div>
+      <div class="row paid" data-search="duilio canepa simona" data-paid="1">
+        <div class="r-main">
+          <div class="r-parent">Duilio Canepa</div>
+          <div class="r-kids">Simona · 2 personas</div>
+        </div>
+        <div class="r-side">
+          <div class="r-amount">$60.000</div>
+          <span class="badge yes">PAGADO</span>
+          <div class="r-date">2026-07-16</div>
+        </div>
+      </div>
       <div class="row paid" data-search="enrique águila reyes lorenza" data-paid="1">
         <div class="r-main">
           <div class="r-parent">Enrique Águila Reyes</div>
@@ -217,6 +227,17 @@
           <div class="r-amount">$60.000</div>
           <span class="badge yes">PAGADO</span>
           <div class="r-date">2026-06-04</div>
+        </div>
+      </div>
+      <div class="row paid" data-search="felipe ban garetto raffaella" data-paid="1">
+        <div class="r-main">
+          <div class="r-parent">Felipe Ban Garetto</div>
+          <div class="r-kids">Raffaella · 2 personas</div>
+        </div>
+        <div class="r-side">
+          <div class="r-amount">$60.000</div>
+          <span class="badge yes">PAGADO</span>
+          <div class="r-date">2026-07-12</div>
         </div>
       </div>
       <div class="row paid" data-search="felipe lavagnino bruno" data-paid="1">
@@ -527,28 +548,6 @@
           <div class="r-date"></div>
         </div>
       </div>
-      <div class="row " data-search="duilio canepa simona" data-paid="0">
-        <div class="r-main">
-          <div class="r-parent">Duilio Canepa</div>
-          <div class="r-kids">Simona · 2 personas</div>
-        </div>
-        <div class="r-side">
-          <div class="r-amount">$60.000</div>
-          <span class="badge no">PENDIENTE</span>
-          <div class="r-date"></div>
-        </div>
-      </div>
-      <div class="row " data-search="felipe ban garetto raffaella" data-paid="0">
-        <div class="r-main">
-          <div class="r-parent">Felipe Ban Garetto</div>
-          <div class="r-kids">Raffaella · 2 personas</div>
-        </div>
-        <div class="r-side">
-          <div class="r-amount">$60.000</div>
-          <span class="badge no">PENDIENTE</span>
-          <div class="r-date"></div>
-        </div>
-      </div>
       <div class="row " data-search="francisco caballero santiago" data-paid="0">
         <div class="r-main">
           <div class="r-parent">Francisco Caballero</div>
@@ -631,7 +630,7 @@
   </div>
 
 <script>
-  const PAY_TEXT = "Banco Itaú\nCarlos Andres Acuña Uribe\nRUT 24887162-8\nCuenta corriente 0210255527\nacuna.carlosandres@gmail.com";
+  const PAY_TEXT = "Banco Itaú\nCarlos Andres Acuña Uribe\nRUT 24887162-8\nCuenta corriente 0210255527";
   function copyPay() {
     const btn = document.getElementById('copyBtn');
     navigator.clipboard.writeText(PAY_TEXT).then(() => {
