@@ -57,6 +57,16 @@
   }
   .search:focus { outline: none; border-color: #2196f3; }
 
+  .filters { display: flex; gap: 8px; margin-top: 10px; }
+  .fbtn {
+    flex: 1; padding: 8px 0; font-size: 0.8rem; font-weight: 700;
+    border: 1px solid #d0d4d9; border-radius: 10px; background: #fff;
+    color: #666; cursor: pointer;
+  }
+  .fbtn.active { background: #2196f3; border-color: #2196f3; color: #fff; }
+  .fbtn.active[data-filter="pending"] { background: #c62828; border-color: #c62828; }
+  .fbtn.active[data-filter="paid"] { background: #2e7d32; border-color: #2e7d32; }
+
   /* Scrollable list */
   .list-wrap { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 12px 16px 32px; }
   .list { max-width: 760px; margin: 0 auto; }
@@ -84,7 +94,7 @@
       <div class="dates">Del 6 al 8 de Noviembre · Bordestero Catemú</div>
       <h1>Campeggio 2026</h1>
       <div class="sub">$30.000 por persona · revisa si tu pago ya quedó registrado</div>
-      <div class="updated">Actualizado: <b>2026-07-16 16:54</b></div>
+      <div class="updated">Actualizado: <b>2026-07-16 22:32</b></div>
 
       <div class="stats">
         <div class="stat"><div class="label">Familias</div><div class="value">48</div></div>
@@ -103,11 +113,116 @@
       </div>
 
       <input class="search" id="search" type="search" placeholder="Busca tu nombre o el de tu hijo(a)..." oninput="filter()" autocomplete="off">
+
+      <div class="filters">
+        <button class="fbtn active" data-filter="all" onclick="setFilter('all')">Todos</button>
+        <button class="fbtn" data-filter="pending" onclick="setFilter('pending')">Pendientes</button>
+        <button class="fbtn" data-filter="paid" onclick="setFilter('paid')">Pagados</button>
+      </div>
     </div>
   </div>
 
   <div class="list-wrap">
     <div class="list" id="list">
+      <div class="row " data-search="carlos peralta antonia" data-paid="0">
+        <div class="r-main">
+          <div class="r-parent">Carlos Peralta</div>
+          <div class="r-kids">Antonia · 2 personas</div>
+        </div>
+        <div class="r-side">
+          <div class="r-amount">$60.000</div>
+          <span class="badge no">PENDIENTE</span>
+          <div class="r-date"></div>
+        </div>
+      </div>
+      <div class="row " data-search="francisco caballero santiago" data-paid="0">
+        <div class="r-main">
+          <div class="r-parent">Francisco Caballero</div>
+          <div class="r-kids">Santiago · 2 personas</div>
+        </div>
+        <div class="r-side">
+          <div class="r-amount">$60.000</div>
+          <span class="badge no">PENDIENTE</span>
+          <div class="r-date"></div>
+        </div>
+      </div>
+      <div class="row " data-search="germán valdés c. lourdes" data-paid="0">
+        <div class="r-main">
+          <div class="r-parent">Germán Valdés C.</div>
+          <div class="r-kids">Lourdes · 2 personas</div>
+        </div>
+        <div class="r-side">
+          <div class="r-amount">$60.000</div>
+          <span class="badge no">PENDIENTE</span>
+          <div class="r-date"></div>
+        </div>
+      </div>
+      <div class="row " data-search="héctor ravello brante luciano" data-paid="0">
+        <div class="r-main">
+          <div class="r-parent">Héctor Ravello Brante</div>
+          <div class="r-kids">Luciano · 2 personas</div>
+        </div>
+        <div class="r-side">
+          <div class="r-amount">$60.000</div>
+          <span class="badge no">PENDIENTE</span>
+          <div class="r-date"></div>
+        </div>
+      </div>
+      <div class="row " data-search="ignacio pinochet clarita" data-paid="0">
+        <div class="r-main">
+          <div class="r-parent">Ignacio Pinochet</div>
+          <div class="r-kids">Clarita · 2 personas</div>
+        </div>
+        <div class="r-side">
+          <div class="r-amount">$60.000</div>
+          <span class="badge no">PENDIENTE</span>
+          <div class="r-date"></div>
+        </div>
+      </div>
+      <div class="row " data-search="juan villavicencio juan andrés" data-paid="0">
+        <div class="r-main">
+          <div class="r-parent">Juan Villavicencio</div>
+          <div class="r-kids">Juan Andrés · 2 personas</div>
+        </div>
+        <div class="r-side">
+          <div class="r-amount">$60.000</div>
+          <span class="badge no">PENDIENTE</span>
+          <div class="r-date"></div>
+        </div>
+      </div>
+      <div class="row " data-search="marcelo solari dante" data-paid="0">
+        <div class="r-main">
+          <div class="r-parent">Marcelo Solari</div>
+          <div class="r-kids">Dante · 2 personas</div>
+        </div>
+        <div class="r-side">
+          <div class="r-amount">$60.000</div>
+          <span class="badge no">PENDIENTE</span>
+          <div class="r-date"></div>
+        </div>
+      </div>
+      <div class="row " data-search="piero caszely roberta" data-paid="0">
+        <div class="r-main">
+          <div class="r-parent">Piero Caszely</div>
+          <div class="r-kids">Roberta · 2 personas</div>
+        </div>
+        <div class="r-side">
+          <div class="r-amount">$60.000</div>
+          <span class="badge no">PENDIENTE</span>
+          <div class="r-date"></div>
+        </div>
+      </div>
+      <div class="row " data-search="sebastián farías dominga" data-paid="0">
+        <div class="r-main">
+          <div class="r-parent">Sebastián Farías</div>
+          <div class="r-kids">Dominga · 2 personas</div>
+        </div>
+        <div class="r-side">
+          <div class="r-amount">$60.000</div>
+          <span class="badge no">PENDIENTE</span>
+          <div class="r-date"></div>
+        </div>
+      </div>
       <div class="row paid" data-search="alessandro corte antonelli emma" data-paid="1">
         <div class="r-main">
           <div class="r-parent">Alessandro Corte Antonelli</div>
@@ -537,105 +652,6 @@
           <div class="r-date">2026-05-29</div>
         </div>
       </div>
-      <div class="row " data-search="carlos peralta antonia" data-paid="0">
-        <div class="r-main">
-          <div class="r-parent">Carlos Peralta</div>
-          <div class="r-kids">Antonia · 2 personas</div>
-        </div>
-        <div class="r-side">
-          <div class="r-amount">$60.000</div>
-          <span class="badge no">PENDIENTE</span>
-          <div class="r-date"></div>
-        </div>
-      </div>
-      <div class="row " data-search="francisco caballero santiago" data-paid="0">
-        <div class="r-main">
-          <div class="r-parent">Francisco Caballero</div>
-          <div class="r-kids">Santiago · 2 personas</div>
-        </div>
-        <div class="r-side">
-          <div class="r-amount">$60.000</div>
-          <span class="badge no">PENDIENTE</span>
-          <div class="r-date"></div>
-        </div>
-      </div>
-      <div class="row " data-search="germán valdés c. lourdes" data-paid="0">
-        <div class="r-main">
-          <div class="r-parent">Germán Valdés C.</div>
-          <div class="r-kids">Lourdes · 2 personas</div>
-        </div>
-        <div class="r-side">
-          <div class="r-amount">$60.000</div>
-          <span class="badge no">PENDIENTE</span>
-          <div class="r-date"></div>
-        </div>
-      </div>
-      <div class="row " data-search="héctor ravello brante luciano" data-paid="0">
-        <div class="r-main">
-          <div class="r-parent">Héctor Ravello Brante</div>
-          <div class="r-kids">Luciano · 2 personas</div>
-        </div>
-        <div class="r-side">
-          <div class="r-amount">$60.000</div>
-          <span class="badge no">PENDIENTE</span>
-          <div class="r-date"></div>
-        </div>
-      </div>
-      <div class="row " data-search="ignacio pinochet clarita" data-paid="0">
-        <div class="r-main">
-          <div class="r-parent">Ignacio Pinochet</div>
-          <div class="r-kids">Clarita · 2 personas</div>
-        </div>
-        <div class="r-side">
-          <div class="r-amount">$60.000</div>
-          <span class="badge no">PENDIENTE</span>
-          <div class="r-date"></div>
-        </div>
-      </div>
-      <div class="row " data-search="juan villavicencio juan andrés" data-paid="0">
-        <div class="r-main">
-          <div class="r-parent">Juan Villavicencio</div>
-          <div class="r-kids">Juan Andrés · 2 personas</div>
-        </div>
-        <div class="r-side">
-          <div class="r-amount">$60.000</div>
-          <span class="badge no">PENDIENTE</span>
-          <div class="r-date"></div>
-        </div>
-      </div>
-      <div class="row " data-search="marcelo solari dante" data-paid="0">
-        <div class="r-main">
-          <div class="r-parent">Marcelo Solari</div>
-          <div class="r-kids">Dante · 2 personas</div>
-        </div>
-        <div class="r-side">
-          <div class="r-amount">$60.000</div>
-          <span class="badge no">PENDIENTE</span>
-          <div class="r-date"></div>
-        </div>
-      </div>
-      <div class="row " data-search="piero caszely roberta" data-paid="0">
-        <div class="r-main">
-          <div class="r-parent">Piero Caszely</div>
-          <div class="r-kids">Roberta · 2 personas</div>
-        </div>
-        <div class="r-side">
-          <div class="r-amount">$60.000</div>
-          <span class="badge no">PENDIENTE</span>
-          <div class="r-date"></div>
-        </div>
-      </div>
-      <div class="row " data-search="sebastián farías dominga" data-paid="0">
-        <div class="r-main">
-          <div class="r-parent">Sebastián Farías</div>
-          <div class="r-kids">Dominga · 2 personas</div>
-        </div>
-        <div class="r-side">
-          <div class="r-amount">$60.000</div>
-          <span class="badge no">PENDIENTE</span>
-          <div class="r-date"></div>
-        </div>
-      </div>
       <div class="empty" id="empty" style="display:none">Sin resultados. Revisa cómo escribiste el nombre.</div>
     </div>
   </div>
@@ -650,12 +666,22 @@
     });
   }
   function norm(s) { return (s||'').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase(); }
+  let statusFilter = 'all';
+  function setFilter(f) {
+    statusFilter = f;
+    document.querySelectorAll('.fbtn').forEach(b => b.classList.toggle('active', b.dataset.filter === f));
+    filter();
+  }
   function filter() {
     const q = norm(document.getElementById('search').value.trim());
     const rows = document.querySelectorAll('.row');
     let visible = 0;
     rows.forEach(r => {
-      const match = !q || norm(r.dataset.search).includes(q);
+      const matchText = !q || norm(r.dataset.search).includes(q);
+      const matchStatus = statusFilter === 'all'
+        || (statusFilter === 'paid' && r.dataset.paid === '1')
+        || (statusFilter === 'pending' && r.dataset.paid === '0');
+      const match = matchText && matchStatus;
       r.style.display = match ? '' : 'none';
       if (match) visible++;
     });
