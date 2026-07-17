@@ -108,6 +108,7 @@
           <div>Carlos Andres Acuña Uribe</div>
           <div>RUT 24887162-8</div>
           <div>Cuenta corriente 0210255527</div>
+          <div>acuna.carlosandres@gmail.com</div>
         </div>
         <button class="copy-btn" id="copyBtn" onclick="copyPay()">Copiar datos de transferencia</button>
       </div>
@@ -657,7 +658,7 @@
   </div>
 
 <script>
-  const PAY_TEXT = "Banco Itaú\nCarlos Andres Acuña Uribe\nRUT 24887162-8\nCuenta corriente 0210255527";
+  const PAY_TEXT = "Banco Itaú\nCarlos Andres Acuña Uribe\nRUT 24887162-8\nCuenta corriente 0210255527\nacuna.carlosandres@gmail.com";
   function copyPay() {
     const btn = document.getElementById('copyBtn');
     navigator.clipboard.writeText(PAY_TEXT).then(() => {
