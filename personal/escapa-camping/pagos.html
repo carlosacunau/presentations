@@ -94,10 +94,10 @@
       <div class="dates">Del 6 al 8 de Noviembre · Bordestero Catemú</div>
       <h1>Campeggio 2026</h1>
       <div class="sub">$30.000 por persona · revisa si tu pago ya quedó registrado</div>
-      <div class="updated">Actualizado: <b>2026-07-16 22:32</b></div>
+      <div class="updated">Actualizado: <b>2026-07-19 10:59</b></div>
 
       <div class="stats">
-        <div class="stat"><div class="label">Familias</div><div class="value">48</div></div>
+        <div class="stat"><div class="label">Familias</div><div class="value">50</div></div>
         <div class="stat paid"><div class="label">Pagadas</div><div class="value" id="paidCount"></div></div>
         <div class="stat pending"><div class="label">Pendientes</div><div class="value" id="pendCount"></div></div>
       </div>
@@ -108,7 +108,6 @@
           <div>Carlos Andres Acuña Uribe</div>
           <div>RUT 24887162-8</div>
           <div>Cuenta corriente 0210255527</div>
-          <div>acuna.carlosandres@gmail.com</div>
         </div>
         <button class="copy-btn" id="copyBtn" onclick="copyPay()">Copiar datos de transferencia</button>
       </div>
@@ -162,17 +161,6 @@
         <div class="r-main">
           <div class="r-parent">Héctor Ravello Brante</div>
           <div class="r-kids">Luciano · 2 personas</div>
-        </div>
-        <div class="r-side">
-          <div class="r-amount">$60.000</div>
-          <span class="badge no">PENDIENTE</span>
-          <div class="r-date"></div>
-        </div>
-      </div>
-      <div class="row " data-search="ignacio pinochet clarita" data-paid="0">
-        <div class="r-main">
-          <div class="r-parent">Ignacio Pinochet</div>
-          <div class="r-kids">Clarita · 2 personas</div>
         </div>
         <div class="r-side">
           <div class="r-amount">$60.000</div>
@@ -422,6 +410,17 @@
           <div class="r-date">2026-06-22</div>
         </div>
       </div>
+      <div class="row paid" data-search="ignacio pinochet clarita" data-paid="1">
+        <div class="r-main">
+          <div class="r-parent">Ignacio Pinochet</div>
+          <div class="r-kids">Clarita · 2 personas</div>
+        </div>
+        <div class="r-side">
+          <div class="r-amount">$60.000</div>
+          <span class="badge yes">PAGADO</span>
+          <div class="r-date">2026-07-16</div>
+        </div>
+      </div>
       <div class="row paid" data-search="ivo colombo fiorella" data-paid="1">
         <div class="r-main">
           <div class="r-parent">Ivo Colombo</div>
@@ -576,6 +575,17 @@
           <div class="r-date">2026-06-20</div>
         </div>
       </div>
+      <div class="row paid" data-search="recep gani belen, selim, ali" data-paid="1">
+        <div class="r-main">
+          <div class="r-parent">Recep Gani</div>
+          <div class="r-kids">Belen, Selim, Ali · 4 personas</div>
+        </div>
+        <div class="r-side">
+          <div class="r-amount">$120.000</div>
+          <span class="badge yes">PAGADO</span>
+          <div class="r-date">2026-07-17</div>
+        </div>
+      </div>
       <div class="row paid" data-search="ricardo contreras gustavo" data-paid="1">
         <div class="r-main">
           <div class="r-parent">Ricardo Contreras</div>
@@ -620,6 +630,17 @@
           <div class="r-date">2026-06-22</div>
         </div>
       </div>
+      <div class="row paid" data-search="sergio gritti gianluca" data-paid="1">
+        <div class="r-main">
+          <div class="r-parent">Sergio Gritti</div>
+          <div class="r-kids">Gianluca · 2 personas</div>
+        </div>
+        <div class="r-side">
+          <div class="r-amount">$60.000</div>
+          <span class="badge yes">PAGADO</span>
+          <div class="r-date">2026-07-14</div>
+        </div>
+      </div>
       <div class="row paid" data-search="sergio pérez simón" data-paid="1">
         <div class="r-main">
           <div class="r-parent">Sergio Pérez</div>
@@ -658,7 +679,7 @@
   </div>
 
 <script>
-  const PAY_TEXT = "Banco Itaú\nCarlos Andres Acuña Uribe\nRUT 24887162-8\nCuenta corriente 0210255527\nacuna.carlosandres@gmail.com";
+  const PAY_TEXT = "Banco Itaú\nCarlos Andres Acuña Uribe\nRUT 24887162-8\nCuenta corriente 0210255527";
   function copyPay() {
     const btn = document.getElementById('copyBtn');
     navigator.clipboard.writeText(PAY_TEXT).then(() => {
