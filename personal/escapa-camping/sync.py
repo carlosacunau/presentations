@@ -184,8 +184,12 @@ def process_rows(raw_rows):
                 elif len(major_kids) > 1:
                     size_idx = 0
                     sorted_camps = sorted(camps, key=lambda x: grade_order.get(x, 0), reverse=True)
+                    # Minors claim the lowest camps, so majors only fan out across
+                    # what's left. When majors outnumber those camps the extras are
+                    # siblings in the same camp (twins) and share the highest one.
+                    major_camps = sorted_camps[:max(1, len(sorted_camps) - len(minor_kids))]
                     for i, name in enumerate(major_kids):
-                        camp = sorted_camps[i] if i < len(sorted_camps) else sorted_camps[-1]
+                        camp = major_camps[i] if i < len(major_camps) else major_camps[-1]
                         s = kid_sizes[size_idx] if size_idx < len(kid_sizes) else "—"
                         entry[camp].append({"n": name, "s": s})
                         size_idx += 1
