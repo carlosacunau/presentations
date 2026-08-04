@@ -208,6 +208,20 @@
     /* Los tres campos del scene box, con la misma jerarquía visual que la
        galería: titular fuerte, cuerpo gris y más chico, cierre en verde. */
     .cap-head { font-weight: 700; }
+    /* Título de extensión, ARRIBA de la imagen. Agregado 260803 después de
+       dictar la Sesión 1: en sala el bloque de tipos de archivo no se leía,
+       porque la extensión venía solo dibujada dentro de la imagen y chica.
+       Va en monoespaciada para que se lea como nombre de archivo. */
+    .ext-title {
+      margin: 0 0 10px;
+      font-family: "Fira Code", ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: clamp(30px, 4.4vw, 58px);
+      font-weight: 600;
+      line-height: 1;
+      letter-spacing: .02em;
+      color: var(--accent, #4C2D91);
+      text-align: center;
+    }
     /* El cuerpo va alineado a la izquierda: son párrafos de varias líneas y
        centrados se vuelven difíciles de seguir. El titular y el cierre sí van
        centrados, porque son de una o dos líneas. */
@@ -383,6 +397,7 @@
     </div>
 
     <div class="step imgstep" id="2.1" data-x="-100" data-y="5000" data-scale="0.8" data-rotate="7">
+      <p class="ext-title">.TXT</p>
       <div class="imgcard"><img src="assets/diagrams/006_s1-file-anatomy.png" alt="Todos los formatos funcionan de la misma manera"></div>
       <p class="cap cap-head">Todos los formatos funcionan de la misma manera</p>
       <p class="cap cap-body">Bytes, procesador, y cómo se ven en pantalla.</p>
@@ -390,6 +405,7 @@
     </div>
 
     <div class="step imgstep" id="2.2" data-x="2720" data-y="4790" data-scale="1.3" data-rotate="-14">
+      <p class="ext-title">.CSV</p>
       <div class="imgcard"><img src="assets/diagrams/007_s1-file-csv.png" alt=".csv: una tabla como texto plano"></div>
       <p class="cap cap-head">.csv: una tabla como texto plano</p>
       <p class="cap cap-body">Una fila por línea, columnas separadas por comas. Excel la abre como tabla y la IA la lee directo, sin adornos.</p>
@@ -397,6 +413,7 @@
     </div>
 
     <div class="step imgstep" id="2.3" data-x="5020" data-y="5040" data-scale="0.65" data-rotate="11">
+      <p class="ext-title">.DOCX</p>
       <div class="imgcard"><img src="assets/diagrams/008_s1-file-docx.png" alt=".docx: un paquete disfrazado"></div>
       <p class="cap cap-head">.docx: un paquete disfrazado</p>
       <p class="cap cap-body">Bytes ilegibles, un procesador (Word) que los interpreta, y el documento limpio que ves. Por dentro es un ZIP de XML: texto, estilos e imágenes por separado.</p>
@@ -404,6 +421,7 @@
     </div>
 
     <div class="step imgstep" id="2.4" data-x="7890" data-y="4820" data-scale="1.6" data-rotate="-4">
+      <p class="ext-title">.XLSX</p>
       <div class="imgcard"><img src="assets/diagrams/009_s1-file-xlsx.png" alt=".xlsx: el mismo truco, para planillas"></div>
       <p class="cap cap-head">.xlsx: el mismo truco, para planillas</p>
       <p class="cap cap-body">Mismos tres pasos: los bytes, un procesador (Excel), y la planilla que ves. Por dentro, un ZIP con las hojas, las fórmulas y los formatos.</p>
@@ -411,6 +429,7 @@
     </div>
 
     <div class="step imgstep" id="2.5" data-x="10260" data-y="5030" data-scale="0.75" data-rotate="13">
+      <p class="ext-title">.PDF</p>
       <div class="imgcard"><img src="assets/diagrams/010_s1-file-pdf.png" alt=".pdf: una foto para imprimir"></div>
       <p class="cap cap-head">.pdf: una foto para imprimir</p>
       <p class="cap cap-body">Hecho para verse igual en todas partes. Perfecto para humanos, difícil de leer de vuelta para el software: los datos quedan congelados en la foto.</p>
@@ -418,6 +437,7 @@
     </div>
 
     <div class="step imgstep" id="2.6" data-x="10560" data-y="6240" data-scale="1.7" data-rotate="-12">
+      <p class="ext-title">.HTML</p>
       <div class="imgcard"><img src="assets/diagrams/011_s1-file-html.png" alt=".html: la página que tu navegador dibuja"></div>
       <p class="cap cap-head">.html: la página que tu navegador dibuja</p>
       <p class="cap cap-body">Texto con etiquetas que el navegador convierte en lo que ves: títulos, cajas, colores, botones.</p>
@@ -425,6 +445,7 @@
     </div>
 
     <div class="step imgstep" id="2.7" data-x="7700" data-y="6500" data-scale="0.7" data-rotate="9">
+      <p class="ext-title">ARTIFACT</p>
       <div class="imgcard"><img src="assets/diagrams/012_s1-file-artifact.png" alt="Un Artefacto (artifact) es un .html que Claude construye y mantiene"></div>
       <p class="cap cap-head">Un Artefacto (artifact) es un .html que Claude construye y mantiene</p>
       <p class="cap cap-body">Dashboards, calculadoras, reportes interactivos: páginas .html que Claude arma para ti y viven dentro de Cowork, siempre actualizadas.</p>
@@ -432,6 +453,7 @@
     </div>
 
     <div class="step imgstep" id="2.8" data-x="5320" data-y="6290" data-scale="1.2" data-rotate="-6">
+      <p class="ext-title">.JSON</p>
       <div class="imgcard"><img src="assets/diagrams/013_s1-file-json.png" alt=".json: el formato en el que viajan los datos entre apps"></div>
       <p class="cap cap-head">.json: el formato en el que viajan los datos entre apps</p>
       <p class="cap cap-body">El formato que las máquinas comúnmente usan para pasar información estructurada entre sí. Cuando un conector traiga datos de otra app, probablemente vendrán así.</p>
@@ -439,6 +461,7 @@
     </div>
 
     <div class="step imgstep" id="2.9" data-x="2420" data-y="6540" data-scale="0.6" data-rotate="14">
+      <p class="ext-title">.PY</p>
       <div class="imgcard"><img src="assets/diagrams/014_s1-file-py.png" alt=".py: texto plano que se ejecuta"></div>
       <p class="cap cap-head">.py: texto plano que se ejecuta</p>
       <p class="cap cap-body">Toma entradas, calcula y muestra un resultado. Tú no vas a programar: la IA escribe y ejecuta este código por ti cuando la tarea lo necesita.</p>
@@ -453,6 +476,7 @@
     </div>
 
     <div class="step imgstep" id="3.1" data-x="90" data-y="9720" data-scale="1.5" data-rotate="-10">
+      <p class="ext-title">.MD</p>
       <div class="imgcard"><img src="assets/diagrams/015_s1-md-format.png" alt="MD: el idioma de las instrucciones"></div>
       <p class="cap cap-head">MD: el idioma de las instrucciones</p>
       <p class="cap cap-body">Texto plano con formato liviano: símbolos simples (# para títulos, - para listas) que cualquier herramienta muestra bien. Es el formato que la IA prefiere para leer y escribir instrucciones.</p>
@@ -460,6 +484,7 @@
     </div>
 
     <div class="step imgstep" id="3.2" data-x="2460" data-y="9930" data-scale="0.8" data-rotate="7">
+      <p class="ext-title">.MD</p>
       <div class="imgcard"><img src="assets/diagrams/016_s1-md-overview.png" alt="Un formato, muchos roles"></div>
       <p class="cap cap-head">Un formato, muchos roles</p>
       <p class="cap cap-body">El mismo tipo de archivo cumple trabajos distintos según su nombre: instrucciones permanentes, memoria entre sesiones, reglas duras, recetas de trabajo.</p>
@@ -467,6 +492,7 @@
     </div>
 
     <div class="step imgstep" id="3.3" data-x="5360" data-y="9640" data-scale="1.3" data-rotate="-14">
+      <p class="ext-title">CLAUDE.md</p>
       <div class="imgcard"><img src="assets/diagrams/017_s1-md-claude-agents.png" alt="CLAUDE.md y AGENTS.md: el mismo archivo"></div>
       <p class="cap cap-head">CLAUDE.md y AGENTS.md: el mismo archivo</p>
       <p class="cap cap-body">Las instrucciones permanentes de una carpeta o proyecto: reglas y contexto que la IA carga en cada sesión. CLAUDE.md es el nombre que lee Claude; AGENTS.md es el nombre agnóstico que leen otras herramientas. Si necesitas ambos, se enlaza uno al otro: un solo archivo real, dos nombres.</p>
@@ -474,6 +500,7 @@
     </div>
 
     <div class="step imgstep" id="3.4" data-x="7700" data-y="9900" data-scale="0.65" data-rotate="11">
+      <p class="ext-title">SKILL.md</p>
       <div class="imgcard"><img src="assets/diagrams/018_s1-md-skill.png" alt="SKILL.md: la receta del trabajo repetible"></div>
       <p class="cap cap-head">SKILL.md: la receta del trabajo repetible</p>
       <p class="cap cap-body">Un skill es un archivo de instrucciones con nombre propio. Lo construyes una vez y después lo llamas por su nombre cada vez que toque ese trabajo.</p>
@@ -481,6 +508,7 @@
     </div>
 
     <div class="step imgstep" id="3.5" data-x="10520" data-y="9690" data-scale="1.6" data-rotate="-4">
+      <p class="ext-title">SKILL.md</p>
       <div class="imgcard"><img src="assets/diagrams/019_s1-md-skill-structure.png" alt="...más la carpeta que lo rodea"></div>
       <p class="cap cap-head">...más la carpeta que lo rodea</p>
       <p class="cap cap-body">El skill es la receta más lo que necesita para trabajar: plantillas, ejemplos, archivos de apoyo. Todo junto en una carpeta con el nombre del skill.</p>
@@ -525,8 +553,8 @@
     <div class="step imgstep" id="5.1" data-x="160" data-y="16440" data-scale="1.2" data-rotate="-6">
       <div class="imgcard"><img src="assets/diagrams/023_s1-tokenization.png" alt="Un token es un pedazo de texto"></div>
       <p class="cap cap-head">Un token es un pedazo de texto</p>
-      <p class="cap cap-body">Escribes una frase, el modelo la corta en piezas: las palabras cortas quedan enteras, las largas se parten (aproximadamente 4 caracteres por pieza). Después lee esas piezas en orden y predice la siguiente. Todo lo que envías y todo lo que recibes se mide en esas piezas, incluso dentro de un plan con uso incluido. "Token" es una palabra sobreusada y por eso confunde: el token de IA es un pedazo de texto (este); el token de autenticación es una clave secreta que prueba quién eres al entrar a un sistema; el token de cripto o de arcade es una unidad de valor o una ficha física. Misma palabra, tres mundos distintos.</p>
-      <p class="cap cap-take">Aquí un token es siempre un pedazo de texto, y todo lo que entra y sale se mide en eso.</p>
+      <p class="cap cap-body">Escribes una frase, el modelo la corta en piezas: las palabras cortas quedan enteras, las largas se parten (aproximadamente 4 caracteres por pieza). Después lee esas piezas en orden y predice la siguiente. Todo lo que envías y todo lo que recibes se mide en esas piezas, incluso dentro de un plan con uso incluido."Token" es una palabra sobreusada y por eso confunde: el token de IA es un pedazo de texto (este); el token de autenticación es una clave secreta que prueba quién eres al entrar a un sistema; el token de cripto o de arcade es una unidad de valor o una ficha física. Misma palabra, tres mundos distintos.</p>
+      <p class="cap cap-take">Aquí un token es siempre un pedazo de texto, y todo lo que entra y sale se mide en eso.Demo en vivo: platform.openai.com/tokenizer</p>
     </div>
 
     <div class="step imgstep" id="5.2" data-x="2500" data-y="16700" data-scale="0.6" data-rotate="14">
@@ -546,11 +574,130 @@
     <div class="step imgstep" id="5.4" data-x="7620" data-y="16740" data-scale="0.8" data-rotate="7">
       <div class="imgcard"><img src="assets/diagrams/026_s1-context-window.png" alt="La ventana de contexto, y sus dos caras"></div>
       <p class="cap cap-head">La ventana de contexto, y sus dos caras</p>
-      <p class="cap cap-body">Cada conversación tiene un tamaño máximo. Opus maneja un millón de tokens, que es enorme. Pero el número no es la meta: yo corto alrededor de los 500 mil, porque aunque la ventana lo soporte, la conversación se puede degradar antes de llenarse. Empieza a perder detalles, a repetirse, a olvidar lo que dijiste al principio. La segunda cara es que el contexto se acumula. Cada mensaje reenvía todo lo anterior, así que una conversación larga cuesta más en cada turno que en el anterior, y los mensajes largos aceleran eso. Dos consecuencias distintas de lo mismo: una afecta la calidad de la respuesta, la otra afecta tu consumo. En la Sesión 2 vemos cómo optimizarlo; por ahora basta con saber que las conversaciones eternas te cobran por los dos lados.</p>
+      <p class="cap cap-body">Cada conversación tiene un tamaño máximo. Opus maneja un millón de tokens, que es enorme. Pero el número no es la meta: yo corto alrededor de los 500 mil, porque aunque la ventana lo soporte, la conversación se puede degradar antes de llenarse. Empieza a perder detalles, a repetirse, a olvidar lo que dijiste al principio.La segunda cara es que el contexto se acumula. Cada mensaje reenvía todo lo anterior, así que una conversación larga cuesta más en cada turno que en el anterior, y los mensajes largos aceleran eso. Dos consecuencias distintas de lo mismo: una afecta la calidad de la respuesta, la otra afecta tu consumo. En la Sesión 2 vemos cómo optimizarlo; por ahora basta con saber que las conversaciones eternas te cobran por los dos lados.</p>
       <p class="cap cap-take">Una tarea por conversación, y ciérrala antes de que se ponga pesada.</p>
     </div>
 
-    <div class="step close flow-close" id="thank-you" data-x="0" data-y="18500" data-scale="3.0" data-rotate="0">
+    <div class="step section-step" id="6" data-x="0" data-y="18500" data-scale="3.0" data-rotate="0">
+      <img class="monogram monogram--sm" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+      <p class="eyebrow">06</p>
+      <h2 class="section-title">Sesión 2</h2>
+      <p class="lead">La segunda mitad: cómo conducirlo, criterio y qué pasa por debajo.</p>
+    </div>
+
+    <div class="step section-step" id="7" data-x="5200" data-y="20400" data-scale="3.0" data-rotate="0">
+      <img class="monogram monogram--sm" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+      <p class="eyebrow">07</p>
+      <h2 class="section-title">Cómo conducirlo</h2>
+      <p class="lead">Primero cómo se maneja, después cuánto consume.</p>
+    </div>
+
+    <div class="step imgstep" id="7.1" data-x="90" data-y="21820" data-scale="1.3" data-rotate="-14">
+      <div class="imgcard"><img src="assets/diagrams/027_s2-tips-drive-it.png" alt="Cuatro formas de manejarlo mejor"></div>
+      <p class="cap cap-head">Cuatro formas de manejarlo mejor</p>
+      <p class="cap cap-body">Estas cuatro frases cambian el resultado más que cualquier truco de prompt: 1) "entrevístame antes de escribir esto" (de una idea vaga sale un buen brief); 2) "si algo no lo entiendes, para y pregúntame" (deja de adivinar); 3) "toma tú las decisiones técnicas y dime qué decidiste y por qué" (no necesitas saber de tecnología, solo ver la decisión); 4) "primero hazme el plan, no ejecutes nada todavía" (Cowork no tiene modo plan, pero pedirlo funciona igual).</p>
+      <p class="cap cap-take">Pedirle que pregunte y que planee antes de actuar te ahorra la mitad de las correcciones.</p>
+    </div>
+
+    <div class="step imgstep" id="7.2" data-x="2460" data-y="22030" data-scale="0.65" data-rotate="11">
+      <div class="imgcard"><img src="assets/diagrams/028_s2-resend-cost.png" alt="Cada turno reenvía todo"></div>
+      <p class="cap cap-head">Cada turno reenvía todo</p>
+      <p class="cap cap-body">En cada mensaje nuevo, la conversación completa viaja de nuevo al modelo. Mientras más larga, más consumo por cada turno siguiente.</p>
+      <p class="cap cap-take">Conversaciones largas no solo pierden calidad: gastan más.</p>
+    </div>
+
+    <div class="step imgstep" id="7.3" data-x="5360" data-y="21740" data-scale="1.6" data-rotate="-4">
+      <div class="imgcard"><img src="assets/diagrams/029_s2-idle-gap.png" alt="Si te fuiste, no retomes el mismo chat"></div>
+      <p class="cap cap-head">Si te fuiste, no retomes el mismo chat</p>
+      <p class="cap cap-body">Dejaste la conversación abierta, saliste a una reunión o la retomas al día siguiente. En esa pausa se vence lo que estaba guardado en caché, así que tu primer mensaje al volver reenvía toda la conversación a precio lleno y te quema cuota más rápido. La salida es simple: antes de irte, o apenas vuelvas, pide un resumen de lo avanzado y sigue en una conversación nueva con ese resumen como punto de partida.</p>
+      <p class="cap cap-take">Volver a una conversación vieja es caro. Volver a un resumen es más eficiente, y te permite retomar mejor.</p>
+    </div>
+
+    <div class="step imgstep" id="7.4" data-x="7700" data-y="22000" data-scale="0.75" data-rotate="13">
+      <div class="imgcard"><img src="assets/diagrams/030_s2-cowork-no-compact.png" alt="Cowork no compacta"></div>
+      <p class="cap cap-head">Cowork no compacta</p>
+      <p class="cap cap-body">Cowork no resume la conversación por ti cuando se llena: la calidad simplemente cae. El ritual: pide un resumen de lo avanzado, abre una conversación nueva y pega el resumen como punto de partida.</p>
+      <p class="cap cap-take">Puedes pedir que el resumen se guarde en un archivo o puedes pedirle un prompt con el resumen para retomar.</p>
+    </div>
+
+    <div class="step imgstep" id="7.5" data-x="10520" data-y="21790" data-scale="1.7" data-rotate="-12">
+      <div class="imgcard"><img src="assets/diagrams/031_s2-one-convo-per-task.png" alt="Una tarea por conversación"></div>
+      <p class="cap cap-head">Una tarea por conversación</p>
+      <p class="cap cap-body">Mezclar tareas en un chat contamina el contexto de todas. Separarlas mantiene cada conversación liviana, nítida y barata.</p>
+      <p class="cap cap-take">Nueva tarea, nueva conversación</p>
+    </div>
+
+    <div class="step section-step" id="8" data-x="2600" data-y="23800" data-scale="3.0" data-rotate="0">
+      <img class="monogram monogram--sm" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+      <p class="eyebrow">08</p>
+      <h2 class="section-title">Criterio y seguridad</h2>
+      <p class="lead">Dónde tienes que estar tú.</p>
+    </div>
+
+    <div class="step imgstep" id="8.1" data-x="-180" data-y="25440" data-scale="0.7" data-rotate="9">
+      <div class="imgcard"><img src="assets/diagrams/032_s2-eighty-percent.png" alt="Apunta al 80, tú cierras"></div>
+      <p class="cap cap-head">Apunta al 80, tú cierras</p>
+      <p class="cap cap-body">Cuando estás creando algo puntual (un informe, un correo, una propuesta), la IA te deja en el 80% en minutos. Ese último 20% (criterio, matices, la decisión final) es tuyo, y ahí está tu valor.</p>
+      <p class="cap cap-take">La IA potencia tus habilidades, no te reemplaza</p>
+    </div>
+
+    <div class="step imgstep" id="8.2" data-x="2690" data-y="25220" data-scale="1.2" data-rotate="-6">
+      <div class="imgcard"><img src="assets/diagrams/033_s2-review-gate.png" alt="Automatiza la cadena, deja la compuerta"></div>
+      <p class="cap cap-head">Automatiza la cadena, deja la compuerta</p>
+      <p class="cap cap-body">Cuando el trabajo se repite, casi todo puede correr solo: leer los archivos, procesarlos, redactar el resultado. Eso es un 90-95% del trabajo. Lo que queda afuera no es "el resto", es un punto: la aprobación antes del paso que no se puede deshacer (enviar, publicar, pagar).</p>
+      <p class="cap cap-take">El concepto "Human in the Loop" (HITL): debes permanecer en el loop, o cadena, para tomar las decisiones importantes.</p>
+    </div>
+
+    <div class="step imgstep" id="8.3" data-x="5060" data-y="25430" data-scale="0.6" data-rotate="14">
+      <div class="imgcard"><img src="assets/diagrams/034_s2-security.png" alt="La conversación no es el riesgo; el acceso sí"></div>
+      <p class="cap cap-head">La conversación no es el riesgo; el acceso sí</p>
+      <p class="cap cap-body">Enviar un Excel a Claude no lo publica en ningún lado. El riesgo real es el acceso mal manejado: claves guardadas en lugares abiertos, carpetas o herramientas compartidas sin control.</p>
+      <p class="cap cap-take">La disciplina es administrar el acceso, no evitar la herramienta.</p>
+    </div>
+
+    <div class="step section-step" id="9" data-x="5200" data-y="27200" data-scale="3.0" data-rotate="0">
+      <img class="monogram monogram--sm" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+      <p class="eyebrow">09</p>
+      <h2 class="section-title">APIs y MCP</h2>
+      <p class="lead">Qué pasa por debajo cuando aprietas conectar.</p>
+    </div>
+
+    <div class="step imgstep" id="9.1" data-x="160" data-y="28540" data-scale="1.5" data-rotate="-10">
+      <div class="imgcard"><img src="assets/diagrams/035_s2-api-waiter.png" alt="La API es el mesero"></div>
+      <p class="cap cap-head">La API es el mesero</p>
+      <p class="cap cap-body">Tú pides del menú, el mesero lleva el pedido a la cocina y te trae el plato. Nunca entras a la cocina. Así habla un software con otro: pedidos definidos, respuestas definidas, y el interior queda oculto.</p>
+      <p class="cap cap-take">Y hay solo cuatro tipos de pedido: leer, crear, actualizar, borrar.</p>
+    </div>
+
+    <div class="step imgstep" id="9.2" data-x="2500" data-y="28800" data-scale="0.8" data-rotate="7">
+      <div class="imgcard"><img src="assets/diagrams/036_s2-assistant-per-restaurant.png" alt="El asistente aprende, pero el mesero sigue siendo de cada cocina"></div>
+      <p class="cap cap-head">El asistente aprende, pero el mesero sigue siendo de cada cocina</p>
+      <p class="cap cap-body">Un asistente que entiende de APIs te ahorra escribir el manual: aprende el menú de cada restaurante y te arma la conexión mucho más rápido. Lo que no cambia es que cada restaurante sigue teniendo su propio mesero, con su propio idioma. Aprender uno no te sirve para el siguiente.</p>
+      <p class="cap cap-take">Más rápido de escribir, pero sigues aprendiendo un menú por cocina.</p>
+    </div>
+
+    <div class="step imgstep" id="9.3" data-x="5320" data-y="28590" data-scale="1.3" data-rotate="-14">
+      <div class="imgcard"><img src="assets/diagrams/037_s2-mcp-waiter.png" alt="El mismo uniforme en todas las cocinas"></div>
+      <p class="cap cap-head">El mismo uniforme en todas las cocinas</p>
+      <p class="cap cap-body">MCP no eliminó a los intermediarios ni fusionó las herramientas: cada herramienta sigue publicando su propia entrada. Lo que cambió es que ahora todas la publican igual. Son los mismos tres meseros de la diapositiva anterior, con el mismo uniforme y hablando un solo idioma; las cocinas por dentro siguen siendo completamente distintas. Por eso el asistente aprende un idioma en vez de tres, y puede entrar incluso a una cocina que no existía cuando lo construyeron.</p>
+      <p class="cap cap-take">Cuando en Cowork aprietas "conectar", esto es lo que pasa por debajo. Es lo que hicieron con Composio en la Sesión 1.</p>
+    </div>
+
+    <div class="step imgstep" id="9.4" data-x="7620" data-y="28840" data-scale="0.65" data-rotate="11">
+      <div class="imgcard"><img src="assets/diagrams/038_s2-container-breakbulk.png" alt="Antes del contenedor"></div>
+      <p class="cap cap-head">Antes del contenedor</p>
+      <p class="cap cap-body">Cada fábrica empacaba a su manera: cajones, bultos, sacos. Cada puerto tenía que aprender el manual de cada fábrica y todo se cargaba a mano, pieza por pieza. Lento, caro y distinto en cada lugar.</p>
+      <p class="cap cap-take">Sin caja estándar, cada conexión es artesanal.</p>
+    </div>
+
+    <div class="step imgstep" id="9.5" data-x="10490" data-y="28620" data-scale="1.6" data-rotate="-4">
+      <div class="imgcard"><img src="assets/diagrams/039_s2-container-era.png" alt="El contenedor no reemplazó la carga, la envolvió"></div>
+      <p class="cap cap-head">El contenedor no reemplazó la carga, la envolvió</p>
+      <p class="cap cap-body">Una sola caja estándar y cualquier grúa, cualquier barco y cualquier puerto pueden manejarla. La carga de adentro no cambió: sigue siendo la misma. La API tampoco desapareció, quedó envuelta en algo estándar.</p>
+      <p class="cap cap-take">La fábrica empaca una vez y el mundo entero sabe manejarlo.</p>
+    </div>
+
+    <div class="step close flow-close" id="thank-you" data-x="0" data-y="30600" data-scale="3.0" data-rotate="0">
       <img class="monogram monogram--sm" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
       <div class="flow-row flow-human"><span class="flow-step">Planear</span><span class="flow-sep">&rarr;</span><span class="flow-step">Diseñar</span><span class="flow-sep">&rarr;</span><span class="flow-step">Conectar</span></div>
       <div class="flow-arrow">&darr;</div>
@@ -558,7 +705,7 @@
     </div>
 
     <!-- Overview step: LAST, scaled to frame the whole canvas. Reached with O. -->
-    <div id="overview" class="step" data-x="5106" data-y="7750" data-scale="17"></div>
+    <div id="overview" class="step" data-x="5106" data-y="13800" data-scale="26"></div>
 
   </div>
 

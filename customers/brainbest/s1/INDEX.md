@@ -104,6 +104,60 @@ del texto.
 
 ---
 
+## Section 06: Sesión 2
+*Opener sub: "La segunda mitad: cómo conducirlo, criterio y qué pasa por debajo."*
+
+*Divisoria. Todo lo anterior es la Sesión 1 y se puede dictar sola; desde aquí
+empieza la Sesión 2. Se mantiene en el mismo deck a propósito, porque la S2
+retoma material de la S1 (la escalera de modelos, tokens) y cierra apuntando a
+lo que hicieron con Composio en la Sesión 1.*
+
+| # | Kind | Image file | Caption | Notes |
+|---|------|-----------|---------|-------|
+| 1 | section | (none) | Sesión 2 | num 06 |
+
+---
+
+## Section 07: Cómo conducirlo
+*Opener sub: "Primero cómo se maneja, después cuánto consume."*
+
+| # | Kind | Image file | Caption | Notes |
+|---|------|-----------|---------|-------|
+| 1 | section | (none) | Cómo conducirlo | num 07 |
+| 2 | image | 027_s2-tips-drive-it.png | Cuatro formas de manejarlo mejor \|\| Estas cuatro frases cambian el resultado más que cualquier truco de prompt: 1) "entrevístame antes de escribir esto" (de una idea vaga sale un buen brief); 2) "si algo no lo entiendes, para y pregúntame" (deja de adivinar); 3) "toma tú las decisiones técnicas y dime qué decidiste y por qué" (no necesitas saber de tecnología, solo ver la decisión); 4) "primero hazme el plan, no ejecutes nada todavía" (Cowork no tiene modo plan, pero pedirlo funciona igual). \|\| Pedirle que pregunte y que planee antes de actuar te ahorra la mitad de las correcciones. | S2 |
+| 3 | image | 028_s2-resend-cost.png | Cada turno reenvía todo \|\| En cada mensaje nuevo, la conversación completa viaja de nuevo al modelo. Mientras más larga, más consumo por cada turno siguiente. \|\| Conversaciones largas no solo pierden calidad: gastan más. | S2 |
+| 4 | image | 029_s2-idle-gap.png | Si te fuiste, no retomes el mismo chat \|\| Dejaste la conversación abierta, saliste a una reunión o la retomas al día siguiente. En esa pausa se vence lo que estaba guardado en caché, así que tu primer mensaje al volver reenvía toda la conversación a precio lleno y te quema cuota más rápido. La salida es simple: antes de irte, o apenas vuelvas, pide un resumen de lo avanzado y sigue en una conversación nueva con ese resumen como punto de partida. \|\| Volver a una conversación vieja es caro. Volver a un resumen es más eficiente, y te permite retomar mejor. | S2 |
+| 5 | image | 030_s2-cowork-no-compact.png | Cowork no compacta \|\| Cowork no resume la conversación por ti cuando se llena: la calidad simplemente cae. El ritual: pide un resumen de lo avanzado, abre una conversación nueva y pega el resumen como punto de partida. \|\| Puedes pedir que el resumen se guarde en un archivo o puedes pedirle un prompt con el resumen para retomar. | S2 |
+| 6 | image | 031_s2-one-convo-per-task.png | Una tarea por conversación \|\| Mezclar tareas en un chat contamina el contexto de todas. Separarlas mantiene cada conversación liviana, nítida y barata. \|\| Nueva tarea, nueva conversación | S2 |
+
+---
+
+## Section 08: Criterio y seguridad
+*Opener sub: "Dónde tienes que estar tú."*
+
+| # | Kind | Image file | Caption | Notes |
+|---|------|-----------|---------|-------|
+| 1 | section | (none) | Criterio y seguridad | num 08 |
+| 2 | image | 032_s2-eighty-percent.png | Apunta al 80, tú cierras \|\| Cuando estás creando algo puntual (un informe, un correo, una propuesta), la IA te deja en el 80% en minutos. Ese último 20% (criterio, matices, la decisión final) es tuyo, y ahí está tu valor. \|\| La IA potencia tus habilidades, no te reemplaza | S2 |
+| 3 | image | 033_s2-review-gate.png | Automatiza la cadena, deja la compuerta \|\| Cuando el trabajo se repite, casi todo puede correr solo: leer los archivos, procesarlos, redactar el resultado. Eso es un 90-95% del trabajo. Lo que queda afuera no es "el resto", es un punto: la aprobación antes del paso que no se puede deshacer (enviar, publicar, pagar). \|\| El concepto "Human in the Loop" (HITL): debes permanecer en el loop, o cadena, para tomar las decisiones importantes. | S2 |
+| 4 | image | 034_s2-security.png | La conversación no es el riesgo; el acceso sí \|\| Enviar un Excel a Claude no lo publica en ningún lado. El riesgo real es el acceso mal manejado: claves guardadas en lugares abiertos, carpetas o herramientas compartidas sin control. \|\| La disciplina es administrar el acceso, no evitar la herramienta. | S2 |
+
+---
+
+## Section 09: APIs y MCP
+*Opener sub: "Qué pasa por debajo cuando aprietas conectar."*
+
+| # | Kind | Image file | Caption | Notes |
+|---|------|-----------|---------|-------|
+| 1 | section | (none) | APIs y MCP | num 09 |
+| 2 | image | 035_s2-api-waiter.png | La API es el mesero \|\| Tú pides del menú, el mesero lleva el pedido a la cocina y te trae el plato. Nunca entras a la cocina. Así habla un software con otro: pedidos definidos, respuestas definidas, y el interior queda oculto. \|\| Y hay solo cuatro tipos de pedido: leer, crear, actualizar, borrar. | S2 |
+| 3 | image | 036_s2-assistant-per-restaurant.png | El asistente aprende, pero el mesero sigue siendo de cada cocina \|\| Un asistente que entiende de APIs te ahorra escribir el manual: aprende el menú de cada restaurante y te arma la conexión mucho más rápido. Lo que no cambia es que cada restaurante sigue teniendo su propio mesero, con su propio idioma. Aprender uno no te sirve para el siguiente. \|\| Más rápido de escribir, pero sigues aprendiendo un menú por cocina. | S2 |
+| 4 | image | 037_s2-mcp-waiter.png | El mismo uniforme en todas las cocinas \|\| MCP no eliminó a los intermediarios ni fusionó las herramientas: cada herramienta sigue publicando su propia entrada. Lo que cambió es que ahora todas la publican igual. Son los mismos tres meseros de la diapositiva anterior, con el mismo uniforme y hablando un solo idioma; las cocinas por dentro siguen siendo completamente distintas. Por eso el asistente aprende un idioma en vez de tres, y puede entrar incluso a una cocina que no existía cuando lo construyeron. \|\| Cuando en Cowork aprietas "conectar", esto es lo que pasa por debajo. Es lo que hicieron con Composio en la Sesión 1. | S2 |
+| 5 | image | 038_s2-container-breakbulk.png | Antes del contenedor \|\| Cada fábrica empacaba a su manera: cajones, bultos, sacos. Cada puerto tenía que aprender el manual de cada fábrica y todo se cargaba a mano, pieza por pieza. Lento, caro y distinto en cada lugar. \|\| Sin caja estándar, cada conexión es artesanal. | S2 |
+| 6 | image | 039_s2-container-era.png | El contenedor no reemplazó la carga, la envolvió \|\| Una sola caja estándar y cualquier grúa, cualquier barco y cualquier puerto pueden manejarla. La carga de adentro no cambió: sigue siendo la misma. La API tampoco desapareció, quedó envuelta en algo estándar. \|\| La fábrica empaca una vez y el mundo entero sabe manejarlo. | S2 |
+
+---
+
 ## Close
 
 Two-tier flow. Fila superior = los pasos humanos (indigo), fila inferior = los pasos de la
@@ -117,6 +171,15 @@ diapositiva 001, ahora como cierre.
 ---
 
 ## Change log
+- 260803 (c): **Se agregó la Sesión 2 al mismo deck** (13 diapositivas, 027-039), como
+  secciones 07-09 detrás de una divisoria "Sesión 2" (sección 06). El deck completo
+  queda en 9 secciones. La S1 se sigue pudiendo dictar sola: se termina en la sección 05
+  y no se avanza a la divisoria. Texto desde el scene box de
+  `~/OS/customers/brainbest/workshops/260802_wireframes-s2.html`.
+  También: nuevo campo opcional `ext:` en la columna Notes, que pinta la extensión
+  (.DOCX, .JSON, ...) como título grande ARRIBA de la imagen. Se agregó después de
+  dictar la S1: en sala el bloque de tipos de archivo no se leía. No se regeneró
+  ninguna imagen.
 - 260803 (b): Las captions de las diapositivas `image` pasaron de una sola línea (solo el
   cierre) a los **tres campos completos** del scene box de la galería, separados por `||`:
   titular, cuerpo y cierre. La galería sigue siendo la fuente de verdad del texto.
