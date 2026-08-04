@@ -1,1 +1,6 @@
 .DS_Store
+
+# Brainbest S1: las PNG full-res del deck local pesan ~69 MB y se regeneran
+# desde ~/OS/presentations/fiba-ai-mentoring/assets/diagrams/marker/.
+# Lo que se publica es s1-web/ (paleta reducida), que sí se versiona.
+customers/brainbest/s1/assets/diagrams/

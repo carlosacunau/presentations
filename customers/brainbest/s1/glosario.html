@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Glosario &middot; Entender la IA, y cómo trabajar con ella</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root { --accent:#8B5CF6; --indigo:#4C2D91; --bg:#F7F6FB; --fg:#1A1A1A; --muted:#6b6b75;
+      --line:#e4e0f0; --card:#fff; }
+    * { box-sizing:border-box; }
+    html,body { margin:0; background:var(--bg); color:var(--fg);
+      font-family:'Inter',sans-serif; }
+    .wrap { max-width:1180px; margin:0 auto; padding:56px 28px 90px; }
+
+    header { display:flex; align-items:center; gap:14px; margin-bottom:8px; }
+    header img { width:44px; height:auto; }
+    h1 { font-family:'Space Grotesk',sans-serif; font-size:30px; margin:0; }
+    .eyebrow { color:var(--accent); font-size:13px; letter-spacing:.06em;
+      text-transform:uppercase; margin:0 0 6px; }
+    .lede { color:var(--muted); font-size:15px; max-width:70ch; margin:14px 0 26px;
+      line-height:1.6; }
+
+    /* controls */
+    .controls { position:sticky; top:0; z-index:20; background:var(--bg);
+      padding:14px 0 12px; border-bottom:1px solid var(--line); margin-bottom:6px; }
+    .searchrow { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    #q { flex:1 1 260px; min-width:200px; padding:11px 14px; font-family:'Inter',sans-serif;
+      font-size:15px; border:1px solid var(--line); border-radius:9px; background:var(--card);
+      color:var(--fg); outline:none; }
+    #q:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(139,92,246,.14); }
+    .count { color:var(--muted); font-size:13px; white-space:nowrap; }
+    .chips { display:flex; gap:7px; flex-wrap:wrap; margin-top:11px; }
+    .chip { font-family:'Space Grotesk',sans-serif; font-size:12.5px; padding:5px 11px;
+      border:1px solid var(--line); border-radius:999px; background:var(--card);
+      color:var(--muted); cursor:pointer; user-select:none; }
+    .chip:hover { border-color:var(--accent); color:var(--indigo); }
+    .chip.on { background:var(--indigo); border-color:var(--indigo); color:#fff; }
+
+    /* groups */
+    .group { margin-top:34px; }
+    .group h2 { font-family:'Space Grotesk',sans-serif; font-size:20px; color:var(--indigo);
+      margin:0 0 3px; }
+    .group .sub { color:var(--muted); font-size:13.5px; margin:0 0 14px; }
+
+    table { width:100%; border-collapse:collapse; background:var(--card);
+      border:1px solid var(--line); border-radius:11px; overflow:hidden; }
+    thead th { font-family:'Space Grotesk',sans-serif; font-size:12px; letter-spacing:.05em;
+      text-transform:uppercase; color:var(--muted); text-align:left; font-weight:500;
+      padding:11px 16px; background:#f2effa; border-bottom:1px solid var(--line); }
+    tbody td { padding:13px 16px; vertical-align:top; border-bottom:1px solid #f0edf7;
+      font-size:14.5px; line-height:1.55; }
+    tbody tr:last-child td { border-bottom:none; }
+    tbody tr:hover { background:#faf8ff; }
+    .c-term { width:20%; font-family:'Space Grotesk',sans-serif; font-weight:500;
+      color:var(--indigo); }
+    .c-es { width:20%; color:var(--muted); font-size:13.5px; }
+    .c-def { width:60%; }
+    .c-def em { color:var(--accent); font-style:normal; font-weight:500; }
+    .mine { display:inline-block; margin-left:6px; font-family:'Inter',sans-serif;
+      font-size:10px; letter-spacing:.04em; text-transform:uppercase; color:#fff;
+      background:var(--accent); padding:2px 6px; border-radius:4px; vertical-align:middle;
+      font-weight:500; }
+    .same { color:#b9b4c8; font-style:italic; }
+
+    .empty { display:none; text-align:center; color:var(--muted); padding:44px 0;
+      font-size:15px; }
+    .empty.on { display:block; }
+
+    footer { margin-top:52px; padding-top:20px; border-top:1px solid var(--line);
+      color:var(--muted); font-size:13px; line-height:1.7; }
+    footer a { color:var(--indigo); }
+    .backlink { display:inline-block; margin-bottom:22px; font-family:'Space Grotesk',sans-serif;
+      font-size:14px; color:var(--indigo); text-decoration:none; }
+    .backlink:hover { text-decoration:underline; }
+    .langtog { display:flex; gap:0; border:1px solid var(--line); border-radius:8px;
+      overflow:hidden; background:var(--card); }
+    .langtog a { font-family:'Space Grotesk',sans-serif; font-size:12.5px; padding:6px 13px;
+      color:var(--muted); text-decoration:none; }
+    .langtog a.on { background:var(--indigo); color:#fff; }
+    .langtog a:not(.on):hover { background:#ece9f7; color:var(--indigo); }
+    .tophead { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; }
+
+    @media (max-width:760px) {
+      .wrap { padding:34px 16px 70px; }
+      table, thead, tbody, tr, td, th { display:block; }
+      thead { display:none; }
+      tbody tr { padding:14px 4px; border-bottom:1px solid #f0edf7; }
+      tbody td { border:none; padding:3px 12px; width:auto; }
+      .c-term { font-size:16px; padding-top:6px; }
+      .c-es:empty { display:none; }
+      .c-es::before { content:'EN · '; color:#c3bdd4; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="tophead"><a class="backlink" href="toc.html">&larr; Contenido</a><div class="langtog"><a href="glossary.html">EN</a><a href="glosario.html" class="on">ES</a></div></div>
+    <header>
+      <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+      <div>
+        <p class="eyebrow">Fiba Labs · AI Mentoring</p>
+        <h1>Glosario</h1>
+      </div>
+    </header>
+    <p class="lede">
+      Todos los términos que usamos en el taller, con el significado que tienen acá.
+      La columna en inglés está para que reconozcas la palabra cuando la veas en una
+      herramienta o en la documentación, que casi siempre están en inglés.
+    </p>
+
+    <div class="controls">
+      <div class="searchrow">
+        <input id="q" type="search" placeholder="Busca un término, su equivalente en inglés, o una definición…" autocomplete="off">
+        <span class="count" id="count"></span>
+      </div>
+      <div class="chips" id="chips"></div>
+    </div>
+
+    <div id="groups"></div>
+    <p class="empty" id="empty">Ningún término coincide con esa búsqueda.</p>
+
+  </div>
+
+<script>
+const DATA = [
+  {
+    g: "Cómo funciona la máquina",
+    sub: "Lo poco de mecánica que vale la pena entender. Lo suficiente para razonar sobre lo que la IA puede y no puede hacer, y nada más.",
+    rows: [
+      ["IA", "AI", "Software que produce una respuesta en vez de seguir una regla fija. Es <em>probabilística</em>: pregunta dos veces y obtienes dos respuestas un poco distintas. Esa sola propiedad explica casi todas las sorpresas que te vas a llevar con ella."],
+      ["LLM", "Large Language Model", "Modelo grande de lenguaje. El motor que está debajo (GPT, Claude, Gemini). <em>Predice muy bien el siguiente pedazo de texto. Eso es todo lo que hace</em>, y por eso es tan potente y por eso a veces inventa."],
+      ["Modelo vs producto", "Model vs product", "El modelo es el motor; el producto es la aplicación que lo envuelve. ChatGPT es el producto, GPT-5 es el modelo que tiene adentro. Confundirlos es la razón por la que \"cuál IA es mejor\" casi siempre es la pregunta equivocada."],
+      ["Escalera de modelos", "Model ladder", "El rango que va de pequeño, barato y rápido a grande, inteligente y caro. <em>Elige el escalón según el trabajo</em>: un modelo barato para clasificar correos, uno fuerte para escribir con matices. Empieza en el escalón del medio y sube solo cuando el resultado salga plano."],
+      ["Esfuerzo de razonamiento", "Thinking effort", "Qué tanto piensa el modelo antes de responder, y se ajusta aparte del modelo que elijas. Más esfuerzo cuesta más y se demora más. Déjalo en medio y súbelo solo para problemas realmente difíciles."],
+      ["Suscripción vs API", "Subscription vs API", "Dos formas de pagar. Un plan mensual fijo cubre el uso normal; pagar por token a través de una API puede costar muchas veces más por el mismo trabajo. Esto importa apenas alguien te sugiera \"usa la API y ya\"."],
+      ["Token", "Token", "La unidad en la que la IA lee y escribe, más o menos un pedazo de palabra. Pagas por token y el modelo solo puede sostener cierta cantidad a la vez. Piénsalo como <em>las sílabas que el modelo cuenta</em>. Lo que produce cuesta unas 4 veces más que lo que recibe. <em>No es lo mismo que un token de autenticación</em>, que es un secreto parecido a una contraseña: misma palabra, dos significados sin relación."],
+      ["Contexto", "Context", "Todo lo que el modelo ve antes de responder: tu pregunta, la conversación hasta ahora, los archivos que adjuntaste, sus instrucciones permanentes. Es la palanca real sobre la calidad. La mayoría de las malas respuestas son falta de contexto, no un mal modelo."],
+      ["Ventana de contexto", "Context window", "La memoria de corto plazo del modelo: <em>un solo vaso que sostiene a la vez</em>. Cuando se llena, lo más viejo se cae y el modelo empieza a olvidar. Cowork sostiene unos 500 mil tokens, Claude Code un millón. Mismo modelo, ventanas distintas según el producto."],
+      ["Auto-compactación", "Auto-compact", "Lo que pasa cuando la ventana se llena: el asistente resume la parte vieja de la conversación para hacer espacio, y pierde detalle <em>en silencio</em>. El silencio es el problema. Nadie te avisa qué se perdió."],
+      ["Costo de reenvío", "Resend cost", "El modelo no tiene memoria entre turnos, así que cada mensaje reenvía la conversación completa. Para el mensaje 30, una pregunta de una línea puede estar mandando 200 mil tokens. Hasta escribir \"gracias\" reenvía todo."],
+      ["Ventana de uso", "Usage window", "Tu presupuesto de uso se recarga cada 5 horas. <em>Aquí es donde el contexto se encuentra con tu bolsillo</em>: las conversaciones largas y contaminadas queman el presupuesto más rápido de lo que el trabajo justifica."],
+      ["Una conversación, una tarea", "One conversation, one task", "Úsala, termínala, ciérrala, repite. Si la IA se está perdiendo, abre una conversación nueva en vez de pelear con la vieja. Una conversación contaminada da peores respuestas que una limpia."],
+      ["Prompt", "Prompt", "Lo que pides. En la práctica, el encargo completo: qué quieres, el contexto alrededor y un ejemplo de lo que consideras bueno. La palabra lo hace sonar más pequeño de lo que es."],
+      ["Sesión / conversación", "Session / chat", "Una conversación continua. Todo lo que está adentro comparte contexto; una nueva empieza en blanco. Saber cuándo empezar de cero es una habilidad de operador."],
+      ["Memoria", "Memory", "Lo que el asistente carga de una sesión a otra, a diferencia del contexto, que muere con la conversación. Normalmente es un archivo que vuelve a leer (mira <em>MEMORY.md</em>). Sin eso, cada conversación arranca desde cero."],
+      ["Entrenamiento", "Training", "Cómo se construyó el modelo, antes de que tú lo tocaras. Se hace una vez, del lado del proveedor, sobre cantidades enormes de texto. Tú <em>no</em> entrenas al modelo cuando hablas con él: es una confusión común y costosa."],
+      ["Fecha de corte", "Training cutoff", "La fecha en la que se detiene el conocimiento del modelo. Pregúntale por algo posterior y o te dice que no sabe, o adivina. Por eso importan los <em>conectores</em> y la búsqueda: traen lo que el entrenamiento nunca vio."],
+      ["Alucinación", "Hallucination", "Una respuesta segura, bien escrita y completamente equivocada. No es un error que se pueda parchar: es el costo de una máquina probabilística. La respuesta es verificar, no indignarse. Por eso nada que importe sale sin revisión."],
+      ["Multimodal", "Multimodal", "El modelo maneja algo más que texto: imágenes, audio, PDFs, video. En la práctica significa que puedes pegarle una captura de pantalla o la foto de un tablero en vez de transcribir lo que dice."]
+    ]
+  },
+  {
+    g: "Archivos y formatos",
+    sub: "Todo archivo son los mismos tres pasos: bytes crudos, un procesador, y luego lo que ves. Sección 01 de la presentación.",
+    rows: [
+      ["Formato de archivo", "File format", "Qué significan los bytes y qué programa puede leerlos. La extensión (.csv, .pdf) es la etiqueta, no el contenido. Cambiarle el nombre a un archivo no cambia nada de lo que tiene adentro."],
+      [".txt", "", "Texto plano. Sin formato, sin estructura escondida. Lo más simple que puede ser un archivo, y la base contra la que se mide todo lo demás."],
+      [".csv", "", "Una tabla en texto plano, una fila por línea, valores separados por comas. Abre en Excel pero no es un archivo de Excel. El formato de intercambio de datos: aburrido, universal, difícil de romper."],
+      [".docx", "", "Un documento de Word. En realidad es un paquete comprimido de archivos disfrazado: renómbralo a .zip y lo puedes abrir. Explica por qué un Word se daña de formas en que un archivo de texto nunca se daña."],
+      [".xlsx", "", "Un libro de Excel. El mismo truco del .docx, un paquete comprimido. Guarda fórmulas, formato y varias hojas, y por eso la IA lo lee con menos limpieza que un .csv."],
+      [".pdf", "", "Una foto hecha para imprimir. Fácil de leer para una persona, difícil de volver a leer para un programa, porque el PDF guarda dónde va la tinta, no qué significa el texto. La fuente más común de extracciones malas."],
+      [".html", "", "Una página que tu navegador dibuja. Texto más instrucciones de cómo debe verse. Un dashboard, un reporte, una landing: todos son archivos .html."],
+      [".json", "", "Datos donde cada valor lleva su tipo. El formato con el que las máquinas se hablan entre ellas. Lo vas a ver dentro de respuestas de APIs y archivos de configuración. Legible si te fijas."],
+      [".py", "", "Un archivo de Python: texto plano que se ejecuta. Recibe entradas, calcula, muestra un resultado. Ahí vive el trabajo determinístico, las cuentas que nunca quieres que el modelo haga a mano."],
+      [".md", "Markdown", "Texto plano con formato liviano (# para un título, * para una viñeta). <em>El idioma que la IA prefiere</em>: legible para ti, sin ambigüedad para el modelo. Casi todo lo que configuras en un sistema de IA es un archivo markdown."],
+      ["Frontmatter", "Frontmatter", "El bloque pequeño al inicio de un archivo markdown, entre líneas de ---, que guarda la configuración: nombre, descripción, cuándo usarlo. La etiqueta del frasco. Los skills lo usan para decidir si aplican."],
+      ["README.md", "", "La puerta de entrada de cualquier proyecto. La introducción corta que dice qué es esta carpeta y por dónde empezar. Escrita para alguien que llega en frío."],
+      ["CLAUDE.md", "", "Las instrucciones permanentes de un proyecto: cómo se trabaja aquí, cuáles son las convenciones, qué nunca se hace. Se lee automáticamente al inicio de cada sesión. Tus correcciones acumuladas van aquí, no repetidas en cada conversación."],
+      ["AGENTS.md", "", "El mismo archivo con un nombre que no depende de la herramienta. Claude lee CLAUDE.md, las otras herramientas leen AGENTS.md. Ten un archivo real y un <em>enlace simbólico</em>, nunca dos copias, o se desincronizan."],
+      ["MEMORY.md", "", "Lo que el agente recuerda entre sesiones: hechos y decisiones que duran, no la transcripción. Punteros, no párrafos. Se carga siempre, así que lo que sobre aquí te cuesta en cada petición."],
+      ["rules.md", "", "Las restricciones duras. Donde CLAUDE.md dice cómo trabajamos, rules.md dice qué no se negocia: nunca escribas aquí, siempre pregunta antes de aquello. Separado para que lo innegociable quede visible."],
+      ["Enlace simbólico", "Symlink", "Un puntero a un archivo que está en otro lado, para que un solo archivo real aparezca con dos nombres o en dos carpetas. Así AGENTS.md y CLAUDE.md se mantienen idénticos sin duplicarse."],
+      ["voice.md", "", "Tu voz capturada con ejemplos, no con adjetivos. Pega cosas que realmente escribiste en vez de describir tu tono. Parte de la carpeta about-me que arma cada asistente."],
+      [".env", "", "El archivo oculto donde viven las credenciales. Oculto por defecto (Cmd+Shift+. lo revela en Mac). Las llaves viven ahí y <em>nunca</em> dentro de un prompt, un skill, ni nada que compartas."],
+      ["Datos fijos vs en vivo", "Baked-in vs live fetch", "Dos formas en que un dashboard consigue sus números: fijados cuando se construyó el archivo (se reconstruye por horario) o traídos en vivo cada vez que se abre. Explica por qué un reporte puede verse actual y estar viejo."]
+    ]
+  },
+  {
+    g: "Pedir bien",
+    sub: "Sección 02. Deja de memorizar frameworks; entrega contexto.",
+    rows: [
+      ["Los ejemplos ganan", "Examples beat descriptions", "El movimiento de mayor palanca al pedir. No describas cómo debería verse un reporte de avance: pega los últimos tres que aprobaron y di \"sigue este formato\". Un ejemplo real mete de contrabando todo el contexto tácito que se te olvidaría mencionar."],
+      ["Rol / persona", "Role / persona", "Decirle al modelo quién ser (\"eres un director financiero revisando esto\"). Sirve, pero mucho menos de lo que la gente cree. Los modelos de hoy infieren el rol solos; la palanca se movió al contexto."],
+      ["Meta-prompting", "Meta-prompting", "Pedirle a la IA que escriba el prompt por ti. Le dices qué necesitas y por qué, y ella produce el encargo que pegas en una conversación nueva. Por eso ya no tienes que memorizar frameworks de prompting."],
+      ["Salida estructurada", "Structured output", "Pedir la respuesta con una forma fija: una tabla con estas columnas, un JSON con estos campos. Convierte un muro de texto en algo que puedes pegar en una hoja de cálculo o pasarle al siguiente paso."],
+      ["Restricción negativa", "Negative constraint", "Decirle al modelo qué no hacer (\"sin rayas largas\", \"nunca inventes una cifra\"). Necesario, pero más débil que una instrucción positiva. Di primero lo que sí quieres."],
+      ["Encadenar", "Chaining", "Pasar el resultado de un paso al siguiente en vez de pedir todo de una. Cada paso se puede verificar, así que las fallas se ven en el paso que las causó."],
+      ["Refinamiento iterativo", "Iterative refinement", "Llegar por pasadas y no con una sola petición perfecta. El modo de trabajo realista: borrador, reacción, corrección. Buscar la perfección al primer intento gasta más tiempo del que ahorra."],
+      ["Bitácora de prompts", "Prompt journal", "Guardar las peticiones que funcionaron. El activo más barato que existe: <em>el buen prompt de hoy es el skill del mes entrante</em>. La mayoría reescribe desde cero cada vez y nunca nota el costo."],
+      ["Adjunta, no describas", "Attach, don't describe", "Si el documento existe, adjúntalo. Describir lo que dice un archivo, pudiendo entregar el archivo, bota el contexto que habría hecho buena la respuesta."],
+      ["Planea, luego ejecuta", "Plan, then execute", "Pide el plan antes del trabajo, y dile que pregunte en vez de adivinar cuando algo no esté claro. <em>La línea de mayor palanca que le puedes agregar a cualquier instrucción.</em>"]
+    ]
+  },
+  {
+    g: "Conectar cosas",
+    sub: "Secciones 03 y 04. Autenticación, APIs, MCP. Nada de lo que sigue funciona hasta que las fuentes estén conectadas.",
+    rows: [
+      ["API", "API", "Cómo un programa le habla a otro. <em>El mesero</em>: pides del menú y la cocina se queda escondida. Nunca ves cómo funciona el restaurante, solo recibes lo que pediste."],
+      ["Conector", "Connector", "<em>Un tubo que mueve datos entre herramientas. Lleva información; no piensa.</em> Los conectores se encargan de \"mover los datos\", los skills de \"hacer el pensamiento\". Se conecta con un clic, sin código. En Cowork, los conectores son MCPs con el OAuth ya resuelto."],
+      ["Permisos de herramientas", "Tool permissions", "Cada herramienta conectada expone acciones que permites siempre, apruebas caso por caso, o bloqueas. <em>Regla práctica: leer = permitir siempre, escribir o borrar = pedir aprobación.</em>"],
+      ["El problema N × M", "N × M problem", "Cada herramienta habla su propia API, así que conectar N herramientas con M asistentes significa construir N×M puentes a la medida. <em>Explota.</em> Por eso tenía que existir un estándar."],
+      ["MCP", "MCP", "Model Context Protocol. <em>Piénsalo como el USB de las herramientas de IA: un solo enchufe, muchas herramientas.</em> Convierte el problema N×M en N+M: agregas una herramienta una vez y todos los asistentes la reciben. Antes del contenedor marítimo, cada carga se subía a mano y cada puerto era distinto. MCP estandarizó la caja."],
+      ["Servidor MCP", "MCP server", "Una herramienta empaquetada para hablar MCP. \"Agregar un MCP\" es instalar uno de estos para que tu asistente gane esa capacidad. Corre en tu computador o en la nube y expone una lista de acciones."],
+      ["Autenticación", "Authentication", "Cómo un programa prueba quién es. Te vas a encontrar tres formas: clave de API, token y OAuth. Equivocarse aquí es como se filtran las credenciales, y por eso importa cuál es la opción segura por defecto."],
+      ["Clave de API", "API key", "Una cadena secreta y larga que te identifica ante un servicio. Como una contraseña que nunca vence y que muchas veces tiene acceso total. Nunca la pegues en una conversación, nunca la subas a un repositorio."],
+      ["Token de autenticación", "Auth token", "Un secreto que prueba quién eres, normalmente de vida corta. <em>No tiene relación con el token de IA</em>, que es un pedazo de texto. La palabra repetida confunde a todo el mundo una vez."],
+      ["OAuth", "OAuth", "El flujo de \"Iniciar sesión con Google\". Te autenticas donde el proveedor, la aplicación nunca ve tu contraseña, y puedes revocarle el acceso después sin cambiarla. <em>La opción segura por defecto</em> siempre que esté disponible."],
+      ["Scopes / permisos", "Scopes", "Lo que una integración tiene permitido hacer: leer tu calendario, o también borrar en él. Lee esa pantalla antes de darle aceptar. Ahí es donde decides el radio de impacto."],
+      ["Revocación", "Revocation", "Apagar un acceso que ya diste, desde la configuración del proveedor. La razón por la que OAuth le gana a las claves de API: puedes cortarle a una sola aplicación sin romper todo lo demás."],
+      ["Webhook", "Webhook", "Lo contrario de preguntar: en vez de que tú estés revisando si hay novedades, el otro sistema te llama cuando algo pasa. Así arranca sola una automatización cuando se llena un formulario o entra un pago."],
+      ["Uso del computador", "Computer use", "La IA manejando una pantalla como lo haría una persona: leer, hacer clic, escribir. El adaptador universal para software viejo que no tiene API. Funciona pero es frágil, un cambio de diseño lo rompe. Es el puente, no el destino."]
+    ]
+  },
+  {
+    g: "Sistemas que corren",
+    sub: "Qué es realmente un sistema operativo de IA. Casi todo es texto plano dentro de una carpeta.",
+    rows: [
+      ["Agente", "Agent", "<em>IA que puede dar pasos por su cuenta: leer, decidir, usar una herramienta, repetir, hacia una meta.</em> Más que una respuesta de chat. Hace un pequeño ciclo de trabajo, no una sola respuesta."],
+      ["Asistente", "Assistant", "El chat con el que hablas. Claude, ChatGPT, Gemini en su forma normal. Todo agente se construye sobre uno; no todo asistente es un agente."],
+      ["Subagente", "Subagent", "Un especialista al que el agente principal le pasa trabajo: su propio rol, sus propias instrucciones, sus propias herramientas. <em>No necesitas código para crear uno</em>, es un archivo markdown. Sirve porque mantiene ese trabajo fuera del contexto de la conversación principal."],
+      ["Skill", "Skill", "<em>Una instrucción guardada y reutilizable que puedes llamar por nombre</em> (como /redactar-propuesta). La construyes una vez a partir de algo que funcionó, y después la ejecutas en vez de reescribir el prompt cada vez. Es un archivo markdown, más la carpeta a su alrededor."],
+      ["SKILL.md", "", "El archivo que define un skill: el frontmatter que dice cuándo usarlo, y después las instrucciones. La descripción es lo que hace que se active en el momento correcto, así que merece más cuidado que el cuerpo."],
+      ["Carga progresiva", "Progressive loading", "El asistente siempre ve el <em>nombre</em> de cada skill, lee las instrucciones solo cuando alguno se activa, y carga sus archivos solo si ese skill los necesita. Por eso puedes tener cincuenta skills sin que se confunda."],
+      ["Lista de rechazo", "Refuse list", "La parte de un skill que dice qué no debe hacer. <em>Escríbela primero</em>: nombrar lo que queda descartado es lo que vuelve concreto todo lo demás. Empareja cada rechazo con una alternativa, o el skill se traba."],
+      ["Comando", "Command", "Un punto de entrada con nombre a un flujo de trabajo, se invoca con un slash: /factura, /planes. La repetibilidad le gana a volver a explicar. La diferencia entre tener un proceso y acordarse de un proceso."],
+      ["Hook", "Hook", "Una regla que se dispara automáticamente ante un evento: antes de escribir un archivo, después de empezar una sesión. Ahí viven las barreras de protección, porque el entorno las hace cumplir en vez de confiar en que el modelo se acuerde."],
+      ["Archivo de contexto", "Context file", "La memoria de tu negocio en markdown plano: las cifras, el equipo, las prioridades, los riesgos. Un dueño ya tiene esto en la cabeza. Escribirlo una vez es lo que hace que la IA razone con números reales y no con números plausibles. El primer entregable, veinte minutos."],
+      ["Estilo de salida", "Output style", "Cómo vuelven los resultados: listos para presentar, no con forma de chat. <em>El entregable es el producto</em>. Una respuesta brillante en un formato inservible es trabajo sin terminar."],
+      ["Registro de auditoría", "Audit log", "Cada archivo escrito y cada script ejecutado quedan registrados. La confianza se construye con historial que se puede revisar, no con promesas. Cuando algo sale mal quieres leer qué pasó, no reconstruirlo."],
+      ["Artifact", "Artifact", "Algo terminado que la IA te construye en vez de un mensaje: un dashboard, un reporte, un documento. Un Artifact de Cowork es simplemente un archivo .html que vive donde se mantiene actualizado."],
+      ["Chat · Cowork · Code", "Chat · Cowork · Code", "Las tres superficies. <em>Chat piensa contigo · Cowork hace el trabajo · Code construye software.</em> Mismo cerebro, manos distintas. El techo de la mayoría de los operadores está en Cowork, y con eso alcanza."],
+      ["Cowork", "Cowork", "La superficie de trabajo: archivos, conectores y skills, sin terminal. <em>Piensa en tareas, no en conversaciones. No es un chatbot: es un empleado con acceso a tu carpeta.</em> Ahí es donde la mayoría hace el trabajo real."],
+      ["Claude Code", "Claude Code", "La versión de terminal, donde trabajan los que construyen. Puede escribir e instalar una automatización que tú después corres desde Cowork, y por eso el salto es una rampa y no un muro."],
+      ["Carpeta montada vs adjunto", "Mounted folder vs attachment", "Una carpeta montada se puede leer, escribir y editar; un adjunto es solo de lectura y se queda ocupando contexto. <em>El error más común de quien empieza</em>: adjuntar un archivo y después pedir que lo modifique."],
+      ["Sandbox", "Sandbox", "Un entorno aislado donde la IA puede ejecutar cosas de forma segura. Si rompe algo, lo rompe en el sandbox y tu computador queda intacto."],
+      ["Routine / tarea programada", "Routine", "Trabajo que la IA ejecuta por horario sin ti: un resumen a las 7 de la mañana, un reporte los lunes. El paso de un sistema que tú disparas a uno que corre solo."],
+      ["Terminal", "Terminal", "La ventana de texto donde escribes comandos en vez de hacer clic. Intimidante a primera vista, mecánica en la práctica. El lugar donde se instalan y se programan las cosas."],
+      ["Cron", "Cron", "Un horario que ejecuta algo automáticamente a una hora fija. Lo que convierte un flujo que tú disparas en un sistema que corre sin ti. El mecanismo detrás de todo \"cada mañana a las 8\"."],
+      ["Repositorio", "Repo", "Una carpeta de proyecto con todo su historial registrado, para que cada cambio quede grabado y se pueda revertir. A un operador le importa por una sola razón: nada se pierde de verdad."],
+      ["Git", "Git", "El sistema que registra esos cambios. <em>Commit</em> = guardar una foto con una nota. <em>Branch</em> = una línea de trabajo paralela. <em>Merge</em> = traerla de vuelta. No necesitas más que estos tres para seguir la conversación."],
+      ["Entorno (harness)", "Harness", "Todo lo que rodea al modelo: las herramientas que alcanza, los archivos que lee, las reglas que obedece. Dos personas con el mismo modelo obtienen resultados muy distintos porque su entorno es distinto, no su prompt."]
+    ]
+  },
+  {
+    g: "Que se pueda confiar",
+    sub: "La parte que decide si el sistema sobrevive al contacto con el trabajo real.",
+    rows: [
+      ["Humano en el circuito", "Human in the loop (HITL)", "Una persona aprueba antes de que el sistema actúe. No es una rueda de entrenamiento: es una decisión de diseño permanente para todo lo que toque <em>dinero, un cliente, o la ley</em>. Muy poco trabajo es realmente seguro de dejar en automático total."],
+      ["Punto de control", "Gate / checkpoint", "El lugar específico donde la persona aprueba. Ponlos antes de la ambigüedad y antes de los pasos costosos, y haz preguntas cerradas. Un control que pregunta \"¿esto se ve bien?\" no es un control."],
+      ["Verificación", "Verification", "Revisar el resultado antes de que cuente. Tres niveles: <em>100% IA</em> (seguro solo), <em>verificado por humano</em> (la IA lo hace, tú revisas), <em>humano en el circuito</em> (tú apruebas antes de que actúe)."],
+      ["Barrera de protección", "Guardrail", "Un límite que el sistema hace cumplir sin importar lo que el modelo decida: no puede enviar fuera de este dominio, no puede gastar más de este monto, no puede borrar. Lo impone el entorno, no se pide por favor."],
+      ["Radio de impacto", "Blast radius", "Cuánto daño puede hacer una acción equivocada. Redactar un correo: poco. Enviarlo a 4.000 personas: no. Dimensiona el control según el radio de impacto, no según qué tan probable te parezca el error."],
+      ["Inyección de prompt", "Prompt injection", "Texto escondido en un documento, un correo o una página web que la IA lee como si fuera una instrucción. Por eso un agente con acceso a tu bandeja necesita límites: no distingue del todo tus instrucciones de las de un extraño."],
+      ["Desvío", "Drift", "El sistema dejando de funcionar de a poco mientras aparenta estar bien. Un conector que corta filas en silencio, un formato que cambia, una fuente que se muere. Se detecta con la señal visible, nunca asumiendo."],
+      ["Contenido genérico", "AI slop", "Resultado técnicamente correcto y completamente genérico. La marca de un encargo sin encuadre y sin ejemplos. Se reconoce de una ojeada, y por eso cuesta credibilidad."],
+      ["Errado con confianza", "Confidently wrong", "El peligro específico de la IA: la respuesta equivocada está escrita exactamente con el mismo tono que la correcta. La fluidez no es señal de que algo esté bien, y leer buscando seguridad es el reflejo equivocado."],
+      ["Revisión adversarial", "Adversarial review", "Poner a un segundo modelo, distinto, a tratar de romper el trabajo del primero. Nunca dejes que un modelo revise su propio resultado: se va a dar la razón."]
+    ]
+  },
+  {
+    g: "Trabajar con IA, en general",
+    sub: "La postura. Qué cambia de verdad en la forma de trabajar.",
+    rows: [
+      ["Fluidez en IA", "AI fluency", "No es conocer las herramientas. Es saber qué entregar, qué quedarte, y cómo distinguir lo uno de lo otro. Las herramientas cambian cada pocos meses; esto no."],
+      ["La regla del 80%", "The 80% rule", "Llegar al 80% en minutos ya es la ganancia, incluso cuando el último 20% sigue siendo tuyo. La gente descarta la IA por no llegar al 100% en una tarea que antes le tomaba un día entero."],
+      ["Costo por resultado útil", "Cost per useful output", "La única métrica de costo que importa. Los tokens son baratos; una respuesta equivocada sobre la que actuaste, no. Mide lo que obtuviste, no lo que gastaste."],
+      ["Vibe coding", "Vibe coding", "Construir describiendo lo que quieres y aceptando lo que salga sin leerlo. Está bien para algo desechable. No está bien para nada que toque un cliente, porque nadie entiende qué se publicó."],
+      ["Ahora todos construyen", "Everyone is a builder now", "La barrera dejó de ser la habilidad técnica y pasó a ser saber qué construir. Lo que vuelve escasa la decisión de qué vale la pena construir, no la construcción en sí."]
+    ]
+  }
+];
+
+const groupsEl = document.getElementById('groups');
+const chipsEl  = document.getElementById('chips');
+const qEl      = document.getElementById('q');
+const countEl  = document.getElementById('count');
+const emptyEl  = document.getElementById('empty');
+
+let active = null;
+
+DATA.forEach((grp, gi) => {
+  const sec = document.createElement('section');
+  sec.className = 'group'; sec.dataset.gi = gi;
+  sec.innerHTML = `<h2>${grp.g}</h2><p class="sub">${grp.sub}</p>
+    <table><thead><tr>
+      <th class="c-term">Término</th><th class="c-es">En inglés</th><th class="c-def">Qué significa acá</th>
+    </tr></thead><tbody>${grp.rows.map(r => `<tr>
+      <td class="c-term">${r[0]}</td>
+      <td class="c-es">${r[1] ? r[1] : '<span class="same">same</span>'}</td>
+      <td class="c-def">${r[2]}</td></tr>`).join('')}</tbody></table>`;
+  groupsEl.appendChild(sec);
+
+  const chip = document.createElement('span');
+  chip.className = 'chip'; chip.textContent = grp.g; chip.dataset.gi = gi;
+  chip.onclick = () => { active = (active === gi) ? null : gi; render(); };
+  chipsEl.appendChild(chip);
+});
+
+const TOTAL = DATA.reduce((n, g) => n + g.rows.length, 0);
+
+function render() {
+  const q = qEl.value.trim().toLowerCase();
+  let shown = 0;
+
+  [...chipsEl.children].forEach(c => c.classList.toggle('on', +c.dataset.gi === active));
+
+  [...groupsEl.children].forEach(sec => {
+    const gi = +sec.dataset.gi;
+    const inFilter = (active === null) || (active === gi);
+    let visible = 0;
+    sec.querySelectorAll('tbody tr').forEach(tr => {
+      const hit = !q || tr.textContent.toLowerCase().includes(q);
+      const on = hit && inFilter;
+      tr.style.display = on ? '' : 'none';
+      if (on) visible++;
+    });
+    sec.style.display = visible ? '' : 'none';
+    shown += visible;
+  });
+
+  countEl.textContent = (q || active !== null)
+    ? `${shown} de ${TOTAL} términos`
+    : `${TOTAL} términos`;
+  emptyEl.classList.toggle('on', shown === 0);
+}
+
+qEl.addEventListener('input', render);
+render();
+</script>
+</body>
+</html>
