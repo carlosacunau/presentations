@@ -9,14 +9,21 @@ El `_` del nombre la mantiene arriba en el listado y fuera del sitio publicado.
 
 ## Verla
 
+**Doble clic en `index.html`.** No hace falta servidor: todo es relativo y va
+vendorizado (impress.js incluido, sin CDN), así que abre directo desde el
+archivo. Es a propósito, para poder pasarle la carpeta a un cliente y que le
+funcione sin instalar nada.
+
 ```bash
-cd ~/OS/presentations/_template-image-deck
-python3 -m http.server 3130
+open ~/OS/presentations/_template-image-deck/index.html
 ```
 
 - `index.html` el deck (flechas para navegar, `O` vista general, `?` ayuda)
 - `toc.html` el índice, un link por diapositiva, se regenera en cada build
 - `glosario.html` el glosario, opcional (si se borra, el índice no lo lista)
+
+Lo único que pide servidor es medir con herramientas de navegador automatizadas
+(Playwright bloquea `file://`). Para mirarlo con los ojos, el archivo alcanza.
 
 ## Usarla para un deck nuevo
 
@@ -81,8 +88,10 @@ El build imprime el ratio w/h de la vista general. **Apuntar cerca de 1.78**
 (16:9); más bajo deja franjas vacías a los lados al hacer zoom out.
 
 Al medir en el navegador, esperar a que la transición termine (más de 950ms):
-midiendo antes salen números transitorios que parecen bugs y no lo son. Y si
-parece que el navegador sirve una versión vieja, agregar `?v=2` a la URL.
+midiendo antes salen números transitorios que parecen bugs y no lo son.
+
+Si se está midiendo con un servidor local y parece que sirve una versión vieja,
+agregar `?v=2` a la URL. Abriendo el archivo directo no pasa: basta recargar.
 
 ## Nota sobre las imágenes
 
