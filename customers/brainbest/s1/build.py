@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 # Build the Prezi-style (impress.js) version of the workshop deck.
 # Light theme + Fiba violet accent + logo. Camera path = order in STEPS.
-# Images already optimized (1600x893, 16:9) in assets/diagrams/.
+# Diagramas en assets/diagrams/: 39 PNG de 1536x1024 (proporción 3:2, la que
+# entrega image_gen de Codex). NO son 16:9, a pesar de que la pantalla sí lo es.
+# El alto lo fija --img-h y el ancho sale de la proporción del archivo, así que
+# cambiar de proporción no rompe nada: solo cambia cuánto ancho ocupa el dibujo.
 
 import html, os, re, sys
 
