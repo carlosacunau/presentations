@@ -1007,6 +1007,62 @@ open(out, "w").write(tpl)
 # Regenerated on every build, so it never drifts from the deck. Sections are
 # headings; every slide is a clickable link that opens the deck in a NEW TAB at
 # that slide's stable id (home / 1 / 1.1 / ... / thank-you). Mirrors INDEX.md.
+def glossary_count(path):
+    """Cuántos términos tiene el glosario. 0 si no se puede saber.
+
+    Soporta las dos formas que se han usado:
+      - <dt> o class="term" en HTML plano
+      - el array JS `rows: [ [término, inglés, definición], ... ]`, que es lo
+        que genera el glosario actual. OJO: las filas son ARRAYS, no objetos,
+        así que contar llaves da 0 y parece que el glosario está vacío.
+    """
+    try:
+        src = open(path, encoding="utf-8").read()
+    except Exception:
+        return 0
+
+    n = len(re.findall(r'<dt\b|class="term"', src))
+    if n:
+        return n
+
+    total = 0
+    for m in re.finditer(r'rows\s*:\s*\[', src):
+        start = m.end() - 1
+        depth = 0
+        block = ""
+        for i in range(start, len(src)):
+            if src[i] == '[':
+                depth += 1
+            elif src[i] == ']':
+                depth -= 1
+                if depth == 0:
+                    block = src[start + 1:i]
+                    break
+        # Recorrer respetando comillas: las definiciones traen corchetes y
+        # comillas escapadas adentro, y sin esto el conteo se va al diablo.
+        d = 0
+        instr = None
+        esc = False
+        for ch in block:
+            if instr:
+                if esc:
+                    esc = False
+                elif ch == '\\':
+                    esc = True
+                elif ch == instr:
+                    instr = None
+                continue
+            if ch in '"\'':
+                instr = ch
+            elif ch == '[':
+                if d == 0:
+                    total += 1
+                d += 1
+            elif ch == ']':
+                d -= 1
+    return total
+
+
 def toc_html():
     rows = []
     rows.append('<li class="toc-home"><a href="index.html#/home" target="_blank" '
@@ -1028,9 +1084,15 @@ def toc_html():
     rows.append('<li class="toc-section"><a href="index.html#/overview" '
                 'target="_blank" rel="noopener"><span class="toc-num">&#9633;</span>'
                 'Vista general (todo el lienzo)</a></li>')
-    rows.append('<li class="toc-section"><a href="glosario.html" '
-                'target="_blank" rel="noopener"><span class="toc-num">&#9776;</span>'
-                'Glosario (103 t&eacute;rminos)</a></li>')
+    # El glosario es opcional y el conteo se saca del archivo, no se escribe a
+    # mano: estaba fijo en 103 y se desactualiza en silencio al editarlo.
+    _glos = os.path.join(DEST, "glosario.html")
+    if os.path.exists(_glos):
+        _n = glossary_count(_glos)
+        _label = f"Glosario ({_n} t&eacute;rminos)" if _n else "Glosario"
+        rows.append('<li class="toc-section"><a href="glosario.html" '
+                    'target="_blank" rel="noopener"><span class="toc-num">&#9776;</span>'
+                    f'{_label}</a></li>')
     deck_title = attr(cover["title"]) if cover else "Presentation"
     items = "\n      ".join(rows)
     return f'''<!DOCTYPE html>
