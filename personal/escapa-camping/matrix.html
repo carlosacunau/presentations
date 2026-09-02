@@ -229,7 +229,7 @@
       <tbody id="camping-body"></tbody>
       <tfoot>
         <tr>
-          <td class="parent-cell">Total por Camping</td>
+          <td class="parent-cell">Total Familias</td>
           <td id="count-e">0</td>
           <td id="count-c">0</td>
           <td id="count-k">0</td>
@@ -509,7 +509,7 @@ function render() {
   });
 
   body.innerHTML = html;
-  Object.keys(counts).forEach(c => { const el = document.getElementById('count-' + c); if (el) el.textContent = counts[c]; });
+  Object.keys(counts).forEach(c => { const el = document.getElementById('count-' + c); if (el) el.textContent = parents[c]; });
   Object.keys(counts).forEach(c => { const el = document.getElementById('total-' + c); if (el) el.textContent = counts[c] + parents[c]; });
   const totalKids = counts.e + counts.c + counts.k + counts.m;
   const totalCampistas = filtered.length + totalKids;
