@@ -62,6 +62,28 @@
     .warn ul { margin: 6px 0 0 18px; }
     .warn li { margin-bottom: 3px; }
     .warn .none { color: #2e7d32; font-weight: 600; }
+.fgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+         gap: 12px; margin-top: 12px; }
+.fcamp { background: #fff; border: 1px solid #ffe0a3; border-radius: 8px; overflow: hidden; }
+.fcamp h4 { font-size: .82rem; padding: 7px 10px; color: #fff;
+            display: flex; justify-content: space-between; align-items: center; }
+.fcamp.c-esploratori h4 { background: #4caf50; }
+.fcamp.c-campeggio   h4 { background: #2196f3; }
+.fcamp.c-campisti    h4 { background: #ff9800; }
+.fcamp.c-papimono    h4 { background: #9c27b0; }
+.fcamp .fn { background: rgba(255,255,255,.28); border-radius: 10px;
+             padding: 1px 8px; font-size: .78rem; }
+.fcamp .fn.ok { background: rgba(255,255,255,.4); }
+.fcamp ul { margin: 0; padding: 8px 10px 9px 10px; list-style: none; }
+.fcamp li { margin-bottom: 5px; font-size: .8rem; line-height: 1.5; }
+.fcamp li:last-child { margin-bottom: 0; }
+.fcamp .none { margin: 8px 10px 9px; font-size: .8rem; }
+.fcamp.done { opacity: .72; }
+.tag { display: inline-block; border-radius: 4px; padding: 0 5px;
+       font-size: .72rem; margin-right: 2px; white-space: nowrap; }
+.tag.papa { background: #ede7f6; color: #4527a0; font-style: italic; }
+.tag.hijo { background: #fff3e0; color: #e65100; }
+@media print { .fgrid { grid-template-columns: repeat(2, 1fr); } }
     .foot { text-align: center; font-size: .8rem; color: #888; margin-top: 26px; }
     .foot a { color: #1565c0; }
     @media print {
@@ -115,34 +137,37 @@ function tally() {
   // falta = poleras que SI se van a imprimir pero todavia no tienen talla.
   // Se cuentan en el total; lo que falta es preguntarle la talla a la familia.
   CAMPS.forEach(c => out[c.k] = { ins: 0, papa: {}, hijo: {}, kids: 0, faltaPapa: 0, faltaHijo: 0 });
-  const sinPapa = [], sinHijo = [];
+  // Cada campamento tiene su propio chat, asi que lo que falta se agrupa por
+  // campamento y dentro de cada uno por apoderado: una linea = un mensaje.
+  const pend = {};
+  CAMPS.forEach(c => pend[c.k] = {});
+  const ask = (k, parent) => {
+    if (!pend[k][parent]) pend[k][parent] = { papa: false, hijos: [] };
+    return pend[k][parent];
+  };
 
   DATA.forEach(r => {
     const inC = CAMPS.filter(c => (r[c.k] || []).length > 0).map(c => c.k);
     const hasPs = r.ps && r.ps !== NONE;
-    if (!hasPs && inC.length) sinPapa.push(r.p);
     inC.forEach(k => {
       out[k].ins++;
       if (hasPs) out[k].papa[r.ps] = (out[k].papa[r.ps] || 0) + 1;
-      else out[k].faltaPapa++;
+      else { out[k].faltaPapa++; ask(k, r.p).papa = true; }
     });
     CAMPS.forEach(c => (r[c.k] || []).forEach(kid => {
       out[c.k].kids++;
       if (kid.s && kid.s !== NONE) out[c.k].hijo[kid.s] = (out[c.k].hijo[kid.s] || 0) + 1;
-      else {
-        out[c.k].faltaHijo++;
-        sinHijo.push(r.p + ' / ' + kid.n + ' (' + c.name + ')');
-      }
+      else { out[c.k].faltaHijo++; ask(c.k, r.p).hijos.push(kid.n); }
     }));
   });
-  return { out, sinPapa, sinHijo };
+  return { out, pend };
 }
 
 function sum(o) { return Object.values(o).reduce((a, b) => a + b, 0); }
 
 function render() {
   document.getElementById('stamp').textContent = LAST_UPDATED || '—';
-  const { out, sinPapa, sinHijo } = tally();
+  const { out, pend } = tally();
 
   let gp = 0, gk = 0, gf = 0;
   CAMPS.forEach(c => {
@@ -188,22 +213,38 @@ function render() {
       '</tbody></table></div>';
   }).join('');
 
-  const list = (arr) => arr.length
-    ? '<ul>' + arr.map(x => '<li>' + x + '</li>').join('') + '</ul>'
-    : '<p class="none">ninguno ✓</p>';
+  // Una seccion por campamento, para copiar y pegar en el chat de ese campamento.
+  const blocks = CAMPS.map(c => {
+    const fams = Object.keys(pend[c.k]).sort((a, b) => a.localeCompare(b, 'es'));
+    const n = fams.reduce((a, p) =>
+      a + (pend[c.k][p].papa ? 1 : 0) + pend[c.k][p].hijos.length, 0);
+    if (!n) return '<div class="fcamp ' + c.cls + ' done">' +
+      '<h4>' + c.name + ' <span class="fn ok">0 ✓</span></h4>' +
+      '<p class="none">Todas las tallas confirmadas.</p></div>';
+    const rows = fams.map(p => {
+      const q = pend[c.k][p];
+      const bits = [];
+      if (q.papa) bits.push('<span class="tag papa">talla del papá</span>');
+      q.hijos.forEach(h => bits.push('<span class="tag hijo">' + h + '</span>'));
+      return '<li><b>' + p + '</b> ' + bits.join(' ') + '</li>';
+    }).join('');
+    return '<div class="fcamp ' + c.cls + '">' +
+      '<h4>' + c.name + ' <span class="fn">' + n + '</span></h4>' +
+      '<ul>' + rows + '</ul></div>';
+  }).join('');
 
-  const total = sinPapa.length + sinHijo.length;
+  const total = CAMPS.reduce((a, c) =>
+    a + Object.keys(pend[c.k]).reduce((b, p) =>
+      b + (pend[c.k][p].papa ? 1 : 0) + pend[c.k][p].hijos.length, 0), 0);
+
   document.getElementById('warn').innerHTML =
     (total === 0
       ? '<h3 style="color:#2e7d32">✓ Todas las tallas están confirmadas</h3>' +
         '<p>No falta ninguna. El pedido se puede mandar a imprimir.</p>'
       : '<h3>⚠ Faltan ' + total + ' tallas por confirmar</h3>' +
         '<p>Estas poleras <b>sí van en el pedido</b> y están sumadas en los totales. ' +
-        'Lo único que falta es preguntar la talla antes de mandar a imprimir.</p>' +
-        '<p style="margin-top:10px"><b>Papás (' + sinPapa.length + '):</b></p>' +
-        list(sinPapa) +
-        '<p style="margin-top:10px"><b>Hijos (' + sinHijo.length + '):</b></p>' +
-        list(sinHijo));
+        'Cada campamento tiene su propio chat: pregunta ahí las que le faltan.</p>' +
+        '<div class="fgrid">' + blocks + '</div>');
 }
 render();
 </script>
