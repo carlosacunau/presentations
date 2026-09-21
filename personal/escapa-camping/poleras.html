@@ -27,6 +27,13 @@
     .gcard .l { font-size: .8rem; color: #666; text-transform: uppercase; letter-spacing: .5px; margin-top: 2px; }
     .gcard.total { background: #263238; color: #fff; }
     .gcard.total .l { color: #b0bec5; }
+    .gcard.falta { background: #fff8e1; border: 2px solid #f9a825; }
+    .gcard.falta .n { color: #e65100; }
+    .gcard.falta .l { color: #a1670a; }
+    .gcard.falta.ok { background: #e8f5e9; border-color: #2e7d32; }
+    .gcard.falta.ok .n { color: #2e7d32; }
+    .gcard.falta.ok .l { color: #1b5e20; }
+    .gcard .sub { font-size: .7rem; color: #999; margin-top: 4px; }
 
     .camp { background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,.08);
             margin-bottom: 20px; overflow: hidden; }
@@ -46,6 +53,8 @@
     tr.sum td { font-weight: 700; background: #fafafa; }
     .adult-h { background: #b3e5fc; }
     .kid-h   { background: #ffe0b2; }
+    .falta-h { background: #ffe082; color: #7a4f00; }
+    td.falta-c { background: #fff8e1; color: #e65100; font-weight: 700; }
 
     .warn { max-width: 1100px; margin: 26px auto 0; background: #fff8e1; border-left: 4px solid #f9a825;
             padding: 14px 18px; border-radius: 6px; font-size: .88rem; }
@@ -103,7 +112,9 @@ const NONE  = '—';
 
 function tally() {
   const out = {};
-  CAMPS.forEach(c => out[c.k] = { ins: 0, papa: {}, hijo: {}, kids: 0 });
+  // falta = poleras que SI se van a imprimir pero todavia no tienen talla.
+  // Se cuentan en el total; lo que falta es preguntarle la talla a la familia.
+  CAMPS.forEach(c => out[c.k] = { ins: 0, papa: {}, hijo: {}, kids: 0, faltaPapa: 0, faltaHijo: 0 });
   const sinPapa = [], sinHijo = [];
 
   DATA.forEach(r => {
@@ -113,11 +124,15 @@ function tally() {
     inC.forEach(k => {
       out[k].ins++;
       if (hasPs) out[k].papa[r.ps] = (out[k].papa[r.ps] || 0) + 1;
+      else out[k].faltaPapa++;
     });
     CAMPS.forEach(c => (r[c.k] || []).forEach(kid => {
       out[c.k].kids++;
       if (kid.s && kid.s !== NONE) out[c.k].hijo[kid.s] = (out[c.k].hijo[kid.s] || 0) + 1;
-      else sinHijo.push(r.p + ' / ' + kid.n + ' (' + c.name + ')');
+      else {
+        out[c.k].faltaHijo++;
+        sinHijo.push(r.p + ' / ' + kid.n + ' (' + c.name + ')');
+      }
     }));
   });
   return { out, sinPapa, sinHijo };
@@ -129,31 +144,47 @@ function render() {
   document.getElementById('stamp').textContent = LAST_UPDATED || '—';
   const { out, sinPapa, sinHijo } = tally();
 
-  let gp = 0, gk = 0;
-  CAMPS.forEach(c => { gp += sum(out[c.k].papa); gk += sum(out[c.k].hijo); });
+  let gp = 0, gk = 0, gf = 0;
+  CAMPS.forEach(c => {
+    gp += sum(out[c.k].papa);
+    gk += sum(out[c.k].hijo);
+    gf += out[c.k].faltaPapa + out[c.k].faltaHijo;
+  });
 
+  const okFalta = gf === 0 ? ' ok' : '';
   document.getElementById('grand').innerHTML =
     '<div class="gcard"><div class="n">' + gp + '</div><div class="l">Poleras papá</div></div>' +
     '<div class="gcard"><div class="n">' + gk + '</div><div class="l">Poleras hijos</div></div>' +
-    '<div class="gcard total"><div class="n">' + (gp + gk) + '</div><div class="l">Total a imprimir</div></div>';
+    '<div class="gcard falta' + okFalta + '"><div class="n">' +
+      (gf === 0 ? '0 ✓' : gf) + '</div>' +
+      '<div class="l">Sin talla</div>' +
+      '<div class="sub">' + (gf === 0 ? 'todas confirmadas' : 'hay que preguntar') + '</div></div>' +
+    '<div class="gcard total"><div class="n">' + (gp + gk + gf) + '</div>' +
+      '<div class="l">Total a imprimir</div></div>';
 
   document.getElementById('camps').innerHTML = CAMPS.map(c => {
     const d = out[c.k];
     const sp = sum(d.papa), sk = sum(d.hijo);
+    const fp = d.faltaPapa, fh = d.faltaHijo;
+    const campTotal = sp + sk + fp + fh;
     const cell = (v) => v ? '<td>' + v + '</td>' : '<td class="zero">0</td>';
+    const fcell = (v) => v ? '<td class="falta-c">' + v + '</td>' : '<td class="zero">0</td>';
     const head = ALL.map(t =>
       '<th class="' + (ADULT.indexOf(t) >= 0 ? 'adult-h' : 'kid-h') + '">' + t + '</th>').join('');
     return '<div class="camp ' + c.cls + '">' +
       '<h2>' + c.name + ' <span class="meta">' + c.grade + ' · ' + c.dates + '</span>' +
-      '<span class="tot">' + (sp + sk) + ' poleras</span></h2>' +
-      '<table><thead><tr><th class="row-label"></th>' + head + '<th>Total</th></tr></thead><tbody>' +
+      '<span class="tot">' + campTotal + ' poleras</span></h2>' +
+      '<table><thead><tr><th class="row-label"></th>' + head +
+        '<th class="falta-h">Sin talla</th><th>Total</th></tr></thead><tbody>' +
       '<tr><td class="row-label">Papás (' + d.ins + ')</td>' +
-        ALL.map(t => cell(d.papa[t] || 0)).join('') + '<td><b>' + sp + '</b></td></tr>' +
+        ALL.map(t => cell(d.papa[t] || 0)).join('') + fcell(fp) +
+        '<td><b>' + (sp + fp) + '</b></td></tr>' +
       '<tr><td class="row-label">Hijos (' + d.kids + ')</td>' +
-        ALL.map(t => cell(d.hijo[t] || 0)).join('') + '<td><b>' + sk + '</b></td></tr>' +
+        ALL.map(t => cell(d.hijo[t] || 0)).join('') + fcell(fh) +
+        '<td><b>' + (sk + fh) + '</b></td></tr>' +
       '<tr class="sum"><td class="row-label">Total</td>' +
         ALL.map(t => cell((d.papa[t] || 0) + (d.hijo[t] || 0))).join('') +
-        '<td>' + (sp + sk) + '</td></tr>' +
+        fcell(fp + fh) + '<td>' + campTotal + '</td></tr>' +
       '</tbody></table></div>';
   }).join('');
 
@@ -161,12 +192,18 @@ function render() {
     ? '<ul>' + arr.map(x => '<li>' + x + '</li>').join('') + '</ul>'
     : '<p class="none">ninguno ✓</p>';
 
+  const total = sinPapa.length + sinHijo.length;
   document.getElementById('warn').innerHTML =
-    '<h3>⚠ Revisar antes de mandar a imprimir</h3>' +
-    '<p><b>Papás sin talla (' + sinPapa.length + '):</b> no tienen polera en el pedido.</p>' +
-    list(sinPapa) +
-    '<p style="margin-top:10px"><b>Hijos sin talla (' + sinHijo.length + '):</b> tampoco están contados.</p>' +
-    list(sinHijo);
+    (total === 0
+      ? '<h3 style="color:#2e7d32">✓ Todas las tallas están confirmadas</h3>' +
+        '<p>No falta ninguna. El pedido se puede mandar a imprimir.</p>'
+      : '<h3>⚠ Faltan ' + total + ' tallas por confirmar</h3>' +
+        '<p>Estas poleras <b>sí van en el pedido</b> y están sumadas en los totales. ' +
+        'Lo único que falta es preguntar la talla antes de mandar a imprimir.</p>' +
+        '<p style="margin-top:10px"><b>Papás (' + sinPapa.length + '):</b></p>' +
+        list(sinPapa) +
+        '<p style="margin-top:10px"><b>Hijos (' + sinHijo.length + '):</b></p>' +
+        list(sinHijo));
 }
 render();
 </script>
