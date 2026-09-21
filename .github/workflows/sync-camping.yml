@@ -47,7 +47,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add personal/escapa-camping/matrix.html personal/escapa-camping/campeggio.html
+          git add personal/escapa-camping/matrix.html personal/escapa-camping/campeggio.html personal/escapa-camping/poleras.html
           git commit -m "chore: auto-sync camping matrix from Google Forms"
           git pull --rebase
           git push

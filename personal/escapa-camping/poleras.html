@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Poleras — Camping Padre-Hijo SIVM 2026</title>
+  <meta property="og:title" content="Poleras — Camping Padre-Hijo 2026">
+  <meta property="og:description" content="Resumen de tallas para el pedido de poleras · Scuola Italiana Vittorio Montiglio">
+  <meta property="og:image" content="https://carlosacunau.github.io/presentations/personal/escapa-camping/img/banner.png">
+  <meta property="og:type" content="website">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: #f0f2f5; color: #1a1a2e; padding: 24px; }
+    .header { text-align: center; margin-bottom: 8px; }
+    .header h1 { font-size: 2rem; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 4px; }
+    .header p { font-size: 1rem; color: #666; }
+    .stamp { text-align: center; font-size: 0.8rem; color: #888; margin-bottom: 20px; }
+    .rule { max-width: 900px; margin: 0 auto 22px; background: #e8f5e9; border-left: 4px solid #2e7d32;
+            padding: 12px 16px; border-radius: 6px; font-size: 0.9rem; color: #1b5e20; }
+    .rule b { font-weight: 700; }
+    .wrap { max-width: 1100px; margin: 0 auto; }
+
+    .grand { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin-bottom: 26px; }
+    .gcard { background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,.08);
+             padding: 16px 26px; text-align: center; min-width: 150px; }
+    .gcard .n { font-size: 2.1rem; font-weight: 800; line-height: 1.1; }
+    .gcard .l { font-size: .8rem; color: #666; text-transform: uppercase; letter-spacing: .5px; margin-top: 2px; }
+    .gcard.total { background: #263238; color: #fff; }
+    .gcard.total .l { color: #b0bec5; }
+
+    .camp { background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,.08);
+            margin-bottom: 20px; overflow: hidden; }
+    .camp h2 { padding: 12px 18px; font-size: 1.1rem; color: #fff; display: flex;
+               align-items: baseline; gap: 10px; flex-wrap: wrap; }
+    .camp h2 .meta { font-size: .8rem; font-weight: 400; opacity: .9; }
+    .camp h2 .tot { margin-left: auto; font-size: 1rem; font-weight: 700; }
+    .c-esploratori h2 { background: #4caf50; }
+    .c-campeggio  h2 { background: #2196f3; }
+    .c-campisti   h2 { background: #ff9800; }
+    .c-papimono   h2 { background: #9c27b0; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 8px 10px; text-align: center; font-size: .9rem; border-bottom: 1px solid #eee; }
+    th { background: #eceff1; font-weight: 700; font-size: .8rem; }
+    th.row-label, td.row-label { text-align: left; font-weight: 600; min-width: 130px; }
+    td.zero { color: #ccc; }
+    tr.sum td { font-weight: 700; background: #fafafa; }
+    .adult-h { background: #b3e5fc; }
+    .kid-h   { background: #ffe0b2; }
+
+    .warn { max-width: 1100px; margin: 26px auto 0; background: #fff8e1; border-left: 4px solid #f9a825;
+            padding: 14px 18px; border-radius: 6px; font-size: .88rem; }
+    .warn h3 { font-size: .95rem; margin-bottom: 8px; color: #e65100; }
+    .warn ul { margin: 6px 0 0 18px; }
+    .warn li { margin-bottom: 3px; }
+    .warn .none { color: #2e7d32; font-weight: 600; }
+    .foot { text-align: center; font-size: .8rem; color: #888; margin-top: 26px; }
+    .foot a { color: #1565c0; }
+    @media print {
+      body { background: #fff; padding: 0; }
+      .camp, .gcard { box-shadow: none; border: 1px solid #ddd; }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Poleras — ES CA PA 2026</h1>
+    <p>Resumen de tallas para el pedido · Scuola Italiana Vittorio Montiglio</p>
+  </div>
+  <div class="stamp">Actualizado: <span id="stamp">—</span></div>
+
+  <div class="rule">
+    <b>Regla:</b> cada campamento tiene su propia polera (logo y color distintos).
+    El <b>papá recibe una por cada campamento</b> al que va.
+    Cada <b>hijo recibe solo la del campamento al que asiste</b>.
+  </div>
+
+  <div class="wrap">
+    <div class="grand" id="grand"></div>
+    <div id="camps"></div>
+  </div>
+
+  <div class="warn" id="warn"></div>
+
+  <div class="foot">
+    Se genera solo desde el formulario, junto con la
+    <a href="./matrix.html">matriz de inscripción</a>. No editar a mano.
+  </div>
+
+<script>
+const DATA = [];
+const LAST_UPDATED = '';
+
+const CAMPS = [
+  { k: 'c', name: 'Campeggio',   grade: '2º Básico', dates: '06-08 Nov', cls: 'c-campeggio' },
+  { k: 'k', name: 'Campisti',    grade: '4º Básico', dates: '13-15 Nov', cls: 'c-campisti' },
+  { k: 'e', name: 'Esploratori', grade: '1º Básico', dates: '20-22 Nov', cls: 'c-esploratori' },
+  { k: 'm', name: 'Papimono',    grade: '6º Básico', dates: '27-29 Nov', cls: 'c-papimono' }
+];
+const ADULT = ['XS','S','M','L','XL','XXL'];
+const KID   = ['4-6','8-10','10-12','12-14'];
+const ALL   = ADULT.concat(KID);
+const NONE  = '—';
+
+function tally() {
+  const out = {};
+  CAMPS.forEach(c => out[c.k] = { ins: 0, papa: {}, hijo: {}, kids: 0 });
+  const sinPapa = [], sinHijo = [];
+
+  DATA.forEach(r => {
+    const inC = CAMPS.filter(c => (r[c.k] || []).length > 0).map(c => c.k);
+    const hasPs = r.ps && r.ps !== NONE;
+    if (!hasPs && inC.length) sinPapa.push(r.p);
+    inC.forEach(k => {
+      out[k].ins++;
+      if (hasPs) out[k].papa[r.ps] = (out[k].papa[r.ps] || 0) + 1;
+    });
+    CAMPS.forEach(c => (r[c.k] || []).forEach(kid => {
+      out[c.k].kids++;
+      if (kid.s && kid.s !== NONE) out[c.k].hijo[kid.s] = (out[c.k].hijo[kid.s] || 0) + 1;
+      else sinHijo.push(r.p + ' / ' + kid.n + ' (' + c.name + ')');
+    }));
+  });
+  return { out, sinPapa, sinHijo };
+}
+
+function sum(o) { return Object.values(o).reduce((a, b) => a + b, 0); }
+
+function render() {
+  document.getElementById('stamp').textContent = LAST_UPDATED || '—';
+  const { out, sinPapa, sinHijo } = tally();
+
+  let gp = 0, gk = 0;
+  CAMPS.forEach(c => { gp += sum(out[c.k].papa); gk += sum(out[c.k].hijo); });
+
+  document.getElementById('grand').innerHTML =
+    '<div class="gcard"><div class="n">' + gp + '</div><div class="l">Poleras papá</div></div>' +
+    '<div class="gcard"><div class="n">' + gk + '</div><div class="l">Poleras hijos</div></div>' +
+    '<div class="gcard total"><div class="n">' + (gp + gk) + '</div><div class="l">Total a imprimir</div></div>';
+
+  document.getElementById('camps').innerHTML = CAMPS.map(c => {
+    const d = out[c.k];
+    const sp = sum(d.papa), sk = sum(d.hijo);
+    const cell = (v) => v ? '<td>' + v + '</td>' : '<td class="zero">0</td>';
+    const head = ALL.map(t =>
+      '<th class="' + (ADULT.indexOf(t) >= 0 ? 'adult-h' : 'kid-h') + '">' + t + '</th>').join('');
+    return '<div class="camp ' + c.cls + '">' +
+      '<h2>' + c.name + ' <span class="meta">' + c.grade + ' · ' + c.dates + '</span>' +
+      '<span class="tot">' + (sp + sk) + ' poleras</span></h2>' +
+      '<table><thead><tr><th class="row-label"></th>' + head + '<th>Total</th></tr></thead><tbody>' +
+      '<tr><td class="row-label">Papás (' + d.ins + ')</td>' +
+        ALL.map(t => cell(d.papa[t] || 0)).join('') + '<td><b>' + sp + '</b></td></tr>' +
+      '<tr><td class="row-label">Hijos (' + d.kids + ')</td>' +
+        ALL.map(t => cell(d.hijo[t] || 0)).join('') + '<td><b>' + sk + '</b></td></tr>' +
+      '<tr class="sum"><td class="row-label">Total</td>' +
+        ALL.map(t => cell((d.papa[t] || 0) + (d.hijo[t] || 0))).join('') +
+        '<td>' + (sp + sk) + '</td></tr>' +
+      '</tbody></table></div>';
+  }).join('');
+
+  const list = (arr) => arr.length
+    ? '<ul>' + arr.map(x => '<li>' + x + '</li>').join('') + '</ul>'
+    : '<p class="none">ninguno ✓</p>';
+
+  document.getElementById('warn').innerHTML =
+    '<h3>⚠ Revisar antes de mandar a imprimir</h3>' +
+    '<p><b>Papás sin talla (' + sinPapa.length + '):</b> no tienen polera en el pedido.</p>' +
+    list(sinPapa) +
+    '<p style="margin-top:10px"><b>Hijos sin talla (' + sinHijo.length + '):</b> tampoco están contados.</p>' +
+    list(sinHijo);
+}
+render();
+</script>
+</body>
+</html>

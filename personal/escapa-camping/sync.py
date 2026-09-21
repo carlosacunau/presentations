@@ -241,4 +241,8 @@ if __name__ == '__main__':
     campeggio = [d for d in data if d['c']]
     update_html(os.path.join(script_dir, 'campeggio.html'), campeggio, timestamp)
 
+    # Resumen de tallas para el pedido de poleras. Lee el mismo DATA que la
+    # matriz, asi que los totales nunca pueden contradecir al listado.
+    update_html(os.path.join(script_dir, 'poleras.html'), data, timestamp)
+
     print(f"Synced — {len(data)} parents, {len(campeggio)} campeggio. Updated: {timestamp}")
