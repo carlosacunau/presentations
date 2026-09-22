@@ -28,6 +28,13 @@ def read_sheet():
     return result.get('values', [])
 
 # --- Parsing helpers ---
+def parse_ts(ts):
+    """Google Forms timestamp: M/D/YYYY H:MM:SS. Unparseable sorts oldest."""
+    try:
+        return datetime.datetime.strptime(ts.strip(), '%m/%d/%Y %H:%M:%S')
+    except (ValueError, AttributeError):
+        return datetime.datetime.min
+
 def norm(s):
     return unicodedata.normalize('NFD', s).encode('ascii','ignore').decode().lower()
 
@@ -81,14 +88,19 @@ def split_kids(raw):
 def process_rows(raw_rows):
     grade_order = {'e':1, 'c':2, 'k':4, 'm':6}
 
-    # Deduplicate: keep latest entry per normalized parent name
+    # Deduplicate: keep latest entry per normalized parent name.
+    # The sheet is ordered by camp, not by date, so "last row wins" picked the
+    # wrong submission (Ivan Guerrero's March row overwrote his May sizes).
+    # Compare the actual Timestamp instead.
     seen = {}
     for row in raw_rows:
         if len(row) < 10: row += [''] * (10 - len(row))
         ts, camps, parent, phone, kid_major, kid_minor, exp, sizes, rating, comment = row[:10]
         if not parent or parent.strip() == '' or ts == 'Timestamp': continue
         key = norm(parent.strip())
-        seen[key] = row
+        prev = seen.get(key)
+        if prev is None or parse_ts(ts) >= parse_ts(prev[0]):
+            seen[key] = row
 
     data = []
     for row in seen.values():
