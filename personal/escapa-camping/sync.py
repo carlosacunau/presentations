@@ -105,6 +105,25 @@ def split_kids(raw):
     parts = [p.strip() for p in raw.split(',') if p.strip()]
     return [first_name(p) for p in parts if first_name(p)]
 
+# Hijos que asisten a DOS campamentos y por lo tanto llevan DOS poleras.
+# El formulario no puede expresarlo: cada hijo cae en un solo campamento.
+# Clave = celular normalizado del apoderado.
+#   Borja Ortuzar va a Campisti (su nivel) y ademas a Papimono como hermano
+#   menor de Colomba. Es el unico caso en los 183 apoderados (verificado 260922).
+SEGUNDO_CAMPAMENTO = {
+    "56998280795": [("Borja", "m", "12-14")],   # Matias Ortuzar
+}
+
+
+def aplicar_segundo_campamento(entry):
+    """Agrega la polera del segundo campamento, si el hijo no esta ya ahi."""
+    for nombre, camp, talla in SEGUNDO_CAMPAMENTO.get(entry["ph"], []):
+        ya = any(k["n"].strip().lower() == nombre.strip().lower()
+                 for k in entry[camp])
+        if not ya:
+            entry[camp].append({"n": nombre, "s": talla})
+
+
 # --- Main processing ---
 def process_rows(raw_rows):
     grade_order = {'e':1, 'c':2, 'k':4, 'm':6}
@@ -250,6 +269,7 @@ def process_rows(raw_rows):
                         size_idx += 1
                         camp_idx += 1
 
+        aplicar_segundo_campamento(entry)
         data.append(entry)
 
     data.sort(key=lambda d: norm(d['p'].split()[0]))
