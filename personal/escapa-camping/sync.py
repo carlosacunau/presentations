@@ -35,6 +35,27 @@ def parse_ts(ts):
     except (ValueError, AttributeError):
         return datetime.datetime.min
 
+def norm_phone(raw):
+    """Normalize to 569XXXXXXXX (Chile). Returns '' if there are no digits.
+
+    The form is free text, so it arrives as '56998280795', '+56999178416',
+    '+569 77996381', '999449042' or with trailing spaces. Chilean mobiles are
+    9 digits starting with 9, so:
+      569XXXXXXXX (11)  -> as-is
+      56XXXXXXXXX (11)  -> as-is (already country-coded)
+      9XXXXXXXX   (9)   -> prefix 56
+    Anything else keeps its digits, no '+', so a foreign number still dedupes
+    against itself.
+    """
+    d = re.sub(r'\D', '', raw or '')
+    if not d:
+        return ''
+    if len(d) == 9 and d.startswith('9'):
+        return '56' + d
+    if len(d) == 8:               # landline without the leading 9
+        return '569' + d
+    return d
+
 def norm(s):
     return unicodedata.normalize('NFD', s).encode('ascii','ignore').decode().lower()
 
@@ -97,7 +118,11 @@ def process_rows(raw_rows):
         if len(row) < 10: row += [''] * (10 - len(row))
         ts, camps, parent, phone, kid_major, kid_minor, exp, sizes, rating, comment = row[:10]
         if not parent or parent.strip() == '' or ts == 'Timestamp': continue
-        key = norm(parent.strip())
+        # Dedup on the PHONE, not the name: people add accents and extra
+        # surnames between submissions ("Matias Ortuzar" / "Matias Ortuzar",
+        # "ivan guerrero" / "Ivan Guerrero "), but the phone stays put.
+        # Fall back to the name only when the phone cell is empty.
+        key = norm_phone(phone) or norm(parent.strip())
         prev = seen.get(key)
         if prev is None or parse_ts(ts) >= parse_ts(prev[0]):
             seen[key] = row
@@ -107,7 +132,7 @@ def process_rows(raw_rows):
         ts, camps_str, parent, phone, kid_major_raw, kid_minor_raw, exp, sizes_str, rating, comment = row[:10]
 
         parent = parent.strip()
-        phone = (phone or '').strip()
+        phone = norm_phone(phone)
         exp = (exp or '').strip()
         rating = (rating or '').strip()
         comment = (comment or '').strip()
