@@ -59,6 +59,9 @@
     .empty-cell { color: #ccc; }
     tfoot td { padding: 12px; font-weight: 700; background: #263238; color: #fff; text-align: center; font-size: 0.9rem; }
     tfoot td.parent-cell { text-align: left; }
+    thead tr.top-totals td { padding: 8px 12px; font-weight: 700; background: #263238; color: #fff; text-align: center; font-size: 0.85rem; line-height: 1.6rem; }
+    thead tr.top-totals td.parent-cell { text-align: left; }
+    thead tr.top-totals .tt-num { font-size: 1.05rem; }
 
     /* Detail row */
     .detail-row td { padding: 0; }
@@ -225,6 +228,13 @@
             <span class="camp-meta">6° Básico · 27-29 Nov</span>
           </th>
         </tr>
+        <tr class="top-totals">
+          <td class="parent-cell">Total Familias<br>Total Campistas</td>
+          <td id="top-e"></td>
+          <td id="top-c"></td>
+          <td id="top-k"></td>
+          <td id="top-m"></td>
+        </tr>
       </thead>
       <tbody id="camping-body"></tbody>
       <tfoot>
@@ -301,6 +311,9 @@ function getCols() { return colOrder === 'fecha' ? COLS_FECHA : COLS_GRADO; }
 function updateHeaders() {
   const cols = getCols();
   const headerRow = document.querySelector('thead tr');
+  const topRow = document.querySelector('thead tr.top-totals');
+  while (topRow.children.length > 1) topRow.removeChild(topRow.lastChild);
+  cols.forEach(col => { const td = document.createElement('td'); td.id = 'top-' + col.key; topRow.appendChild(td); });
   // Remove all th except the first (Apoderado)
   while (headerRow.children.length > 1) headerRow.removeChild(headerRow.lastChild);
   cols.forEach(col => {
@@ -483,6 +496,7 @@ function render() {
   if (!filtered.length) {
     body.innerHTML = '<tr><td colspan="5" class="no-results">No hay resultados para estos filtros</td></tr>';
     ['e','c','k','m'].forEach(c => { var el; el = document.getElementById('count-' + c); if (el) el.textContent = '0'; el = document.getElementById('total-' + c); if (el) el.textContent = '0'; });
+    setTopTotals({e: 0, c: 0, k: 0, m: 0}, {e: 0, c: 0, k: 0, m: 0});
     document.getElementById('count-display').textContent = '0 de ' + DATA.length + ' apoderados (0 campistas en total)';
     return;
   }
@@ -511,9 +525,17 @@ function render() {
   body.innerHTML = html;
   Object.keys(counts).forEach(c => { const el = document.getElementById('count-' + c); if (el) el.textContent = parents[c]; });
   Object.keys(counts).forEach(c => { const el = document.getElementById('total-' + c); if (el) el.textContent = counts[c] + parents[c]; });
+  setTopTotals(parents, counts);
   const totalKids = counts.e + counts.c + counts.k + counts.m;
   const totalCampistas = filtered.length + totalKids;
   document.getElementById('count-display').textContent = filtered.length + ' de ' + DATA.length + ' apoderados (' + totalCampistas + ' campistas en total) · Actualizado: ' + LAST_UPDATED;
+}
+
+function setTopTotals(parents, counts) {
+  ['e','c','k','m'].forEach(c => {
+    const el = document.getElementById('top-' + c);
+    if (el) el.innerHTML = '<span class="tt-num">' + parents[c] + '</span><br><span class="tt-num">' + (counts[c] + parents[c]) + '</span>';
+  });
 }
 
 function toggleDetail(idx) {
