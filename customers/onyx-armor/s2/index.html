@@ -6,7 +6,7 @@
   HOW TO AUTHOR A DECK FROM THIS TEMPLATE:
   1. Pick a theme: copy the contents of one themes/*.css file into the
      :root block below (the --vars). neutral-dark / neutral-light / fiba-labs.
-  2. Replace Entendiendo la IA, y cómo trabajar con ella and the favicon monogram (or keep the generic one).
+  2. Replace Conducirla bien, y tu carpeta de verdad and the favicon monogram (or keep the generic one).
   3. Lay out the .step elements following the GRID CONVENTION in SKILL.md.
      data-x / data-y  = position on the infinite plane (px)
      data-scale       = camera frame size (big = zoomed out, small = detail)
@@ -18,7 +18,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
-  <title>Entendiendo la IA, y cómo trabajar con ella</title>
+  <title>Conducirla bien, y tu carpeta de verdad</title>
 
   <!-- Inline SVG favicon (no 404 console noise). Swap for a brand monogram if available. -->
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='12' fill='%230A0A14'/%3E%3Crect x='28' y='20' width='34' height='12' rx='3' fill='%238B5CF6'/%3E%3Crect x='28' y='20' width='12' height='52' rx='3' fill='%238B5CF6'/%3E%3Crect x='62' y='20' width='12' height='12' rx='3' fill='%234C2D91'/%3E%3Crect x='62' y='40' width='12' height='32' rx='3' fill='%234C2D91'/%3E%3C/svg%3E">
@@ -533,422 +533,157 @@
 
     <div class="step cover" id="home" data-x="0" data-y="-3000" data-scale="3.0" data-rotate="0">
       <img class="monogram" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
-      <p class="eyebrow">Fiba Labs · AI Mentoring · Sesión 1</p>
-      <h1>Entendiendo la IA, y cómo trabajar con ella</h1>
+      <p class="eyebrow">Fiba Labs · AI Mentoring · Sesión 2</p>
+      <h1>Conducirla bien, y tu carpeta de verdad</h1>
       <p class="cover-flow"><span class="cf-h">Planear</span><span class="cf-sep">&rarr;</span><span class="cf-h">Dise&ntilde;ar</span><span class="cf-sep">&rarr;</span><span class="cf-h">Conectar</span><span class="cf-sep">&rarr;</span><span class="cf-a">Recolectar</span><span class="cf-sep">&rarr;</span><span class="cf-a">Interpretar</span><span class="cf-sep">&rarr;</span><span class="cf-a">Ejecutar</span><span class="cf-sep">&rarr;</span><span class="cf-a">Presentar</span></p>
     </div>
 
-    <div class="step section-step" id="1" data-x="4500" data-y="0" data-scale="3.0" data-rotate="0">
+    <div class="step section-step" id="1" data-x="1500" data-y="0" data-scale="3.0" data-rotate="0">
       <img class="monogram monogram--sm" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
       <p class="eyebrow">01</p>
-      <h2 class="section-title">El punto de partida</h2>
-      <p class="lead">Las bases son las mismas, pero la IA aumentó cada parte del proceso.</p>
+      <h2 class="section-title">Lo que quedó pendiente</h2>
+      <p class="lead">Lo que prometí en la Sesión 1.</p>
     </div>
 
-    <div class="step imgstep longtext" id="1.1" data-x="220" data-y="1790" data-scale="1.0" data-rotate="-12">
+    <div class="step imgstep" id="1.1" data-x="220" data-y="1790" data-scale="1.0" data-rotate="-12">
       <div class="fitbox">
-      <div class="imgcard"><img src="assets/diagrams/001_s1-universal-loop.png" alt="Todo funciona igual, y aquí está el salto" width="1536" height="1024"></div>
-      <p class="cap cap-head">Todo funciona igual, y aquí está el salto</p>
-      <p class="cap cap-body">Cualquier app hace lo mismo: se conecta a los datos, los interpreta, los modifica y los entrega en una capa de presentación. Ese ciclo siempre existió. Lo que cambió con la IA es cada etapa: hoy no necesitas aprender a conectarte, solo saber qué conector necesitas y pedírselo a cualquier IA. Y la presentación ya no es una tabla: es un tablero, una página, una presentación.</p>
-      <p class="cap cap-take">El ciclo es el de siempre; la IA aumentó cada etapa.</p>
+      <div class="imgcard"><img src="assets/diagrams/017_s1-md-claude-agents.png" alt="Probado: AGENTS.md solo, sin CLAUDE.md" width="1536" height="1024"></div>
+      <p class="cap cap-head">Probado: AGENTS.md solo, sin CLAUDE.md</p>
+      <p class="cap cap-body">En la Sesión 1 quedé de borrar el CLAUDE.md y ver si Claude seguía las reglas. Lo probé con la regla de la piña: en una carpeta que solo tiene AGENTS.md, Claude Code la cumple igual. En una carpeta sin ningún archivo de reglas, no.</p>
+      <p class="cap cap-take">Ya no necesitas los dos archivos. AGENTS.md alcanza, y además lo leen otras herramientas.</p>
       </div>
     </div>
 
-    <div class="step imgstep longtext" id="1.2" data-x="2680" data-y="2260" data-scale="1.0" data-rotate="9">
+    <div class="step imgstep" id="1.2" data-x="2680" data-y="2260" data-scale="1.0" data-rotate="9">
       <div class="fitbox">
-      <div class="imgcard"><img src="assets/diagrams/002_s1-chat-to-skills.png" alt="De chat suelto a skills" width="1536" height="1024"></div>
-      <p class="cap cap-head">De chat suelto a skills</p>
-      <p class="cap cap-body">Un chat no tiene memoria: cada mensaje reenvía la conversación completa, y o se pierde o terminas con 30.000 conversaciones. Por eso una tarea por chat. Después vinieron los Gems, los Custom GPTs y los Proyectos (instrucciones más archivos, pero estáticos). Y ahora las carpetas y las skills: instrucciones MÁS herramientas, empaquetadas para reusar.</p>
-      <p class="cap cap-take">Una skill le enseña a Claude a hacer las cosas como a ti te gustan, cada vez.</p>
-      </div>
-    </div>
-
-    <div class="step imgstep" id="1.3" data-x="6170" data-y="1840" data-scale="1.0" data-rotate="-6">
-      <div class="fitbox">
-      <div class="imgcard"><img src="assets/diagrams/003_s1-llm-landscape.png" alt="El mapa de los modelos" width="1536" height="1024"></div>
-      <p class="cap cap-head">El mapa de los modelos</p>
-      <p class="cap cap-body">Claude tiene nombres poéticos: Haiku, Sonnet, Opus y Fable, de menor a mayor (más grande es más capaz, más caro y a veces más lento). ChatGPT tiene su propia escalera: Luna, Terra, Sol y Astra. Lo que aprendes hoy sirve en cualquiera: carpetas, archivos MD, skills y conectores migran contigo.</p>
-      <p class="cap cap-take">No te casas con un proveedor: construyes formas de trabajar portables.</p>
-      </div>
-    </div>
-
-    <div class="step imgstep longtext" id="1.4" data-x="8740" data-y="2240" data-scale="1.0" data-rotate="14">
-      <div class="fitbox">
-      <div class="imgcard"><img src="assets/diagrams/004_s1-agent-vs-skill.png" alt="El agente es un cerebro intercambiable" width="1536" height="1024"></div>
-      <p class="cap cap-head">El agente es un cerebro intercambiable</p>
-      <p class="cap cap-body">El agente es quien trabaja; la skill es la receta que le entregas. Todos los agentes leen las mismas skills y los mismos archivos, así que el cerebro se puede cambiar: la misma skill en Haiku sale más rápido, en Fable sale con mejor análisis. Y un modelo puede llamar a otro: Claude le pide a Codex que revise, o Fable le pasa una revisión a Sonnet.</p>
-      <p class="cap cap-take">Las skills son tuyas: se las das a cualquier agente.</p>
-      </div>
-    </div>
-
-    <div class="step imgstep" id="1.5" data-x="9300" data-y="3700" data-scale="1.0" data-rotate="-10">
-      <div class="fitbox">
-      <div class="imgcard"><img src="assets/diagrams/048_s1-folder-rules-banana.png" alt="La memoria vive en la carpeta, no en el agente" width="1536" height="1024"></div>
-      <p class="cap cap-head">La memoria vive en la carpeta, no en el agente</p>
-      <p class="cap cap-body">Una carpeta por empresa, por área o por proyecto, y adentro un AGENTS.md con las reglas. Cualquier agente que trabaje ahí las sigue. La prueba: una regla que diga "empieza siempre diciendo banana". Si la dice, leyó la carpeta.</p>
-      <p class="cap cap-take">Cada chat nuevo en esa carpeta se comporta igual, porque las reglas no viven en el chat.</p>
-      </div>
-    </div>
-
-    <div class="step imgstep" id="1.6" data-x="5810" data-y="4190" data-scale="1.0" data-rotate="7">
-      <div class="fitbox">
-      <div class="imgcard"><img src="assets/diagrams/005_s1-three-pillars.png" alt="Los tres pilares" width="1536" height="1024"></div>
-      <p class="cap cap-head">Los tres pilares</p>
-      <p class="cap cap-body">Carpetas: aquí VIVEN tus datos y tu contexto. Conectores: por aquí ENTRAN los datos que viven en otras apps (correo, calendario, planillas, tu ERP). Skills: el trabajo que se hace sobre esos datos, capturado una vez y mejorado con el tiempo.</p>
-      <p class="cap cap-take">Dónde vive tu material, por dónde entra, y qué trabajo se hace con él.</p>
+      <div class="imgcard"><img src="assets/diagrams/047_s1-native-vs-composio.png" alt="Composio: un solo conector para cientos de apps" width="1536" height="1024"></div>
+      <p class="cap cap-head">Composio: un solo conector para cientos de apps</p>
+      <p class="cap cap-body">En la Sesión 1 lo vimos: el conector nativo de Microsoft trae 7 herramientas y no puede enviar un correo; por Composio, Outlook trae 287 acciones, y hay más de 1.500 apps (Odoo incluido). Quedó pendiente crear la cuenta juntos.</p>
+      <p class="cap cap-take">Si sobra tiempo al final, lo conectamos hoy. Si no, uno a uno en la semana.</p>
       </div>
     </div>
 
     <div class="step section-step" id="2" data-x="19100" data-y="0" data-scale="3.0" data-rotate="0">
       <img class="monogram monogram--sm" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
       <p class="eyebrow">02</p>
-      <h2 class="section-title">Tipos de archivo</h2>
-      <p class="lead">Todos los formatos funcionan de la misma manera.</p>
+      <h2 class="section-title">Manejar el contexto</h2>
+      <p class="lead">La próxima vez vemos cómo manejar el contexto. Esta es la próxima vez.</p>
     </div>
 
-    <div class="step imgstep" id="2.1" data-x="14820" data-y="1790" data-scale="1.0" data-rotate="-14">
+    <div class="step imgstep longtext" id="2.1" data-x="14770" data-y="1840" data-scale="1.0" data-rotate="-6">
       <div class="fitbox">
-      <p class="ext-title">.TXT</p>
-      <div class="imgcard"><img src="assets/diagrams/006_s1-file-anatomy.png" alt="Todos los formatos funcionan de la misma manera" width="1536" height="1024"></div>
-      <p class="cap cap-head">Todos los formatos funcionan de la misma manera</p>
-      <p class="cap cap-body">Bytes, un procesador, y cómo se ven en pantalla. Ojo: la IA crea todo en .md por defecto; si lo quieres en Word, PDF o Google Doc, pídele que lo convierta.</p>
-      <p class="cap cap-take">Algunos son más fáciles de procesar, otros se ven mejor, y otros la IA los entiende mejor.</p>
+      <div class="imgcard"><img src="assets/diagrams/025_s1-context-two-senses.png" alt="La misma palabra, dos sentidos" width="1536" height="1024"></div>
+      <p class="cap cap-head">La misma palabra, dos sentidos</p>
+      <p class="cap cap-body">En la Sesión 1 usamos "contexto" para hablar del material que le das: los archivos, las carpetas, el AGENTS.md, todo lo que le pasas para que entienda tu trabajo. Ese sentido no cambia. Pero tiene un segundo sentido: la capacidad, cuánto le cabe a una conversación antes de que empiece a fallar. Uno habla de qué le das, el otro de cuánto aguanta.</p>
+      <p class="cap cap-take">Contexto es material y también es capacidad. Hoy toca la capacidad.</p>
       </div>
     </div>
 
-    <div class="step imgstep" id="2.2" data-x="17280" data-y="2260" data-scale="1.0" data-rotate="11">
+    <div class="step imgstep longtext" id="2.2" data-x="17340" data-y="2240" data-scale="1.0" data-rotate="14">
       <div class="fitbox">
-      <p class="ext-title">.CSV</p>
-      <div class="imgcard"><img src="assets/diagrams/007_s1-file-csv.png" alt=".csv: una tabla como texto plano" width="1536" height="1024"></div>
-      <p class="cap cap-head">.csv: una tabla como texto plano</p>
-      <p class="cap cap-body">Enter es una fila nueva, la coma es una columna nueva. Excel la abre como tabla y la IA la lee directo. Pero es solo la tabla: sin notas, sin colores.</p>
-      <p class="cap cap-take">El formato más fácil para pasarle datos tabulares a la IA.</p>
+      <div class="imgcard"><img src="assets/diagrams/026_s1-context-window.png" alt="La ventana de contexto, y sus dos caras" width="1536" height="1024"></div>
+      <p class="cap cap-head">La ventana de contexto, y sus dos caras</p>
+      <p class="cap cap-body">Cada conversación tiene un tamaño máximo. Opus maneja un millón de tokens, pero el número no es la meta: la conversación se puede degradar antes de llenarse (pierde detalles, se repite, olvida lo del principio). Y el contexto se acumula: cada mensaje reenvía todo lo anterior, así que una conversación larga cuesta más en cada turno.</p>
+      <p class="cap cap-take">Las conversaciones eternas te cobran por los dos lados: calidad y consumo.</p>
       </div>
     </div>
 
-    <div class="step imgstep" id="2.3" data-x="20770" data-y="1840" data-scale="1.0" data-rotate="-4">
+    <div class="step imgstep" id="2.3" data-x="20900" data-y="1700" data-scale="1.0" data-rotate="-10">
       <div class="fitbox">
-      <p class="ext-title">.DOCX</p>
-      <div class="imgcard"><img src="assets/diagrams/008_s1-file-docx.png" alt=".docx: un paquete disfrazado" width="1536" height="1024"></div>
-      <p class="cap cap-head">.docx: un paquete disfrazado</p>
-      <p class="cap cap-body">Abierto en un bloc de notas es ilegible: necesita un procesador (Word) que lo interprete. Por dentro es un ZIP con el texto, los estilos y las imágenes por separado.</p>
-      <p class="cap cap-take">La vista limpia depende del procesador.</p>
+      <div class="imgcard"><img src="assets/diagrams/028_s2-resend-cost.png" alt="Cada turno reenvía todo" width="1536" height="1024"></div>
+      <p class="cap cap-head">Cada turno reenvía todo</p>
+      <p class="cap cap-body">En cada mensaje nuevo, la conversación completa viaja de nuevo al modelo. Mientras más larga, más consumo por cada turno siguiente.</p>
+      <p class="cap cap-take">Conversaciones largas no solo pierden calidad: gastan más.</p>
       </div>
     </div>
 
-    <div class="step imgstep" id="2.4" data-x="23340" data-y="2240" data-scale="1.0" data-rotate="13">
+    <div class="step imgstep" id="2.4" data-x="23410" data-y="2190" data-scale="1.0" data-rotate="7">
       <div class="fitbox">
-      <p class="ext-title">.XLSX</p>
-      <div class="imgcard"><img src="assets/diagrams/009_s1-file-xlsx.png" alt=".xlsx: el mismo truco, para planillas" width="1536" height="1024"></div>
-      <p class="cap cap-head">.xlsx: el mismo truco, para planillas</p>
-      <p class="cap cap-body">Un archivo comprimido con las hojas, las fórmulas, las tablas dinámicas, los filtros y las macros.</p>
-      <p class="cap cap-take">Tu planilla es más "desarmable" de lo que parece, y la IA sabe desarmarla.</p>
+      <div class="imgcard"><img src="assets/diagrams/029_s2-idle-gap.png" alt="Si te fuiste, no retomes el mismo chat" width="1536" height="1024"></div>
+      <p class="cap cap-head">Si te fuiste, no retomes el mismo chat</p>
+      <p class="cap cap-body">Dejaste la conversación abierta, saliste a una reunión o la retomas al día siguiente. En esa pausa se vence lo que estaba guardado en caché, así que tu primer mensaje al volver reenvía toda la conversación a precio lleno. La salida: pide un resumen de lo avanzado y sigue en una conversación nueva con ese resumen.</p>
+      <p class="cap cap-take">Volver a una conversación vieja es caro. Volver a un resumen es más eficiente.</p>
       </div>
     </div>
 
-    <div class="step imgstep" id="2.5" data-x="23900" data-y="3700" data-scale="1.0" data-rotate="-12">
+    <div class="step imgstep" id="2.5" data-x="23820" data-y="3790" data-scale="1.0" data-rotate="-14">
       <div class="fitbox">
-      <p class="ext-title">.PDF</p>
-      <div class="imgcard"><img src="assets/diagrams/010_s1-file-pdf.png" alt=".pdf: una foto para imprimir" width="1536" height="1024"></div>
-      <p class="cap cap-head">.pdf: una foto para imprimir</p>
-      <p class="cap cap-body">Hecho para verse igual en todas partes. Perfecto para humanos, difícil de leer de vuelta para el software: los datos quedan congelados en la foto.</p>
-      <p class="cap cap-take">Por eso sacar datos de un PDF cuesta más que de un Excel o un CSV.</p>
+      <div class="imgcard"><img src="assets/diagrams/031_s2-one-convo-per-task.png" alt="Una tarea por conversación" width="1536" height="1024"></div>
+      <p class="cap cap-head">Una tarea por conversación</p>
+      <p class="cap cap-body">Mezclar tareas en un chat contamina el contexto de todas. Separarlas mantiene cada conversación liviana, nítida y barata.</p>
+      <p class="cap cap-take">Nueva tarea, nueva conversación.</p>
       </div>
     </div>
 
-    <div class="step imgstep" id="2.6" data-x="20410" data-y="4190" data-scale="1.0" data-rotate="9">
+    <div class="step imgstep" id="2.6" data-x="20280" data-y="4260" data-scale="1.0" data-rotate="11">
       <div class="fitbox">
-      <p class="ext-title">.HTML</p>
-      <div class="imgcard"><img src="assets/diagrams/011_s1-file-html.png" alt=".html: la página que tu navegador dibuja" width="1536" height="1024"></div>
-      <p class="cap cap-head">.html: la página que tu navegador dibuja</p>
-      <p class="cap cap-body">Texto con etiquetas que abren y cierran, y el navegador lo convierte en lo que ves. Es la nueva capa de presentación: en vez de compartir un Google Sheet, publicas un tablero con filtros (los pagos del campamento, el tablero de skills). Basta con pedir "hazme un HTML de esta información".</p>
-      <p class="cap cap-take">Toda página web es un archivo de texto que algo dibujó.</p>
+      <div class="imgcard"><img src="assets/diagrams/045_s2-code-commands.png" alt="En Code, tres comandos hacen el trabajo" width="1536" height="1024"></div>
+      <p class="cap cap-head">En Code, tres comandos hacen el trabajo</p>
+      <p class="cap cap-body">/clear empieza limpio para una tarea nueva. /compact resume la conversación y sigue desde el resumen, sin perder el hilo (Code también lo hace solo cuando se llena). /context te muestra qué tan llena está y qué la está llenando.</p>
+      <p class="cap cap-take">Cowork no compacta; en Code es un comando.</p>
       </div>
     </div>
 
-    <div class="step imgstep" id="2.7" data-x="17820" data-y="3790" data-scale="1.0" data-rotate="-6">
+    <div class="step imgstep" id="2.7" data-x="17770" data-y="3840" data-scale="1.0" data-rotate="-4">
       <div class="fitbox">
-      <p class="ext-title">ARTIFACT</p>
-      <div class="imgcard"><img src="assets/diagrams/012_s1-file-artifact.png" alt="Un Artefacto (artifact) es un .html que vive dentro de Claude" width="1536" height="1024"></div>
-      <p class="cap cap-head">Un Artefacto (artifact) es un .html que vive dentro de Claude</p>
-      <p class="cap cap-body">Tableros, calculadoras, reportes interactivos que Claude arma para ti. Se comparten con un link. No se actualizan solos: le pides que lo actualice, o lo programas.</p>
-      <p class="cap cap-take">Cuando veas "Artifact", piensa: una página web hecha a tu medida.</p>
+      <div class="imgcard"><img src="assets/diagrams/027_s2-tips-drive-it.png" alt="Cuatro frases que cambian el resultado" width="1536" height="1024"></div>
+      <p class="cap cap-head">Cuatro frases que cambian el resultado</p>
+      <p class="cap cap-body">1) "Entrevístame antes de escribir esto" (de una idea vaga sale un buen brief). 2) "Si algo no lo entiendes, para y pregúntame" (deja de adivinar). 3) "Toma tú las decisiones técnicas y dime qué decidiste y por qué". 4) "Primero hazme el plan, no ejecutes nada todavía" (en Code también existe el modo plan, con Shift+Tab).</p>
+      <p class="cap cap-take">Pedirle que pregunte y que planee antes de actuar te ahorra la mitad de las correcciones.</p>
       </div>
     </div>
 
-    <div class="step imgstep" id="2.8" data-x="14280" data-y="4260" data-scale="1.0" data-rotate="14">
-      <div class="fitbox">
-      <p class="ext-title">.JSON</p>
-      <div class="imgcard"><img src="assets/diagrams/013_s1-file-json.png" alt=".json: el formato en el que viajan los datos entre apps" width="1536" height="1024"></div>
-      <p class="cap cap-head">.json: el formato en el que viajan los datos entre apps</p>
-      <p class="cap cap-body">Como una base de datos de paso: guarda los datos con su etiqueta antes de presentarlos. n8n y los conectores trabajan así. Solo necesitas saber qué es, no escribirlo.</p>
-      <p class="cap cap-take">Cada valor viaja con su etiqueta, y por eso el software no tiene que adivinar.</p>
-      </div>
-    </div>
-
-    <div class="step imgstep" id="2.9" data-x="14770" data-y="5840" data-scale="1.0" data-rotate="-10">
-      <div class="fitbox">
-      <p class="ext-title">.PY</p>
-      <div class="imgcard"><img src="assets/diagrams/014_s1-file-py.png" alt=".py: texto plano que se ejecuta" width="1536" height="1024"></div>
-      <p class="cap cap-head">.py: texto plano que se ejecuta</p>
-      <p class="cap cap-body">La IA no es matemática: recalcula cada vez. Si le preguntas lo mismo 30 veces, te da 30 respuestas distintas. Un script de Python con la misma entrada 30 veces da el mismo resultado 30 veces. Por eso las skills usan mucho Python para los pasos que tienen que salir exactos.</p>
-      <p class="cap cap-take">Si Claude "escribió un script", es para que ese paso no dependa de la suerte.</p>
-      </div>
-    </div>
-
-    <div class="step section-step" id="3" data-x="33700" data-y="0" data-scale="3.0" data-rotate="0">
+    <div class="step section-step" id="3" data-x="30700" data-y="0" data-scale="3.0" data-rotate="0">
       <img class="monogram monogram--sm" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
       <p class="eyebrow">03</p>
-      <h2 class="section-title">La familia MD</h2>
-      <p class="lead">El idioma de las instrucciones.</p>
+      <h2 class="section-title">Qué modelo usar</h2>
+      <p class="lead">Uno para cada trabajo, y uno que revise al otro.</p>
     </div>
 
-    <div class="step imgstep" id="3.1" data-x="28940" data-y="2240" data-scale="1.0" data-rotate="7">
+    <div class="step imgstep" id="3.1" data-x="28940" data-y="2240" data-scale="1.0" data-rotate="13">
       <div class="fitbox">
-      <p class="ext-title">.MD</p>
-      <div class="imgcard"><img src="assets/diagrams/015_s1-md-format.png" alt="MD: el idioma de las instrucciones" width="1536" height="1024"></div>
-      <p class="cap cap-head">MD: el idioma de las instrucciones</p>
-      <p class="cap cap-body">Texto plano con formato liviano: # para títulos, - para listas, tablas y bloques de código que cualquier visor muestra bien. Es el formato que la IA prefiere para leer y escribir.</p>
-      <p class="cap cap-take">Un formato impulsado por la IA.</p>
+      <div class="imgcard"><img src="assets/diagrams/042_s2-model-choice.png" alt="Una escalera, no un modelo para todo" width="1536" height="1024"></div>
+      <p class="cap cap-head">Una escalera, no un modelo para todo</p>
+      <p class="cap cap-body">Haiku es rápido y liviano. Sonnet es el del día a día, y en el plan de 20 dólares es el que más rinde. Opus es el modelo por defecto si tienes el plan de 100 o más. Fable es para revisiones profundas, no para todo: consume mucho y tiene su propio límite. Y el esfuerzo (effort) déjalo en alto.</p>
+      <p class="cap cap-take">Opus para trabajar, Fable para auditar, Sonnet cuando estás cuidando la cuota.</p>
       </div>
     </div>
 
-    <div class="step imgstep" id="3.2" data-x="32500" data-y="1700" data-scale="1.0" data-rotate="-14">
+    <div class="step imgstep" id="3.2" data-x="32500" data-y="1700" data-scale="1.0" data-rotate="-12">
       <div class="fitbox">
-      <p class="ext-title">.MD</p>
-      <div class="imgcard"><img src="assets/diagrams/016_s1-md-overview.png" alt="Un formato, muchos roles" width="1536" height="1024"></div>
-      <p class="cap cap-head">Un formato, muchos roles</p>
-      <p class="cap cap-body">El mismo tipo de archivo cumple trabajos distintos según su nombre: CLAUDE.md, AGENTS.md, memory.md, rules.md, SKILL.md.</p>
-      <p class="cap cap-take">Aprendes UN formato y con eso manejas todas las piezas de tu agente.</p>
+      <div class="imgcard"><img src="assets/diagrams/043_s2-model-review.png" alt="Un modelo revisa al otro" width="1536" height="1024"></div>
+      <p class="cap cap-head">Un modelo revisa al otro</p>
+      <p class="cap cap-body">Lo que quedé de mostrar: un modelo hace el trabajo y le pide a otro (Sonnet, o Codex de OpenAI) que lo revise con ojos frescos. El revisor no vio cómo se hizo, así que encuentra lo que el primero da por hecho.</p>
+      <p class="cap cap-take">Pídelo así: "cuando termines, lanza un subagente con Sonnet que revise esto, y corrige lo que encuentre".</p>
       </div>
     </div>
 
-    <div class="step imgstep" id="3.3" data-x="35010" data-y="2190" data-scale="1.0" data-rotate="11">
-      <div class="fitbox">
-      <p class="ext-title">AGENTS.md</p>
-      <div class="imgcard"><img src="assets/diagrams/017_s1-md-claude-agents.png" alt="CLAUDE.md y AGENTS.md: el mismo trabajo" width="1536" height="1024"></div>
-      <p class="cap cap-head">CLAUDE.md y AGENTS.md: el mismo trabajo</p>
-      <p class="cap cap-body">Cada herramienta tenía su propio archivo de reglas (Gemini.md, el de Cursor, CLAUDE.md) hasta que AGENTS.md quedó como el estándar. Claude ya lo lee. Si tienes los dos, el CLAUDE.md es una sola línea que apunta al AGENTS.md: un solo archivo real.</p>
-      <p class="cap cap-take">Escribe tus reglas en AGENTS.md y te sirven en cualquier herramienta.</p>
-      </div>
-    </div>
-
-    <div class="step imgstep" id="3.4" data-x="38420" data-y="1790" data-scale="1.0" data-rotate="-4">
-      <div class="fitbox">
-      <p class="ext-title">SKILL.md</p>
-      <div class="imgcard"><img src="assets/diagrams/018_s1-md-skill.png" alt="SKILL.md: la receta del trabajo repetible" width="1536" height="1024"></div>
-      <p class="cap cap-head">SKILL.md: la receta del trabajo repetible</p>
-      <p class="cap cap-body">Una skill es una carpeta con nombre propio, y adentro un SKILL.md. Su descripción dice para qué sirve, no el proceso completo. Las skills viven en carpetas ocultas de tu usuario: nunca vas a tener que ir a buscarlas.</p>
-      <p class="cap cap-take">La construyes una vez y después la llamas por su nombre, o con /.</p>
-      </div>
-    </div>
-
-    <div class="step imgstep" id="3.5" data-x="37880" data-y="4260" data-scale="1.0" data-rotate="13">
-      <div class="fitbox">
-      <p class="ext-title">SKILL.md</p>
-      <div class="imgcard"><img src="assets/diagrams/019_s1-md-skill-structure.png" alt="...más la carpeta que la rodea" width="1536" height="1024"></div>
-      <p class="cap cap-head">...más la carpeta que la rodea</p>
-      <p class="cap cap-body">El SKILL.md más lo que necesita para trabajar: scripts, plantillas, ejemplos. Ejemplo: la skill de pagos del campamento. Le mando la foto de un pago, digo "Campello", y corre un script que registra a la persona y regenera el tablero HTML.</p>
-      <p class="cap cap-take">Una skill se puede copiar, compartir y versionar como cualquier carpeta.</p>
-      </div>
-    </div>
-
-    <div class="step section-step" id="4" data-x="3000" data-y="8600" data-scale="3.0" data-rotate="0">
+    <div class="step section-step" id="4" data-x="1500" data-y="6600" data-scale="3.0" data-rotate="0">
       <img class="monogram monogram--sm" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
       <p class="eyebrow">04</p>
-      <h2 class="section-title">Prompting</h2>
-      <p class="lead">No tienes que aprender prompting.</p>
+      <h2 class="section-title">Tu carpeta de verdad</h2>
+      <p class="lead">Del mapa a la carpeta: los pasos 3 y 4.</p>
     </div>
 
-    <div class="step imgstep" id="4.1" data-x="170" data-y="10440" data-scale="1.0" data-rotate="-12">
+    <div class="step imgstep" id="4.1" data-x="-190" data-y="8790" data-scale="1.0" data-rotate="9">
       <div class="fitbox">
-      <div class="imgcard"><img src="assets/diagrams/020_s1-prompt-loose-vs-structured.png" alt="La misma tarea, diferente forma de pedirla → resultados completamente diferentes" width="1536" height="1024"></div>
-      <p class="cap cap-head">La misma tarea, diferente forma de pedirla → resultados completamente diferentes</p>
-      <p class="cap cap-body">"Analiza estos exámenes" contra "actúa como un médico, revisa estos exámenes y dime...": el segundo da una respuesta mucho mejor.</p>
-      <p class="cap cap-take">La calidad de la respuesta se decide antes de enviar.</p>
+      <div class="imgcard"><img src="assets/diagrams/046_s2-icm-steps.png" alt="Dónde quedamos y qué sigue" width="1536" height="1024"></div>
+      <p class="cap cap-head">Dónde quedamos y qué sigue</p>
+      <p class="cap cap-body">La tarea los llevó hasta el mapa: la entrevista y una página con todo lo que manejan. Hoy van los dos pasos que faltan: proponer la carpeta en papel y revisarla juntos, y después construirla y conectar la primera área.</p>
+      <p class="cap cap-take">Primero el dibujo, después la mudanza. Corregir un dibujo es gratis.</p>
       </div>
     </div>
 
-    <div class="step imgstep" id="4.2" data-x="2740" data-y="10840" data-scale="1.0" data-rotate="9">
+    <div class="step imgstep" id="4.2" data-x="3220" data-y="8390" data-scale="1.0" data-rotate="-6">
       <div class="fitbox">
-      <div class="imgcard"><img src="assets/diagrams/021_s1-prompt-frameworks.png" alt="Hay decenas de fórmulas para escribir prompts" width="1536" height="1024"></div>
-      <p class="cap cap-head">Hay decenas de fórmulas para escribir prompts</p>
-      <p class="cap cap-body">SMART, RISEN, CLEAR, CO-STAR (la que yo uso): cada una es una receta con siglas. Todas apuntan a lo mismo: decir con claridad qué quieres, con qué material y bajo qué restricciones.</p>
-      <p class="cap cap-take">Hace un año había que aprenderlas. Hoy ya no.</p>
+      <div class="imgcard"><img src="assets/diagrams/004b_s1-folder-is-the-map.png" alt="La carpeta es el mapa" width="1536" height="1024"></div>
+      <p class="cap cap-head">La carpeta es el mapa</p>
+      <p class="cap cap-body">Un archivo de entrada (AGENTS.md) dice para qué es el trabajo, y las carpetas numeradas llevan el orden. El agente no adivina dónde buscar: camina la estructura. Una carpeta, un trabajo.</p>
+      <p class="cap cap-take">La estructura es la ruta: ordenas carpetas y cambias lo que el agente hace.</p>
       </div>
     </div>
 
-    <div class="step imgstep" id="4.3" data-x="6300" data-y="10300" data-scale="1.0" data-rotate="-6">
-      <div class="fitbox">
-      <div class="imgcard"><img src="assets/diagrams/022_s1-ai-writes-your-prompt.png" alt="Que la IA escriba tu prompt" width="1536" height="1024"></div>
-      <p class="cap cap-head">Que la IA escriba tu prompt</p>
-      <p class="cap cap-body">Dile qué necesitas, en qué formato y cuál es el resultado final, y pídele que escriba el prompt (por ejemplo "usa CO-STAR"). Después lo pegas en una conversación NUEVA. Hasta el ChatGPT gratis lo hace.</p>
-      <p class="cap cap-take">Es lo que hicimos con Blockbuster: el mismo pedido, dos prompts, dos resultados.</p>
-      </div>
-    </div>
-
-    <div class="step section-step" id="5" data-x="16100" data-y="8600" data-scale="3.0" data-rotate="0">
-      <img class="monogram monogram--sm" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
-      <p class="eyebrow">05</p>
-      <h2 class="section-title">Modelos y rutinas</h2>
-      <p class="lead">Qué modelo usar, y tu primera idea de skill.</p>
-    </div>
-
-    <div class="step imgstep" id="5.1" data-x="14410" data-y="10790" data-scale="1.0" data-rotate="14">
-      <div class="fitbox">
-      <div class="imgcard"><img src="assets/diagrams/042_s2-model-choice.png" alt="Modelo, esfuerzo y plan" width="1536" height="1024"></div>
-      <p class="cap cap-head">Modelo, esfuerzo y plan</p>
-      <p class="cap cap-body">Plan de 20 dólares: Sonnet alcanza y sobra. Plan de 100 o más: Opus por defecto. Fable solo para revisiones profundas: se renueva cada semana y puede usar hasta la mitad de tu cuota. El esfuerzo (effort) en alto; el máximo es para quemar plata. Y usa siempre las versiones más nuevas.</p>
-      <p class="cap cap-take">Opus para trabajar, Fable para auditar, Sonnet cuando cuidas la cuota.</p>
-      </div>
-    </div>
-
-    <div class="step imgstep" id="5.2" data-x="17820" data-y="10390" data-scale="1.0" data-rotate="-10">
-      <div class="fitbox">
-      <div class="imgcard"><img src="assets/diagrams/044_s2-routine-to-skill.png" alt="Tu rutina, convertida en skill" width="1536" height="1024"></div>
-      <p class="cap cap-head">Tu rutina, convertida en skill</p>
-      <p class="cap cap-body">Rocha graba sus reuniones con Otter y le pide resúmenes a Claude, pero cada uno sale distinto. Eso es una skill: conecta Otter, detecta el cliente, y aplica el formato de ese cliente. Y si algo sale mal, le dices "corrige esto en la skill" y la próxima vez sale bien.</p>
-      <p class="cap cap-take">Si lo haces cada semana y lo explicas cada vez, es una skill esperando.</p>
-      </div>
-    </div>
-
-    <div class="step section-step" id="6" data-x="32200" data-y="8600" data-scale="3.0" data-rotate="0">
-      <img class="monogram monogram--sm" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
-      <p class="eyebrow">06</p>
-      <h2 class="section-title">Tokens y planes</h2>
-      <p class="lead">Todo lo que entra y sale se mide en tokens.</p>
-    </div>
-
-    <div class="step imgstep" id="6.1" data-x="28880" data-y="10860" data-scale="1.0" data-rotate="7">
-      <div class="fitbox">
-      <div class="imgcard"><img src="assets/diagrams/023_s1-tokenization.png" alt="Un token es un pedazo de texto" width="1536" height="1024"></div>
-      <p class="cap cap-head">Un token es un pedazo de texto</p>
-      <p class="cap cap-body">Unas 3 o 4 letras por pieza: "hola, ¿cómo estás?" son 16 tokens, y una coma es un token. Todo se mide y se cobra así, imágenes incluidas, y cada modelo tiene su tokenizador. Por millón de tokens (entrada / salida): Fable 10 / 50 dólares, Opus 5 / 25, Haiku cinco veces más barato que Opus.</p>
-      <p class="cap cap-take">La plataforma de Onyx corre por API y cuesta unos 4 dólares al mes.</p>
-      </div>
-    </div>
-
-    <div class="step imgstep longtext" id="6.2" data-x="32370" data-y="10440" data-scale="1.0" data-rotate="-14">
-      <div class="fitbox">
-      <div class="imgcard"><img src="assets/diagrams/049_s1-subscription-vs-api.png" alt="Suscripción o API" width="1536" height="1024"></div>
-      <p class="cap cap-head">Suscripción o API</p>
-      <p class="cap cap-body">La suscripción es como pagar el gas del invierno por adelantado: precio fijo, para tu trabajo en tu computador. La API es el medidor de luz: pagas por token, y es lo que usan las plataformas (Onyx usa OpenRouter, un revendedor de modelos: Mistral para leer y Sonnet para identificar). Lo que no se puede: meter tu suscripción en un servidor prendido 24/7 con 30 cuentas de correo.</p>
-      <p class="cap cap-take">Mis 30 días a precio de API serían 3.300 dólares. Pago 100.</p>
-      </div>
-    </div>
-
-    <div class="step imgstep" id="6.3" data-x="34940" data-y="10840" data-scale="1.0" data-rotate="11">
-      <div class="fitbox">
-      <div class="imgcard"><img src="assets/diagrams/024_s1-five-hour-window.png" alt="El uso viene en ventanas de tiempo" width="1536" height="1024"></div>
-      <p class="cap cap-head">El uso viene en ventanas de tiempo</p>
-      <p class="cap cap-body">Tu plan incluye una cuota que se renueva cada 5 horas. Si la quemas de golpe, esperas a que la ventana se renueve. Fable además tiene su propio límite semanal.</p>
-      <p class="cap cap-take">Tu consumo se mide en tokens, y esos tokens vienen por ventanas.</p>
-      </div>
-    </div>
-
-    <div class="step section-step" id="7" data-x="4500" data-y="13200" data-scale="3.0" data-rotate="0">
-      <img class="monogram monogram--sm" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
-      <p class="eyebrow">07</p>
-      <h2 class="section-title">APIs y MCP</h2>
-      <p class="lead">Qué pasa por debajo cuando aprietas conectar.</p>
-    </div>
-
-    <div class="step imgstep" id="7.1" data-x="300" data-y="14900" data-scale="1.0" data-rotate="-4">
-      <div class="fitbox">
-      <div class="imgcard"><img src="assets/diagrams/035_s2-api-waiter.png" alt="La API es el mesero" width="1536" height="1024"></div>
-      <p class="cap cap-head">La API es el mesero</p>
-      <p class="cap cap-body">Tú le dices al mesero "quiero un pollo con champiñones, el menú del 15", y el mesero sabe exactamente qué pedirle a la cocina. Nunca entras a la cocina. La cocina es la aplicación; el mesero es la API.</p>
-      <p class="cap cap-take">Así habla un software con otro: pedidos definidos, respuestas definidas.</p>
-      </div>
-    </div>
-
-    <div class="step imgstep" id="7.2" data-x="2810" data-y="15390" data-scale="1.0" data-rotate="13">
-      <div class="fitbox">
-      <div class="imgcard"><img src="assets/diagrams/036_s2-assistant-per-restaurant.png" alt="La IA aprende el menú de cada cocina" width="1536" height="1024"></div>
-      <p class="cap cap-head">La IA aprende el menú de cada cocina</p>
-      <p class="cap cap-body">La IA es un robotcito que aprende las APIs: la del correo, la del calendario, la de Sheets. Para una app nueva le dices "lee la documentación de esa API y conéctate". Pero cada cocina sigue teniendo su propio mesero y su propio idioma.</p>
-      <p class="cap cap-take">Más rápido, pero sigue siendo un menú por cocina.</p>
-      </div>
-    </div>
-
-    <div class="step imgstep" id="7.3" data-x="6220" data-y="14990" data-scale="1.0" data-rotate="-12">
-      <div class="fitbox">
-      <div class="imgcard"><img src="assets/diagrams/037_s2-mcp-waiter.png" alt="MCP: el mismo uniforme en todas las cocinas" width="1536" height="1024"></div>
-      <p class="cap cap-head">MCP: el mismo uniforme en todas las cocinas</p>
-      <p class="cap cap-body">Un MCP expone herramientas ya listas, así el robot no tiene que leer cada manual. Pero solo puedes hacer lo que el MCP expone: si no está ahí, no se puede. Y si te falta, puedes construir el tuyo.</p>
-      <p class="cap cap-take">Cuando aprietas "conectar", esto es lo que pasa por debajo.</p>
-      </div>
-    </div>
-
-    <div class="step imgstep" id="7.4" data-x="8680" data-y="15460" data-scale="1.0" data-rotate="9">
-      <div class="fitbox">
-      <div class="imgcard"><img src="assets/diagrams/038_s2-container-breakbulk.png" alt="Antes del contenedor" width="1536" height="1024"></div>
-      <p class="cap cap-head">Antes del contenedor</p>
-      <p class="cap cap-body">El correo son cajas, el calendario son bolsas, Sheets son paquetes. Para cargar las tres en mi barco tenía que leer los tres manuales de cómo acomodar cada una.</p>
-      <p class="cap cap-take">Sin caja estándar, cada conexión es artesanal.</p>
-      </div>
-    </div>
-
-    <div class="step imgstep" id="7.5" data-x="9170" data-y="17040" data-scale="1.0" data-rotate="-6">
-      <div class="fitbox">
-      <div class="imgcard"><img src="assets/diagrams/039_s2-container-era.png" alt="El contenedor no reemplazó la carga, la envolvió" width="1536" height="1024"></div>
-      <p class="cap cap-head">El contenedor no reemplazó la carga, la envolvió</p>
-      <p class="cap cap-body">Una sola caja estándar y cualquier grúa, barco o puerto puede manejarla. La carga de adentro no cambió. La API tampoco desapareció: quedó envuelta en algo estándar.</p>
-      <p class="cap cap-take">La fábrica empaca una vez y el mundo entero sabe manejarlo.</p>
-      </div>
-    </div>
-
-    <div class="step imgstep longtext" id="7.6" data-x="5740" data-y="17440" data-scale="1.0" data-rotate="14">
-      <div class="fitbox">
-      <div class="imgcard"><img src="assets/diagrams/047_s1-native-vs-composio.png" alt="Conector nativo o Composio" width="1536" height="1024"></div>
-      <p class="cap cap-head">Conector nativo o Composio</p>
-      <p class="cap cap-body">El conector nativo de Microsoft trae 7 herramientas (buscar un mensaje, ver el calendario, buscar correos) y no puede enviar un correo. Composio, por un solo conector, trae 287 acciones para Outlook y 158 para Teams, más de 1.500 apps (Odoo y HubSpot incluidos), y varias cuentas de la misma app. Es a los conectores lo que OpenRouter es a los modelos.</p>
-      <p class="cap cap-take">Tres formas de conectar: el directorio de Claude (ahí está MyCase), un intermediario como Composio, o la URL de un MCP.</p>
-      </div>
-    </div>
-
-    <div class="step section-step" id="8" data-x="14600" data-y="13200" data-scale="3.0" data-rotate="0">
-      <img class="monogram monogram--sm" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
-      <p class="eyebrow">08</p>
-      <h2 class="section-title">Skills, no proyectos</h2>
-      <p class="lead">La pregunta que más se repitió.</p>
-    </div>
-
-    <div class="step imgstep longtext" id="8.1" data-x="14900" data-y="14900" data-scale="1.0" data-rotate="-10">
-      <div class="fitbox">
-      <div class="imgcard"><img src="assets/diagrams/050_s1-project-vs-skill.png" alt="Un proyecto es estático; una skill evoluciona" width="1536" height="1024"></div>
-      <p class="cap cap-head">Un proyecto es estático; una skill evoluciona</p>
-      <p class="cap cap-body">Mi proyecto de resúmenes de YouTube en ChatGPT tenía instrucciones y archivos fijos. Como skill, tiene 7 formas de sacar la transcripción, revisa duplicados, guarda el resumen y lo suma a mi base de conocimiento (247 videos). Cada vez que falla, la corrijo y queda mejor. En Cowork hasta puedes grabar tu pantalla explicando un proceso y convertirlo en skill.</p>
-      <p class="cap cap-take">Chat = una conversación. Proyecto o Gem = un chat con instrucciones fijas. Skill = un proceso completo que llamas por nombre.</p>
-      </div>
-    </div>
-
-    <div class="step section-step" id="9" data-x="30700" data-y="13200" data-scale="3.0" data-rotate="0">
-      <img class="monogram monogram--sm" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
-      <p class="eyebrow">09</p>
-      <h2 class="section-title">La práctica</h2>
-      <p class="lead">Lo que hicimos.</p>
-    </div>
-
-    <div class="step imgstep longtext" id="9.1" data-x="29010" data-y="15390" data-scale="1.0" data-rotate="7">
-      <div class="fitbox">
-      <div class="imgcard"><img src="assets/diagrams/051_s1-practice-recap.png" alt="Cuatro ejercicios, una sola historia" width="1536" height="1024"></div>
-      <p class="cap cap-head">Cuatro ejercicios, una sola historia</p>
-      <p class="cap cap-body">Blockbuster: el mismo informe con un pedido suelto y con un prompt escrito por la IA. Meridian Gear: una empresa inventada que Claude no conoce, así que todo sale de los archivos, y los tres encontraron la contradicción (el acta dice 8 meses de pérdidas, la planilla muestra 11). La skill demo-tablero: ventas arriba, margen abajo, y después corrió sola en Harbor. La tarea: la entrevista para tu carpeta.</p>
-      <p class="cap cap-take">Dos veces el mismo método. Eso es lo que se guarda en una skill.</p>
-      </div>
-    </div>
-
-    <div class="step imgstep" id="9.2" data-x="32420" data-y="14990" data-scale="1.0" data-rotate="-14">
-      <div class="fitbox">
-      <div class="imgcard"><img src="assets/diagrams/052_s1-code-vs-cowork.png" alt="Code es Cowork con más libertad" width="1536" height="1024"></div>
-      <p class="cap cap-head">Code es Cowork con más libertad</p>
-      <p class="cap cap-body">Cowork trabaja en una carpeta a la vez, y sus skills quedan dentro de Cowork. Code trabaja sobre todo tu espacio y lee las reglas hacia arriba: las globales, las del espacio, las del proyecto. Lo que ya funciona en Cowork (las tareas programadas) no hay que migrarlo.</p>
-      <p class="cap cap-take">Si se te pierden las reglas o fallan las conexiones, usa la pestaña Code.</p>
-      </div>
-    </div>
-
-    <div class="step close flow-close" id="thank-you" data-x="0" data-y="19800" data-scale="3.0" data-rotate="0">
+    <div class="step close flow-close" id="thank-you" data-x="0" data-y="11200" data-scale="3.0" data-rotate="0">
       <img class="monogram monogram--sm" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
       <div class="flow-row flow-human"><span class="flow-step">Planear</span><span class="flow-sep">&rarr;</span><span class="flow-step">Diseñar</span><span class="flow-sep">&rarr;</span><span class="flow-step">Conectar</span></div>
       <div class="flow-arrow">&darr;</div>
@@ -956,7 +691,7 @@
     </div>
 
     <!-- Overview step: LAST, scaled to frame the whole canvas. Reached with O. -->
-    <div id="overview" class="step" data-x="19015" data-y="8400" data-scale="23"></div>
+    <div id="overview" class="step" data-x="16055" data-y="4100" data-scale="18"></div>
 
   </div>
 
