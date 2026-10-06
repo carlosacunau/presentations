@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<!--
+  prezi-deck template. Self-contained impress.js zooming/panning deck.
+  Works by double-clicking this file (file://). No CDN, no build step.
+
+  HOW TO AUTHOR A DECK FROM THIS TEMPLATE:
+  1. Pick a theme: copy the contents of one themes/*.css file into the
+     :root block below (the --vars). neutral-dark / neutral-light / fiba-labs.
+  2. Replace Understanding AI, and how to work with it and the favicon monogram (or keep the generic one).
+  3. Lay out the .step elements following the GRID CONVENTION in SKILL.md.
+     data-x / data-y  = position on the infinite plane (px)
+     data-scale       = camera frame size (big = zoomed out, small = detail)
+     data-rotate      = rotation in degrees (use sparingly)
+  4. Keep the #overview step LAST, scaled large enough to frame everything.
+  Camera path = DOM order of the steps. Reorder steps to re-choreograph.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+  <title>Understanding AI, and how to work with it</title>
+
+  <!-- Inline SVG favicon (no 404 console noise). Swap for a brand monogram if available. -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='12' fill='%230A0A14'/%3E%3Crect x='28' y='20' width='34' height='12' rx='3' fill='%238B5CF6'/%3E%3Crect x='28' y='20' width='12' height='52' rx='3' fill='%238B5CF6'/%3E%3Crect x='62' y='20' width='12' height='12' rx='3' fill='%234C2D91'/%3E%3Crect x='62' y='40' width='12' height='32' rx='3' fill='%234C2D91'/%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* THEME TOKENS (replace this :root block from themes/*.css) */
+    :root {
+      --accent:    #8B5CF6;
+      --accent-2:  #C9BEEA;
+      --bg:        #F7F6FB;
+      --fg:        #1A1A1A;
+      --muted:     #6b6b75;
+      --font-head: 'Space Grotesk', 'Inter', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --grid-rgba: rgba(139,92,246,0.05);
+    }
+
+    html, body {
+      margin: 0; padding: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-head);
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+    }
+
+    /* Subtle command-center grid on the canvas background */
+    body::before {
+      content: "";
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(var(--grid-rgba) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-rgba) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .fallback-message {
+      font-family: var(--font-body);
+      line-height: 1.5;
+      width: min(640px, 88vw);
+      margin: 80px auto;
+      padding: 24px;
+      border: 1px solid var(--accent-2);
+      border-radius: 8px;
+      background: rgba(76,45,145,0.15);
+    }
+    .impress-supported .fallback-message { display: none; }
+
+    #impress { position: relative; z-index: 1; }
+
+    .step {
+      width: 900px;
+      box-sizing: border-box;
+      padding: 40px;
+      opacity: 0.18;
+      transition: opacity 0.6s ease;
+    }
+    .step.active { opacity: 1; }
+
+    /* In overview (O key) every step is inactive, so the default 0.18 makes the
+       whole deck ghostly. Bump opacity only while in overview so thumbnails read
+       against the background; the normal slide-to-slide fade (0.18) is untouched. */
+    body.impress-on-overview .step { opacity: 0.75; }
+    body.impress-on-overview #overview { opacity: 0; }
+
+    /* Typographic system. clamp(min, preferred-vw, max) keeps text readable on
+       small screens (preferred scales with viewport width, clamped both ends so
+       it never goes microscopic on mobile nor absurd on desktop). */
+    .eyebrow {
+      font-size: clamp(12px, 1.4vw, 14px);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-size: clamp(34px, 6.5vw, 64px);
+      line-height: 1.05;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin: 0 0 24px;
+    }
+    h2 {
+      font-size: clamp(26px, 4.6vw, 44px);
+      line-height: 1.1;
+      font-weight: 500;
+      margin: 0 0 20px;
+    }
+    .lead {
+      font-size: clamp(18px, 2.9vw, 28px);
+      line-height: 1.4;
+      font-weight: 400;
+      color: var(--fg);
+      max-width: 760px;
+    }
+    .sub {
+      font-size: clamp(15px, 2.1vw, 20px);
+      line-height: 1.5;
+      color: var(--muted);
+      font-family: var(--font-body);
+      max-width: 680px;
+      margin-top: 18px;
+    }
+    .accent { color: var(--accent); }
+    .pill {
+      display: inline-block;
+      font-size: clamp(11px, 1.3vw, 13px);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--fg);
+      border: 1px solid var(--accent-2);
+      border-radius: 4px;
+      padding: 6px 12px;
+      margin: 0 8px 8px 0;
+      font-family: var(--font-body);
+    }
+
+    /* Big faint THEME WORD that detail steps zoom into (the signature overlap move).
+       Place one per region; details sit on top of it at smaller scale. */
+    .theme-word {
+      font-size: clamp(80px, 18vw, 320px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--accent);
+      opacity: 0.06;
+      line-height: 0.9;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .monogram { width: clamp(72px, 12vw, 120px); height: auto; margin-bottom: 36px; }
+
+    .hint {
+      position: fixed;
+      bottom: 18px; right: 22px;
+      z-index: 5;
+      font-family: var(--font-body);
+      font-size: 12px;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+    }
+    .hint kbd {
+      background: rgba(139,92,246,0.15);
+      border: 1px solid var(--accent-2);
+      border-radius: 3px;
+      padding: 1px 6px;
+      color: var(--fg);
+      font-family: inherit;
+    }
+
+    /* Responsive: keep the .step narrower than the viewport on phones so
+       impress.js can scale it up to fill the screen instead of leaving it tiny. */
+    @media (max-width: 820px) {
+      .step { width: 92vw; padding: 24px; }
+      .hint { font-size: 10px; bottom: 10px; right: 12px; }
+    }
+
+    /* ---- Prezi image deck (light) ---- */
+    .step { width: 1180px; padding: 24px; }
+    /* ===== ESCENARIO FIJO (260814, reescrito) ==============================
+       Cómo funciona esto en realidad, que es lo que hacía fallar todo lo
+       anterior: impress.js NO reacomoda el contenido. El deck declara un
+       lienzo de referencia de 1920x1080 (data-width / data-height) y calcula
+       UNA escala uniforme, min(altoVentana/1080, anchoVentana/1920), que
+       aplica como un solo transform a todo el canvas. La diapositiva nunca
+       reflowea: se agranda o se achica entera, con bandas negras si hace falta.
+
+       Consecuencia: las unidades vh/vw acá NO sirven. Se miden contra la
+       ventana real y después se multiplican otra vez por la escala de impress,
+       o sea que el mismo diseño cambia de proporción según el tamaño de la
+       ventana, que es justo lo que no queremos. Todo lo de abajo va en píxeles
+       del escenario. Se compone una vez contra 1920x1080 y de la escala se
+       encarga impress. Números validados en _lab-pillars.html. */
+    .imgstep {
+      --img-h:     710px;   /* alto del dibujo */
+      --gap:         8px;   /* dibujo a titular */
+      --head-size:  40px;
+      --body-size:  24px;
+      --take-size:  29px;
+      --text-w:   1560px;   /* medida de la columna de texto */
+      --head-tracking: 0.100em;
+      --pad-y:      54px;   /* margen arriba/abajo dentro del escenario */
+
+      width: 1920px;
+      padding: 0 90px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--gap);
+    }
+    /* Si la composición no entra en el alto útil, NO se recorta ni se achica un
+       elemento suelto: se escala el BLOQUE ENTERO, así las proporciones que
+       eligió Carlos (dibujo vs texto, tamaños relativos, tracking) quedan
+       intactas. El factor lo calcula el script del final y lo deja en --shrink
+       por diapositiva. Sin JS el valor es 1 y no pasa nada raro: simplemente no
+       se achica. */
+    .imgstep .fitbox {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--gap);
+      width: 100%;
+      transform: scale(var(--shrink, 1));
+      transform-origin: center center;
+    }
+    .imgcard {
+      background: #fff;
+      border: 1px solid var(--accent-2);
+      border-radius: 14px;
+      padding: 12px;
+      box-shadow: 0 18px 50px rgba(40,20,90,0.10);
+      flex: none;
+    }
+    /* El alto manda y el ancho sale solo. Al revés (ancho fijo, alto auto) el
+       dibujo cambiaba de alto según su proporción y cada tarjeta se sentaba a
+       una altura distinta. */
+    .imgcard img {
+      display: block;
+      height: var(--img-h);
+      width: auto;
+      border-radius: 8px;
+    }
+    .cap {
+      font-family: var(--font-body);
+      line-height: 1.2;
+      color: var(--fg);
+      margin: 0;
+    }
+    /* Los tres campos del scene box, con la misma jerarquía visual que la
+       galería: titular fuerte, cuerpo, cierre en verde. */
+    .imgstep .cap { max-width: var(--text-w); text-align: center; }
+    .imgstep .cap-head {
+      font-family: var(--font-head);
+      font-size: var(--head-size);
+      font-weight: 700;
+      line-height: 1.15;
+      /* Mayúsculas por CSS, no en el texto: INDEX.md sigue guardando el titular
+         en capitalización normal, así que volver atrás es cambiar una línea y
+         no 39 filas de la tabla. El tracking extra hace falta porque en
+         mayúsculas las letras se ven apretadas al tamaño de display. */
+      text-transform: uppercase;
+      letter-spacing: var(--head-tracking);
+    }
+    .cap-head { font-weight: 700; }
+    /* Título de extensión, ARRIBA de la imagen. Agregado 260803 después de
+       dictar la Sesión 1: en sala el bloque de tipos de archivo no se leía,
+       porque la extensión venía solo dibujada dentro de la imagen y chica.
+       Va en monoespaciada para que se lea como nombre de archivo. */
+    .ext-title {
+      margin: 0 0 10px;
+      font-family: "Fira Code", ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: clamp(30px, 4.4vw, 58px);
+      font-weight: 600;
+      line-height: 1;
+      letter-spacing: .02em;
+      color: var(--accent, #4C2D91);
+      text-align: center;
+    }
+    /* El cuerpo va alineado a la izquierda: son párrafos de varias líneas y
+       centrados se vuelven difíciles de seguir. El titular y el cierre sí van
+       centrados, porque son de una o dos líneas. */
+    /* Tamaños subidos 260814: en la Sesión 1 de Brainbest el cuerpo no se leía
+       desde el fondo de la sala. Antes topaba en 17px y en gris (--muted), o
+       sea que el texto que carga la explicación era el más chico y el más
+       claro de la diapositiva, y el público terminaba leyendo las etiquetas en
+       inglés de la imagen. Ahora escala con el ancho (2.6vw) hasta 34px y usa
+       el color de cuerpo, no el gris. Misma lógica que .ext-title (260803). */
+    .imgstep .cap-body {
+      margin-top: 14px;
+      font-size: var(--body-size);
+      line-height: 1.38;
+      color: var(--fg);
+      /* Justificado con guionado. En español, justificar sin partir palabras
+         abre huecos enormes entre palabras, porque las palabras son largas. El
+         lang="es" del <html> es lo que le dice al navegador con qué reglas
+         partir, así que sin eso el hyphens: auto no hace nada. La última línea
+         va a la izquierda para que no quede estirada. text-wrap: pretty se
+         saca a propósito: pelea con justify. */
+      text-align: justify;
+      text-align-last: left;
+      hyphens: auto;
+      -webkit-hyphens: auto;
+    }
+    /* Los escalones .longtext / .xlongtext se eliminaron (260814). Bajaban el
+       tamaño de letra de las tarjetas más cargadas, o sea que justo las
+       diapositivas con MÁS que leer traían la letra MÁS chica, al revés de lo
+       que hace falta en sala. Ahora el ajuste lo hace --shrink escalando el
+       bloque entero: se mantiene la jerarquía y no se recorta nada. El build
+       sigue emitiendo las clases porque sirven para inspeccionar. */
+    /* 820px: en las diapositivas más altas el cierre baja hasta el borde
+       inferior, y más ancho que esto se cruzaba con las teclas de ayuda
+       (el .hint fijo abajo a la derecha). */
+    /* El cierre es la frase que la gente se lleva, así que va más grande que
+       el cuerpo, no más chico. Verde más oscuro para que aguante proyector con
+       luz ambiente. El ancho sube a 1100px: sigue lejos del .hint de abajo a
+       la derecha, que era el motivo del tope de 820px. */
+    .imgstep .cap-take {
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 2px dashed #86efac;
+      font-size: var(--take-size);
+      font-weight: 700;
+      line-height: 1.3;
+      color: #12703a;              /* verde: el cierre, igual que la galería */
+    }
+    .cap-take {
+      margin-top: 12px;
+      max-width: min(96%, 106vh);
+      font-size: clamp(17px, 1.6vw, 23px);
+      font-weight: 700;
+      line-height: 1.35;
+      color: #12703a;
+      border-top: 2px dashed #86efac;
+      padding-top: 11px;
+    }
+    .cover { width: 1180px; }
+    .cover h1 { font-size: clamp(40px, 6.5vw, 70px); }
+    .section-step { width: 900px; }
+    .section-title { font-size: clamp(40px, 7vw, 72px); color: var(--accent); }
+    .section-step .lead, .close .lead { color: var(--muted); }
+    .close { width: 900px; text-align: center; }
+    .close .monogram, .cover .monogram { margin-bottom: 28px; }
+    /* two-tier flow close: human row (deep indigo) feeds AI row (electric violet) */
+    /* 1400px, no 1100: las palabras en español son más largas que las inglesas
+       (Recolectar/Interpretar/Ejecutar/Presentar) y a 1100px la fila de la IA
+       se partía, dejando una flecha colgando al final del renglón. */
+    .flow-close { width: 1400px; text-align: center; }
+    .flow-close .monogram--sm { margin-bottom: 30px; }
+    .flow-row {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: clamp(30px, 4.4vw, 52px);
+      line-height: 1.2;
+      display: flex; flex-wrap: wrap; justify-content: center;
+      align-items: center; gap: 0.5em;
+    }
+    .flow-human { color: #4C2D91; }   /* Deep Indigo: the human steps */
+    .flow-ai    { color: #8B5CF6; }   /* Electric Violet: the AI steps */
+    .flow-sep   { opacity: 0.55; font-weight: 400; }
+
+    /* Cover teaser: subtle one-line preview of the closing flow. Same two
+       colors (human indigo -> AI violet), small and quiet under the title. */
+    .cover-flow {
+      margin-top: 18px;
+      font-family: var(--font-head);
+      font-weight: 500;
+      font-size: clamp(13px, 1.5vw, 17px);
+      letter-spacing: 0.04em;
+      display: flex; flex-wrap: wrap; align-items: center; gap: 0.5em;
+      opacity: 0.6;
+    }
+    .cover-flow .cf-h   { color: #4C2D91; }   /* human steps */
+    .cover-flow .cf-a   { color: #8B5CF6; }   /* AI steps */
+    .cover-flow .cf-sep { color: var(--muted); font-weight: 400; }
+    .flow-arrow {
+      font-size: clamp(28px, 3.4vw, 40px);
+      color: var(--muted);
+      margin: 0.35em 0;
+      line-height: 1;
+    }
+    /* smaller logo as a chapter mark on section title cards */
+    .monogram--sm { width: clamp(48px, 6vw, 64px); margin-bottom: 18px; }
+    /* persistent brand watermark: fixed to the viewport, OUTSIDE the impress
+       canvas, so it stays put while the camera flies. Subtle, bottom-left. */
+    .brand-watermark {
+      position: fixed;
+      bottom: 20px; left: 24px;
+      z-index: 5;
+      display: flex; align-items: center; gap: 10px;
+      opacity: 0.82;
+      pointer-events: none;
+      font-family: var(--font-head);
+      font-size: 16px; letter-spacing: 0.04em;
+      color: var(--muted);
+    }
+    .brand-watermark img { width: 44px; height: auto; display: block; }
+
+    /* ---- Ayuda colapsable (260814) --------------------------------------
+       La barra de teclas iba fija abajo a la derecha y SIEMPRE visible. En
+       pantallas cortas (MacBook de 14", 1512x982) se pisaba con el cierre de
+       la diapositiva: impress escala el escenario de 1080 hasta que el
+       contenido toca el borde de abajo, justo donde estaba la barra. En
+       monitores anchos no pasaba, por eso se veía bien en 23" y 34".
+       Además la ayuda no tiene por qué estar en pantalla toda la
+       presentación: es de consulta.
+
+       Ahora es un botón discreto (?) que abre un panel. La marca de agua se
+       queda, pero se esconde con el panel abierto para que no se amontonen. */
+    .hint { display: none !important; }   /* la barra vieja del template */
+
+    .navhelp-btn {
+      position: fixed;
+      bottom: 18px; right: 20px;
+      z-index: 60;
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      border: 1px solid var(--accent-2);
+      background: rgba(255,255,255,0.86);
+      color: var(--accent, #8B5CF6);
+      font-family: var(--font-head); font-size: 16px; font-weight: 700;
+      line-height: 1; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 10px rgba(40,20,90,0.12);
+      opacity: 0.45;
+      transition: opacity .18s ease, transform .18s ease;
+      -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+    }
+    /* Casi transparente mientras no se usa, sólido al pasar el mouse: en sala
+       no distrae, y sigue estando cuando alguien lo busca. */
+    /* !important porque el JS anti-choque baja la opacidad por estilo inline
+       cuando el texto de la diapositiva llega a la esquina. Al pasar el mouse
+       (o al llegar con el teclado) el botón tiene que volver a verse sí o sí,
+       si no queda un control invisible imposible de encontrar. */
+    .navhelp-btn:hover, .navhelp-btn:focus-visible { opacity: 1 !important; transform: scale(1.06); }
+    .navhelp-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    .navhelp-panel {
+      position: fixed;
+      bottom: 62px; right: 20px;
+      z-index: 60;
+      background: rgba(255,255,255,0.96);
+      border: 1px solid var(--accent-2);
+      border-radius: 10px;
+      padding: 14px 16px;
+      box-shadow: 0 10px 34px rgba(40,20,90,0.18);
+      font-family: var(--font-body); font-size: 13px; color: var(--fg);
+      -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+      display: grid; gap: 8px;
+      opacity: 0; visibility: hidden; transform: translateY(6px);
+      transition: opacity .18s ease, transform .18s ease, visibility .18s;
+    }
+    .navhelp-panel[data-open="true"] { opacity: 1; visibility: visible; transform: none; }
+    .navhelp-row { display: flex; align-items: center; gap: 9px; white-space: nowrap; }
+    .navhelp-panel kbd {
+      background: rgba(139,92,246,0.14);
+      border: 1px solid var(--accent-2);
+      border-radius: 4px;
+      padding: 2px 7px;
+      font-family: var(--font-body); font-size: 12px; color: var(--fg);
+      min-width: 20px; text-align: center;
+    }
+    /* Con el panel abierto la marca de agua se apaga: en pantallas cortas los
+       dos elementos quedaban a la misma altura. */
+    body[data-help="open"] .brand-watermark { opacity: 0; }
+    .brand-watermark { transition: opacity .18s ease; }
+
+    /* Pantallas CORTAS (MacBook de 14", 1512x982, y cualquier laptop parecida).
+       Acá está el choque real: impress escala el escenario de 1080 hasta que el
+       contenido toca el borde de abajo, y el cierre de la diapositiva aterriza
+       justo donde va la marca de agua. En monitores altos (1080 y más) sobra
+       aire y no pasa, por eso se veía bien en el de 23" y en el ultrawide.
+       Debajo de 1000px de alto la marca se corre a la esquina y se hace más
+       chica y más tenue, para que la diapositiva mande. El botón de ayuda
+       también se achica. Nada de esto toca la composición: son elementos fijos,
+       fuera del canvas de impress. */
+    @media (max-height: 1000px) {
+      .brand-watermark {
+        bottom: 8px; left: 10px;
+        font-size: 12px; gap: 6px;
+        opacity: 0.34;
+      }
+      .brand-watermark img { width: 26px; }
+      .navhelp-btn { width: 28px; height: 28px; font-size: 14px; bottom: 10px; right: 12px; }
+      .navhelp-panel { bottom: 46px; right: 12px; }
+    }
+    /* OJO: este bloque NO debe tocar .imgstep. Las tarjetas de imagen se
+       componen en píxeles del escenario de 1920x1080 y de encogerlas se
+       encarga impress con su escala uniforme; meterle acá vw/vh vuelve a
+       mezclar los dos sistemas de medida, que es el bug que se arregló el
+       260814. Los selectores de abajo se acotan a propósito a los pasos que NO
+       son de imagen. */
+    @media (max-width: 820px) {
+      .step:not(.imgstep), .cover { width: 92vw; }
+      .step:not(.imgstep) .cap { font-size: clamp(17px, 3.6vw, 22px); }
+      .step:not(.imgstep) .cap-body { font-size: clamp(15px, 3.0vw, 19px); }
+      .step:not(.imgstep) .cap-take { font-size: clamp(16px, 3.2vw, 20px); }
+      .brand-watermark { font-size: 13px; bottom: 12px; left: 14px; }
+      .brand-watermark img { width: 34px; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="fallback-message">
+    <p><b>Your browser is not supported for this presentation.</b></p>
+    <p>Use a recent version of Chrome, Safari, or Firefox to view the zooming canvas.</p>
+  </div>
+
+  <!--
+    THE CANVAS. Each .step is placed on an infinite plane.
+    The presentation is the camera flying between steps in DOM order.
+    Follow the GRID CONVENTION in SKILL.md when choosing data-x/y/scale.
+  -->
+  <!--
+    data-width / data-height define the reference canvas impress.js fits to the
+    window. data-min-scale is a FLOOR on the window scale so content never gets
+    crushed to microscopic on narrow phones (gotcha #6). The pre-init script
+    below lowers data-width on portrait phones so the fit math targets the phone.
+  -->
+  <div id="impress" data-transition-duration="900" data-width="1920" data-height="1080" data-min-scale="0.55">
+
+
+    <div class="step cover" id="home" data-x="0" data-y="-3000" data-scale="3.0" data-rotate="0">
+      <img class="monogram" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+      <p class="eyebrow">Fiba Labs · AI Mentoring</p>
+      <h1>Understanding AI, and how to work with it</h1>
+      <p class="cover-flow"><span class="cf-h">Plan</span><span class="cf-sep">&rarr;</span><span class="cf-h">Design</span><span class="cf-sep">&rarr;</span><span class="cf-h">Connect</span><span class="cf-sep">&rarr;</span><span class="cf-a">Collect</span><span class="cf-sep">&rarr;</span><span class="cf-a">Interpret</span><span class="cf-sep">&rarr;</span><span class="cf-a">Execute</span><span class="cf-sep">&rarr;</span><span class="cf-a">Present</span></p>
+    </div>
+
+    <div class="step section-step" id="1" data-x="4500" data-y="0" data-scale="3.0" data-rotate="0">
+      <img class="monogram monogram--sm" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+      <p class="eyebrow">01</p>
+      <h2 class="section-title">The starting point</h2>
+      <p class="lead">The fundamentals are the same, but AI has amplified every part of the process.</p>
+    </div>
+
+    <div class="step imgstep longtext" id="1.1" data-x="220" data-y="1790" data-scale="1.0" data-rotate="-12">
+      <div class="fitbox">
+      <div class="imgcard"><img src="assets/diagrams/001_s1-universal-loop.png" alt="Everything works the same way, and here is the leap" width="1536" height="1024"></div>
+      <p class="cap cap-head">Everything works the same way, and here is the leap</p>
+      <p class="cap cap-body">Any AI, app or SaaS does the same thing: it accesses data, interprets it, takes an action and produces a result. That loop has always existed. What AI changes is each stage: connecting to data is now easy (it used to take custom integrations), interpreting and acting took a huge leap (it understands language, documents and context, not just numbers), and the result can have far more impact: not a raw table but a report, a presentation, a decision ready for review.</p>
+      <p class="cap cap-take">The loop is the same as always, but AI has dramatically amplified every stage, and that is why the leap has been a "quantum" one.</p>
+      </div>
+    </div>
+
+    <div class="step imgstep" id="1.2" data-x="2680" data-y="2260" data-scale="1.0" data-rotate="9">
+      <div class="fitbox">
+      <div class="imgcard"><img src="assets/diagrams/002_s1-chat-to-skills.png" alt="From loose chat to skills" width="1536" height="1024"></div>
+      <p class="cap cap-head">From loose chat to skills</p>
+      <p class="cap cap-body">Simple chat → custom instructions (Custom GPTs, Gems and Projects are the same thing with different names) → folders as context (the AI works on YOUR files, not from scratch) → skills: instructions PLUS tools, packaged for reuse.</p>
+      <p class="cap cap-take">You build a skill once and run it as many times as you need, even on a schedule.</p>
+      </div>
+    </div>
+
+    <div class="step imgstep" id="1.3" data-x="6170" data-y="1840" data-scale="1.0" data-rotate="-6">
+      <div class="fitbox">
+      <div class="imgcard"><img src="assets/diagrams/003_s1-llm-landscape.png" alt="The map of models" width="1536" height="1024"></div>
+      <p class="cap cap-head">The map of models</p>
+      <p class="cap cap-body">Three companies, three brands, and inside each brand a ladder of models: the small ones are fast and light, the big ones are more capable. What you learn today works in any of them: folders, MD files, skills and connectors move with you if you ever switch providers.</p>
+      <p class="cap cap-take">You don't marry a provider: you build ways of working that are portable.</p>
+      </div>
+    </div>
+
+    <div class="step imgstep" id="1.4" data-x="8740" data-y="2240" data-scale="1.0" data-rotate="14">
+      <div class="fitbox">
+      <div class="imgcard"><img src="assets/diagrams/004_s1-agent-vs-skill.png" alt="Agent vs skill" width="1536" height="1024"></div>
+      <p class="cap cap-head">Agent vs skill</p>
+      <p class="cap cap-body">The agent is the one doing the work; the skill is the recipe you hand it so the work comes out just as well every time.</p>
+      <p class="cap cap-take">The skills are yours: you can give them to any agent.</p>
+      </div>
+    </div>
+
+    <div class="step imgstep longtext" id="1.5" data-x="9300" data-y="3700" data-scale="1.0" data-rotate="-10">
+      <div class="fitbox">
+      <div class="imgcard"><img src="assets/diagrams/005_s1-three-pillars.png" alt="The three pillars" width="1536" height="1024"></div>
+      <p class="cap cap-head">The three pillars</p>
+      <p class="cap cap-body">Folders: this is where your data and your context LIVE: the files you work with and what the AI produces along the way; you pick up earlier work instead of starting from zero. Connectors: this is how data that lives in other apps COMES IN (email, calendar, spreadsheets, your ERP): each app publishes its data and the connector brings it to your AI. Skills: repeatable work, captured once and improved over time.</p>
+      <p class="cap cap-take">These three are the structure: where your material lives, how data enters the system and what work runs on that data.</p>
+      </div>
+    </div>
+
+    <div class="step section-step" id="2" data-x="19100" data-y="0" data-scale="3.0" data-rotate="0">
+      <img class="monogram monogram--sm" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+      <p class="eyebrow">02</p>
+      <h2 class="section-title">File types</h2>
+      <p class="lead">Every format works the same way.</p>
+    </div>
+
+    <div class="step imgstep" id="2.1" data-x="14410" data-y="2190" data-scale="1.0" data-rotate="7">
+      <div class="fitbox">
+      <p class="ext-title">.TXT</p>
+      <div class="imgcard"><img src="assets/diagrams/006_s1-file-anatomy.png" alt="Every format works the same way" width="1536" height="1024"></div>
+      <p class="cap cap-head">Every format works the same way</p>
+      <p class="cap cap-body">Bytes, a processor, and how they look on screen.</p>
+      <p class="cap cap-take">Some are easier to process, some display better and others are easier for the AI to understand.</p>
+      </div>
+    </div>
+
+    <div class="step imgstep" id="2.2" data-x="17820" data-y="1790" data-scale="1.0" data-rotate="-14">
+      <div class="fitbox">
+      <p class="ext-title">.CSV</p>
+      <div class="imgcard"><img src="assets/diagrams/007_s1-file-csv.png" alt=".csv: a table as plain text" width="1536" height="1024"></div>
+      <p class="cap cap-head">.csv: a table as plain text</p>
+      <p class="cap cap-body">One row per line, columns separated by commas. Excel opens it as a table and the AI reads it directly, no frills.</p>
+      <p class="cap cap-take">The easiest format for giving tabular data to the AI.</p>
+      </div>
+    </div>
+
+    <div class="step imgstep" id="2.3" data-x="20280" data-y="2260" data-scale="1.0" data-rotate="11">
+      <div class="fitbox">
+      <p class="ext-title">.DOCX</p>
+      <div class="imgcard"><img src="assets/diagrams/008_s1-file-docx.png" alt=".docx: a package in disguise" width="1536" height="1024"></div>
+      <p class="cap cap-head">.docx: a package in disguise</p>
+      <p class="cap cap-body">Unreadable bytes, a processor (Word) that interprets them, and the clean document you see. Inside it is a ZIP of XML: text, styles and images stored separately.</p>
+      <p class="cap cap-take">Opened without Word it is garbage; the clean view depends on the processor.</p>
+      </div>
+    </div>
+
+    <div class="step imgstep" id="2.4" data-x="23770" data-y="1840" data-scale="1.0" data-rotate="-4">
+      <div class="fitbox">
+      <p class="ext-title">.XLSX</p>
+      <div class="imgcard"><img src="assets/diagrams/009_s1-file-xlsx.png" alt=".xlsx: the same trick, for spreadsheets" width="1536" height="1024"></div>
+      <p class="cap cap-head">.xlsx: the same trick, for spreadsheets</p>
+      <p class="cap cap-body">Same three steps: the bytes, a processor (Excel), and the spreadsheet you see. Inside, a ZIP with the sheets, the formulas and the formatting.</p>
+      <p class="cap cap-take">Your spreadsheet is easier to "take apart" than it looks, and the AI knows how to take it apart.</p>
+      </div>
+    </div>
+
+    <div class="step imgstep" id="2.5" data-x="23340" data-y="4240" data-scale="1.0" data-rotate="13">
+      <div class="fitbox">
+      <p class="ext-title">.PDF</p>
+      <div class="imgcard"><img src="assets/diagrams/010_s1-file-pdf.png" alt=".pdf: a photo for printing" width="1536" height="1024"></div>
+      <p class="cap cap-head">.pdf: a photo for printing</p>
+      <p class="cap cap-body">Made to look the same everywhere. Perfect for humans, hard for software to read back: the data is frozen in the photo.</p>
+      <p class="cap cap-take">That is why getting data out of a PDF takes more work than out of an Excel file or a CSV.</p>
+      </div>
+    </div>
+
+    <div class="step imgstep" id="2.6" data-x="20900" data-y="3700" data-scale="1.0" data-rotate="-12">
+      <div class="fitbox">
+      <p class="ext-title">.HTML</p>
+      <div class="imgcard"><img src="assets/diagrams/011_s1-file-html.png" alt=".html: the page your browser draws" width="1536" height="1024"></div>
+      <p class="cap cap-head">.html: the page your browser draws</p>
+      <p class="cap cap-body">Text with tags that the browser turns into what you see: headings, boxes, colors, buttons.</p>
+      <p class="cap cap-take">Every web page is a text file that something drew.</p>
+      </div>
+    </div>
+
+    <div class="step imgstep" id="2.7" data-x="17410" data-y="4190" data-scale="1.0" data-rotate="9">
+      <div class="fitbox">
+      <p class="ext-title">ARTIFACT</p>
+      <div class="imgcard"><img src="assets/diagrams/012_s1-file-artifact.png" alt="An Artifact is an .html file that Claude builds and maintains" width="1536" height="1024"></div>
+      <p class="cap cap-head">An Artifact is an .html file that Claude builds and maintains</p>
+      <p class="cap cap-body">Dashboards, calculators, interactive reports: .html pages that Claude puts together for you and that live inside Cowork, always up to date.</p>
+      <p class="cap cap-take">When you see "Artifact", think: a web page made to fit me.</p>
+      </div>
+    </div>
+
+    <div class="step imgstep" id="2.8" data-x="14820" data-y="3790" data-scale="1.0" data-rotate="-6">
+      <div class="fitbox">
+      <p class="ext-title">.JSON</p>
+      <div class="imgcard"><img src="assets/diagrams/013_s1-file-json.png" alt=".json: the format data travels in between apps" width="1536" height="1024"></div>
+      <p class="cap cap-head">.json: the format data travels in between apps</p>
+      <p class="cap cap-body">The format machines commonly use to pass structured information to each other. When a connector brings data from another app, it will probably come like this.</p>
+      <p class="cap cap-take">Each value travels with its label and its type, so the software doesn't have to guess.</p>
+      </div>
+    </div>
+
+    <div class="step imgstep" id="2.9" data-x="14280" data-y="6260" data-scale="1.0" data-rotate="14">
+      <div class="fitbox">
+      <p class="ext-title">.PY</p>
+      <div class="imgcard"><img src="assets/diagrams/014_s1-file-py.png" alt=".py: plain text that runs" width="1536" height="1024"></div>
+      <p class="cap cap-head">.py: plain text that runs</p>
+      <p class="cap cap-body">It takes inputs, calculates and shows a result. You are not going to program: the AI writes and runs this code for you when the task needs it.</p>
+      <p class="cap cap-take">If you see that Claude "wrote a script", it is probably a .py file that a "compiler" runs.</p>
+      </div>
+    </div>
+
+    <div class="step section-step" id="3" data-x="33700" data-y="0" data-scale="3.0" data-rotate="0">
+      <img class="monogram monogram--sm" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+      <p class="eyebrow">03</p>
+      <h2 class="section-title">The MD family</h2>
+      <p class="lead">The language of instructions.</p>
+    </div>
+
+    <div class="step imgstep" id="3.1" data-x="29370" data-y="1840" data-scale="1.0" data-rotate="-10">
+      <div class="fitbox">
+      <p class="ext-title">.MD</p>
+      <div class="imgcard"><img src="assets/diagrams/015_s1-md-format.png" alt="MD: the language of instructions" width="1536" height="1024"></div>
+      <p class="cap cap-head">MD: the language of instructions</p>
+      <p class="cap cap-body">Plain text with light formatting: simple symbols (# for headings, - for lists) that any tool displays well. It is the format the AI prefers for reading and writing instructions.</p>
+      <p class="cap cap-take">The .md format is the one the AI reads most easily, and it often uses it as an "intermediate" step to read or present files.</p>
+      </div>
+    </div>
+
+    <div class="step imgstep" id="3.2" data-x="31940" data-y="2240" data-scale="1.0" data-rotate="7">
+      <div class="fitbox">
+      <p class="ext-title">.MD</p>
+      <div class="imgcard"><img src="assets/diagrams/016_s1-md-overview.png" alt="One format, many roles" width="1536" height="1024"></div>
+      <p class="cap cap-head">One format, many roles</p>
+      <p class="cap cap-body">The same type of file does different jobs depending on its name: standing instructions, memory between sessions, hard rules, work recipes.</p>
+      <p class="cap cap-take">You learn ONE format and with it you handle every piece of your agent.</p>
+      </div>
+    </div>
+
+    <div class="step imgstep" id="3.3" data-x="35500" data-y="1700" data-scale="1.0" data-rotate="-14">
+      <div class="fitbox">
+      <p class="ext-title">CLAUDE.md</p>
+      <div class="imgcard"><img src="assets/diagrams/017_s1-md-claude-agents.png" alt="CLAUDE.md and AGENTS.md: the same file" width="1536" height="1024"></div>
+      <p class="cap cap-head">CLAUDE.md and AGENTS.md: the same file</p>
+      <p class="cap cap-body">The standing instructions for a folder or project: rules and context the AI loads in every session. CLAUDE.md is the name Claude reads; AGENTS.md is the tool-agnostic name other tools read. If you need both, you link one to the other: one real file, two names.</p>
+      <p class="cap cap-take">Never two copies: one real file and a link, so they never get out of sync.</p>
+      </div>
+    </div>
+
+    <div class="step imgstep" id="3.4" data-x="38010" data-y="2190" data-scale="1.0" data-rotate="11">
+      <div class="fitbox">
+      <p class="ext-title">SKILL.md</p>
+      <div class="imgcard"><img src="assets/diagrams/018_s1-md-skill.png" alt="SKILL.md: the recipe for repeatable work" width="1536" height="1024"></div>
+      <p class="cap cap-head">SKILL.md: the recipe for repeatable work</p>
+      <p class="cap cap-body">A skill is an instructions file with its own name. You build it once and then call it by name every time that work comes up.</p>
+      <p class="cap cap-take">This is what we are going to build together in the second hour.</p>
+      </div>
+    </div>
+
+    <div class="step imgstep" id="3.5" data-x="38420" data-y="3790" data-scale="1.0" data-rotate="-4">
+      <div class="fitbox">
+      <p class="ext-title">SKILL.md</p>
+      <div class="imgcard"><img src="assets/diagrams/019_s1-md-skill-structure.png" alt="...plus the folder around it" width="1536" height="1024"></div>
+      <p class="cap cap-head">...plus the folder around it</p>
+      <p class="cap cap-body">The skill is the recipe plus what it needs to do the work: templates, examples, supporting files. All together in a folder named after the skill.</p>
+      <p class="cap cap-take">A skill can be copied, shared and versioned like any folder.</p>
+      </div>
+    </div>
+
+    <div class="step section-step" id="4" data-x="3000" data-y="8600" data-scale="3.0" data-rotate="0">
+      <img class="monogram monogram--sm" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+      <p class="eyebrow">04</p>
+      <h2 class="section-title">Prompting</h2>
+      <p class="lead">You don't have to learn prompting.</p>
+    </div>
+
+    <div class="step imgstep" id="4.1" data-x="-320" data-y="10860" data-scale="1.0" data-rotate="13">
+      <div class="fitbox">
+      <div class="imgcard"><img src="assets/diagrams/020_s1-prompt-loose-vs-structured.png" alt="The same task, asked a different way → completely different results" width="1536" height="1024"></div>
+      <p class="cap cap-head">The same task, asked a different way → completely different results</p>
+      <p class="cap cap-body">A loose prompt gets a vague answer. A structured one (role, goal, example) gets a complete answer.</p>
+      <p class="cap cap-take">The quality of the answer is decided before you hit send.</p>
+      </div>
+    </div>
+
+    <div class="step imgstep longtext" id="4.2" data-x="3170" data-y="10440" data-scale="1.0" data-rotate="-12">
+      <div class="fitbox">
+      <div class="imgcard"><img src="assets/diagrams/021_s1-prompt-frameworks.png" alt="There are dozens of formulas for writing prompts" width="1536" height="1024"></div>
+      <p class="cap cap-head">There are dozens of formulas for writing prompts</p>
+      <p class="cap cap-body">Each one is a recipe with its own acronym: CLEAR (context, logic, expectations, action, restriction) works for detailed requests; SMART, the one you already know from management, for measurable results; RISEN for strategic tasks; CREATE for exploring ideas; FOCUS for getting to the point; IDEA for iterating and refining. They all aim at the same thing: saying clearly what you want, with what material and under what constraints.</p>
+      <p class="cap cap-take">You used to have to learn this, but now you don't...</p>
+      </div>
+    </div>
+
+    <div class="step imgstep" id="4.3" data-x="5740" data-y="10840" data-scale="1.0" data-rotate="9">
+      <div class="fitbox">
+      <div class="imgcard"><img src="assets/diagrams/022_s1-ai-writes-your-prompt.png" alt="Let the AI write your prompt" width="1536" height="1024"></div>
+      <p class="cap cap-head">Let the AI write your prompt</p>
+      <p class="cap cap-body">Don't memorize frameworks: tell the AI what you need and what it's for, and ask it to write the prompt. Then paste it into a new conversation.</p>
+      <p class="cap cap-take">This is the first exercise of the hands-on part.</p>
+      </div>
+    </div>
+
+    <div class="step section-step" id="5" data-x="19100" data-y="8600" data-scale="3.0" data-rotate="0">
+      <img class="monogram monogram--sm" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+      <p class="eyebrow">05</p>
+      <h2 class="section-title">Tokens and context</h2>
+      <p class="lead">Everything that goes in and comes out is measured in tokens.</p>
+    </div>
+
+    <div class="step imgstep longtext xlongtext" id="5.1" data-x="14900" data-y="10300" data-scale="1.0" data-rotate="-6">
+      <div class="fitbox">
+      <div class="imgcard"><img src="assets/diagrams/023_s1-tokenization.png" alt="A token is a piece of text" width="1536" height="1024"></div>
+      <p class="cap cap-head">A token is a piece of text</p>
+      <p class="cap cap-body">You write a sentence, and the model cuts it into pieces: short words stay whole, long ones get split (roughly 4 characters per piece). Then it reads those pieces in order and predicts the next one. Everything you send and everything you get back is measured in those pieces, even inside a plan with usage included. "Token" is an overused word and that is why it confuses people: an AI token is a piece of text (this one); an authentication token is a secret key that proves who you are when you log into a system; a crypto or arcade token is a unit of value or a physical coin. Same word, three different worlds.</p>
+      <p class="cap cap-take">Here a token is always a piece of text, and everything that goes in and comes out is measured in it. Live demo: platform.openai.com/tokenizer</p>
+      </div>
+    </div>
+
+    <div class="step imgstep longtext" id="5.2" data-x="17410" data-y="10790" data-scale="1.0" data-rotate="14">
+      <div class="fitbox">
+      <div class="imgcard"><img src="assets/diagrams/024_s1-five-hour-window.png" alt="Usage comes in time windows" width="1536" height="1024"></div>
+      <p class="cap cap-head">Usage comes in time windows</p>
+      <p class="cap cap-body">Your plan is not unlimited and it doesn't charge per message: it includes a quota that resets every so many hours. If you burn through it all at the start of the day, you have to wait for the window to reset. If you spread your usage out, it lasts without you having to think about it. And if you hit the limit this week, it is not your fault: it is exactly the material we are going to optimize in Session 2.</p>
+      <p class="cap cap-take">Your usage is measured in tokens, and those tokens come in windows.</p>
+      </div>
+    </div>
+
+    <div class="step imgstep longtext" id="5.3" data-x="20820" data-y="10390" data-scale="1.0" data-rotate="-10">
+      <div class="fitbox">
+      <div class="imgcard"><img src="assets/diagrams/025_s1-context-two-senses.png" alt="The same word, two meanings" width="1536" height="1024"></div>
+      <p class="cap cap-head">The same word, two meanings</p>
+      <p class="cap cap-body">Up to now we have used "context" to talk about the material you give it: the files, the folders, the CLAUDE.md, everything you pass along so it understands your work. That meaning doesn't change. But there is a second meaning we haven't touched yet: capacity, how much fits in a conversation before it starts to fail. It is the same word seen from another angle: one is about what you give it, the other is about how much it can hold.</p>
+      <p class="cap cap-take">Context is material and it is also capacity. What comes next is capacity.</p>
+      </div>
+    </div>
+
+    <div class="step imgstep longtext xlongtext" id="5.4" data-x="23280" data-y="10860" data-scale="1.0" data-rotate="7">
+      <div class="fitbox">
+      <div class="imgcard"><img src="assets/diagrams/026_s1-context-window.png" alt="The context window, and its two sides" width="1536" height="1024"></div>
+      <p class="cap cap-head">The context window, and its two sides</p>
+      <p class="cap cap-body">Every conversation has a maximum size. Opus handles a million tokens, which is huge. But the number is not the goal: I cut off at around 500 thousand, because even if the window can handle it, the conversation can degrade before it fills up. It starts losing details, repeating itself, forgetting what you said at the beginning.The second side is that context accumulates. Every message resends everything before it, so a long conversation costs more on each turn than on the one before, and long messages speed that up. Two different consequences of the same thing: one affects the quality of the answer, the other affects your usage. In Session 2 we will see how to optimize it; for now it is enough to know that endless conversations cost you on both sides.</p>
+      <p class="cap cap-take">One task per conversation, and close it before it gets heavy.</p>
+      </div>
+    </div>
+
+    <div class="step section-step" id="6" data-x="29200" data-y="8600" data-scale="3.0" data-rotate="0">
+      <img class="monogram monogram--sm" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+      <p class="eyebrow">06</p>
+      <h2 class="section-title">Session 2</h2>
+      <p class="lead">The second half: how to drive it, judgment, and what happens underneath.</p>
+    </div>
+
+    <div class="step section-step" id="7" data-x="4500" data-y="13200" data-scale="3.0" data-rotate="0">
+      <img class="monogram monogram--sm" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+      <p class="eyebrow">07</p>
+      <h2 class="section-title">How to drive it</h2>
+      <p class="lead">First how to handle it, then how much it uses.</p>
+    </div>
+
+    <div class="step imgstep longtext" id="7.1" data-x="170" data-y="15040" data-scale="1.0" data-rotate="-14">
+      <div class="fitbox">
+      <div class="imgcard"><img src="assets/diagrams/027_s2-tips-drive-it.png" alt="Four ways to handle it better" width="1536" height="1024"></div>
+      <p class="cap cap-head">Four ways to handle it better</p>
+      <p class="cap cap-body">These four phrases change the result more than any prompt trick: 1) "interview me before you write this" (a vague idea turns into a good brief); 2) "if you don't understand something, stop and ask me" (it stops guessing); 3) "you make the technical decisions and tell me what you decided and why" (you don't need to know technology, you just need to see the decision); 4) "make me the plan first, don't execute anything yet" (Cowork has no plan mode, but asking for it works just as well).</p>
+      <p class="cap cap-take">Asking it to ask questions and to plan before acting saves you half the corrections.</p>
+      </div>
+    </div>
+
+    <div class="step imgstep" id="7.2" data-x="2740" data-y="15440" data-scale="1.0" data-rotate="11">
+      <div class="fitbox">
+      <div class="imgcard"><img src="assets/diagrams/028_s2-resend-cost.png" alt="Every turn resends everything" width="1536" height="1024"></div>
+      <p class="cap cap-head">Every turn resends everything</p>
+      <p class="cap cap-body">With every new message, the whole conversation travels to the model again. The longer it is, the more each following turn uses.</p>
+      <p class="cap cap-take">Long conversations don't just lose quality: they cost more.</p>
+      </div>
+    </div>
+
+    <div class="step imgstep longtext" id="7.3" data-x="6300" data-y="14900" data-scale="1.0" data-rotate="-4">
+      <div class="fitbox">
+      <div class="imgcard"><img src="assets/diagrams/029_s2-idle-gap.png" alt="If you stepped away, don&#x27;t go back to the same chat" width="1536" height="1024"></div>
+      <p class="cap cap-head">If you stepped away, don't go back to the same chat</p>
+      <p class="cap cap-body">You left the conversation open, went to a meeting, or you're picking it up the next day. During that pause, whatever was cached expires, so your first message when you come back resends the whole conversation at full price and burns through your quota faster. The fix is simple: before you leave, or as soon as you come back, ask for a summary of the progress and continue in a new conversation with that summary as the starting point.</p>
+      <p class="cap cap-take">Going back to an old conversation is expensive. Going back to a summary is more efficient, and it lets you pick up where you left off more cleanly.</p>
+      </div>
+    </div>
+
+    <div class="step imgstep" id="7.4" data-x="8810" data-y="15390" data-scale="1.0" data-rotate="13">
+      <div class="fitbox">
+      <div class="imgcard"><img src="assets/diagrams/030_s2-cowork-no-compact.png" alt="Cowork doesn&#x27;t compact" width="1536" height="1024"></div>
+      <p class="cap cap-head">Cowork doesn't compact</p>
+      <p class="cap cap-body">Cowork doesn't summarize the conversation for you when it fills up: the quality just drops. The routine: ask for a summary of the progress, open a new conversation and paste the summary in as the starting point.</p>
+      <p class="cap cap-take">You can ask for the summary to be saved to a file, or ask it for a prompt with the summary so you can pick up again.</p>
+      </div>
+    </div>
+
+    <div class="step imgstep" id="7.5" data-x="9220" data-y="16990" data-scale="1.0" data-rotate="-12">
+      <div class="fitbox">
+      <div class="imgcard"><img src="assets/diagrams/031_s2-one-convo-per-task.png" alt="One task per conversation" width="1536" height="1024"></div>
+      <p class="cap cap-head">One task per conversation</p>
+      <p class="cap cap-body">Mixing tasks in one chat contaminates the context for all of them. Keeping them separate keeps each conversation light, sharp and cheap.</p>
+      <p class="cap cap-take">New task, new conversation</p>
+      </div>
+    </div>
+
+    <div class="step section-step" id="8" data-x="17600" data-y="13200" data-scale="3.0" data-rotate="0">
+      <img class="monogram monogram--sm" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+      <p class="eyebrow">08</p>
+      <h2 class="section-title">Judgment and security</h2>
+      <p class="lead">Where you need to be involved.</p>
+    </div>
+
+    <div class="step imgstep" id="8.1" data-x="14280" data-y="15460" data-scale="1.0" data-rotate="9">
+      <div class="fitbox">
+      <div class="imgcard"><img src="assets/diagrams/032_s2-eighty-percent.png" alt="Aim for 80, you finish it" width="1536" height="1024"></div>
+      <p class="cap cap-head">Aim for 80, you finish it</p>
+      <p class="cap cap-body">When you are creating a one-off piece (a report, an email, a proposal), the AI gets you to 80% in minutes. That last 20% (judgment, nuance, the final decision) is yours, and that is where your value is.</p>
+      <p class="cap cap-take">AI amplifies your skills, it doesn't replace you</p>
+      </div>
+    </div>
+
+    <div class="step imgstep" id="8.2" data-x="17770" data-y="15040" data-scale="1.0" data-rotate="-6">
+      <div class="fitbox">
+      <div class="imgcard"><img src="assets/diagrams/033_s2-review-gate.png" alt="Automate the chain, keep the gate" width="1536" height="1024"></div>
+      <p class="cap cap-head">Automate the chain, keep the gate</p>
+      <p class="cap cap-body">When the work repeats, almost all of it can run on its own: reading the files, processing them, drafting the result. That is 90-95% of the work. What stays out is not "the rest", it is one point: the approval before the step that can't be undone (sending, publishing, paying).</p>
+      <p class="cap cap-take">The "Human in the Loop" (HITL) concept: you need to stay in the loop, or chain, to make the important decisions.</p>
+      </div>
+    </div>
+
+    <div class="step imgstep" id="8.3" data-x="20340" data-y="15440" data-scale="1.0" data-rotate="14">
+      <div class="fitbox">
+      <div class="imgcard"><img src="assets/diagrams/034_s2-security.png" alt="The conversation is not the risk; access is" width="1536" height="1024"></div>
+      <p class="cap cap-head">The conversation is not the risk; access is</p>
+      <p class="cap cap-body">Sending an Excel file to Claude doesn't publish it anywhere. The real risk is poorly managed access: keys stored in open places, folders or tools shared without control.</p>
+      <p class="cap cap-take">The discipline is managing access, not avoiding the tool.</p>
+      </div>
+    </div>
+
+    <div class="step section-step" id="9" data-x="33700" data-y="13200" data-scale="3.0" data-rotate="0">
+      <img class="monogram monogram--sm" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+      <p class="eyebrow">09</p>
+      <h2 class="section-title">APIs and MCP</h2>
+      <p class="lead">What happens underneath when you click connect.</p>
+    </div>
+
+    <div class="step imgstep" id="9.1" data-x="29500" data-y="14900" data-scale="1.0" data-rotate="-10">
+      <div class="fitbox">
+      <div class="imgcard"><img src="assets/diagrams/035_s2-api-waiter.png" alt="The API is the waiter" width="1536" height="1024"></div>
+      <p class="cap cap-head">The API is the waiter</p>
+      <p class="cap cap-body">You order from the menu, the waiter takes the order to the kitchen and brings you the dish. You never go into the kitchen. That is how one piece of software talks to another: defined requests, defined responses, and the inside stays hidden.</p>
+      <p class="cap cap-take">And there are only four kinds of request: read, create, update, delete.</p>
+      </div>
+    </div>
+
+    <div class="step imgstep" id="9.2" data-x="32010" data-y="15390" data-scale="1.0" data-rotate="7">
+      <div class="fitbox">
+      <div class="imgcard"><img src="assets/diagrams/036_s2-assistant-per-restaurant.png" alt="The assistant learns, but each kitchen still has its own waiter" width="1536" height="1024"></div>
+      <p class="cap cap-head">The assistant learns, but each kitchen still has its own waiter</p>
+      <p class="cap cap-body">An assistant that understands APIs saves you from writing the manual: it learns each restaurant's menu and sets up the connection for you much faster. What doesn't change is that each restaurant still has its own waiter, with its own language. Learning one doesn't help you with the next.</p>
+      <p class="cap cap-take">Faster to write, but you are still learning one menu per kitchen.</p>
+      </div>
+    </div>
+
+    <div class="step imgstep longtext" id="9.3" data-x="35420" data-y="14990" data-scale="1.0" data-rotate="-14">
+      <div class="fitbox">
+      <div class="imgcard"><img src="assets/diagrams/037_s2-mcp-waiter.png" alt="The same uniform in every kitchen" width="1536" height="1024"></div>
+      <p class="cap cap-head">The same uniform in every kitchen</p>
+      <p class="cap cap-body">MCP didn't eliminate the middlemen or merge the tools: each tool still publishes its own entry point. What changed is that now they all publish it the same way. They are the same three waiters from the previous slide, wearing the same uniform and speaking a single language; the kitchens inside are still completely different. That is why the assistant learns one language instead of three, and can even walk into a kitchen that didn't exist when it was built.</p>
+      <p class="cap cap-take">When you click "connect" in Cowork, this is what happens underneath. It is what you did with Composio in Session 1.</p>
+      </div>
+    </div>
+
+    <div class="step imgstep" id="9.4" data-x="37880" data-y="15460" data-scale="1.0" data-rotate="11">
+      <div class="fitbox">
+      <div class="imgcard"><img src="assets/diagrams/038_s2-container-breakbulk.png" alt="Before the container" width="1536" height="1024"></div>
+      <p class="cap cap-head">Before the container</p>
+      <p class="cap cap-body">Every factory packed its own way: crates, bundles, sacks. Every port had to learn each factory's manual and everything was loaded by hand, piece by piece. Slow, expensive and different everywhere.</p>
+      <p class="cap cap-take">Without a standard box, every connection is handmade.</p>
+      </div>
+    </div>
+
+    <div class="step imgstep" id="9.5" data-x="38370" data-y="17040" data-scale="1.0" data-rotate="-4">
+      <div class="fitbox">
+      <div class="imgcard"><img src="assets/diagrams/039_s2-container-era.png" alt="The container didn&#x27;t replace the cargo, it wrapped it" width="1536" height="1024"></div>
+      <p class="cap cap-head">The container didn't replace the cargo, it wrapped it</p>
+      <p class="cap cap-body">One standard box, and any crane, any ship and any port can handle it. The cargo inside didn't change: it is still the same. The API didn't disappear either, it got wrapped in something standard.</p>
+      <p class="cap cap-take">The factory packs once and the whole world knows how to handle it.</p>
+      </div>
+    </div>
+
+    <div class="step close flow-close" id="thank-you" data-x="0" data-y="19800" data-scale="3.0" data-rotate="0">
+      <img class="monogram monogram--sm" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+      <div class="flow-row flow-human"><span class="flow-step">Plan</span><span class="flow-sep">&rarr;</span><span class="flow-step">Design</span><span class="flow-sep">&rarr;</span><span class="flow-step">Connect</span></div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-row flow-ai"><span class="flow-step">Collect</span><span class="flow-sep">&rarr;</span><span class="flow-step">Interpret</span><span class="flow-sep">&rarr;</span><span class="flow-step">Execute</span><span class="flow-sep">&rarr;</span><span class="flow-step">Present</span></div>
+    </div>
+
+    <!-- Overview step: LAST, scaled to frame the whole canvas. Reached with O. -->
+    <div id="overview" class="step" data-x="19015" data-y="8400" data-scale="23"></div>
+
+  </div>
+
+  <div class="brand-watermark">
+    <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+    <span>fiba labs</span>
+  </div>
+
+  <div class="hint">
+    <kbd>&rarr;</kbd> next &nbsp; <kbd>&larr;</kbd> back &nbsp; <kbd>Space</kbd> advance &nbsp; <kbd>O</kbd> overview
+  </div>
+
+  <button class="navhelp-btn" id="navhelp-btn" type="button"
+          aria-label="Keyboard shortcuts" aria-expanded="false"
+          aria-controls="navhelp-panel">?</button>
+  <div class="navhelp-panel" id="navhelp-panel" data-open="false" role="dialog"
+       aria-label="Keyboard shortcuts">
+    <div class="navhelp-row"><kbd>&rarr;</kbd> <span>next</span></div>
+    <div class="navhelp-row"><kbd>&larr;</kbd> <span>back</span></div>
+    <div class="navhelp-row"><kbd>Space</kbd> <span>advance</span></div>
+    <div class="navhelp-row"><kbd>O</kbd> <span>overview</span></div>
+    <div class="navhelp-row"><kbd>?</kbd> <span>this help</span></div>
+  </div>
+
+  <script src="impress.js"></script>
+  <script>
+    // Responsive (gotcha #6, the real fix). impress.js computes its window
+    // scale as min(innerW / data-width, innerH / data-height). With the default
+    // 1920x1080 canvas, a narrow phone (e.g. 390px) collapses the scale to ~0.2
+    // and every step renders microscopic, no matter the font sizes. Before init,
+    // shrink the reference canvas on portrait/narrow viewports so the fit math
+    // targets the phone, and let data-min-scale hold the floor. Recompute on
+    // orientation change by re-initialising.
+    var root = document.getElementById("impress");
+    function fitCanvasToViewport() {
+      var w = window.innerWidth, h = window.innerHeight;
+      var portrait = w < 820;
+      if (portrait) {
+        // Map the reference canvas onto the ACTUAL viewport so windowScale lands
+        // at ~1.0 and the step fills the phone. Step content is already authored
+        // in vw on narrow screens (.step { width: 92vw } plus clamp() type), so
+        // scale 1 is the right target. A fixed 760px reference keeps the aspect
+        // ratio but floors out at data-min-scale (~0.55) and renders every step
+        // at barely half the screen width (verified 197px of 390px, 260910).
+        root.setAttribute("data-width", String(w));
+        root.setAttribute("data-height", String(h));
+      } else {
+        root.setAttribute("data-width", "1920");
+        root.setAttribute("data-height", "1080");
+      }
+    }
+    fitCanvasToViewport();
+
+    var api = impress();
+    api.init();
+
+    // impress.js 2.x binds Esc to fullscreen, NOT overview.
+    // Overview is a dedicated zoomed-out step, reached with the "O" key.
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "o" || event.key === "O") {
+        event.preventDefault();
+        api.goto(document.getElementById("overview"));
+      }
+    }, false);
+
+    // Mouse-wheel / trackpad navigation (additive: arrows, space, click still work).
+    // Down = next, Up = back, on every step including the overview (wraps via impress).
+    // A cooldown swallows the burst of wheel events one gesture fires, so a single
+    // scroll flick advances exactly ONE slide instead of skipping several.
+    var wheelLocked = false;
+    document.addEventListener("wheel", function (event) {
+      event.preventDefault();               // don't let the page scroll behind the canvas
+      if (wheelLocked) return;
+      var dy = event.deltaY;
+      if (Math.abs(dy) < 8) return;         // ignore tiny/noisy deltas
+      wheelLocked = true;
+      if (dy > 0) { api.next(); } else { api.prev(); }
+      // release after the transition settles (impress default transition ~1s)
+      window.setTimeout(function () { wheelLocked = false; }, 900);
+    }, { passive: false });
+
+    // On resize / orientation change, recompute the reference canvas and re-fit
+    // the active step. impress.js reads data-width at init, so we update the
+    // attributes and re-goto the current step to apply the new window scale.
+    var current = function () {
+      return document.querySelector(".step.active") || document.getElementById("overview");
+    };
+    var resizeTimer;
+    window.addEventListener("resize", function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () {
+        fitCanvasToViewport();
+        var step = current();
+        if (step) { api.goto(step); }
+      }, 250);
+    });
+  </script>
+
+
+<script>
+(function () {
+  var btn   = document.getElementById('navhelp-btn');
+  var panel = document.getElementById('navhelp-panel');
+  if (!btn || !panel) return;
+
+  function setOpen(open) {
+    panel.setAttribute('data-open', open ? 'true' : 'false');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    // El atributo en body es lo que apaga la marca de agua desde el CSS.
+    document.body.setAttribute('data-help', open ? 'open' : 'closed');
+  }
+  function isOpen() { return panel.getAttribute('data-open') === 'true'; }
+
+  btn.addEventListener('click', function (e) { e.stopPropagation(); setOpen(!isOpen()); });
+
+  document.addEventListener('keydown', function (e) {
+    // "?" abre y cierra. Escape solo cierra.
+    if (e.key === '?') { e.preventDefault(); setOpen(!isOpen()); return; }
+    if (e.key === 'Escape' && isOpen()) { e.preventDefault(); setOpen(false); }
+  });
+
+  // Clic afuera cierra. Adentro del panel no, para poder leerlo tranquilo.
+  document.addEventListener('click', function (e) {
+    if (isOpen() && !panel.contains(e.target)) setOpen(false);
+  });
+
+  // Al cambiar de diapositiva se cierra: la ayuda es de consulta, no algo que
+  // deba quedar puesto mientras se presenta. stepenter se dispara SOBRE EL
+  // PASO y no burbujea, así que hay que engancharlo paso por paso; en document
+  // no llega. El hashchange cubre además la navegación por URL.
+  document.querySelectorAll('.step').forEach(function (st) {
+    st.addEventListener('impress:stepenter', function () { setOpen(false); });
+  });
+  window.addEventListener('hashchange', function () { setOpen(false); });
+
+  setOpen(false);
+
+  // Guarda anti-choque. El CSS ya achica y corre la marca en pantallas cortas,
+  // pero el alto de la diapositiva depende del texto de cada tarjeta, así que
+  // en algunas el cierre igual llega a la esquina. Acá se mide de verdad: si el
+  // texto se acerca a menos de 14px de la marca, la marca se apaga en esa
+  // tarjeta. Es lo mismo que hace el panel de ayuda al abrirse, pero
+  // automático y por diapositiva.
+  var wm = document.querySelector('.brand-watermark');
+  function dodgeWatermark(step) {
+    // El paso llega por parámetro desde stepenter. Buscar '.step.active' acá
+    // no servía: en ese momento impress todavía no movió la clase, así que la
+    // guarda medía la diapositiva ANTERIOR y nunca se activaba.
+    var active = step || document.querySelector('.step.active');
+    if (!active) return;
+    var text = active.querySelector('.cap-take') || active.querySelector('.cap-body');
+    var PAD = 14;
+    // Los DOS elementos fijos se apartan, no solo la marca. En pantallas
+    // anchas (ultrawide de 34") la escala de impress es mucho mayor y la
+    // diapositiva llega a las dos esquinas de abajo, así que el botón de ayuda
+    // choca tanto como la marca.
+    [wm, btn].forEach(function (el) {
+      if (!el) return;
+      if (!text) { el.style.opacity = ''; return; }
+      var t = text.getBoundingClientRect(), r = el.getBoundingClientRect();
+      var hits = t.right + PAD > r.left && t.left - PAD < r.right &&
+                 t.bottom + PAD > r.top && t.top - PAD < r.bottom;
+      if (el === btn) {
+        // El botón nunca desaparece del todo: se vuelve casi transparente pero
+        // sigue ahí y clickeable, porque es el único acceso a la ayuda.
+        el.style.opacity = hits ? '0.12' : '';
+      } else {
+        el.style.opacity = hits ? '0' : '';
+      }
+    });
+  }
+  document.querySelectorAll('.step').forEach(function (st) {
+    st.addEventListener('impress:stepenter', function () {
+      // Dos pasadas: una inmediata para que no se vea el choque durante la
+      // transición, y otra al terminar, cuando las medidas ya son las finales.
+      dodgeWatermark(st);
+      setTimeout(function () { dodgeWatermark(st); }, 950);
+    });
+  });
+  window.addEventListener('resize', function () { dodgeWatermark(); });
+  window.addEventListener('load', function () { dodgeWatermark(); });
+  setTimeout(function () { dodgeWatermark(); }, 400);
+})();
+</script>
+
+<script>
+(function () {
+  // Sin argumento mide las 39; con un paso mide solo ese (lo que usa
+  // stepenter). La cuenta es exactamente la misma en los dos casos.
+  function fitSteps(only) {
+    var list = only ? [only] : document.querySelectorAll('.imgstep');
+    Array.prototype.forEach.call(list, function (step) {
+      var box = step.querySelector('.fitbox');
+      if (!box) return;
+      var padY = parseFloat(getComputedStyle(step).getPropertyValue('--pad-y')) || 0;
+      var avail = 1080 - 2 * padY;
+      // NO hay que compensar data-scale, y esto costó entenderlo. Cada paso
+      // tiene su escala de cámara (FRAMES, 0.6 a 1.7), pero impress la ANULA al
+      // enfocar el paso: hace zoom del lienzo por 1/data-scale, justamente para
+      // que el paso activo llene la pantalla. O sea que el contenido NUNCA se
+      // dibuja a la escala de cámara y no hay nada que compensar. data-scale
+      // controla el VIAJE (cuánto entra y sale la cámara en la transición), no
+      // el tamaño final del contenido.
+      //
+      // Meter un factor 1/frame acá corregía dos veces: las tarjetas de frame
+      // alto salían a media escala (frame 1.5 daba 400px de imagen en vez de
+      // 710) y el error crecía con el frame. Se probó midiendo: sacando ese
+      // factor, la 3.1 pasa de 339px a 645px de imagen y el bloque cae exacto
+      // en los 972 de alto útil.
+      //
+      // Medir SIEMPRE en limpio. Esto es lo delicado de toda la rutina: si se
+      // mide con una escala ya puesta, cada pasada compone sobre la anterior y
+      // el factor se desbarranca (aparecían 0.42 en tarjetas de 95 caracteres,
+      // que entran de sobra). Se saca el transform, se fuerza reflow leyendo
+      // offsetHeight, y recién ahí se mide.
+      //
+      // offsetHeight, NO getBoundingClientRect: el paso vive dentro del canvas
+      // de impress, que le aplica su propia escala y otra por paso según esté
+      // activo. getBoundingClientRect las incluye todas; offsetHeight es de
+      // layout, así que ningún transform lo toca y ya viene en píxeles del
+      // escenario.
+      box.style.removeProperty('--shrink');
+      box.style.transform = 'none';
+      var natural = box.offsetHeight;   // lectura = reflow forzado
+      box.style.removeProperty('transform');
+      // Un solo factor: si el bloque no entra en el alto útil, se escala
+      // entero hasta que entre. Si entra, queda en 1 y se ve tal cual se
+      // compuso en el lab.
+      box.style.setProperty('--shrink', natural > avail ? (avail / natural).toFixed(4) : 1);
+    });
+  }
+  // Cuándo medir. La primera pasada NO puede ser la única: al cargar, los PNG
+  // todavía no decodificaron y, sin alto intrínseco, el navegador reserva de
+  // más. Ese factor equivocado quedaba pegado y había tarjetas a media escala
+  // (3.1 y 9.5 quedaban en 342 y 402px en vez de 710).
+  //
+  // El disparador que de verdad arregla el caso es stepenter: cuando la
+  // tarjeta se vuelve la activa ya está todo cargado y medido, así que ahí el
+  // número sale bien aunque las pasadas anteriores se hayan equivocado. Se
+  // recalcula SOLO ese paso, que es barato y evita tocar los otros 38 en plena
+  // transición.
+  function fitOne(step) {
+    if (step && step.classList.contains('imgstep')) fitSteps(step);
+  }
+  // impress dispatcha stepenter SOBRE EL PASO y el evento no burbujea, así que
+  // escucharlo en document no sirve (fue exactamente el bug: el listener nunca
+  // corría y las tarjetas se quedaban con el factor de la primera pasada, la
+  // que mide antes de que decodifiquen los PNG). Se engancha paso por paso.
+  document.querySelectorAll('.imgstep').forEach(function (step) {
+    step.addEventListener('impress:stepenter', function () { fitOne(step); });
+  });
+  // Red de seguridad, por si alguna imagen llega tarde estando ya parado en la
+  // tarjeta (caché frío, red lenta).
+  document.querySelectorAll('.imgstep img').forEach(function (img) {
+    if (img.complete && img.naturalWidth > 0) return;
+    var again = function () { fitOne(img.closest('.imgstep')); };
+    img.addEventListener('load', again);
+    img.addEventListener('error', again);
+  });
+  window.addEventListener('resize', function () { fitSteps(); });
+  // Las fuentes cambian el alto del texto cuando llegan, así que hay que
+  // volver a medir todo.
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { fitSteps(); });
+  window.addEventListener('load', function () { fitSteps(); });
+  fitSteps();
+})();
+</script>
+</body>
+</html>

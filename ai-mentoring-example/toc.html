@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contents &middot; Understanding AI, and how to work with it</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root { --accent:#8B5CF6; --indigo:#4C2D91; --bg:#F7F6FB; --fg:#1A1A1A; --muted:#6b6b75; }
+    html,body { margin:0; background:var(--bg); color:var(--fg);
+      font-family:'Inter',sans-serif; }
+    .wrap { max-width:820px; margin:0 auto; padding:56px 28px 80px; }
+    header { display:flex; align-items:center; gap:14px; margin-bottom:8px; }
+    header img { width:44px; height:auto; }
+    h1 { font-family:'Space Grotesk',sans-serif; font-size:30px; margin:0; }
+    .eyebrow { color:var(--accent); font-size:13px; letter-spacing:.06em;
+      text-transform:uppercase; margin:0 0 28px; }
+    ul { list-style:none; padding:0; margin:0; }
+    li a { display:flex; align-items:baseline; gap:12px; text-decoration:none;
+      color:var(--fg); padding:7px 10px; border-radius:8px; }
+    li a:hover { background:#ece9f7; color:var(--indigo); }
+    .toc-num { font-family:'Space Grotesk',sans-serif; color:var(--accent);
+      min-width:46px; font-weight:500; }
+    .toc-home a { font-family:'Space Grotesk',sans-serif; font-weight:700;
+      font-size:19px; }
+    .toc-home .toc-sub { display:block; color:var(--muted); font-size:13px;
+      padding:0 10px 6px 10px; }
+    .toc-section { margin-top:18px; }
+    .toc-section a { font-family:'Space Grotesk',sans-serif; font-weight:700;
+      font-size:20px; color:var(--indigo); }
+    .toc-slide a { font-size:15px; color:#333; }
+    .toc-slide .toc-num { color:var(--muted); font-weight:400; }
+    .hint { margin-top:40px; color:var(--muted); font-size:13px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+      <div>
+        <p class="eyebrow">Fiba Labs · AI Mentoring</p>
+        <h1>Understanding AI, and how to work with it</h1>
+      </div>
+    </header>
+    <ul>
+      <li class="toc-home"><a href="index.html#/home" target="_blank" rel="noopener">Home</a><span class="toc-sub">Understanding AI, and how to work with it</span></li>
+      <li class="toc-section"><a href="index.html#/1" target="_blank" rel="noopener"><span class="toc-num">1</span>The starting point</a></li>
+      <li class="toc-slide"><a href="index.html#/1.1" target="_blank" rel="noopener"><span class="toc-num">1.1</span>Everything works the same way, and here is the leap</a></li>
+      <li class="toc-slide"><a href="index.html#/1.2" target="_blank" rel="noopener"><span class="toc-num">1.2</span>From loose chat to skills</a></li>
+      <li class="toc-slide"><a href="index.html#/1.3" target="_blank" rel="noopener"><span class="toc-num">1.3</span>The map of models</a></li>
+      <li class="toc-slide"><a href="index.html#/1.4" target="_blank" rel="noopener"><span class="toc-num">1.4</span>Agent vs skill</a></li>
+      <li class="toc-slide"><a href="index.html#/1.5" target="_blank" rel="noopener"><span class="toc-num">1.5</span>The three pillars</a></li>
+      <li class="toc-section"><a href="index.html#/2" target="_blank" rel="noopener"><span class="toc-num">2</span>File types</a></li>
+      <li class="toc-slide"><a href="index.html#/2.1" target="_blank" rel="noopener"><span class="toc-num">2.1</span>Every format works the same way</a></li>
+      <li class="toc-slide"><a href="index.html#/2.2" target="_blank" rel="noopener"><span class="toc-num">2.2</span>.csv: a table as plain text</a></li>
+      <li class="toc-slide"><a href="index.html#/2.3" target="_blank" rel="noopener"><span class="toc-num">2.3</span>.docx: a package in disguise</a></li>
+      <li class="toc-slide"><a href="index.html#/2.4" target="_blank" rel="noopener"><span class="toc-num">2.4</span>.xlsx: the same trick, for spreadsheets</a></li>
+      <li class="toc-slide"><a href="index.html#/2.5" target="_blank" rel="noopener"><span class="toc-num">2.5</span>.pdf: a photo for printing</a></li>
+      <li class="toc-slide"><a href="index.html#/2.6" target="_blank" rel="noopener"><span class="toc-num">2.6</span>.html: the page your browser draws</a></li>
+      <li class="toc-slide"><a href="index.html#/2.7" target="_blank" rel="noopener"><span class="toc-num">2.7</span>An Artifact is an .html file that Claude builds and maintains</a></li>
+      <li class="toc-slide"><a href="index.html#/2.8" target="_blank" rel="noopener"><span class="toc-num">2.8</span>.json: the format data travels in between apps</a></li>
+      <li class="toc-slide"><a href="index.html#/2.9" target="_blank" rel="noopener"><span class="toc-num">2.9</span>.py: plain text that runs</a></li>
+      <li class="toc-section"><a href="index.html#/3" target="_blank" rel="noopener"><span class="toc-num">3</span>The MD family</a></li>
+      <li class="toc-slide"><a href="index.html#/3.1" target="_blank" rel="noopener"><span class="toc-num">3.1</span>MD: the language of instructions</a></li>
+      <li class="toc-slide"><a href="index.html#/3.2" target="_blank" rel="noopener"><span class="toc-num">3.2</span>One format, many roles</a></li>
+      <li class="toc-slide"><a href="index.html#/3.3" target="_blank" rel="noopener"><span class="toc-num">3.3</span>CLAUDE.md and AGENTS.md: the same file</a></li>
+      <li class="toc-slide"><a href="index.html#/3.4" target="_blank" rel="noopener"><span class="toc-num">3.4</span>SKILL.md: the recipe for repeatable work</a></li>
+      <li class="toc-slide"><a href="index.html#/3.5" target="_blank" rel="noopener"><span class="toc-num">3.5</span>...plus the folder around it</a></li>
+      <li class="toc-section"><a href="index.html#/4" target="_blank" rel="noopener"><span class="toc-num">4</span>Prompting</a></li>
+      <li class="toc-slide"><a href="index.html#/4.1" target="_blank" rel="noopener"><span class="toc-num">4.1</span>The same task, asked a different way → completely different results</a></li>
+      <li class="toc-slide"><a href="index.html#/4.2" target="_blank" rel="noopener"><span class="toc-num">4.2</span>There are dozens of formulas for writing prompts</a></li>
+      <li class="toc-slide"><a href="index.html#/4.3" target="_blank" rel="noopener"><span class="toc-num">4.3</span>Let the AI write your prompt</a></li>
+      <li class="toc-section"><a href="index.html#/5" target="_blank" rel="noopener"><span class="toc-num">5</span>Tokens and context</a></li>
+      <li class="toc-slide"><a href="index.html#/5.1" target="_blank" rel="noopener"><span class="toc-num">5.1</span>A token is a piece of text</a></li>
+      <li class="toc-slide"><a href="index.html#/5.2" target="_blank" rel="noopener"><span class="toc-num">5.2</span>Usage comes in time windows</a></li>
+      <li class="toc-slide"><a href="index.html#/5.3" target="_blank" rel="noopener"><span class="toc-num">5.3</span>The same word, two meanings</a></li>
+      <li class="toc-slide"><a href="index.html#/5.4" target="_blank" rel="noopener"><span class="toc-num">5.4</span>The context window, and its two sides</a></li>
+      <li class="toc-section"><a href="index.html#/6" target="_blank" rel="noopener"><span class="toc-num">6</span>Session 2</a></li>
+      <li class="toc-section"><a href="index.html#/7" target="_blank" rel="noopener"><span class="toc-num">7</span>How to drive it</a></li>
+      <li class="toc-slide"><a href="index.html#/7.1" target="_blank" rel="noopener"><span class="toc-num">7.1</span>Four ways to handle it better</a></li>
+      <li class="toc-slide"><a href="index.html#/7.2" target="_blank" rel="noopener"><span class="toc-num">7.2</span>Every turn resends everything</a></li>
+      <li class="toc-slide"><a href="index.html#/7.3" target="_blank" rel="noopener"><span class="toc-num">7.3</span>If you stepped away, don&#x27;t go back to the same chat</a></li>
+      <li class="toc-slide"><a href="index.html#/7.4" target="_blank" rel="noopener"><span class="toc-num">7.4</span>Cowork doesn&#x27;t compact</a></li>
+      <li class="toc-slide"><a href="index.html#/7.5" target="_blank" rel="noopener"><span class="toc-num">7.5</span>One task per conversation</a></li>
+      <li class="toc-section"><a href="index.html#/8" target="_blank" rel="noopener"><span class="toc-num">8</span>Judgment and security</a></li>
+      <li class="toc-slide"><a href="index.html#/8.1" target="_blank" rel="noopener"><span class="toc-num">8.1</span>Aim for 80, you finish it</a></li>
+      <li class="toc-slide"><a href="index.html#/8.2" target="_blank" rel="noopener"><span class="toc-num">8.2</span>Automate the chain, keep the gate</a></li>
+      <li class="toc-slide"><a href="index.html#/8.3" target="_blank" rel="noopener"><span class="toc-num">8.3</span>The conversation is not the risk; access is</a></li>
+      <li class="toc-section"><a href="index.html#/9" target="_blank" rel="noopener"><span class="toc-num">9</span>APIs and MCP</a></li>
+      <li class="toc-slide"><a href="index.html#/9.1" target="_blank" rel="noopener"><span class="toc-num">9.1</span>The API is the waiter</a></li>
+      <li class="toc-slide"><a href="index.html#/9.2" target="_blank" rel="noopener"><span class="toc-num">9.2</span>The assistant learns, but each kitchen still has its own waiter</a></li>
+      <li class="toc-slide"><a href="index.html#/9.3" target="_blank" rel="noopener"><span class="toc-num">9.3</span>The same uniform in every kitchen</a></li>
+      <li class="toc-slide"><a href="index.html#/9.4" target="_blank" rel="noopener"><span class="toc-num">9.4</span>Before the container</a></li>
+      <li class="toc-slide"><a href="index.html#/9.5" target="_blank" rel="noopener"><span class="toc-num">9.5</span>The container didn&#x27;t replace the cargo, it wrapped it</a></li>
+      <li class="toc-section toc-end"><a href="index.html#/thank-you" target="_blank" rel="noopener"><span class="toc-num">&#9733;</span>Close</a></li>
+      <li class="toc-section"><a href="index.html#/overview" target="_blank" rel="noopener"><span class="toc-num">&#9633;</span>Overview (the whole canvas)</a></li>
+    </ul>
+    <p class="hint">Each link opens the deck in a new tab, on that slide.</p>
+  </div>
+</body>
+</html>
