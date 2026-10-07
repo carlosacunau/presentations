@@ -1,3 +1,16 @@
+# Fiba AI Mentoring deck (English master template)
+
+The current English image deck for AI mentoring. Use this one; older versions are in
+`~/OS/archive/261007_mentoring-deck-older/` (no version suffixes here, git history covers rollback).
+
+- Base: English copy of the image-deck template (Brainbest Session 1 content).
+- File types (Section 02) are one grid slide: rows marked `tile` in `INDEX.md` merge into it.
+  Switch a row back to `image` to give that format its own slide.
+- Rebuild with `python3 build.py`. New deck: `cp -r` this folder, then follow the notes below.
+- Spanish variant: `~/OS/presentations/_template-image-deck/` (no grid yet).
+
+---
+
 # Plantilla: deck de imágenes (impress.js)
 
 **Esto es una plantilla, no un deck en uso.** Es una copia exacta y funcional de
