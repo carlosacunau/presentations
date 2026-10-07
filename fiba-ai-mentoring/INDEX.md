@@ -5,7 +5,7 @@ every row on the infinite plane in this order. To re-choreograph, reorder rows.
 
 **How to read it**
 - **#**: order on the camera path (within its section).
-- **Kind**: `cover` | `section` | `image` | `tile` | `close`. Consecutive `tile` rows merge into one grid slide; switch a row back to `image` to give it its own slide.
+- **Kind**: `cover` | `section` | `image` | `tile` | `close`. Notes `size: full` on an `image` row = the drawing fills the screen, captions not shown. Consecutive `tile` rows merge into one grid slide; switch a row back to `image` to give it its own slide.
 - **Image file**: filename inside `assets/diagrams/`. Blank for cover/section/close.
 - **Caption**: the on-screen text under the image. On `image` rows it is **three fields
   separated by `||`**, exactly the same as the gallery scene box:
@@ -52,7 +52,8 @@ for the text.
 | # | Kind | Image file | Caption | Notes |
 |---|------|-----------|---------|-------|
 | 1 | section | (none) | File types | num 02 |
-| 2 | image | 006_s1-file-anatomy.png | Every format works the same way \|\| Bytes, a processor, and how they look on screen. \|\| Some are easier to process, some display better and others are easier for the AI to understand. | ext: .TXT |
+| 2 | image | 006a_raw-formats.png | Open a file and this is what is inside \|\| The same café menu, written four ways. Each format has its own markup (in blue), but all four are plain text: you can read them as they are, and so can the AI. \|\| If you can read it raw, the AI can too. | size: full · source: ~/OS/diagrams/workshops/file-formats-compare/261007_raw-formats.html |
+| 2 | tile | 006_s1-file-anatomy.png | .txt: just characters, the simplest format \|\| Bytes, a processor, and how they look on screen. \|\| Some are easier to process, some display better and others are easier for the AI to understand. | ext: .TXT |
 | 3 | tile | 007_s1-file-csv.png | .csv: a table as plain text \|\| One row per line, columns separated by commas. Excel opens it as a table and the AI reads it directly, no frills. \|\| The easiest format for giving tabular data to the AI. | ext: .CSV |
 | 4 | tile | 008_s1-file-docx.png | .docx: a package in disguise \|\| Unreadable bytes, a processor (Word) that interprets them, and the clean document you see. Inside it is a ZIP of XML: text, styles and images stored separately. \|\| Opened without Word it is garbage; the clean view depends on the processor. | ext: .DOCX |
 | 5 | tile | 009_s1-file-xlsx.png | .xlsx: the same trick, for spreadsheets \|\| Same three steps: the bytes, a processor (Excel), and the spreadsheet you see. Inside, a ZIP with the sheets, the formulas and the formatting. \|\| Your spreadsheet is easier to "take apart" than it looks, and the AI knows how to take it apart. | ext: .XLSX |
@@ -61,6 +62,7 @@ for the text.
 | 8 | tile | 012_s1-file-artifact.png | An Artifact is an .html file that Claude builds and maintains \|\| Dashboards, calculators, interactive reports: .html pages that Claude puts together for you and that live inside Cowork, always up to date. \|\| When you see "Artifact", think: a web page made to fit me. | ext: ARTIFACT |
 | 9 | tile | 013_s1-file-json.png | .json: the format data travels in between apps \|\| The format machines commonly use to pass structured information to each other. When a connector brings data from another app, it will probably come like this. \|\| Each value travels with its label and its type, so the software doesn't have to guess. | ext: .JSON |
 | 10 | tile | 014_s1-file-py.png | .py: plain text that runs \|\| It takes inputs, calculates and shows a result. You are not going to program: the AI writes and runs this code for you when the task needs it. \|\| If you see that Claude "wrote a script", it is probably a .py file that a "compiler" runs. | ext: .PY |
+| 11 | tile | 015_s1-md-format.png | .md: plain text with light formatting \|\| Plain text with light formatting: simple symbols (# for headings, - for lists) that any tool displays well. It is the format the AI prefers for reading and writing instructions. \|\| The .md format is the one the AI reads most easily, and it often uses it as an "intermediate" step to read or present files. | ext: .MD |
 
 ---
 

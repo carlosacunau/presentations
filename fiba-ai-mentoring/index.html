@@ -343,14 +343,20 @@
       border-top: 2px dashed #86efac;
       padding-top: 11px;
     }
-    /* Grilla de repaso: 4 columnas en píxeles de escenario, igual que las
+    /* Grilla de repaso: dos filas en píxeles de escenario, igual que las
        tarjetas de imagen (nada de vw/vh, ver arriba). Si no entra, --shrink
        escala el bloque entero como en cualquier .imgstep. */
     .gridstep .tilegrid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      /* Always two rows: --cols = half the tiles, rounded up. Flex (not grid)
+         so a shorter last row sits centered under the first. */
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
       gap: 34px 30px;
       width: 100%;
+    }
+    .gridstep .tilegrid > .tile {
+      width: calc((100% - (var(--cols, 4) - 1) * 30px) / var(--cols, 4));
     }
     .gridstep .tile { display: flex; flex-direction: column; align-items: center; gap: 8px; }
     .gridstep .imgcard { padding: 8px; border-radius: 12px; }
@@ -367,6 +373,9 @@
       font-size: 22px; font-weight: 700; line-height: 1.2;
       text-align: center; color: var(--fg);
     }
+    /* size: full -> the drawing takes the whole stage, no text under it. */
+    .fullstep { --img-h: 1010px; padding: 0; }
+    .fullstep .imgcard { padding: 6px; }
     .cover { width: 1180px; }
     .cover h1 { font-size: clamp(40px, 6.5vw, 70px); }
     .section-step { width: 900px; }
@@ -621,18 +630,13 @@
       <p class="lead">Every format works the same way.</p>
     </div>
 
-    <div class="step imgstep" id="2.1" data-x="14410" data-y="2190" data-scale="1.0" data-rotate="7">
-      <div class="fitbox">
-      <p class="ext-title">.TXT</p>
-      <div class="imgcard"><img src="assets/diagrams/006_s1-file-anatomy.png" alt="Every format works the same way" width="1536" height="1024"></div>
-      <p class="cap cap-head">Every format works the same way</p>
-      <p class="cap cap-body">Bytes, a processor, and how they look on screen.</p>
-      <p class="cap cap-take">Some are easier to process, some display better and others are easier for the AI to understand.</p>
-      </div>
+    <div class="step imgstep fullstep" id="2.1" data-x="14410" data-y="2190" data-scale="1.0" data-rotate="7">
+      <div class="fitbox"><div class="imgcard"><img src="assets/diagrams/006a_raw-formats.png" alt="Open a file and this is what is inside" width="3840" height="2160"></div></div>
     </div>
 
     <div class="step imgstep gridstep" id="2.2" data-x="17820" data-y="1790" data-scale="1.0" data-rotate="-14">
-      <div class="fitbox"><div class="tilegrid">
+      <div class="fitbox"><div class="tilegrid" style="--cols:5">
+        <div class="tile"><p class="tile-ext">.TXT</p><div class="imgcard"><img src="assets/diagrams/006_s1-file-anatomy.png" alt=".txt: just characters, the simplest format" width="1536" height="1024"></div><p class="tile-head">just characters, the simplest format</p></div>
         <div class="tile"><p class="tile-ext">.CSV</p><div class="imgcard"><img src="assets/diagrams/007_s1-file-csv.png" alt=".csv: a table as plain text" width="1536" height="1024"></div><p class="tile-head">a table as plain text</p></div>
         <div class="tile"><p class="tile-ext">.DOCX</p><div class="imgcard"><img src="assets/diagrams/008_s1-file-docx.png" alt=".docx: a package in disguise" width="1536" height="1024"></div><p class="tile-head">a package in disguise</p></div>
         <div class="tile"><p class="tile-ext">.XLSX</p><div class="imgcard"><img src="assets/diagrams/009_s1-file-xlsx.png" alt=".xlsx: the same trick, for spreadsheets" width="1536" height="1024"></div><p class="tile-head">the same trick, for spreadsheets</p></div>
@@ -641,6 +645,7 @@
         <div class="tile"><p class="tile-ext">ARTIFACT</p><div class="imgcard"><img src="assets/diagrams/012_s1-file-artifact.png" alt="An Artifact is an .html file that Claude builds and maintains" width="1536" height="1024"></div><p class="tile-head">An Artifact is an .html file that Claude builds and maintains</p></div>
         <div class="tile"><p class="tile-ext">.JSON</p><div class="imgcard"><img src="assets/diagrams/013_s1-file-json.png" alt=".json: the format data travels in between apps" width="1536" height="1024"></div><p class="tile-head">the format data travels in between apps</p></div>
         <div class="tile"><p class="tile-ext">.PY</p><div class="imgcard"><img src="assets/diagrams/014_s1-file-py.png" alt=".py: plain text that runs" width="1536" height="1024"></div><p class="tile-head">plain text that runs</p></div>
+        <div class="tile"><p class="tile-ext">.MD</p><div class="imgcard"><img src="assets/diagrams/015_s1-md-format.png" alt=".md: plain text with light formatting" width="1536" height="1024"></div><p class="tile-head">plain text with light formatting</p></div>
       </div></div>
     </div>
 

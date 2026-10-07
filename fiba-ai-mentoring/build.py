@@ -130,7 +130,10 @@ def parse_index(path):
                 cur["images"].append(dict(img=imgfile, cap=head,
                                           body=body, take=take,
                                           ext=(ex.group(1).strip() if ex else ""),
-                                          tile=(kind == "tile")))
+                                          tile=(kind == "tile"),
+                                          # `size: full` in Notes: the drawing fills the whole
+                                          # screen, no on-screen text (for code you must read).
+                                          full=bool(re.search(r'\bsize:\s*full\b', (c[4] if len(c) > 4 else ""), re.I))))
     return cover, sections, close
 
 
@@ -188,7 +191,7 @@ for si, s in enumerate(_sections, start=1):
         STEPS.append(dict(kind="image", sid=f"{si}.{ii}",
                           img=im["img"], cap=im["cap"],
                           body=im.get("body", ""), take=im.get("take", ""),
-                          ext=im.get("ext", "")))
+                          ext=im.get("ext", ""), full=im.get("full", False)))
 if close:
     if close.get("flow"):
         STEPS.append(dict(kind="close", sid="thank-you", flow=True,
@@ -368,6 +371,17 @@ def attr(t):
     # attribute-safe: escape quotes/ampersands so captions with " don't break alt=""
     return html.escape(t, quote=True)
 
+def png_size(name):
+    # Real pixel size from the PNG header, so a 16:9 drawing is not declared 3:2.
+    try:
+        with open(os.path.join(DEST, "assets", "diagrams", name), "rb") as f:
+            head = f.read(24)
+        if head[:8] == b"\x89PNG\r\n\x1a\n":
+            return int.from_bytes(head[16:20], "big"), int.from_bytes(head[20:24], "big")
+    except OSError:
+        pass
+    return 1536, 1024
+
 def render(s):
     k = s["kind"]
     x, y, sc = int(s["x"]), int(s["y"]), s["scale"]
@@ -398,6 +412,12 @@ def render(s):
       <p class="eyebrow">{s["num"]}</p>
       <h2 class="section-title">{s["title"]}</h2>
       <p class="lead">{s["sub"]}</p>
+    </div>'''
+    if k == "image" and s.get("full"):
+        w, h = png_size(s["img"])
+        return f'''
+    <div class="step imgstep fullstep" {attrs}>
+      <div class="fitbox"><div class="imgcard"><img src="assets/diagrams/{s["img"]}" alt="{attr(s["cap"])}" width="{w}" height="{h}"></div></div>
     </div>'''
     if k == "image":
         # Tres campos, igual que el scene box de la galería: titular, cuerpo y
@@ -444,7 +464,7 @@ def render(s):
         <div class="tile">{ext}<div class="imgcard"><img src="assets/diagrams/{t["img"]}" alt="{attr(t["cap"])}" width="1536" height="1024"></div><p class="tile-head">{esc(head)}</p></div>''')
         return f'''
     <div class="step imgstep gridstep" {attrs}>
-      <div class="fitbox"><div class="tilegrid">{"".join(tiles)}
+      <div class="fitbox"><div class="tilegrid" style="--cols:{max(1, (len(tiles) + 1) // 2) if len(tiles) > 4 else len(tiles)}">{"".join(tiles)}
       </div></div>
     </div>'''
     if k == "close":
@@ -643,14 +663,20 @@ EXTRA_CSS = """
       border-top: 2px dashed #86efac;
       padding-top: 11px;
     }
-    /* Grilla de repaso: 4 columnas en píxeles de escenario, igual que las
+    /* Grilla de repaso: dos filas en píxeles de escenario, igual que las
        tarjetas de imagen (nada de vw/vh, ver arriba). Si no entra, --shrink
        escala el bloque entero como en cualquier .imgstep. */
     .gridstep .tilegrid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      /* Always two rows: --cols = half the tiles, rounded up. Flex (not grid)
+         so a shorter last row sits centered under the first. */
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
       gap: 34px 30px;
       width: 100%;
+    }
+    .gridstep .tilegrid > .tile {
+      width: calc((100% - (var(--cols, 4) - 1) * 30px) / var(--cols, 4));
     }
     .gridstep .tile { display: flex; flex-direction: column; align-items: center; gap: 8px; }
     .gridstep .imgcard { padding: 8px; border-radius: 12px; }
@@ -667,6 +693,9 @@ EXTRA_CSS = """
       font-size: 22px; font-weight: 700; line-height: 1.2;
       text-align: center; color: var(--fg);
     }
+    /* size: full -> the drawing takes the whole stage, no text under it. */
+    .fullstep { --img-h: 1010px; padding: 0; }
+    .fullstep .imgcard { padding: 6px; }
     .cover { width: 1180px; }
     .cover h1 { font-size: clamp(40px, 6.5vw, 70px); }
     .section-step { width: 900px; }
