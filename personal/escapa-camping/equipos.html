@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta property="og:title" content="Equipos Campeggio 2026">
+<meta property="og:description" content="Capitanes: armen sus equipos de turno para el Campeggio, 6 al 8 de noviembre.">
+<title>Equipos Campeggio 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Zilla+Slab:wght@600;700&display=swap">
+<style>
+/* Layout: camp duty board. Header, then one horizontal kanban: two "Disponibles" columns, then five crew columns with fixed slots. */
+:root {
+  --bg: #eef1ec;
+  --surface: #ffffff;
+  --sunk: #e3e8e1;
+  --ink: #1c2620;
+  --muted: #5b6960;
+  --line: #cfd8cf;
+  --accent: #2d6a49;
+  --accent-ink: #ffffff;
+  --warn: #b3261e;
+  --c-cena-vie: #c2552b;
+  --c-desayunos: #a77a0c;
+  --c-almuerzo: #2a6c93;
+  --c-cena-sab: #7b4a8e;
+  --c-logistica: #2d7a51;
+  --font-display: "Zilla Slab", "Rockwell", Georgia, serif;
+  --font-body: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --radius: 8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111713; --surface: #19211c; --sunk: #0d120f; --ink: #e5ebe6; --muted: #9aa99f; --line: #2c3a31;
+    --accent: #5fb487; --accent-ink: #0d1510; --warn: #f28b82;
+    --c-cena-vie: #e48057; --c-desayunos: #d9ad45; --c-almuerzo: #62a9d4; --c-cena-sab: #b386c6; --c-logistica: #63b98a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111713; --surface: #19211c; --sunk: #0d120f; --ink: #e5ebe6; --muted: #9aa99f; --line: #2c3a31;
+  --accent: #5fb487; --accent-ink: #0d1510; --warn: #f28b82;
+  --c-cena-vie: #e48057; --c-desayunos: #d9ad45; --c-almuerzo: #62a9d4; --c-cena-sab: #b386c6; --c-logistica: #63b98a;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.4; }
+.wrap { padding-inline: 16px; padding-block: 20px 120px; max-width: 1640px; margin: 0 auto; display: grid; gap: 16px; }
+
+header { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 24px; }
+.eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 4px; }
+h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(28px, 4vw, 40px); line-height: 1.05; margin: 0; text-wrap: balance; }
+.how { margin: 6px 0 0; color: var(--muted); max-width: 62ch; }
+button { font: inherit; color: inherit; cursor: pointer; }
+.btn { border: 1px solid var(--line); background: var(--surface); padding: 8px 14px; border-radius: 999px; font-weight: 600; font-size: 14px; }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn.danger { color: var(--warn); }
+.btn:focus-visible, .chip:focus-visible, .x:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.notice { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 14px; color: var(--muted); }
+
+.tally { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.tally b { color: var(--ink); }
+
+.board-scroll { overflow-x: auto; margin-inline: -16px; padding-inline: 16px; padding-bottom: 8px; scroll-snap-type: x proximity; }
+.board { display: grid; grid-auto-flow: column; grid-auto-columns: 210px; gap: 12px; align-items: start; width: max-content; }
+.col { background: var(--sunk); border-radius: var(--radius); padding: 8px; display: grid; gap: 6px; align-content: start; scroll-snap-align: start; min-height: 120px; }
+.col.drop { outline: 2px dashed var(--accent); outline-offset: -2px; }
+.col.pool { background: transparent; border: 1px dashed var(--line); }
+.col-head { padding: 6px 6px 8px; display: grid; gap: 2px; }
+.col-title { font-family: var(--font-display); font-weight: 700; font-size: 19px; line-height: 1.1; display: flex; align-items: center; gap: 8px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; background: var(--crew); flex: none; }
+.col-sub { font-size: 12px; color: var(--muted); }
+.count { font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--muted); }
+.count.full { color: var(--crew); }
+.count.over { color: var(--warn); }
+.crew .col-head { background: color-mix(in srgb, var(--crew) 16%, var(--surface)); border-radius: 6px; }
+
+.chip { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 6px; width: 100%; text-align: left; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 7px 9px; min-height: 44px; }
+.chip[draggable="true"] { cursor: grab; }
+.chip .who { min-width: 0; display: grid; }
+.chip .name { font-weight: 600; font-size: 14px; overflow-wrap: anywhere; }
+.chip .kid { font-size: 12px; color: var(--muted); }
+.chip.sel { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+.chip.fixed { background: color-mix(in srgb, var(--crew) 10%, var(--surface)); border-color: color-mix(in srgb, var(--crew) 45%, var(--line)); cursor: default; }
+.role { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--crew); }
+.x { border: 0; background: transparent; color: var(--muted); width: 28px; height: 28px; border-radius: 50%; font-size: 18px; line-height: 1; }
+.x:hover { background: var(--sunk); color: var(--ink); }
+.slot { border: 1px dashed var(--line); border-radius: 6px; min-height: 44px; display: grid; place-items: center; font-size: 12px; color: var(--muted); }
+.empty-pool { font-size: 13px; color: var(--muted); padding: 8px; }
+
+.sheet { position: fixed; left: 0; right: 0; bottom: 0; background: var(--surface); border-top: 1px solid var(--line); padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px)); box-shadow: 0 -8px 24px rgb(0 0 0 / .12); }
+.sheet-in { max-width: 1100px; margin: 0 auto; display: grid; gap: 10px; }
+.sheet p { margin: 0; font-weight: 600; }
+.sheet .opts { display: flex; flex-wrap: wrap; gap: 8px; }
+.sheet .opt { border: 1px solid color-mix(in srgb, var(--crew) 60%, var(--line)); background: color-mix(in srgb, var(--crew) 12%, var(--surface)); padding: 8px 12px; border-radius: 999px; font-weight: 600; font-size: 14px; }
+.sheet .opt:disabled { opacity: .45; cursor: not-allowed; }
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(24px + env(safe-area-inset-bottom, 0px)); background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 999px; font-weight: 600; font-size: 14px; max-width: calc(100% - 32px); }
+.sheet:not([hidden]) ~ .toast { bottom: calc(150px + env(safe-area-inset-bottom, 0px)); }
+.confirm { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+@media (prefers-reduced-motion: no-preference) { .chip { transition: box-shadow .12s, border-color .12s; } }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div>
+      <p class="eyebrow">Campeggio 2026 · 6 al 8 de noviembre</p>
+      <h1>Equipos de turno</h1>
+      <p class="how">Cada capitán arma su equipo. Arrastra un nombre de Disponibles a tu columna, o tócalo y elige el equipo. Si alguien ya está tomado, desaparece de la lista para todos.</p>
+    </div>
+  </header>
+  <div class="notice" id="notice">Cargando equipos...</div>
+  <div class="tally" id="tally"></div>
+  <div class="board-scroll"><div class="board" id="board"></div></div>
+</div>
+<div class="sheet" id="sheet" hidden><div class="sheet-in">
+  <p id="sheet-label"></p>
+  <div class="opts" id="sheet-opts"></div>
+</div></div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+const ROSTER = [["alessandro-corte","Alessandro Corte",["Emma"]],["bruno-vaccari","Bruno Vaccari",["Bruno"]],["carlos-acuna","Carlos Acuña",["Isabela"]],["carlos-peralta","Carlos Peralta",["Antonia"]],["carlos-carvajal","Carlos Carvajal",["Clara"]],["cristian-de-la-maza","Cristian de la Maza",["Alelí"]],["cristobal-calvo","Cristobal Calvo",["Simona"]],["daniel-avila","Daniel Ávila",["Salvador"]],["duilio-canepa","Duilio Canepa",["Simona"]],["federico-tasca","Federico Tasca",["Anna"]],["felipe-ban","Felipe Ban",["Raffaella"]],["felipe-lavagnino","Felipe Lavagnino",["Bruno"]],["felipe-valenzuela","Felipe Valenzuela",["Bruno"]],["francisco-caballero","Francisco Caballero",["Santiago"]],["franco-pesce","Franco Pesce",["Emilio"]],["gianfranco-casazza","Gianfranco Casazza",["Lucas"]],["herman-loose","Herman Loose",["Javier"]],["ignacio-pinochet","Ignacio Pinochet",["Clarita"]],["ivo-colombo","Ivo Colombo",["Fiorella"]],["john-hulse","John Hulse",["Amparo"]],["jorge-urrutia","Jorge Urrutia",["Clemente"]],["jose-ignacio-suazo","José Ignacio Suazo",["Dominga"]],["jose-miguel-valenzuela","José Miguel Valenzuela",["Tomás"]],["leonardo-carmona","Leonardo Carmona",["Eloísa"]],["marcelo-arias","Marcelo Arias",["Amalia"]],["marcelo-solari","Marcelo Solari",["Dante"]],["matias-bonet","Matias Bonet",["Lorenza"]],["maximiliano-zuniga","Maximiliano Zúñiga",["Franco"]],["piero-caszely","Piero Caszely",["Roberta"]],["nicolas-pardo","Nicolás Pardo",["Agustín"]],["nicolas-munoz","Nicolás Muñoz",["Matilde"]],["nicolas-stutzin","Nicolás Stutzin",["Emilio"]],["ramon-cruzat","Ramón Cruzat",["Tomás"]],["ricardo-contreras","Ricardo Contreras",["Gustavo"]],["romano-tempesta","Romano Tempesta",["Luca"]],["sandro-bruni","Sandro Bruni",["Cesare"]],["sebastian-senzacqua","Sebastian Senzacqua",["Antonio"]],["sebastian-farias","Sebastián Farías",["Dominga"]],["sergio-perez","Sergio Pérez",["Simón"]],["stefano-gorziglia","Stefano Gorziglia",["Vicente"]],["vladimiro-mimica","Vladimiro Mimica",["Mila"]],["gonzalo-caballero","Gonzalo Caballero",["Josefa"]],["fabio-costa","Fabio Costa",["Valentina"]],["mauricio-ferrari","Mauricio Ferrari",["Franco"]],["enrique-aguila","Enrique Águila",["Lorenza"]],["juan-villavicencio","Juan Villavicencio",["Juan"]],["recep-gani","Recep Gani",["Belén","Selim","Ali"]],["mauro-maldonado","Mauro Maldonado",["Ema"]],["mauricio-galdames","Mauricio Galdames",["Luisa","Laura"]]];
+
+// size = total people in the crew, fixed members included
+const CREWS = [
+  { id: "cena-vie",  name: "Cena viernes",  sub: "Viernes 6 de noviembre", size: 8,  fixed: [["felipe-ban", "Capitán"]] },
+  { id: "desayunos", name: "Desayunos",     sub: "Sábado y domingo",       size: 14, fixed: [["romano-tempesta", "Capitán"], ["carlos-carvajal", "Capitán"]] },
+  { id: "almuerzo",  name: "Almuerzo sábado", sub: "Sábado 7 de noviembre", size: 10, fixed: [["herman-loose", "Capitán"]] },
+  { id: "cena-sab",  name: "Cena sábado",   sub: "Sábado 7 de noviembre",  size: 10,  fixed: [["nicolas-pardo", "Capitán"]] },
+  { id: "logistica", name: "Logística y actividades", sub: "Todo el fin de semana", size: 7, fixed: [["felipe-valenzuela", "Capitán"], ["carlos-acuna", "Fijo"]] },
+];
+
+const PEOPLE = Object.fromEntries(ROSTER.map(([id, name, kids]) => [id, { id, name, kids }]));
+const CREW = Object.fromEntries(CREWS.map(c => [c.id, c]));
+const FIXED = new Set(CREWS.flatMap(c => c.fixed.map(f => f[0])));
+const POOL_IDS = ROSTER.map(r => r[0]).filter(id => !FIXED.has(id))
+  .sort((a, b) => PEOPLE[a].name.localeCompare(PEOPLE[b].name, "es"));
+const SUPABASE_URL = "https://jkkrpleiwfcmvjalwbkn.supabase.co";
+const SUPABASE_KEY = "sb_publishable_o3539AFeGJFSP8nLS32bNg_97qUgpva"; // public read key; writes go through campeggio_move()
+
+let picks = {};        // personId -> crewId (from the shared store)
+let sb = null;
+let canWrite = true;
+let selected = null;
+let busy = false;
+
+const $ = id => document.getElementById(id);
+const kidLine = kids => kids.length === 1 ? kids[0] : kids.slice(0, -1).join(", ") + " y " + kids[kids.length - 1];
+const openSlots = c => c.size - c.fixed.length;
+const members = crewId => POOL_IDS.filter(id => picks[id] === crewId);
+
+function toast(msg) {
+  const t = $("toast");
+  t.textContent = msg; t.hidden = false;
+  clearTimeout(toast.timer);
+  toast.timer = setTimeout(() => { t.hidden = true; }, 2600);
+}
+
+function chip(id, crew, opts = {}) {
+  const p = PEOPLE[id];
+  const el = document.createElement(opts.fixed ? "div" : "button");
+  el.className = "chip" + (opts.fixed ? " fixed" : "") + (selected === id ? " sel" : "");
+  if (!opts.fixed) {
+    el.type = "button";
+    el.draggable = canWrite;
+    el.dataset.id = id;
+    el.addEventListener("click", e => { if (e.target.closest(".x")) return; select(id); });
+    el.addEventListener("dragstart", e => { e.dataTransfer.setData("text/plain", id); e.dataTransfer.effectAllowed = "move"; });
+  }
+  const who = document.createElement("span");
+  who.className = "who";
+  if (opts.role) { const r = document.createElement("span"); r.className = "role"; r.textContent = opts.role; who.append(r); }
+  const n = document.createElement("span"); n.className = "name"; n.textContent = p.name;
+  const k = document.createElement("span"); k.className = "kid"; k.textContent = kidLine(p.kids);
+  who.append(n, k);
+  el.append(who);
+  if (crew && !opts.fixed && canWrite) {
+    const x = document.createElement("span");
+    x.className = "x"; x.textContent = "×"; x.title = "Devolver a disponibles";
+    x.setAttribute("role", "button"); x.setAttribute("aria-label", "Devolver a " + p.name + " a disponibles"); x.tabIndex = 0;
+    const back = e => { e.stopPropagation(); move(id, null); };
+    x.addEventListener("click", back);
+    x.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); back(e); } });
+    el.append(x);
+  }
+  return el;
+}
+
+function dropTarget(el, crewId) {
+  el.addEventListener("dragover", e => { if (!canWrite) return; e.preventDefault(); el.classList.add("drop"); });
+  el.addEventListener("dragleave", e => { if (!el.contains(e.relatedTarget)) el.classList.remove("drop"); });
+  el.addEventListener("drop", e => {
+    e.preventDefault(); el.classList.remove("drop");
+    const id = e.dataTransfer.getData("text/plain");
+    if (PEOPLE[id] && !FIXED.has(id)) move(id, crewId);
+  });
+}
+
+function render() {
+  const board = $("board");
+  board.replaceChildren();
+  const avail = POOL_IDS.filter(id => !picks[id]);
+  const half = Math.ceil(avail.length / 2);
+  [avail.slice(0, half), avail.slice(half)].forEach((list, i) => {
+    const col = document.createElement("section");
+    col.className = "col pool";
+    const head = document.createElement("div"); head.className = "col-head";
+    const t = document.createElement("div"); t.className = "col-title";
+    t.textContent = i === 0 ? "Disponibles" : " ";
+    const s = document.createElement("div"); s.className = "count";
+    s.textContent = i === 0 ? avail.length + " sin equipo" : " ";
+    head.append(t, s); col.append(head);
+    list.forEach(id => col.append(chip(id, null)));
+    if (!list.length && i === 0) { const e = document.createElement("div"); e.className = "empty-pool"; e.textContent = "Todos tienen equipo."; col.append(e); }
+    dropTarget(col, null);
+    board.append(col);
+  });
+
+  CREWS.forEach(c => {
+    const col = document.createElement("section");
+    col.className = "col crew";
+    col.style.setProperty("--crew", "var(--c-" + c.id + ")");
+    const m = members(c.id);
+    const head = document.createElement("div"); head.className = "col-head";
+    const t = document.createElement("div"); t.className = "col-title";
+    const dot = document.createElement("span"); dot.className = "dot";
+    t.append(dot, document.createTextNode(c.name));
+    const s = document.createElement("div"); s.className = "col-sub"; s.textContent = c.sub;
+    const n = document.createElement("div");
+    const total = m.length + c.fixed.length;
+    n.className = "count" + (total === c.size ? " full" : total > c.size ? " over" : "");
+    n.textContent = total + " de " + c.size + (total === c.size ? " · completo" : total > c.size ? " · sobran " + (total - c.size) : " · faltan " + (c.size - total));
+    head.append(t, s, n); col.append(head);
+    c.fixed.forEach(([id, role]) => col.append(chip(id, c.id, { fixed: true, role })));
+    m.forEach(id => col.append(chip(id, c.id)));
+    for (let i = m.length; i < openSlots(c); i++) {
+      const sl = document.createElement("div"); sl.className = "slot"; sl.textContent = "Cupo libre"; col.append(sl);
+    }
+    dropTarget(col, c.id);
+    board.append(col);
+  });
+
+  const placed = POOL_IDS.length - avail.length;
+  $("tally").innerHTML = "";
+  [["Asignados", placed + " de " + POOL_IDS.length], ["Por asignar", avail.length], ["Total papás", ROSTER.length]].forEach(([k, v]) => {
+    const sp = document.createElement("span"); sp.append(k + ": "); const b = document.createElement("b"); b.textContent = v; sp.append(b); $("tally").append(sp);
+  });
+  renderSheet();
+}
+
+function select(id) {
+  if (!canWrite) return;
+  selected = selected === id ? null : id;
+  render();
+}
+
+function renderSheet() {
+  const sheet = $("sheet");
+  if (!selected) { sheet.hidden = true; return; }
+  const p = PEOPLE[selected];
+  const cur = picks[selected] || null;
+  $("sheet-label").textContent = cur ? "Mover a " + p.name + " a:" : "¿A qué equipo va " + p.name + "?";
+  const opts = $("sheet-opts"); opts.replaceChildren();
+  CREWS.forEach(c => {
+    if (c.id === cur) return;
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "opt"; b.style.setProperty("--crew", "var(--c-" + c.id + ")");
+    const left = openSlots(c) - members(c.id).length;
+    b.textContent = c.name + (left > 0 ? " (" + left + ")" : " (completo)");
+    b.disabled = left <= 0;
+    b.addEventListener("click", () => move(selected, c.id));
+    opts.append(b);
+  });
+  if (cur) {
+    const b = document.createElement("button"); b.type = "button"; b.className = "btn"; b.textContent = "Devolver a disponibles";
+    b.addEventListener("click", () => move(selected, null)); opts.append(b);
+  }
+  const cancel = document.createElement("button"); cancel.type = "button"; cancel.className = "btn"; cancel.textContent = "Cancelar";
+  cancel.addEventListener("click", () => { selected = null; render(); });
+  opts.append(cancel);
+  sheet.hidden = false;
+}
+
+async function move(id, crewId) {
+  if (!canWrite || busy || picks[id] === (crewId || undefined)) { selected = null; render(); return; }
+  if (!sb) { toast("La lista no está disponible. Recarga la página."); return; }
+  if (crewId && members(crewId).length >= openSlots(CREW[crewId])) { toast(CREW[crewId].name + " ya está completo."); return; }
+  const expected = picks[id] || null;
+  busy = true;
+  try {
+    const { data, error } = await sb.rpc("campeggio_move", { p_person: id, p_from: expected, p_to: crewId || null });
+    if (error) throw error;
+    if (data === "ok") {
+      if (crewId) picks[id] = crewId; else delete picks[id];
+      selected = null;
+    } else if (data === "full") {
+      toast(CREW[crewId].name + " ya está completo.");
+      await load();
+    } else {
+      await load();
+      toast(PEOPLE[id].name + " ya está en " + (CREW[picks[id]]?.name || "Disponibles") + ".");
+    }
+  } catch (e) {
+    toast("No se pudo guardar. Revisa tu conexión e intenta de nuevo.");
+  } finally { busy = false; render(); }
+}
+
+function setReadOnly(msg) {
+  canWrite = false; selected = null;
+  const n = $("notice");
+  n.textContent = msg || "Puedes ver los equipos, pero no editarlos. Pídele a Carlos acceso de edición si eres capitán.";
+  n.hidden = false;
+  render();
+}
+
+render();
+
+async function load() {
+  const { data, error } = await sb.from("campeggio_picks").select("person_id,team");
+  if (error) throw error;
+  const next = {};
+  data.forEach(r => { if (r.team && CREW[r.team] && PEOPLE[r.person_id] && !FIXED.has(r.person_id)) next[r.person_id] = r.team; });
+  picks = next;
+}
+
+(async () => {
+  try {
+    sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    await load();
+    $("notice").hidden = true;
+    render();
+    sb.channel("campeggio_picks")
+      .on("postgres_changes", { event: "*", schema: "public", table: "campeggio_picks" }, p => {
+        const r = p.new;
+        if (!r || !PEOPLE[r.person_id] || FIXED.has(r.person_id)) return;
+        if (r.team && CREW[r.team]) picks[r.person_id] = r.team; else delete picks[r.person_id];
+        render();
+      })
+      .subscribe();
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") load().then(render).catch(() => {});
+    });
+  } catch {
+    setReadOnly("No se pudo cargar la lista. Revisa tu conexión y recarga la página.");
+  }
+})();
+</script>
+</body>
+</html>
