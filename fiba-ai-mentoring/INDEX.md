@@ -52,7 +52,7 @@ for the text.
 | # | Kind | Image file | Caption | Notes |
 |---|------|-----------|---------|-------|
 | 1 | section | (none) | File types | num 02 |
-| 2 | image | 006a_raw-formats.png | Open a file and this is what is inside \|\| The same café menu, written four ways. Each format has its own markup (in blue), but all four are plain text: you can read them as they are, and so can the AI. \|\| If you can read it raw, the AI can too. | size: full · source: ~/OS/diagrams/workshops/file-formats-compare/261007_raw-formats.html |
+| 2 | image | 006a_raw-formats.png | Open a file and this is what is inside \|\| Four files from the same café. Each format has its own markup (in blue), but all four are plain text: you can read them as they are, and so can the AI. \|\| If you can read it raw, the AI can too. | size: full · source: ~/OS/diagrams/workshops/file-formats-compare/raw-loop-prompt.md (Codex, whiteboard-marker) |
 | 2 | tile | 006_s1-file-anatomy.png | .txt: just characters, the simplest format \|\| Bytes, a processor, and how they look on screen. \|\| Some are easier to process, some display better and others are easier for the AI to understand. | ext: .TXT |
 | 3 | tile | 007_s1-file-csv.png | .csv: a table as plain text \|\| One row per line, columns separated by commas. Excel opens it as a table and the AI reads it directly, no frills. \|\| The easiest format for giving tabular data to the AI. | ext: .CSV |
 | 4 | tile | 008_s1-file-docx.png | .docx: a package in disguise \|\| Unreadable bytes, a processor (Word) that interprets them, and the clean document you see. Inside it is a ZIP of XML: text, styles and images stored separately. \|\| Opened without Word it is garbage; the clean view depends on the processor. | ext: .DOCX |
