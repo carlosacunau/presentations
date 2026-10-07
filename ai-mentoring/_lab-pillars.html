@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Lab, tres pilares</title>
+<style>
+/* ------------------------------------------------------------------
+   LAB SLIDE, standalone. No impress, no zoom, no camera.
+   The point: get the COMPOSITION right on a fixed 1920x1080 stage.
+   Everything below is authored in stage pixels. Once this looks right,
+   the same numbers go back into build.py and impress scales the whole
+   stage to any screen with one uniform transform.
+   ------------------------------------------------------------------ */
+:root {
+  --accent:    #8B5CF6;
+  --accent-2:  #C9BEEA;
+  --bg:        #F7F6FB;
+  --fg:        #1A1A1A;
+  --muted:     #6b6b75;
+  --green:     #12703a;
+  --font-head: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --grid-rgba: rgba(139,92,246,0.05);
+
+  /* ---- the knobs we are tuning ---- */
+  --pad-x:      90px;   /* left/right margin inside the stage */
+  --pad-y:      54px;   /* top/bottom margin inside the stage */
+  /* Valores elegidos por Carlos en el lab (260814). */
+  --img-h:     710px;   /* image height */
+  --gap:         8px;   /* image to heading */
+  --head-size:  40px;
+  --body-size:  24px;
+  --take-size:  29px;
+  --text-w:   1560px;   /* measure of the text column */
+  --head-tracking: 0.100em;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body {
+  background: #2a2a33;
+  font-family: var(--font-body);
+  overflow: hidden;
+}
+
+/* The stage: exactly what impress calls 1920x1080. Scaled to fit the
+   browser here purely so we can see it, same as impress would.
+   The wrapper sits BELOW the fixed HUD (padding-top), so the stage is
+   centred in the space that is actually left over, not in the window. */
+.stage-wrap {
+  position: fixed;
+  top: 96px; left: 0; right: 0; bottom: 0;
+  display: grid; place-items: center;
+}
+/* Caja del tamaño YA escalado; adentro va el stage con origin top-left. */
+.stage-box {
+  position: relative;
+  width: calc(1920px * var(--fit, 1));
+  height: calc(1080px * var(--fit, 1));
+}
+.stage {
+  width: 1920px; height: 1080px;
+  flex: none;
+  transform: scale(var(--fit, 1));
+  /* transform NO cambia el tamaño de layout: el elemento sigue midiendo
+     1920x1080 para el grid, así que centrar dejaba la mitad fuera de la
+     ventana. Con origin arriba-izquierda y un contenedor del tamaño ya
+     escalado, lo que se ve y lo que ocupa coinciden. */
+  transform-origin: top left;
+  position: absolute; top: 0; left: 0;
+  background: var(--bg);
+  background-image:
+    linear-gradient(var(--grid-rgba) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-rgba) 1px, transparent 1px);
+  background-size: 40px 40px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 70px rgba(0,0,0,.45);
+}
+
+/* The slide content, centred in the stage */
+.slide {
+  position: absolute; inset: 0;
+  padding: var(--pad-y) var(--pad-x);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap);
+}
+/* Si la composición no entra en el alto útil, NO se recorta ni se achica un
+   elemento suelto: se escala el bloque entero, así todas las proporciones que
+   elegiste (imagen vs texto, tamaños relativos, tracking) quedan intactas.
+   El factor lo calcula el JS y lo deja en --shrink. */
+.slide > * { transform-origin: center top; }
+.fitbox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap);
+  width: 100%;
+  transform: scale(var(--shrink, 1));
+  transform-origin: center center;
+}
+.imgcard {
+  background: #fff;
+  border: 1px solid var(--accent-2);
+  border-radius: 14px;
+  padding: 12px;
+  box-shadow: 0 18px 50px rgba(40,20,90,0.10);
+  flex: none;
+}
+.imgcard img {
+  display: block;
+  height: var(--img-h);
+  width: auto;
+  border-radius: 8px;
+}
+.cap { margin: 0; max-width: var(--text-w); text-align: center; }
+.cap-head {
+  font-family: var(--font-head);
+  font-size: var(--head-size);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--fg);
+  /* Mayúsculas por CSS, no en el texto: INDEX.md sigue guardando el titular
+     en capitalización normal, así que se puede volver atrás cambiando una
+     sola línea y no 39 filas de la tabla. El tracking extra es necesario
+     porque en mayúsculas las letras se ven apretadas al tamaño de display. */
+  text-transform: var(--head-transform, uppercase);
+  letter-spacing: var(--head-tracking, .045em);
+}
+.cap-body {
+  margin-top: 14px;
+  font-size: var(--body-size);
+  line-height: 1.38;
+  color: var(--fg);
+  /* Justificado con guionado: en español, justificar sin partir palabras abre
+     huecos enormes entre palabras, porque las palabras son largas. El
+     lang="es" del <html> es lo que le dice al navegador con qué reglas
+     partir. text-wrap: pretty se saca a propósito: pelea con justify. */
+  text-align: var(--body-align, justify);
+  text-align-last: left;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+.cap-take {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 2px dashed #86efac;
+  font-size: var(--take-size);
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--green);
+}
+.brand {
+  position: absolute; left: 34px; bottom: 26px;
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--font-head); font-size: 18px; color: var(--muted);
+}
+.brand img { width: 40px; height: auto; }
+
+/* ---- lab chrome, not part of the slide ---- */
+.hud {
+  position: fixed; top: 0; left: 0; right: 0; height: 96px;
+  display: flex; gap: 12px 18px; flex-wrap: wrap; align-items: center;
+  padding: 8px 14px; background: #16161c; color: #e8e6e3;
+  font: 12px/1.3 ui-monospace, SFMono-Regular, Menlo, monospace; z-index: 10;
+  overflow: hidden;
+}
+.hud label { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+.hud input[type=range] { width: 100px; }
+.hud output { min-width: 46px; color: #7aa2ff; }
+.hud .spacer { flex: 1; }
+.hud button {
+  font: inherit; padding: 5px 10px; border-radius: 5px; cursor: pointer;
+  border: 1px solid #39435a; background: #1d2230; color: #e8e6e3;
+}
+.hud button:hover { border-color: #7aa2ff; color: #7aa2ff; }
+.readout { color: #9aa4b5; }
+.readout b { color: #5cc98a; }
+</style>
+</head>
+<body>
+
+<div class="hud">
+  <label>img h <input id="imgh" type="range" min="380" max="900" step="10" value="710"><output id="o-imgh">710</output></label>
+  <label>body <input id="body" type="range" min="18" max="40" step="1" value="24"><output id="o-body">24</output></label>
+  <label>take <input id="take" type="range" min="18" max="44" step="1" value="29"><output id="o-take">29</output></label>
+  <label>head <input id="head" type="range" min="24" max="60" step="1" value="40"><output id="o-head">40</output></label>
+  <label>text w <input id="textw" type="range" min="900" max="1740" step="20" value="1560"><output id="o-textw">1560</output></label>
+  <label>gap <input id="gap" type="range" min="8" max="60" step="2" value="8"><output id="o-gap">8</output></label>
+  <label>track <input id="track" type="range" min="0" max="120" step="5" value="100"><output id="o-track">.100</output></label>
+  <label><input id="caps" type="checkbox" checked> CAPS</label>
+  <label><input id="just" type="checkbox" checked> justify</label>
+  <span class="spacer"></span>
+  <span class="readout" id="fill">fill: <b>-</b></span>
+  <button id="copy">copy values</button>
+</div>
+
+<div class="stage-wrap">
+ <div class="stage-box">
+  <div class="stage" id="stage">
+    <div class="slide">
+     <div class="fitbox" id="fitbox">
+      <div class="imgcard">
+        <img id="pic" src="assets/diagrams/005_s1-three-pillars.png" alt="Los tres pilares">
+      </div>
+      <p class="cap cap-head">Los tres pilares</p>
+      <p class="cap cap-body">Carpetas: aquí VIVEN tus datos y tu contexto: los archivos con los que trabajas y lo que la IA va produciendo; retomas trabajo anterior en vez de partir de cero. Conectores: por aquí ENTRAN los datos que viven en otras apps (correo, calendario, planillas, tu ERP): cada app publica sus datos y el conector se los trae a tu IA. Skills: trabajo repetible, capturado una vez y mejorado con el tiempo.</p>
+      <p class="cap cap-take">Estos tres son la estructura: dónde vive tu material, por dónde entran los datos al sistema y qué trabajo se ejecuta sobre los datos.</p>
+     </div>
+    </div>
+    <div class="brand"><img src="assets/fiba_labs_monogram.png" alt="">fiba labs</div>
+  </div>
+ </div>
+</div>
+
+<script>
+const root = document.documentElement;
+const stage = document.getElementById('stage');
+
+// Scale the 1920x1080 stage to fit the window, exactly like impress does.
+function fit() {
+  // Measure the HUD live and park the stage under it. Doing this from the
+  // real HUD height (not a guessed constant) is what keeps the stage fully
+  // on screen when the controls wrap to a second row.
+  const hudH = Math.ceil(document.querySelector('.hud').getBoundingClientRect().height);
+  const wrap = document.querySelector('.stage-wrap');
+  wrap.style.top = hudH + 'px';
+  const availW = window.innerWidth;
+  const availH = window.innerHeight - hudH;
+  const s = Math.min((availW - 32) / 1920, (availH - 32) / 1080);
+  root.style.setProperty('--fit', s);
+  measure();
+}
+addEventListener('resize', fit);
+
+const knobs = [
+  ['imgh',  '--img-h',    'px'],
+  ['body',  '--body-size','px'],
+  ['take',  '--take-size','px'],
+  ['head',  '--head-size','px'],
+  ['textw', '--text-w',   'px'],
+  ['gap',   '--gap',      'px'],
+];
+for (const [id, varName] of knobs) {
+  const el = document.getElementById(id);
+  const out = document.getElementById('o-' + id);
+  el.addEventListener('input', () => {
+    root.style.setProperty(varName, el.value + 'px');
+    out.textContent = el.value;
+    measure();
+  });
+}
+
+// Fit the composition to the usable height by scaling the WHOLE block.
+// Nothing gets trimmed: if it does not fit, everything shrinks together and
+// the proportions Carlos chose survive intact.
+function measure() {
+  const box = document.getElementById('fitbox');
+  const card = document.querySelector('.imgcard');
+  const take = document.querySelector('.cap-take');
+  const sc = parseFloat(getComputedStyle(root).getPropertyValue('--fit')) || 1;
+  const padY = parseInt(getComputedStyle(root).getPropertyValue('--pad-y')) || 0;
+  const avail = 1080 - 2 * padY;
+
+  // Measure at shrink = 1 so the natural height is known.
+  root.style.setProperty('--shrink', 1);
+  const natural = (take.getBoundingClientRect().bottom - card.getBoundingClientRect().top) / sc;
+
+  const shrink = natural > avail ? avail / natural : 1;
+  root.style.setProperty('--shrink', shrink.toFixed(4));
+
+  const finalH = natural * shrink;
+  const pct = Math.round(finalH / 1080 * 100);
+  const shrunk = shrink < 0.999;
+  document.getElementById('fill').innerHTML =
+    'fill: <b style="color:#5cc98a">' + pct + '%</b>' +
+    ' · nat <b style="color:#9aa4b5">' + Math.round(natural) + 'px</b>' +
+    (shrunk
+      ? ' · scaled <b style="color:#e0bd63">' + (shrink * 100).toFixed(1) + '%</b>'
+      : ' · <b style="color:#5cc98a">1:1</b>');
+}
+
+// CAPS on/off and letter-spacing, so the choice is visible, not assumed.
+const caps = document.getElementById('caps');
+caps.addEventListener('change', () => {
+  root.style.setProperty('--head-transform', caps.checked ? 'uppercase' : 'none');
+  measure();
+});
+const just = document.getElementById('just');
+just.addEventListener('change', () => {
+  root.style.setProperty('--body-align', just.checked ? 'justify' : 'left');
+  measure();
+});
+const track = document.getElementById('track');
+track.addEventListener('input', () => {
+  const em = (track.value / 1000).toFixed(3);
+  root.style.setProperty('--head-tracking', em + 'em');
+  document.getElementById('o-track').textContent = em;
+  measure();
+});
+
+document.getElementById('copy').addEventListener('click', async () => {
+  const g = n => getComputedStyle(root).getPropertyValue(n).trim();
+  const txt = [
+    'img-h:      ' + g('--img-h'),
+    'body-size:  ' + g('--body-size'),
+    'take-size:  ' + g('--take-size'),
+    'head-size:  ' + g('--head-size'),
+    'text-w:     ' + g('--text-w'),
+    'gap:        ' + g('--gap'),
+    'pad-x/y:    ' + g('--pad-x') + ' / ' + g('--pad-y'),
+    'head-caps:  ' + (caps.checked ? 'uppercase' : 'none'),
+    'head-track: ' + (g('--head-tracking') || '.045em'),
+    'body-align: ' + (just.checked ? 'justify + hyphens' : 'left'),
+  ].join('\n');
+  try { await navigator.clipboard.writeText(txt); } catch (e) {}
+  const b = document.getElementById('copy');
+  b.textContent = 'copied'; setTimeout(() => b.textContent = 'copy values', 1200);
+});
+
+document.getElementById('pic').addEventListener('load', fit);
+fit();
+</script>
+</body>
+</html>
