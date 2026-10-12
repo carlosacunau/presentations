@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Práctica Olimpiada 4° Básico</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shantell+Sans:wght@500;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+  :root {
+    --paper: #fbfcfe;
+    --grid: #dfe7f3;
+    --ink: #1b2233;
+    --muted: #5b6577;
+    --pen: #2347c4;
+    --red: #c8323b;
+    --card: #ffffff;
+    --rule: #cfd8e6;
+    --display: "Shantell Sans", "Comic Sans MS", "Trebuchet MS", sans-serif;
+    --body: "Atkinson Hyperlegible", "Segoe UI", Arial, sans-serif;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #12161f; --grid: #1c2331; --ink: #e6eaf2; --muted: #9aa5b8;
+      --pen: #8ea6ff; --red: #ff7a80; --card: #171c27; --rule: #2a3344; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #12161f; --grid: #1c2331; --ink: #e6eaf2; --muted: #9aa5b8;
+    --pen: #8ea6ff; --red: #ff7a80; --card: #171c27; --rule: #2a3344; color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background-color: var(--paper);
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 22px 22px;
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 1.05rem;
+    line-height: 1.55;
+  }
+  .wrap { max-width: 46rem; margin: 0 auto; padding-inline: 16px; padding-block: 2rem 4rem; }
+
+  header { display: grid; gap: .5rem; margin-bottom: 1.5rem; }
+  .eyebrow { font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+  h1 { font-family: var(--display); font-weight: 700; font-size: clamp(1.8rem, 6vw, 2.6rem); line-height: 1.1; margin: 0; color: var(--pen); text-wrap: balance; }
+  .lede { margin: 0; color: var(--muted); max-width: 60ch; }
+
+  nav { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .5rem; }
+  nav a {
+    font-family: var(--display); font-weight: 700; text-decoration: none;
+    color: var(--pen); border: 2px solid var(--pen); border-radius: 999px;
+    padding: .3rem 1rem; background: var(--card);
+  }
+  nav a:hover, nav a:focus-visible { background: var(--pen); color: var(--card); outline: none; }
+
+  section { margin-top: 2.5rem; }
+  h2 { font-family: var(--display); font-weight: 700; font-size: 1.5rem; margin: 0 0 1rem; text-wrap: balance; }
+
+  ol.problems { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
+  .problem {
+    position: relative; background: var(--card); border: 1px solid var(--rule); border-radius: 6px;
+    padding: 1rem 1.1rem 1rem 3.6rem; min-width: 0;
+  }
+  .problem::before {
+    content: ""; position: absolute; left: 2.8rem; top: 0; bottom: 0; width: 2px; background: var(--red); opacity: .55;
+  }
+  .num {
+    position: absolute; left: .9rem; top: .85rem; font-family: var(--display); font-weight: 700;
+    font-size: 1.25rem; color: var(--red); font-variant-numeric: tabular-nums;
+  }
+  .problem p { margin: 0; max-width: 65ch; }
+
+  details { margin-top: .75rem; }
+  summary {
+    cursor: pointer; display: inline-block; font-weight: 700; font-size: .9rem; color: var(--pen);
+    list-style: none; padding: .2rem .1rem; border-bottom: 2px dotted var(--pen);
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary:focus-visible { outline: 2px solid var(--pen); outline-offset: 3px; }
+  details[open] summary { color: var(--muted); border-color: var(--muted); }
+  .ans { margin-top: .5rem; font-family: var(--display); color: var(--red); font-size: 1rem; }
+  .ans strong { font-weight: 700; }
+
+  footer { margin-top: 3rem; color: var(--muted); font-size: .9rem; }
+
+  @media (max-width: 420px) {
+    .problem { padding-left: 3rem; }
+    .problem::before { left: 2.3rem; }
+    .num { left: .6rem; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Olimpiada de Matemática · 4° Básico</div>
+    <h1>Práctica para la Olimpiada</h1>
+    <p class="lede">Dos sets de 9 problemas. Lee con calma, anota los datos en tu cuaderno y muestra tus cálculos. Abre la respuesta solo cuando ya tengas la tuya.</p>
+    <nav>
+      <a href="#set-a">Set A</a>
+      <a href="#set-b">Set B</a>
+    </nav>
+  </header>
+
+  <section id="set-a">
+    <h2>Set A</h2>
+    <ol class="problems">
+      <li class="problem"><span class="num">1</span>
+        <p>Un bus sale del colegio rumbo a un museo. En la primera parada se bajan 5 apoderados, en la segunda parada suben 3 profesores y en la tercera se bajan 7 niños. Al llegar al museo hay 38 personas en el bus. ¿Cuántas personas había en el bus al salir del colegio?</p>
+        <details><summary>Ver respuesta</summary><div class="ans">Se trabaja al revés: 38 + 7 − 3 + 5 = <strong>47 personas</strong>.</div></details>
+      </li>
+      <li class="problem"><span class="num">2</span>
+        <p>Una heladería vende en un día 248 conos de chocolate, 248 conos de vainilla, 175 conos de mango y 129 conos de limón. ¿Cuántos conos vende en total en un día? ¿Cuántos venderá en una semana completa?</p>
+        <details><summary>Ver respuesta</summary><div class="ans">248 + 248 + 175 + 129 = <strong>800 conos al día</strong>; 800 × 7 = <strong>5.600 en la semana</strong>.</div></details>
+      </li>
+      <li class="problem"><span class="num">3</span>
+        <p>Considera la siguiente secuencia: 2, 2, 4, 6, 10, 16, 26, x, 68, 110, y. Descubre el patrón e indica la diferencia entre los valores de y y de x.</p>
+        <details><summary>Ver respuesta</summary><div class="ans">Cada número es la suma de los dos anteriores: x = 16 + 26 = 42; y = 68 + 110 = 178. Diferencia: <strong>136</strong>.</div></details>
+      </li>
+      <li class="problem"><span class="num">4</span>
+        <p>Un caracol avanza 3 metros en 15 minutos. Su escondite está a 9 metros de una hoja de lechuga. ¿Cuánto tiempo demora el caracol en ir y volver 2 veces entre su escondite y la lechuga?</p>
+        <details><summary>Ver respuesta</summary><div class="ans">Ir y volver = 18 m. Cada metro toma 5 min: 18 × 5 = 90 min. Dos veces: <strong>180 min = 3 horas</strong>.</div></details>
+      </li>
+      <li class="problem"><span class="num">5</span>
+        <p>En un juego de celular, cada vez que completas un nivel recibes 75 monedas. Para desbloquear un personaje nuevo necesitas 1.000 monedas. ¿Cuántos niveles debes completar como mínimo para desbloquearlo? ¿Cuántas monedas te sobran?</p>
+        <details><summary>Ver respuesta</summary><div class="ans">13 niveles dan 975 (no alcanza); 14 niveles dan 1.050. <strong>14 niveles, sobran 50 monedas</strong>.</div></details>
+      </li>
+      <li class="problem"><span class="num">6</span>
+        <p>En un colegio, los cuartos básicos A, B, C y D tienen 30, 36, 34 y 40 estudiantes respectivamente. Un día faltó 1 de cada 7 estudiantes de los cuartos básicos. Si el A y el B tuvieron asistencia completa y en el C faltaron 4 estudiantes, ¿cuántos estudiantes asistieron en el D?</p>
+        <details><summary>Ver respuesta</summary><div class="ans">Total 140; faltaron 140 ÷ 7 = 20. En el D faltaron 20 − 4 = 16, así que asistieron 40 − 16 = <strong>24 estudiantes</strong>.</div></details>
+      </li>
+      <li class="problem"><span class="num">7</span>
+        <p>Tomás pega stickers en un cuaderno. Pega 2 stickers en la primera página, 4 en la segunda, 6 en la tercera, y así sucesivamente. Si Tomás tiene 120 stickers, ¿hasta qué página alcanza a pegar stickers? ¿Cuántos stickers pega en la última página?</p>
+        <details><summary>Ver respuesta</summary><div class="ans">Hasta la página 10 lleva 2 + 4 + … + 20 = 110. Quedan 10. <strong>Llega a la página 11 y ahí pega 10 stickers</strong>.</div></details>
+      </li>
+      <li class="problem"><span class="num">8</span>
+        <p>Valentina lleva galletas al colegio para repartirlas entre todos sus compañeros y compañeras. Sin contarse ella misma, calcula que puede dar 3 galletas a cada uno. Al llegar, se entera de que faltaron 10 compañeros, y así puede dar 5 galletas a cada uno de los presentes. ¿Cuántos estudiantes tiene el curso de Valentina?</p>
+        <details><summary>Ver respuesta</summary><div class="ans">Con 25 compañeros: 25 × 3 = 75 galletas, y 15 × 5 = 75. Contando a Valentina: <strong>26 estudiantes</strong>.</div></details>
+      </li>
+      <li class="problem"><span class="num">9</span>
+        <p>A una obra de teatro asistieron 412 personas. Había 108 niños, 96 niñas y el resto eran personas adultas. Si 3 de cada 4 adultos eran hombres, ¿cuántas mujeres adultas asistieron a la obra?</p>
+        <details><summary>Ver respuesta</summary><div class="ans">Adultos: 412 − 108 − 96 = 208. Mujeres, 1 de cada 4: 208 ÷ 4 = <strong>52 mujeres adultas</strong>.</div></details>
+      </li>
+    </ol>
+  </section>
+
+  <section id="set-b">
+    <h2>Set B</h2>
+    <ol class="problems">
+      <li class="problem"><span class="num">1</span>
+        <p>Dada la siguiente secuencia de números: 150, 143, 136, 129, x, 115, 108, 101, 94, 87, 80, y, 66, 59. Encuentra los valores de x y de y, y luego calcula 2y − x.</p>
+        <details><summary>Ver respuesta</summary><div class="ans">Baja de 7 en 7: x = 122, y = 73. 2 × 73 − 122 = <strong>24</strong>.</div></details>
+      </li>
+      <li class="problem"><span class="num">2</span>
+        <p>Una caja grande de lápices de colores contiene 24 estuches, y cada estuche trae 12 lápices. ¿Cuántos lápices hay en una caja grande y media?</p>
+        <details><summary>Ver respuesta</summary><div class="ans">Una caja: 24 × 12 = 288. Media caja: 144. Total: <strong>432 lápices</strong>.</div></details>
+      </li>
+      <li class="problem"><span class="num">3</span>
+        <p>Martina y Sofía son hermanas y quieren comprar algunas cosas. Martina quiere un estuche de $5.490 y un cuaderno de $2.380. Sofía quiere una pelota de $6.750 y unos calcetines de $3.990. Si su abuelo les regala $18.000, ¿les alcanza para comprar todo? ¿Cuánto dinero les falta o les sobra?</p>
+        <details><summary>Ver respuesta</summary><div class="ans">Martina $7.870 + Sofía $10.740 = $18.610. <strong>No alcanza, faltan $610</strong>.</div></details>
+      </li>
+      <li class="problem"><span class="num">4</span>
+        <p>Don Julián tiene un terreno de 4.800 m². Quiere usar un cuarto del terreno para hacer un huerto. Del huerto, la mitad será para lechugas, 1/3 para zanahorias y el resto para tomates. ¿Cuántos m² usará para lechugas, para zanahorias y para tomates?</p>
+        <details><summary>Ver respuesta</summary><div class="ans">Huerto: 4.800 ÷ 4 = 1.200 m². <strong>Lechugas 600 m², zanahorias 400 m², tomates 200 m²</strong>.</div></details>
+      </li>
+      <li class="problem"><span class="num">5</span>
+        <p>Martín planeó leer un libro en 20 días, leyendo 12 páginas cada día. Después de leer durante 5 días, el libro le gustó tanto que decidió leer 20 páginas cada día siguiente. ¿Cuántos días en total le tomó leer el libro? Si empezó a leer un miércoles, ¿qué día de la semana terminó?</p>
+        <details><summary>Ver respuesta</summary><div class="ans">Libro: 240 páginas. En 5 días lee 60; quedan 180 ÷ 20 = 9 días. Total <strong>14 días</strong>, termina un <strong>martes</strong>.</div></details>
+      </li>
+      <li class="problem"><span class="num">6</span>
+        <p>Desde una estación sale un tren cada 25 minutos. El primer tren sale a las 7:00 de la mañana. ¿A qué hora sale el décimo tren?</p>
+        <details><summary>Ver respuesta</summary><div class="ans">Entre el 1° y el 10° hay 9 intervalos: 9 × 25 = 225 min = 3 h 45 min. <strong>10:45</strong>.</div></details>
+      </li>
+      <li class="problem"><span class="num">7</span>
+        <p>Hoy Pedro tiene 9 años y su papá tiene 37 años. ¿Dentro de cuántos años el papá tendrá exactamente el doble de la edad de Pedro?</p>
+        <details><summary>Ver respuesta</summary><div class="ans">En 19 años: Pedro 28, papá 56. <strong>19 años</strong>.</div></details>
+      </li>
+      <li class="problem"><span class="num">8</span>
+        <p>Seis amigos se encuentran en una fiesta y cada uno saluda con la mano una sola vez a cada uno de los demás. ¿Cuántos saludos de mano hay en total?</p>
+        <details><summary>Ver respuesta</summary><div class="ans">5 + 4 + 3 + 2 + 1 = <strong>15 saludos</strong>.</div></details>
+      </li>
+      <li class="problem"><span class="num">9</span>
+        <p>Con 6 cuadrados iguales de 4 cm de lado se arma un rectángulo de 2 filas y 3 columnas, sin dejar espacios. ¿Cuál es el perímetro del rectángulo?</p>
+        <details><summary>Ver respuesta</summary><div class="ans">El rectángulo mide 12 cm × 8 cm: 12 + 8 + 12 + 8 = <strong>40 cm</strong>.</div></details>
+      </li>
+    </ol>
+  </section>
+
+  <footer>Problemas de práctica inspirados en la Olimpiada de Matemática 2026 de cuarto básico.</footer>
+</div>
+</body>
+</html>
