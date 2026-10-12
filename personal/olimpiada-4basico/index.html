@@ -95,6 +95,44 @@
     .problem::before { left: 2.3rem; }
     .num { left: .6rem; }
   }
+
+  nav button {
+    font: inherit; font-family: var(--display); font-weight: 700; cursor: pointer;
+    color: var(--card); background: var(--pen); border: 2px solid var(--pen); border-radius: 999px;
+    padding: .3rem 1rem;
+  }
+  .print-only { display: none; }
+
+  @media print {
+    @page { margin: 12mm 14mm; }
+    :root {
+      --paper: #fff; --ink: #000; --muted: #333; --pen: #1f3fae; --red: #b0262e;
+      --card: #fff; --rule: #999; color-scheme: light;
+    }
+    body { background: #fff; font-size: 10pt; line-height: 1.3; }
+    .wrap { max-width: none; padding: 0; }
+    nav, details, footer, .lede { display: none; }
+    .print-only { display: block; }
+    header { gap: .2rem; margin-bottom: .6rem; }
+    .eyebrow { font-size: 8pt; }
+    h1 { font-size: 18pt; }
+    .student { display: flex; gap: 1.5rem; margin-top: .3rem; font-size: 10pt; }
+    .student span { flex: 1; border-bottom: 1px solid #000; padding-bottom: .1rem; }
+    .student span:last-child { flex: 0 0 30%; }
+    .tip { margin: .3rem 0 0; font-size: 9.5pt; color: var(--muted); }
+    section { margin-top: .6rem; }
+    #set-b { break-before: page; margin-top: 0; }
+    h2 { font-size: 14pt; margin-bottom: .4rem; }
+    ol.problems { gap: .3rem; }
+    .problem { padding: .35rem .7rem .3rem 2.6rem; border-radius: 4px; break-inside: avoid; }
+    .problem::before { left: 2rem; }
+    .num { left: .6rem; top: .4rem; font-size: 12pt; }
+    .problem p { max-width: none; }
+    .problem::after {
+      content: "Respuesta:"; display: block; margin-top: .55rem; padding-bottom: .1rem;
+      border-bottom: 1px dotted #000; font-size: 8.5pt; color: var(--muted); line-height: 1.2;
+    }
+  }
 </style>
 </head>
 <body>
@@ -106,7 +144,10 @@
     <nav>
       <a href="#set-a">Set A</a>
       <a href="#set-b">Set B</a>
+      <button type="button" onclick="window.print()">Imprimir</button>
     </nav>
+    <div class="student print-only"><span>Nombre:</span><span>Fecha:</span></div>
+    <p class="tip print-only">Lee con calma, anota los datos y muestra tus cálculos.</p>
   </header>
 
   <section id="set-a">
