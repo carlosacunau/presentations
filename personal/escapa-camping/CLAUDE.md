@@ -54,5 +54,5 @@ A cron job can be set up to auto-sync every 30 minutes: just say "turn on the ca
 
 - `equipos.html`: captains pick their duty crews (Cena viernes, Desayunos, Almuerzo sábado, Cena sábado, Logística y actividades). No login.
 - Picks live in Supabase table `campeggio_picks` (project `jkkrpleiwfcmvjalwbkn`). The page reads with the publishable key; every move goes through the `campeggio_move()` function, which rejects stale moves and full crews.
-- Crew sizes live in TWO places that must match: `CREWS[].size` in the page and `caps` (open slots = size minus fixed members) inside `campeggio_move()`. Schema record: `~/OS/personal/escapa-campeggio-payments/campeggio_picks.sql`.
-- Roster comes from `~/OS/personal/escapa-campeggio-payments/payments.json` (name-cased, short names); regenerate the ROSTER array by hand if families change.
+- Crew sizes live in TWO places that must match: `CREWS[].size` in the page and `caps` (open slots = size minus fixed members) inside `campeggio_move()`. Schema record: `~/OS/personal/Fede & Isa/isabela/campeggio/campeggio_picks.sql`.
+- Roster comes from `~/OS/personal/Fede & Isa/isabela/campeggio/payments.json` (name-cased, short names); regenerate the ROSTER array by hand if families change.
