@@ -1013,10 +1013,14 @@
       var w = window.innerWidth, h = window.innerHeight;
       var portrait = w < 820;
       if (portrait) {
-        // Map the phone's short side to a ~700px reference so wScale lands near
-        // the min-scale floor instead of 0.2. Keep the authored aspect ratio.
-        root.setAttribute("data-width", "760");
-        root.setAttribute("data-height", String(Math.round(760 * (h / w))));
+        // Map the reference canvas onto the ACTUAL viewport so windowScale lands
+        // at ~1.0 and the step fills the phone. Step content is already authored
+        // in vw on narrow screens (.step { width: 92vw } plus clamp() type), so
+        // scale 1 is the right target. A fixed 760px reference keeps the aspect
+        // ratio but floors out at data-min-scale (~0.55) and renders every step
+        // at barely half the screen width (verified 197px of 390px, 260910).
+        root.setAttribute("data-width", String(w));
+        root.setAttribute("data-height", String(h));
       } else {
         root.setAttribute("data-width", "1920");
         root.setAttribute("data-height", "1080");
