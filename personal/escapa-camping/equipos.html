@@ -145,7 +145,7 @@ const SUPABASE_KEY = "sb_publishable_o3539AFeGJFSP8nLS32bNg_97qUgpva"; // public
 
 let picks = {};        // personId -> crewId (from the shared store)
 let sb = null;
-let canWrite = true;
+let canWrite = false; // crews locked 2026-10-16; campeggio_move() revoked for anon
 let selected = null;
 let busy = false;
 
@@ -332,8 +332,7 @@ async function load() {
   try {
     sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     await load();
-    $("notice").hidden = true;
-    render();
+    setReadOnly("Los equipos ya están cerrados. Si necesitas un cambio, escríbele a Carlos.");
     sb.channel("campeggio_picks")
       .on("postgres_changes", { event: "*", schema: "public", table: "campeggio_picks" }, p => {
         const r = p.new;
