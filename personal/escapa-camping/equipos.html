@@ -146,6 +146,7 @@ const SUPABASE_KEY = "sb_publishable_o3539AFeGJFSP8nLS32bNg_97qUgpva"; // public
 let picks = {};        // personId -> crewId (from the shared store)
 let sb = null;
 let canWrite = false; // crews locked 2026-10-16; campeggio_move() revoked for anon
+const LOCKED = "Los grupos ya están definidos y no se pueden cambiar.";
 let selected = null;
 let busy = false;
 
@@ -254,7 +255,7 @@ function render() {
 }
 
 function select(id) {
-  if (!canWrite) return;
+  if (!canWrite) { toast(LOCKED); return; }
   selected = selected === id ? null : id;
   render();
 }
@@ -287,7 +288,8 @@ function renderSheet() {
 }
 
 async function move(id, crewId) {
-  if (!canWrite || busy || picks[id] === (crewId || undefined)) { selected = null; render(); return; }
+  if (!canWrite) { toast(LOCKED); return; }
+  if (busy || picks[id] === (crewId || undefined)) { selected = null; render(); return; }
   if (!sb) { toast("La lista no está disponible. Recarga la página."); return; }
   if (crewId && members(crewId).length >= openSlots(CREW[crewId])) { toast(CREW[crewId].name + " ya está completo."); return; }
   const expected = picks[id] || null;
@@ -306,7 +308,7 @@ async function move(id, crewId) {
       toast(PEOPLE[id].name + " ya está en " + (CREW[picks[id]]?.name || "Disponibles") + ".");
     }
   } catch (e) {
-    toast("No se pudo guardar. Revisa tu conexión e intenta de nuevo.");
+    toast(e?.code === "42501" ? LOCKED : "No se pudo guardar. Revisa tu conexión e intenta de nuevo.");
   } finally { busy = false; render(); }
 }
 
@@ -332,7 +334,7 @@ async function load() {
   try {
     sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     await load();
-    setReadOnly("Los equipos ya están cerrados. Si necesitas un cambio, escríbele a Carlos.");
+    setReadOnly(LOCKED);
     sb.channel("campeggio_picks")
       .on("postgres_changes", { event: "*", schema: "public", table: "campeggio_picks" }, p => {
         const r = p.new;
