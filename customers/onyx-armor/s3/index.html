@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<!--
+  prezi-deck template. Self-contained impress.js zooming/panning deck.
+  Works by double-clicking this file (file://). No CDN, no build step.
+
+  HOW TO AUTHOR A DECK FROM THIS TEMPLATE:
+  1. Pick a theme: copy the contents of one themes/*.css file into the
+     :root block below (the --vars). neutral-dark / neutral-light / fiba-labs.
+  2. Replace GitHub sin miedo and the favicon monogram (or keep the generic one).
+  3. Lay out the .step elements following the GRID CONVENTION in SKILL.md.
+     data-x / data-y  = position on the infinite plane (px)
+     data-scale       = camera frame size (big = zoomed out, small = detail)
+     data-rotate      = rotation in degrees (use sparingly)
+  4. Keep the #overview step LAST, scaled large enough to frame everything.
+  Camera path = DOM order of the steps. Reorder steps to re-choreograph.
+-->
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+  <title>GitHub sin miedo</title>
+
+  <!-- Inline SVG favicon (no 404 console noise). Swap for a brand monogram if available. -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='12' fill='%230A0A14'/%3E%3Crect x='28' y='20' width='34' height='12' rx='3' fill='%238B5CF6'/%3E%3Crect x='28' y='20' width='12' height='52' rx='3' fill='%238B5CF6'/%3E%3Crect x='62' y='20' width='12' height='12' rx='3' fill='%234C2D91'/%3E%3Crect x='62' y='40' width='12' height='32' rx='3' fill='%234C2D91'/%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <style>
+    /* THEME BLOCK (replace this @import + :root with themes/*.css; the @import must stay first in <style>) */
+    /* design-lint: allow overused-font (default block is the Fiba Labs theme) */
+    @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500&display=swap");
+    :root {
+      --accent:    #8B5CF6;
+      --accent-2:  #C9BEEA;
+      --bg:        #F7F6FB;
+      --fg:        #1A1A1A;
+      --muted:     #6b6b75;
+      --font-head: 'Space Grotesk', 'Inter', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --grid-rgba: rgba(139,92,246,0.05);
+    }
+
+    html, body {
+      margin: 0; padding: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-head);
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+    }
+
+    /* Subtle command-center grid on the canvas background */
+    body::before {
+      content: "";
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(var(--grid-rgba) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-rgba) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .fallback-message {
+      font-family: var(--font-body);
+      line-height: 1.5;
+      width: min(640px, 88vw);
+      margin: 80px auto;
+      padding: 24px;
+      border: 1px solid var(--accent-2);
+      border-radius: 8px;
+      background: rgba(76,45,145,0.15);
+    }
+    .impress-supported .fallback-message { display: none; }
+
+    #impress { position: relative; z-index: 1; }
+
+    .step {
+      width: 900px;
+      box-sizing: border-box;
+      padding: 40px;
+      opacity: 0.18;
+      transition: opacity 0.6s ease;
+    }
+    .step.active { opacity: 1; }
+
+    /* In overview (O key) every step is inactive, so the default 0.18 makes the
+       whole deck ghostly. Bump opacity only while in overview so thumbnails read
+       against the background; the normal slide-to-slide fade (0.18) is untouched. */
+    body.impress-on-overview .step { opacity: 0.75; }
+    body.impress-on-overview #overview { opacity: 0; }
+
+    /* Typographic system. clamp(min, preferred-vw, max) keeps text readable on
+       small screens (preferred scales with viewport width, clamped both ends so
+       it never goes microscopic on mobile nor absurd on desktop). */
+    .eyebrow {
+      font-size: clamp(12px, 1.4vw, 14px);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-size: clamp(34px, 6.5vw, 64px);
+      line-height: 1.05;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin: 0 0 24px;
+    }
+    h2 {
+      font-size: clamp(26px, 4.6vw, 44px);
+      line-height: 1.1;
+      font-weight: 500;
+      margin: 0 0 20px;
+    }
+    .lead {
+      font-size: clamp(18px, 2.9vw, 28px);
+      line-height: 1.4;
+      font-weight: 400;
+      color: var(--fg);
+      max-width: 760px;
+    }
+    .sub {
+      font-size: clamp(15px, 2.1vw, 20px);
+      line-height: 1.5;
+      color: var(--muted);
+      font-family: var(--font-body);
+      max-width: 680px;
+      margin-top: 18px;
+    }
+    .accent { color: var(--accent); }
+    .pill {
+      display: inline-block;
+      font-size: clamp(11px, 1.3vw, 13px);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--fg);
+      border: 1px solid var(--accent-2);
+      border-radius: 4px;
+      padding: 6px 12px;
+      margin: 0 8px 8px 0;
+      font-family: var(--font-body);
+    }
+
+    /* Big faint THEME WORD that detail steps zoom into (the signature overlap move).
+       Place one per region; details sit on top of it at smaller scale. */
+    .theme-word {
+      font-size: clamp(80px, 18vw, 320px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--accent);
+      opacity: 0.06;
+      line-height: 0.9;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .monogram { width: clamp(72px, 12vw, 120px); height: auto; margin-bottom: 36px; }
+
+    .hint {
+      position: fixed;
+      bottom: 18px; right: 22px;
+      z-index: 5;
+      font-family: var(--font-body);
+      font-size: 12px;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+    }
+    .hint kbd {
+      background: rgba(139,92,246,0.15);
+      border: 1px solid var(--accent-2);
+      border-radius: 3px;
+      padding: 1px 6px;
+      color: var(--fg);
+      font-family: inherit;
+    }
+
+    /* Responsive: keep the .step narrower than the viewport on phones so
+       impress.js can scale it up to fill the screen instead of leaving it tiny. */
+    @media (max-width: 820px) {
+      .step { width: 92vw; padding: 24px; }
+      .hint { font-size: 10px; bottom: 10px; right: 12px; }
+    }
+
+    /* ---- Prezi image deck (light) ---- */
+    .step { width: 1180px; padding: 24px; }
+    /* ===== ESCENARIO FIJO (260814, reescrito) ==============================
+       Cómo funciona esto en realidad, que es lo que hacía fallar todo lo
+       anterior: impress.js NO reacomoda el contenido. El deck declara un
+       lienzo de referencia de 1920x1080 (data-width / data-height) y calcula
+       UNA escala uniforme, min(altoVentana/1080, anchoVentana/1920), que
+       aplica como un solo transform a todo el canvas. La diapositiva nunca
+       reflowea: se agranda o se achica entera, con bandas negras si hace falta.
+
+       Consecuencia: las unidades vh/vw acá NO sirven. Se miden contra la
+       ventana real y después se multiplican otra vez por la escala de impress,
+       o sea que el mismo diseño cambia de proporción según el tamaño de la
+       ventana, que es justo lo que no queremos. Todo lo de abajo va en píxeles
+       del escenario. Se compone una vez contra 1920x1080 y de la escala se
+       encarga impress. Números validados en _lab-pillars.html. */
+    .imgstep {
+      --img-h:     710px;   /* alto del dibujo */
+      --gap:         8px;   /* dibujo a titular */
+      --head-size:  40px;
+      --body-size:  24px;
+      --take-size:  29px;
+      --text-w:   1560px;   /* medida de la columna de texto */
+      --head-tracking: 0.100em;
+      --pad-y:      54px;   /* margen arriba/abajo dentro del escenario */
+
+      width: 1920px;
+      padding: 0 90px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--gap);
+    }
+    /* Si la composición no entra en el alto útil, NO se recorta ni se achica un
+       elemento suelto: se escala el BLOQUE ENTERO, así las proporciones que
+       eligió Carlos (dibujo vs texto, tamaños relativos, tracking) quedan
+       intactas. El factor lo calcula el script del final y lo deja en --shrink
+       por diapositiva. Sin JS el valor es 1 y no pasa nada raro: simplemente no
+       se achica. */
+    .imgstep .fitbox {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--gap);
+      width: 100%;
+      transform: scale(var(--shrink, 1));
+      transform-origin: center center;
+    }
+    .imgcard {
+      background: #fff;
+      border: 1px solid var(--accent-2);
+      border-radius: 14px;
+      padding: 12px;
+      box-shadow: 0 18px 50px rgba(40,20,90,0.10);
+      flex: none;
+    }
+    /* El alto manda y el ancho sale solo. Al revés (ancho fijo, alto auto) el
+       dibujo cambiaba de alto según su proporción y cada tarjeta se sentaba a
+       una altura distinta. */
+    .imgcard img {
+      display: block;
+      height: var(--img-h);
+      width: auto;
+      border-radius: 8px;
+    }
+    .cap {
+      font-family: var(--font-body);
+      line-height: 1.2;
+      color: var(--fg);
+      margin: 0;
+    }
+    /* Los tres campos del scene box, con la misma jerarquía visual que la
+       galería: titular fuerte, cuerpo, cierre en verde. */
+    .imgstep .cap { max-width: var(--text-w); text-align: center; }
+    .imgstep .cap-head {
+      font-family: var(--font-head);
+      font-size: var(--head-size);
+      font-weight: 700;
+      line-height: 1.15;
+      /* Mayúsculas por CSS, no en el texto: INDEX.md sigue guardando el titular
+         en capitalización normal, así que volver atrás es cambiar una línea y
+         no 39 filas de la tabla. El tracking extra hace falta porque en
+         mayúsculas las letras se ven apretadas al tamaño de display. */
+      text-transform: uppercase;
+      letter-spacing: var(--head-tracking);
+    }
+    .cap-head { font-weight: 700; }
+    /* Título de extensión, ARRIBA de la imagen. Agregado 260803 después de
+       dictar la Sesión 1: en sala el bloque de tipos de archivo no se leía,
+       porque la extensión venía solo dibujada dentro de la imagen y chica.
+       Va en monoespaciada para que se lea como nombre de archivo. */
+    .ext-title {
+      margin: 0 0 10px;
+      font-family: "Fira Code", ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: clamp(30px, 4.4vw, 58px);
+      font-weight: 600;
+      line-height: 1;
+      letter-spacing: .02em;
+      color: var(--accent, #4C2D91);
+      text-align: center;
+    }
+    /* El cuerpo va alineado a la izquierda: son párrafos de varias líneas y
+       centrados se vuelven difíciles de seguir. El titular y el cierre sí van
+       centrados, porque son de una o dos líneas. */
+    /* Tamaños subidos 260814: en la Sesión 1 de Brainbest el cuerpo no se leía
+       desde el fondo de la sala. Antes topaba en 17px y en gris (--muted), o
+       sea que el texto que carga la explicación era el más chico y el más
+       claro de la diapositiva, y el público terminaba leyendo las etiquetas en
+       inglés de la imagen. Ahora escala con el ancho (2.6vw) hasta 34px y usa
+       el color de cuerpo, no el gris. Misma lógica que .ext-title (260803). */
+    .imgstep .cap-body {
+      margin-top: 14px;
+      font-size: var(--body-size);
+      line-height: 1.38;
+      color: var(--fg);
+      /* Justificado con guionado. En español, justificar sin partir palabras
+         abre huecos enormes entre palabras, porque las palabras son largas. El
+         lang="es" del <html> es lo que le dice al navegador con qué reglas
+         partir, así que sin eso el hyphens: auto no hace nada. La última línea
+         va a la izquierda para que no quede estirada. text-wrap: pretty se
+         saca a propósito: pelea con justify. */
+      text-align: justify;
+      text-align-last: left;
+      hyphens: auto;
+      -webkit-hyphens: auto;
+    }
+    /* Los escalones .longtext / .xlongtext se eliminaron (260814). Bajaban el
+       tamaño de letra de las tarjetas más cargadas, o sea que justo las
+       diapositivas con MÁS que leer traían la letra MÁS chica, al revés de lo
+       que hace falta en sala. Ahora el ajuste lo hace --shrink escalando el
+       bloque entero: se mantiene la jerarquía y no se recorta nada. El build
+       sigue emitiendo las clases porque sirven para inspeccionar. */
+    /* 820px: en las diapositivas más altas el cierre baja hasta el borde
+       inferior, y más ancho que esto se cruzaba con las teclas de ayuda
+       (el .hint fijo abajo a la derecha). */
+    /* El cierre es la frase que la gente se lleva, así que va más grande que
+       el cuerpo, no más chico. Verde más oscuro para que aguante proyector con
+       luz ambiente. El ancho sube a 1100px: sigue lejos del .hint de abajo a
+       la derecha, que era el motivo del tope de 820px. */
+    .imgstep .cap-take {
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 2px dashed #86efac;
+      font-size: var(--take-size);
+      font-weight: 700;
+      line-height: 1.3;
+      color: #12703a;              /* verde: el cierre, igual que la galería */
+    }
+    .cap-take {
+      margin-top: 12px;
+      max-width: min(96%, 106vh);
+      font-size: clamp(17px, 1.6vw, 23px);
+      font-weight: 700;
+      line-height: 1.35;
+      color: #12703a;
+      border-top: 2px dashed #86efac;
+      padding-top: 11px;
+    }
+    .cover { width: 1180px; }
+    .cover h1 { font-size: clamp(40px, 6.5vw, 70px); }
+    .section-step { width: 900px; }
+    .section-title { font-size: clamp(40px, 7vw, 72px); color: var(--accent); }
+    .section-step .lead, .close .lead { color: var(--muted); }
+    .close { width: 900px; text-align: center; }
+    .close .monogram, .cover .monogram { margin-bottom: 28px; }
+    /* two-tier flow close: human row (deep indigo) feeds AI row (electric violet) */
+    /* 1400px, no 1100: las palabras en español son más largas que las inglesas
+       (Recolectar/Interpretar/Ejecutar/Presentar) y a 1100px la fila de la IA
+       se partía, dejando una flecha colgando al final del renglón. */
+    .flow-close { width: 1400px; text-align: center; }
+    .flow-close .monogram--sm { margin-bottom: 30px; }
+    .flow-row {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: clamp(30px, 4.4vw, 52px);
+      line-height: 1.2;
+      display: flex; flex-wrap: wrap; justify-content: center;
+      align-items: center; gap: 0.5em;
+    }
+    .flow-human { color: #4C2D91; }   /* Deep Indigo: the human steps */
+    .flow-ai    { color: #8B5CF6; }   /* Electric Violet: the AI steps */
+    .flow-sep   { opacity: 0.55; font-weight: 400; }
+
+    /* Cover teaser: subtle one-line preview of the closing flow. Same two
+       colors (human indigo -> AI violet), small and quiet under the title. */
+    .cover-flow {
+      margin-top: 18px;
+      font-family: var(--font-head);
+      font-weight: 500;
+      font-size: clamp(13px, 1.5vw, 17px);
+      letter-spacing: 0.04em;
+      display: flex; flex-wrap: wrap; align-items: center; gap: 0.5em;
+      opacity: 0.6;
+    }
+    .cover-flow .cf-h   { color: #4C2D91; }   /* human steps */
+    .cover-flow .cf-a   { color: #8B5CF6; }   /* AI steps */
+    .cover-flow .cf-sep { color: var(--muted); font-weight: 400; }
+    .flow-arrow {
+      font-size: clamp(28px, 3.4vw, 40px);
+      color: var(--muted);
+      margin: 0.35em 0;
+      line-height: 1;
+    }
+    /* smaller logo as a chapter mark on section title cards */
+    .monogram--sm { width: clamp(48px, 6vw, 64px); margin-bottom: 18px; }
+    /* persistent brand watermark: fixed to the viewport, OUTSIDE the impress
+       canvas, so it stays put while the camera flies. Subtle, bottom-left. */
+    .brand-watermark {
+      position: fixed;
+      bottom: 20px; left: 24px;
+      z-index: 5;
+      display: flex; align-items: center; gap: 10px;
+      opacity: 0.82;
+      pointer-events: none;
+      font-family: var(--font-head);
+      font-size: 16px; letter-spacing: 0.04em;
+      color: var(--muted);
+    }
+    .brand-watermark img { width: 44px; height: auto; display: block; }
+
+    /* ---- Ayuda colapsable (260814) --------------------------------------
+       La barra de teclas iba fija abajo a la derecha y SIEMPRE visible. En
+       pantallas cortas (MacBook de 14", 1512x982) se pisaba con el cierre de
+       la diapositiva: impress escala el escenario de 1080 hasta que el
+       contenido toca el borde de abajo, justo donde estaba la barra. En
+       monitores anchos no pasaba, por eso se veía bien en 23" y 34".
+       Además la ayuda no tiene por qué estar en pantalla toda la
+       presentación: es de consulta.
+
+       Ahora es un botón discreto (?) que abre un panel. La marca de agua se
+       queda, pero se esconde con el panel abierto para que no se amontonen. */
+    .hint { display: none !important; }   /* la barra vieja del template */
+
+    .navhelp-btn {
+      position: fixed;
+      bottom: 18px; right: 20px;
+      z-index: 60;
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      border: 1px solid var(--accent-2);
+      background: rgba(255,255,255,0.86);
+      color: var(--accent, #8B5CF6);
+      font-family: var(--font-head); font-size: 16px; font-weight: 700;
+      line-height: 1; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 10px rgba(40,20,90,0.12);
+      opacity: 0.45;
+      transition: opacity .18s ease, transform .18s ease;
+      -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+    }
+    /* Casi transparente mientras no se usa, sólido al pasar el mouse: en sala
+       no distrae, y sigue estando cuando alguien lo busca. */
+    /* !important porque el JS anti-choque baja la opacidad por estilo inline
+       cuando el texto de la diapositiva llega a la esquina. Al pasar el mouse
+       (o al llegar con el teclado) el botón tiene que volver a verse sí o sí,
+       si no queda un control invisible imposible de encontrar. */
+    .navhelp-btn:hover, .navhelp-btn:focus-visible { opacity: 1 !important; transform: scale(1.06); }
+    .navhelp-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    .navhelp-panel {
+      position: fixed;
+      bottom: 62px; right: 20px;
+      z-index: 60;
+      background: rgba(255,255,255,0.96);
+      border: 1px solid var(--accent-2);
+      border-radius: 10px;
+      padding: 14px 16px;
+      box-shadow: 0 10px 34px rgba(40,20,90,0.18);
+      font-family: var(--font-body); font-size: 13px; color: var(--fg);
+      -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+      display: grid; gap: 8px;
+      opacity: 0; visibility: hidden; transform: translateY(6px);
+      transition: opacity .18s ease, transform .18s ease, visibility .18s;
+    }
+    .navhelp-panel[data-open="true"] { opacity: 1; visibility: visible; transform: none; }
+    .navhelp-row { display: flex; align-items: center; gap: 9px; white-space: nowrap; }
+    .navhelp-panel kbd {
+      background: rgba(139,92,246,0.14);
+      border: 1px solid var(--accent-2);
+      border-radius: 4px;
+      padding: 2px 7px;
+      font-family: var(--font-body); font-size: 12px; color: var(--fg);
+      min-width: 20px; text-align: center;
+    }
+    /* Con el panel abierto la marca de agua se apaga: en pantallas cortas los
+       dos elementos quedaban a la misma altura. */
+    body[data-help="open"] .brand-watermark { opacity: 0; }
+    .brand-watermark { transition: opacity .18s ease; }
+
+    /* Pantallas CORTAS (MacBook de 14", 1512x982, y cualquier laptop parecida).
+       Acá está el choque real: impress escala el escenario de 1080 hasta que el
+       contenido toca el borde de abajo, y el cierre de la diapositiva aterriza
+       justo donde va la marca de agua. En monitores altos (1080 y más) sobra
+       aire y no pasa, por eso se veía bien en el de 23" y en el ultrawide.
+       Debajo de 1000px de alto la marca se corre a la esquina y se hace más
+       chica y más tenue, para que la diapositiva mande. El botón de ayuda
+       también se achica. Nada de esto toca la composición: son elementos fijos,
+       fuera del canvas de impress. */
+    @media (max-height: 1000px) {
+      .brand-watermark {
+        bottom: 8px; left: 10px;
+        font-size: 12px; gap: 6px;
+        opacity: 0.34;
+      }
+      .brand-watermark img { width: 26px; }
+      .navhelp-btn { width: 28px; height: 28px; font-size: 14px; bottom: 10px; right: 12px; }
+      .navhelp-panel { bottom: 46px; right: 12px; }
+    }
+    /* OJO: este bloque NO debe tocar .imgstep. Las tarjetas de imagen se
+       componen en píxeles del escenario de 1920x1080 y de encogerlas se
+       encarga impress con su escala uniforme; meterle acá vw/vh vuelve a
+       mezclar los dos sistemas de medida, que es el bug que se arregló el
+       260814. Los selectores de abajo se acotan a propósito a los pasos que NO
+       son de imagen. */
+    @media (max-width: 820px) {
+      .step:not(.imgstep), .cover { width: 92vw; }
+      .step:not(.imgstep) .cap { font-size: clamp(17px, 3.6vw, 22px); }
+      .step:not(.imgstep) .cap-body { font-size: clamp(15px, 3.0vw, 19px); }
+      .step:not(.imgstep) .cap-take { font-size: clamp(16px, 3.2vw, 20px); }
+      .brand-watermark { font-size: 13px; bottom: 12px; left: 14px; }
+      .brand-watermark img { width: 34px; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="fallback-message">
+    <p><b>Your browser is not supported for this presentation.</b></p>
+    <p>Use a recent version of Chrome, Safari, or Firefox to view the zooming canvas.</p>
+  </div>
+
+  <!--
+    THE CANVAS. Each .step is placed on an infinite plane.
+    The presentation is the camera flying between steps in DOM order.
+    Follow the GRID CONVENTION in SKILL.md when choosing data-x/y/scale.
+  -->
+  <!--
+    data-width / data-height define the reference canvas impress.js fits to the
+    window. data-min-scale is a FLOOR on the window scale so content never gets
+    crushed to microscopic on narrow phones (gotcha #6). The pre-init script
+    below lowers data-width on portrait phones so the fit math targets the phone.
+  -->
+  <div id="impress" data-transition-duration="900" data-width="1920" data-height="1080" data-min-scale="0.55">
+
+
+    <div class="step cover" id="home" data-x="0" data-y="-3000" data-scale="3.0" data-rotate="0">
+      <img class="monogram" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+      <p class="eyebrow">Fiba Labs · AI Mentoring · Sesión 3</p>
+      <h1>GitHub sin miedo</h1>
+      <p class="cover-flow"><span class="cf-h">Planear</span><span class="cf-sep">&rarr;</span><span class="cf-h">Dise&ntilde;ar</span><span class="cf-sep">&rarr;</span><span class="cf-h">Conectar</span><span class="cf-sep">&rarr;</span><span class="cf-a">Recolectar</span><span class="cf-sep">&rarr;</span><span class="cf-a">Interpretar</span><span class="cf-sep">&rarr;</span><span class="cf-a">Ejecutar</span><span class="cf-sep">&rarr;</span><span class="cf-a">Presentar</span></p>
+    </div>
+
+    <div class="step section-step" id="1" data-x="4500" data-y="0" data-scale="3.0" data-rotate="0">
+      <img class="monogram monogram--sm" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+      <p class="eyebrow">01</p>
+      <h2 class="section-title">GitHub sin miedo</h2>
+      <p class="lead">Un Drive para tus carpetas, con máquina del tiempo incluida.</p>
+    </div>
+
+    <div class="step imgstep" id="1.1" data-x="220" data-y="1790" data-scale="1.0" data-rotate="-12">
+      <div class="fitbox">
+      <div class="imgcard"><img src="assets/diagrams/040_gh-you-already-know.png" alt="Ya usas control de versiones" width="1536" height="1024"></div>
+      <p class="cap cap-head">Ya usas control de versiones</p>
+      <p class="cap cap-body">Informe_v1, Informe_FINAL, Informe_FINAL_FINAL: ese es el problema. En Excel o en Google Sheets no lo haces, porque el historial de versiones guarda cada estado anterior, muestra quién cambió qué y te deja restaurar cualquiera. Git es exactamente esa idea, pensada para carpetas completas.</p>
+      <p class="cap cap-take">Si alguna vez abriste el historial de versiones, ya entiendes Git.</p>
+      </div>
+    </div>
+
+    <div class="step imgstep" id="1.2" data-x="2680" data-y="2260" data-scale="1.0" data-rotate="9">
+      <div class="fitbox">
+      <div class="imgcard"><img src="assets/diagrams/041_gh-git-vs-github.png" alt="Git es el historial, GitHub es el Drive" width="1536" height="1024"></div>
+      <p class="cap cap-head">Git es el historial, GitHub es el Drive</p>
+      <p class="cap cap-body">Git es el programa que guarda el historial. Vive en tu computador y funciona sin internet. GitHub es la página donde esa carpeta vive en línea: con respaldo, para compartirla y a la mano desde cualquier computador. Es la misma diferencia que hay entre un archivo en tu portátil y su copia en Drive o en OneDrive.</p>
+      <p class="cap cap-take">Git guarda la historia, GitHub la guarda en línea.</p>
+      </div>
+    </div>
+
+    <div class="step imgstep longtext" id="1.3" data-x="6170" data-y="1840" data-scale="1.0" data-rotate="-6">
+      <div class="fitbox">
+      <div class="imgcard"><img src="assets/diagrams/042_gh-vocabulary-map.png" alt="El diccionario: tu hoja de cálculo a la izquierda, Git a la derecha" width="1536" height="1024"></div>
+      <p class="cap cap-head">El diccionario: tu hoja de cálculo a la izquierda, Git a la derecha</p>
+      <p class="cap cap-body">Una carpeta con historial es un repositorio (repo). Una versión guardada con nombre es un commit. El panel del historial es el log. Lo resaltado en verde y rojo es un diff. "Restaurar esta versión" es un revert. Subir a la nube es un push y traer lo último es un pull. Descargar la carpeta completa, con toda su historia, es un clone.</p>
+      <p class="cap cap-take">Ocho palabras, y cada una es algo que ya haces en tu hoja de cálculo.</p>
+      </div>
+    </div>
+
+    <div class="step imgstep longtext" id="1.4" data-x="8740" data-y="2240" data-scale="1.0" data-rotate="14">
+      <div class="fitbox">
+      <div class="imgcard"><img src="assets/diagrams/043_gh-you-decide-when.png" alt="La gran diferencia: tú decides cuándo guardar" width="1536" height="1024"></div>
+      <p class="cap cap-head">La gran diferencia: tú decides cuándo guardar</p>
+      <p class="cap cap-body">Google Sheets guarda una versión cada pocos segundos sin preguntarte. Git solo guarda cuando tú se lo pides, y cada versión lleva una nota corta de qué cambió y por qué. "Agregué los precios de marzo" es una buena nota; "cosas" no lo es. Esa es la gracia: una historia limpia de pasos con sentido, en vez de miles de autoguardados.</p>
+      <p class="cap cap-take">Un commit es una versión a la que le pusiste nombre a propósito.</p>
+      </div>
+    </div>
+
+    <div class="step imgstep longtext" id="1.5" data-x="9300" data-y="3700" data-scale="1.0" data-rotate="-10">
+      <div class="fitbox">
+      <div class="imgcard"><img src="assets/diagrams/045_gh-text-vs-binary.png" alt="Tus instrucciones sí, tus datos no" width="1536" height="1024"></div>
+      <p class="cap cap-head">Tus instrucciones sí, tus datos no</p>
+      <p class="cap cap-body">Cambia una línea en un .md y GitHub te muestra exactamente esa línea, en rojo y en verde. Cambia una celda en un .xlsx y solo puede decirte "este archivo cambió". Por eso a GitHub suben tus instrucciones (el AGENTS.md, los contextos, las skills), que son texto. Tus Excel, tus PDF y los datos de tus clientes se quedan en tu computador y en tu respaldo de siempre.</p>
+      <p class="cap cap-take">A GitHub sube cómo trabajas. Tus datos se quedan en casa.</p>
+      </div>
+    </div>
+
+    <div class="step imgstep" id="1.6" data-x="5810" data-y="4190" data-scale="1.0" data-rotate="7">
+      <div class="fitbox">
+      <div class="imgcard"><img src="assets/diagrams/046_gh-public-means-internet.png" alt="Público es todo internet" width="1536" height="1024"></div>
+      <p class="cap cap-head">Público es todo internet</p>
+      <p class="cap cap-body">Un repo público lo ve todo el mundo, no solo quien tenga el link: queda indexado y los bots lo leen en minutos. Privado es lo seguro: solo lo ven las personas que tú invitas. Crea todos tus repos como privados, a menos que tengas una razón clara para publicar.</p>
+      <p class="cap cap-take">Si dudas, privado.</p>
+      </div>
+    </div>
+
+    <div class="step imgstep longtext" id="1.7" data-x="3220" data-y="3790" data-scale="1.0" data-rotate="-14">
+      <div class="fitbox">
+      <div class="imgcard"><img src="assets/diagrams/047_gh-history-never-forgets.png" alt="La historia no olvida" width="1536" height="1024"></div>
+      <p class="cap cap-head">La historia no olvida</p>
+      <p class="cap cap-body">Lo mismo que te salva te puede exponer. Si una contraseña o una clave de API entra en un commit, borrar el archivo después no la quita, porque la versión vieja sigue en la historia y cualquiera que vea el repo la puede abrir. Las claves van en un archivo .env, y el .env va en el .gitignore, la lista de "nunca subir". Si una clave se filtra, cancélala y crea una nueva. En 2025 se filtraron 28,6 millones de claves nuevas en GitHub público, y los commits hechos con Claude Code las filtraron a casi el doble de la tasa normal (GitGuardian, 2026).</p>
+      <p class="cap cap-take">Nunca subas una clave. Si se te escapa una, cancélala: borrarla no basta.</p>
+      </div>
+    </div>
+
+    <div class="step imgstep longtext" id="1.8" data-x="-320" data-y="4260" data-scale="1.0" data-rotate="11">
+      <div class="fitbox">
+      <div class="imgcard"><img src="assets/diagrams/048_gh-not-an-app-store.png" alt="GitHub no es una tienda de apps" width="1536" height="1024"></div>
+      <p class="cap cap-head">GitHub no es una tienda de apps</p>
+      <p class="cap cap-body">Nadie revisa lo que se publica ahí. Las estrellas se compran, los nombres se copian de proyectos reales, y una skill, un plugin o un MCP que instales puede leer tus archivos y ejecutar comandos. Antes de instalar algo de GitHub, mira quién está detrás, léelo antes de correrlo y pruébalo primero en una carpeta de prueba. Eso es lo que hace por ti la skill repo-check.</p>
+      <p class="cap cap-take">Lee antes de instalar. Primero el veredicto, después la carpeta de prueba.</p>
+      </div>
+    </div>
+
+    <div class="step imgstep" id="1.9" data-x="170" data-y="5840" data-scale="1.0" data-rotate="-4">
+      <div class="fitbox">
+      <div class="imgcard"><img src="assets/diagrams/049_gh-safe-start.png" alt="Tu arranque seguro" width="1536" height="1024"></div>
+      <p class="cap cap-head">Tu arranque seguro</p>
+      <p class="cap cap-body">1) Cuenta de GitHub con verificación en dos pasos. 2) Todo repo privado por defecto. 3) Un .gitignore con el .env adentro antes del primer push. 4) Claude puede hacer los commits, pero cada push lo apruebas tú. 5) Revisa cualquier repo antes de instalarlo.</p>
+      <p class="cap cap-take">Cinco hábitos, y GitHub deja de dar miedo.</p>
+      </div>
+    </div>
+
+    <div class="step close flow-close" id="thank-you" data-x="0" data-y="8600" data-scale="3.0" data-rotate="0">
+      <img class="monogram monogram--sm" src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+      <div class="flow-row flow-human"><span class="flow-step">Planear</span><span class="flow-sep">&rarr;</span><span class="flow-step">Diseñar</span><span class="flow-sep">&rarr;</span><span class="flow-step">Conectar</span></div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-row flow-ai"><span class="flow-step">Recolectar</span><span class="flow-sep">&rarr;</span><span class="flow-step">Interpretar</span><span class="flow-sep">&rarr;</span><span class="flow-step">Ejecutar</span><span class="flow-sep">&rarr;</span><span class="flow-step">Presentar</span></div>
+    </div>
+
+    <!-- Overview step: LAST, scaled to frame the whole canvas. Reached with O. -->
+    <div id="overview" class="step" data-x="4455" data-y="2800" data-scale="13"></div>
+
+  </div>
+
+  <div class="brand-watermark">
+    <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+    <span>fiba labs</span>
+  </div>
+
+  <div class="hint">
+    <kbd>&rarr;</kbd> siguiente &nbsp; <kbd>&larr;</kbd> atr&aacute;s &nbsp; <kbd>Space</kbd> avanzar &nbsp; <kbd>O</kbd> vista general
+  </div>
+
+  <button class="navhelp-btn" id="navhelp-btn" type="button"
+          aria-label="Atajos de teclado" aria-expanded="false"
+          aria-controls="navhelp-panel">?</button>
+  <div class="navhelp-panel" id="navhelp-panel" data-open="false" role="dialog"
+       aria-label="Atajos de teclado">
+    <div class="navhelp-row"><kbd>&rarr;</kbd> <span>siguiente</span></div>
+    <div class="navhelp-row"><kbd>&larr;</kbd> <span>atr&aacute;s</span></div>
+    <div class="navhelp-row"><kbd>Space</kbd> <span>avanzar</span></div>
+    <div class="navhelp-row"><kbd>O</kbd> <span>vista general</span></div>
+    <div class="navhelp-row"><kbd>?</kbd> <span>esta ayuda</span></div>
+  </div>
+
+  <script src="impress.js"></script>
+  <script>
+    // Responsive (gotcha #6, the real fix). impress.js computes its window
+    // scale as min(innerW / data-width, innerH / data-height). With the default
+    // 1920x1080 canvas, a narrow phone (e.g. 390px) collapses the scale to ~0.2
+    // and every step renders microscopic, no matter the font sizes. Before init,
+    // shrink the reference canvas on portrait/narrow viewports so the fit math
+    // targets the phone, and let data-min-scale hold the floor. Recompute on
+    // orientation change by re-initialising.
+    var root = document.getElementById("impress");
+    function fitCanvasToViewport() {
+      var w = window.innerWidth, h = window.innerHeight;
+      var portrait = w < 820;
+      if (portrait) {
+        // Map the reference canvas onto the ACTUAL viewport so windowScale lands
+        // at ~1.0 and the step fills the phone. Step content is already authored
+        // in vw on narrow screens (.step { width: 92vw } plus clamp() type), so
+        // scale 1 is the right target. A fixed 760px reference keeps the aspect
+        // ratio but floors out at data-min-scale (~0.55) and renders every step
+        // at barely half the screen width (verified 197px of 390px, 260910).
+        root.setAttribute("data-width", String(w));
+        root.setAttribute("data-height", String(h));
+      } else {
+        root.setAttribute("data-width", "1920");
+        root.setAttribute("data-height", "1080");
+      }
+    }
+    fitCanvasToViewport();
+
+    var api = impress();
+    api.init();
+
+    // impress.js 2.x binds Esc to fullscreen, NOT overview.
+    // Overview is a dedicated zoomed-out step, reached with the "O" key.
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "o" || event.key === "O") {
+        event.preventDefault();
+        api.goto(document.getElementById("overview"));
+      }
+    }, false);
+
+    // Mouse-wheel / trackpad navigation (additive: arrows, space, click still work).
+    // Down = next, Up = back, on every step including the overview (wraps via impress).
+    // A cooldown swallows the burst of wheel events one gesture fires, so a single
+    // scroll flick advances exactly ONE slide instead of skipping several.
+    var wheelLocked = false;
+    document.addEventListener("wheel", function (event) {
+      event.preventDefault();               // don't let the page scroll behind the canvas
+      if (wheelLocked) return;
+      var dy = event.deltaY;
+      if (Math.abs(dy) < 8) return;         // ignore tiny/noisy deltas
+      wheelLocked = true;
+      if (dy > 0) { api.next(); } else { api.prev(); }
+      // release after the transition settles (impress default transition ~1s)
+      window.setTimeout(function () { wheelLocked = false; }, 900);
+    }, { passive: false });
+
+    // On resize / orientation change, recompute the reference canvas and re-fit
+    // the active step. impress.js reads data-width at init, so we update the
+    // attributes and re-goto the current step to apply the new window scale.
+    var current = function () {
+      return document.querySelector(".step.active") || document.getElementById("overview");
+    };
+    var resizeTimer;
+    window.addEventListener("resize", function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () {
+        fitCanvasToViewport();
+        var step = current();
+        if (step) { api.goto(step); }
+      }, 250);
+    });
+  </script>
+
+
+<script>
+(function () {
+  var btn   = document.getElementById('navhelp-btn');
+  var panel = document.getElementById('navhelp-panel');
+  if (!btn || !panel) return;
+
+  function setOpen(open) {
+    panel.setAttribute('data-open', open ? 'true' : 'false');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    // El atributo en body es lo que apaga la marca de agua desde el CSS.
+    document.body.setAttribute('data-help', open ? 'open' : 'closed');
+  }
+  function isOpen() { return panel.getAttribute('data-open') === 'true'; }
+
+  btn.addEventListener('click', function (e) { e.stopPropagation(); setOpen(!isOpen()); });
+
+  document.addEventListener('keydown', function (e) {
+    // "?" abre y cierra. Escape solo cierra.
+    if (e.key === '?') { e.preventDefault(); setOpen(!isOpen()); return; }
+    if (e.key === 'Escape' && isOpen()) { e.preventDefault(); setOpen(false); }
+  });
+
+  // Clic afuera cierra. Adentro del panel no, para poder leerlo tranquilo.
+  document.addEventListener('click', function (e) {
+    if (isOpen() && !panel.contains(e.target)) setOpen(false);
+  });
+
+  // Al cambiar de diapositiva se cierra: la ayuda es de consulta, no algo que
+  // deba quedar puesto mientras se presenta. stepenter se dispara SOBRE EL
+  // PASO y no burbujea, así que hay que engancharlo paso por paso; en document
+  // no llega. El hashchange cubre además la navegación por URL.
+  document.querySelectorAll('.step').forEach(function (st) {
+    st.addEventListener('impress:stepenter', function () { setOpen(false); });
+  });
+  window.addEventListener('hashchange', function () { setOpen(false); });
+
+  setOpen(false);
+
+  // Guarda anti-choque. El CSS ya achica y corre la marca en pantallas cortas,
+  // pero el alto de la diapositiva depende del texto de cada tarjeta, así que
+  // en algunas el cierre igual llega a la esquina. Acá se mide de verdad: si el
+  // texto se acerca a menos de 14px de la marca, la marca se apaga en esa
+  // tarjeta. Es lo mismo que hace el panel de ayuda al abrirse, pero
+  // automático y por diapositiva.
+  var wm = document.querySelector('.brand-watermark');
+  function dodgeWatermark(step) {
+    // El paso llega por parámetro desde stepenter. Buscar '.step.active' acá
+    // no servía: en ese momento impress todavía no movió la clase, así que la
+    // guarda medía la diapositiva ANTERIOR y nunca se activaba.
+    var active = step || document.querySelector('.step.active');
+    if (!active) return;
+    var text = active.querySelector('.cap-take') || active.querySelector('.cap-body');
+    var PAD = 14;
+    // Los DOS elementos fijos se apartan, no solo la marca. En pantallas
+    // anchas (ultrawide de 34") la escala de impress es mucho mayor y la
+    // diapositiva llega a las dos esquinas de abajo, así que el botón de ayuda
+    // choca tanto como la marca.
+    [wm, btn].forEach(function (el) {
+      if (!el) return;
+      if (!text) { el.style.opacity = ''; return; }
+      var t = text.getBoundingClientRect(), r = el.getBoundingClientRect();
+      var hits = t.right + PAD > r.left && t.left - PAD < r.right &&
+                 t.bottom + PAD > r.top && t.top - PAD < r.bottom;
+      if (el === btn) {
+        // El botón nunca desaparece del todo: se vuelve casi transparente pero
+        // sigue ahí y clickeable, porque es el único acceso a la ayuda.
+        el.style.opacity = hits ? '0.12' : '';
+      } else {
+        el.style.opacity = hits ? '0' : '';
+      }
+    });
+  }
+  document.querySelectorAll('.step').forEach(function (st) {
+    st.addEventListener('impress:stepenter', function () {
+      // Dos pasadas: una inmediata para que no se vea el choque durante la
+      // transición, y otra al terminar, cuando las medidas ya son las finales.
+      dodgeWatermark(st);
+      setTimeout(function () { dodgeWatermark(st); }, 950);
+    });
+  });
+  window.addEventListener('resize', function () { dodgeWatermark(); });
+  window.addEventListener('load', function () { dodgeWatermark(); });
+  setTimeout(function () { dodgeWatermark(); }, 400);
+})();
+</script>
+
+<script>
+(function () {
+  // Sin argumento mide las 39; con un paso mide solo ese (lo que usa
+  // stepenter). La cuenta es exactamente la misma en los dos casos.
+  function fitSteps(only) {
+    var list = only ? [only] : document.querySelectorAll('.imgstep');
+    Array.prototype.forEach.call(list, function (step) {
+      var box = step.querySelector('.fitbox');
+      if (!box) return;
+      var padY = parseFloat(getComputedStyle(step).getPropertyValue('--pad-y')) || 0;
+      var avail = 1080 - 2 * padY;
+      // NO hay que compensar data-scale, y esto costó entenderlo. Cada paso
+      // tiene su escala de cámara (FRAMES, 0.6 a 1.7), pero impress la ANULA al
+      // enfocar el paso: hace zoom del lienzo por 1/data-scale, justamente para
+      // que el paso activo llene la pantalla. O sea que el contenido NUNCA se
+      // dibuja a la escala de cámara y no hay nada que compensar. data-scale
+      // controla el VIAJE (cuánto entra y sale la cámara en la transición), no
+      // el tamaño final del contenido.
+      //
+      // Meter un factor 1/frame acá corregía dos veces: las tarjetas de frame
+      // alto salían a media escala (frame 1.5 daba 400px de imagen en vez de
+      // 710) y el error crecía con el frame. Se probó midiendo: sacando ese
+      // factor, la 3.1 pasa de 339px a 645px de imagen y el bloque cae exacto
+      // en los 972 de alto útil.
+      //
+      // Medir SIEMPRE en limpio. Esto es lo delicado de toda la rutina: si se
+      // mide con una escala ya puesta, cada pasada compone sobre la anterior y
+      // el factor se desbarranca (aparecían 0.42 en tarjetas de 95 caracteres,
+      // que entran de sobra). Se saca el transform, se fuerza reflow leyendo
+      // offsetHeight, y recién ahí se mide.
+      //
+      // offsetHeight, NO getBoundingClientRect: el paso vive dentro del canvas
+      // de impress, que le aplica su propia escala y otra por paso según esté
+      // activo. getBoundingClientRect las incluye todas; offsetHeight es de
+      // layout, así que ningún transform lo toca y ya viene en píxeles del
+      // escenario.
+      box.style.removeProperty('--shrink');
+      box.style.transform = 'none';
+      var natural = box.offsetHeight;   // lectura = reflow forzado
+      box.style.removeProperty('transform');
+      // Un solo factor: si el bloque no entra en el alto útil, se escala
+      // entero hasta que entre. Si entra, queda en 1 y se ve tal cual se
+      // compuso en el lab.
+      box.style.setProperty('--shrink', natural > avail ? (avail / natural).toFixed(4) : 1);
+    });
+  }
+  // Cuándo medir. La primera pasada NO puede ser la única: al cargar, los PNG
+  // todavía no decodificaron y, sin alto intrínseco, el navegador reserva de
+  // más. Ese factor equivocado quedaba pegado y había tarjetas a media escala
+  // (3.1 y 9.5 quedaban en 342 y 402px en vez de 710).
+  //
+  // El disparador que de verdad arregla el caso es stepenter: cuando la
+  // tarjeta se vuelve la activa ya está todo cargado y medido, así que ahí el
+  // número sale bien aunque las pasadas anteriores se hayan equivocado. Se
+  // recalcula SOLO ese paso, que es barato y evita tocar los otros 38 en plena
+  // transición.
+  function fitOne(step) {
+    if (step && step.classList.contains('imgstep')) fitSteps(step);
+  }
+  // impress dispatcha stepenter SOBRE EL PASO y el evento no burbujea, así que
+  // escucharlo en document no sirve (fue exactamente el bug: el listener nunca
+  // corría y las tarjetas se quedaban con el factor de la primera pasada, la
+  // que mide antes de que decodifiquen los PNG). Se engancha paso por paso.
+  document.querySelectorAll('.imgstep').forEach(function (step) {
+    step.addEventListener('impress:stepenter', function () { fitOne(step); });
+  });
+  // Red de seguridad, por si alguna imagen llega tarde estando ya parado en la
+  // tarjeta (caché frío, red lenta).
+  document.querySelectorAll('.imgstep img').forEach(function (img) {
+    if (img.complete && img.naturalWidth > 0) return;
+    var again = function () { fitOne(img.closest('.imgstep')); };
+    img.addEventListener('load', again);
+    img.addEventListener('error', again);
+  });
+  window.addEventListener('resize', function () { fitSteps(); });
+  // Las fuentes cambian el alto del texto cuando llegan, así que hay que
+  // volver a medir todo.
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { fitSteps(); });
+  window.addEventListener('load', function () { fitSteps(); });
+  fitSteps();
+})();
+</script>
+</body>
+</html>

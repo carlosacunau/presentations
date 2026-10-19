@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Glosario &middot; GitHub sin miedo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root { --accent:#8B5CF6; --indigo:#4C2D91; --bg:#F7F6FB; --fg:#1A1A1A; --muted:#6b6b75;
+      --line:#e4e0f0; --card:#fff; }
+    * { box-sizing:border-box; }
+    html,body { margin:0; background:var(--bg); color:var(--fg);
+      font-family:'Inter',sans-serif; }
+    .wrap { max-width:1180px; margin:0 auto; padding:56px 28px 90px; }
+
+    header { display:flex; align-items:center; gap:14px; margin-bottom:8px; }
+    header img { width:44px; height:auto; }
+    h1 { font-family:'Space Grotesk',sans-serif; font-size:30px; margin:0; }
+    .eyebrow { color:var(--accent); font-size:13px; letter-spacing:.06em;
+      text-transform:uppercase; margin:0 0 6px; }
+    .lede { color:var(--muted); font-size:15px; max-width:70ch; margin:14px 0 26px;
+      line-height:1.6; }
+
+    /* controls */
+    .controls { position:sticky; top:0; z-index:20; background:var(--bg);
+      padding:14px 0 12px; border-bottom:1px solid var(--line); margin-bottom:6px; }
+    .searchrow { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    #q { flex:1 1 260px; min-width:200px; padding:11px 14px; font-family:'Inter',sans-serif;
+      font-size:15px; border:1px solid var(--line); border-radius:9px; background:var(--card);
+      color:var(--fg); outline:none; }
+    #q:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(139,92,246,.14); }
+    .count { color:var(--muted); font-size:13px; white-space:nowrap; }
+    .chips { display:flex; gap:7px; flex-wrap:wrap; margin-top:11px; }
+    .chip { font-family:'Space Grotesk',sans-serif; font-size:12.5px; padding:5px 11px;
+      border:1px solid var(--line); border-radius:999px; background:var(--card);
+      color:var(--muted); cursor:pointer; user-select:none; }
+    .chip:hover { border-color:var(--accent); color:var(--indigo); }
+    .chip.on { background:var(--indigo); border-color:var(--indigo); color:#fff; }
+
+    /* groups */
+    .group { margin-top:34px; }
+    .group h2 { font-family:'Space Grotesk',sans-serif; font-size:20px; color:var(--indigo);
+      margin:0 0 3px; }
+    .group .sub { color:var(--muted); font-size:13.5px; margin:0 0 14px; }
+
+    table { width:100%; border-collapse:collapse; background:var(--card);
+      border:1px solid var(--line); border-radius:11px; overflow:hidden; }
+    thead th { font-family:'Space Grotesk',sans-serif; font-size:12px; letter-spacing:.05em;
+      text-transform:uppercase; color:var(--muted); text-align:left; font-weight:500;
+      padding:11px 16px; background:#f2effa; border-bottom:1px solid var(--line); }
+    tbody td { padding:13px 16px; vertical-align:top; border-bottom:1px solid #f0edf7;
+      font-size:14.5px; line-height:1.55; }
+    tbody tr:last-child td { border-bottom:none; }
+    tbody tr:hover { background:#faf8ff; }
+    .c-term { width:20%; font-family:'Space Grotesk',sans-serif; font-weight:500;
+      color:var(--indigo); }
+    .c-es { width:20%; color:var(--muted); font-size:13.5px; }
+    .c-def { width:60%; }
+    .c-def em { color:var(--accent); font-style:normal; font-weight:500; }
+    .mine { display:inline-block; margin-left:6px; font-family:'Inter',sans-serif;
+      font-size:10px; letter-spacing:.04em; text-transform:uppercase; color:#fff;
+      background:var(--accent); padding:2px 6px; border-radius:4px; vertical-align:middle;
+      font-weight:500; }
+    .same { color:#b9b4c8; font-style:italic; }
+
+    .empty { display:none; text-align:center; color:var(--muted); padding:44px 0;
+      font-size:15px; }
+    .empty.on { display:block; }
+
+    footer { margin-top:52px; padding-top:20px; border-top:1px solid var(--line);
+      color:var(--muted); font-size:13px; line-height:1.7; }
+    footer a { color:var(--indigo); }
+    .backlink { display:inline-block; margin-bottom:22px; font-family:'Space Grotesk',sans-serif;
+      font-size:14px; color:var(--indigo); text-decoration:none; }
+    .backlink:hover { text-decoration:underline; }
+    .langtog { display:flex; gap:0; border:1px solid var(--line); border-radius:8px;
+      overflow:hidden; background:var(--card); }
+    .langtog a { font-family:'Space Grotesk',sans-serif; font-size:12.5px; padding:6px 13px;
+      color:var(--muted); text-decoration:none; }
+    .langtog a.on { background:var(--indigo); color:#fff; }
+    .langtog a:not(.on):hover { background:#ece9f7; color:var(--indigo); }
+    .tophead { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; }
+
+    @media (max-width:760px) {
+      .wrap { padding:34px 16px 70px; }
+      table, thead, tbody, tr, td, th { display:block; }
+      thead { display:none; }
+      tbody tr { padding:14px 4px; border-bottom:1px solid #f0edf7; }
+      tbody td { border:none; padding:3px 12px; width:auto; }
+      .c-term { font-size:16px; padding-top:6px; }
+      .c-es:empty { display:none; }
+      .c-es::before { content:'EN · '; color:#c3bdd4; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="tophead"><a class="backlink" href="toc.html">&larr; Contenido</a></div>
+    <header>
+      <img src="assets/fiba_labs_monogram.png" alt="Fiba Labs">
+      <div>
+        <p class="eyebrow">Fiba Labs · AI Mentoring</p>
+        <h1>Glosario</h1>
+      </div>
+    </header>
+    <p class="lede">
+      Las palabras de GitHub que vimos en la Sesión 3, cada una explicada con algo que ya
+      haces en tu hoja de cálculo. La columna en inglés está porque GitHub y GitHub Desktop
+      solo vienen en inglés.
+    </p>
+
+    <div class="controls">
+      <div class="searchrow">
+        <input id="q" type="search" placeholder="Busca un término, su equivalente en inglés, o una definición…" autocomplete="off">
+        <span class="count" id="count"></span>
+      </div>
+      <div class="chips" id="chips"></div>
+    </div>
+
+    <div id="groups"></div>
+    <p class="empty" id="empty">Ningún término coincide con esa búsqueda.</p>
+
+  </div>
+
+<script>
+const DATA = [
+  {
+    "g": "Las palabras básicas",
+    "sub": "Cada una es algo que ya haces en Excel o en Google Sheets. Diapositivas 1 a 4.",
+    "rows": [
+      [
+        "Git",
+        "Git",
+        "El programa que guarda cada versión de una carpeta. Vive en tu computador y funciona sin internet. Es el <em>historial de versiones</em> de tu hoja de cálculo, pero para carpetas completas."
+      ],
+      [
+        "GitHub",
+        "GitHub",
+        "La página donde esas carpetas viven en línea: con respaldo, para compartir y a la mano desde cualquier computador. Si Git es el historial, GitHub es el Drive."
+      ],
+      [
+        "Repositorio (repo)",
+        "Repository",
+        "Una carpeta de proyecto con historial. Tu carpeta de IA, cuando Git la sigue, es un repo."
+      ],
+      [
+        "Commit",
+        "Commit",
+        "Una versión guardada a propósito, con una nota corta de qué cambió y por qué. Como \"ponerle nombre a esta versión\" en el historial."
+      ],
+      [
+        "Historial (log)",
+        "Log / history",
+        "La lista de todos los commits. El panel de historial de versiones."
+      ],
+      [
+        "Diff",
+        "Diff",
+        "Exactamente qué cambió entre dos versiones: lo que se quitó en rojo, lo que se agregó en verde."
+      ],
+      [
+        "Revert",
+        "Revert",
+        "Volver a una versión anterior. El \"restaurar esta versión\" del historial."
+      ],
+      [
+        "README",
+        "README",
+        "El primer archivo que se lee en un repo: qué es esto y cómo se usa. La nota de portada de la carpeta."
+      ]
+    ]
+  },
+  {
+    "g": "Subir y bajar",
+    "sub": "Cómo viaja tu carpeta entre tu computador y GitHub.",
+    "rows": [
+      [
+        "Push",
+        "Push",
+        "Mandar tus commits nuevos a GitHub. Es el paso que publica: <em>cada push lo apruebas tú</em>."
+      ],
+      [
+        "Pull",
+        "Pull",
+        "Traer a tu computador los commits que hay en GitHub y tú no tienes."
+      ],
+      [
+        "Clone",
+        "Clone",
+        "Descargar un repo completo, con toda su historia, a tu computador."
+      ],
+      [
+        "Fork",
+        "Fork",
+        "Tu propia copia de un repo ajeno, dentro de tu cuenta de GitHub. Como \"hacer una copia\" en tu Drive."
+      ],
+      [
+        "Rama (branch)",
+        "Branch",
+        "Una versión aparte para probar algo sin tocar la que funciona. Como duplicar una pestaña para hacer pruebas."
+      ],
+      [
+        "Pull request (PR)",
+        "Pull request",
+        "\"Aquí están mis cambios, ¿los apruebas?\". El modo sugerencia de Google Docs."
+      ],
+      [
+        "Merge",
+        "Merge",
+        "Aceptar la sugerencia: los cambios de una rama entran a main."
+      ],
+      [
+        "main",
+        "main",
+        "La versión que funciona. Todo lo nuevo se prueba aparte primero."
+      ],
+      [
+        "GitHub Desktop",
+        "GitHub Desktop",
+        "La app gratuita de GitHub para hacer todo esto con botones, sin comandos. La que usamos en la Sesión 3."
+      ]
+    ]
+  },
+  {
+    "g": "Seguridad",
+    "sub": "Las cosas que sí te pueden hacer daño. Diapositivas 6 a 9.",
+    "rows": [
+      [
+        "Público / privado",
+        "Public / private",
+        "Privado: solo lo ven las personas que tú invitas. Público: todo internet, indexado y leído por bots en minutos. <em>Si dudas, privado.</em>"
+      ],
+      [
+        ".gitignore",
+        ".gitignore",
+        "La lista de \"nunca subir\": archivos que Git debe saltarse. Ahí van el .env, las claves y, en tu carpeta, todos tus archivos de datos."
+      ],
+      [
+        ".env",
+        ".env",
+        "El archivo donde viven tus claves y contraseñas. Solo en tu computador, nunca en GitHub."
+      ],
+      [
+        "Clave de API",
+        "API key",
+        "Una contraseña que usa un programa para entrar a un servicio. Si se filtra, <em>cancélala y crea una nueva</em>: borrar el archivo no la quita de la historia."
+      ],
+      [
+        "Verificación en dos pasos",
+        "2FA",
+        "Además de la contraseña, un código del celular para entrar. Lo primero que se activa en una cuenta de GitHub."
+      ],
+      [
+        "Estrella",
+        "Star",
+        "Un \"me gusta\" en un repo. Se compran, así que nunca prueban que algo es seguro."
+      ],
+      [
+        "repo-check",
+        "repo-check",
+        "La skill que revisa un repo antes de que lo instales: quién está detrás, qué hace y si tiene señales de alerta. Da un veredicto verde, amarillo o rojo."
+      ]
+    ]
+  }
+];
+
+const groupsEl = document.getElementById('groups');
+const chipsEl  = document.getElementById('chips');
+const qEl      = document.getElementById('q');
+const countEl  = document.getElementById('count');
+const emptyEl  = document.getElementById('empty');
+
+let active = null;
+
+DATA.forEach((grp, gi) => {
+  const sec = document.createElement('section');
+  sec.className = 'group'; sec.dataset.gi = gi;
+  sec.innerHTML = `<h2>${grp.g}</h2><p class="sub">${grp.sub}</p>
+    <table><thead><tr>
+      <th class="c-term">Término</th><th class="c-es">En inglés</th><th class="c-def">Qué significa acá</th>
+    </tr></thead><tbody>${grp.rows.map(r => `<tr>
+      <td class="c-term">${r[0]}</td>
+      <td class="c-es">${r[1] ? r[1] : '<span class="same">same</span>'}</td>
+      <td class="c-def">${r[2]}</td></tr>`).join('')}</tbody></table>`;
+  groupsEl.appendChild(sec);
+
+  const chip = document.createElement('span');
+  chip.className = 'chip'; chip.textContent = grp.g; chip.dataset.gi = gi;
+  chip.onclick = () => { active = (active === gi) ? null : gi; render(); };
+  chipsEl.appendChild(chip);
+});
+
+const TOTAL = DATA.reduce((n, g) => n + g.rows.length, 0);
+
+function render() {
+  const q = qEl.value.trim().toLowerCase();
+  let shown = 0;
+
+  [...chipsEl.children].forEach(c => c.classList.toggle('on', +c.dataset.gi === active));
+
+  [...groupsEl.children].forEach(sec => {
+    const gi = +sec.dataset.gi;
+    const inFilter = (active === null) || (active === gi);
+    let visible = 0;
+    sec.querySelectorAll('tbody tr').forEach(tr => {
+      const hit = !q || tr.textContent.toLowerCase().includes(q);
+      const on = hit && inFilter;
+      tr.style.display = on ? '' : 'none';
+      if (on) visible++;
+    });
+    sec.style.display = visible ? '' : 'none';
+    shown += visible;
+  });
+
+  countEl.textContent = (q || active !== null)
+    ? `${shown} de ${TOTAL} términos`
+    : `${TOTAL} términos`;
+  emptyEl.classList.toggle('on', shown === 0);
+}
+
+qEl.addEventListener('input', render);
+render();
+</script>
+</body>
+</html>
