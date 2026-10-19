@@ -115,6 +115,15 @@ SEGUNDO_CAMPAMENTO = {
 }
 
 
+# Numeros corregidos a mano. La planilla es del colegio y no se edita, asi que
+# el celular viejo sigue ahi; esto lo reemplaza en todas las paginas.
+# Clave = celular normalizado que trae la planilla.
+#   Herman Loose cambio de numero (Carlos, 261019).
+PHONE_OVERRIDES = {
+    "56944090083": "56958299445",   # Herman Loose
+}
+
+
 def aplicar_segundo_campamento(entry):
     """Agrega la polera del segundo campamento, si el hijo no esta ya ahi."""
     for nombre, camp, talla in SEGUNDO_CAMPAMENTO.get(entry["ph"], []):
@@ -152,6 +161,7 @@ def process_rows(raw_rows):
 
         parent = parent.strip()
         phone = norm_phone(phone)
+        phone = PHONE_OVERRIDES.get(phone, phone)
         exp = (exp or '').strip()
         rating = (rating or '').strip()
         comment = (comment or '').strip()
