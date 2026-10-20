@@ -1,7 +1,7 @@
 ---
 type: note
 title: Onyx Mentoría S3 deck index
-description: Camera path for the S3 GitHub-without-fear mini-deck (Spanish)
+description: Camera path for the S3 practical GitHub repos deck (Spanish), v2
 ---
 
 # Onyx Mentoría Sesión 3, Master Index
@@ -18,14 +18,11 @@ every row on the infinite plane in this order. To re-choreograph, reorder rows.
 
 **Idioma:** todo el texto visible va en español (tú, neutro). Sin em-dashes.
 
-**Fuente:** storyboard `~/OS/diagrams/workshops/github-basics/261016_github-lesson-storyboard.md`
-(Sección 10 del deck AI Mentoring), adaptado al grupo de Onyx. Imágenes 040+ generadas
-con Codex image_gen, estilo whiteboard-marker, prompts en
+**Versión 2 (261019):** práctica, no técnica. Un repositorio es una carpeta; GitHub sirve para
+buscar herramientas con cuidado y recibir carpetas; todo se abre en Claude. Revisado por Carlos
+en la página de wireframes (claude.ai artifact). La v1 técnica quedó en `INDEX_v1.md`.
+Imágenes 050+ generadas con Codex image_gen; prompts en
 `~/OS/customers/onyx-armor/mentoring/sessions/s3/diagram-prompts/`.
-
-**Ritmo:** la S3 es práctica. Este deck es la única teoría del día: 8 a 10 minutos y
-después manos a la obra (Bloque GitHub en el guion). La fila de rama y pull request
-(044 del storyboard) se sacó; queda en el glosario.
 
 ---
 
@@ -33,25 +30,25 @@ después manos a la obra (Bloque GitHub en el guion). La fila de rama y pull req
 
 | # | Kind | Image file | Caption | Notes |
 |---|------|-----------|---------|-------|
-| 1 | cover | (none) | GitHub sin miedo | eyebrow: "Fiba Labs · AI Mentoring · Sesión 3" |
+| 1 | cover | (none) | Repositorios de GitHub, simplificados | eyebrow: "Fiba Labs · AI Mentoring · Sesión 3" |
 
 ---
 
-## Section 01: GitHub sin miedo
-*Opener sub: "Un Drive para tus carpetas, con máquina del tiempo incluida."*
+## Section 01: Repositorios de GitHub, simplificados
+*Opener sub: "Buscar, revisar y abrir en Claude."*
 
 | # | Kind | Image file | Caption | Notes |
 |---|------|-----------|---------|-------|
-| 1 | section | (none) | GitHub sin miedo | num 01 |
-| 2 | image | 040_gh-you-already-know.png | Ya usas control de versiones \|\| Informe_v1, Informe_FINAL, Informe_FINAL_FINAL: ese es el problema. En Excel o en Google Sheets no lo haces, porque el historial de versiones guarda cada estado anterior, muestra quién cambió qué y te deja restaurar cualquiera. Git es exactamente esa idea, pensada para carpetas completas. \|\| Si alguna vez abriste el historial de versiones, ya entiendes Git. | Luque vive en Excel: Archivo, Información, Historial de versiones |
-| 3 | image | 041_gh-git-vs-github.png | Git es el historial, GitHub es el Drive \|\| Git es el programa que guarda el historial. Vive en tu computador y funciona sin internet. GitHub es la página donde esa carpeta vive en línea: con respaldo, para compartirla y a la mano desde cualquier computador. Es la misma diferencia que hay entre un archivo en tu portátil y su copia en Drive o en OneDrive. \|\| Git guarda la historia, GitHub la guarda en línea. | rápida |
-| 4 | image | 042_gh-vocabulary-map.png | El diccionario: tu hoja de cálculo a la izquierda, Git a la derecha \|\| Una carpeta con historial es un repositorio (repo). Una versión guardada con nombre es un commit. El panel del historial es el log. Lo resaltado en verde y rojo es un diff. "Restaurar esta versión" es un revert. Subir a la nube es un push y traer lo último es un pull. Descargar la carpeta completa, con toda su historia, es un clone. \|\| Ocho palabras, y cada una es algo que ya haces en tu hoja de cálculo. | LA diapositiva clave, despacio · el glosario completo está en glosario.html |
-| 5 | image | 043_gh-you-decide-when.png | La gran diferencia: tú decides cuándo guardar \|\| Google Sheets guarda una versión cada pocos segundos sin preguntarte. Git solo guarda cuando tú se lo pides, y cada versión lleva una nota corta de qué cambió y por qué. "Agregué los precios de marzo" es una buena nota; "cosas" no lo es. Esa es la gracia: una historia limpia de pasos con sentido, en vez de miles de autoguardados. \|\| Un commit es una versión a la que le pusiste nombre a propósito. |  |
-| 6 | image | 045_gh-text-vs-binary.png | Tus instrucciones sí, tus datos no \|\| Cambia una línea en un .md y GitHub te muestra exactamente esa línea, en rojo y en verde. Cambia una celda en un .xlsx y solo puede decirte "este archivo cambió". Por eso a GitHub suben tus instrucciones (el AGENTS.md, los contextos, las skills), que son texto. Tus Excel, tus PDF y los datos de tus clientes se quedan en tu computador y en tu respaldo de siempre. \|\| A GitHub sube cómo trabajas. Tus datos se quedan en casa. | puente al hands-on: el .gitignore de hoy deja entrar solo texto · Julian: nada de clientes del bufete |
-| 7 | image | 046_gh-public-means-internet.png | Público es todo internet \|\| Un repo público lo ve todo el mundo, no solo quien tenga el link: queda indexado y los bots lo leen en minutos. Privado es lo seguro: solo lo ven las personas que tú invitas. Crea todos tus repos como privados, a menos que tengas una razón clara para publicar. \|\| Si dudas, privado. | SEGURIDAD 1 |
-| 8 | image | 047_gh-history-never-forgets.png | La historia no olvida \|\| Lo mismo que te salva te puede exponer. Si una contraseña o una clave de API entra en un commit, borrar el archivo después no la quita, porque la versión vieja sigue en la historia y cualquiera que vea el repo la puede abrir. Las claves van en un archivo .env, y el .env va en el .gitignore, la lista de "nunca subir". Si una clave se filtra, cancélala y crea una nueva. En 2025 se filtraron 28,6 millones de claves nuevas en GitHub público, y los commits hechos con Claude Code las filtraron a casi el doble de la tasa normal (GitGuardian, 2026). \|\| Nunca subas una clave. Si se te escapa una, cancélala: borrarla no basta. | SEGURIDAD 2 · la más importante, despacio · prueba del extraño en voz alta: "¿me importaría que un extraño leyera este archivo?" |
-| 9 | image | 048_gh-not-an-app-store.png | GitHub no es una tienda de apps \|\| Nadie revisa lo que se publica ahí. Las estrellas se compran, los nombres se copian de proyectos reales, y una skill, un plugin o un MCP que instales puede leer tus archivos y ejecutar comandos. Antes de instalar algo de GitHub, mira quién está detrás, léelo antes de correrlo y pruébalo primero en una carpeta de prueba. Eso es lo que hace por ti la skill repo-check. \|\| Lee antes de instalar. Primero el veredicto, después la carpeta de prueba. | SEGURIDAD 3 · amarra con lo de los MCP con caballo de Troya de la S2 · demo en vivo: /repo-check ComposioHQ/composio-plugin-cc (sale amarillo: hooks en cada prompt) |
-| 10 | image | 049_gh-safe-start.png | Tu arranque seguro \|\| 1) Cuenta de GitHub con verificación en dos pasos. 2) Todo repo privado por defecto. 3) Un .gitignore con el .env adentro antes del primer push. 4) Claude puede hacer los commits, pero cada push lo apruebas tú. 5) Revisa cualquier repo antes de instalarlo. \|\| Cinco hábitos, y GitHub deja de dar miedo. | cierre de la teoría · de aquí, directo al Bloque GitHub del doc compartido |
+| 1 | section | (none) | Repositorios de GitHub, simplificados | num 01 |
+| 2 | image | 050_repo-is-a-folder.png | Un repositorio (repo) es una carpeta \|\| Tu carpeta mi-os ya es casi un repositorio: un AGENTS.md, tus contextos, tus skills. Un repositorio es eso mismo, guardado en GitHub con su historia. Todo el mundo le dice repo, para abreviar. El README es la etiqueta de la caja: te dice qué hay adentro y para qué sirve. \|\| Si sabes abrir una carpeta, sabes abrir un repo. | "Yo nunca escribo un comando de Git. Claude Code lo hace por mí." |
+| 3 | image | 046_gh-public-means-internet.png | Privado o público \|\| Un repo privado solo lo ven las personas que invitas. Así te llega el repo de Onyx. Uno público lo ve todo internet, y cualquiera puede publicar ahí lo que quiera sin que nadie lo revise. \|\| Lo privado te lo comparten. Lo público lo revisas antes de usarlo. | prepara los dos casos: Rocha recibe uno privado, Julian revisa uno público |
+| 4 | image | 051_read-a-repo-30s.png | Cómo leer un repo en 30 segundos \|\| 1) ¿Quién lo publica? Una persona o empresa real, con más proyectos. 2) ¿Cuándo se actualizó? Meses sin cambios es una herramienta abandonada. 3) ¿Cuánta gente lo usa? Las estrellas ayudan, pero se compran. 4) ¿Qué te pide? El README dice qué instala, qué claves pide y qué comandos corre. \|\| Cuatro preguntas antes de descargar nada. | abrir github.com/hypit-ai/hypit al lado: 23.9k estrellas, actualizado hoy, licencia "Other", pide Node, FFmpeg y claves pagas |
+| 5 | image | 048_gh-not-an-app-store.png | GitHub no es una tienda de apps \|\| Nadie revisa lo que se publica. Los nombres se copian de proyectos reales, y una skill o un MCP que instales puede leer tus archivos y ejecutar comandos. Por eso no lo instalas directo. Primero se lo pasas a repo-check, que lo lee sin ejecutarlo y te da un veredicto: verde, amarillo o rojo. \|\| Primero el veredicto, después la instalación. | demo en vivo: /repo-check ComposioHQ/composio-plugin-cc (sale amarillo) |
+| 6 | image | 047_gh-history-never-forgets.png | La historia no olvida \|\| Si una clave entra en un repo, borrarla después no basta: la versión vieja sigue en la historia. Y ni siquiera borrar la historia lo arregla: quien ya la vio o ya descargó el repo, la tiene. Lo que se expuso, se expuso. La única solución es cancelar la clave y crear una nueva. \|\| Clave que se filtra, clave que se cancela. | opcional: la historia de la clave de Mistral en el repo de Onyx |
+| 7 | image | 052_open-in-claude.png | Ábrelo en Claude \|\| 1) En GitHub: botón verde Code, luego Download ZIP. Si es privado, primero aceptas la invitación que te llega al correo. 2) Descomprímelo en una carpeta de prueba, fuera de mi-os. 3) Abre esa carpeta en Claude y pide: "Explícame qué hace esta carpeta, qué necesita para funcionar y si ves algo riesgoso. No instales ni ejecutes nada todavía." \|\| No trabajas en GitHub. Trabajas en Claude, con la carpeta en tu computador. | Rocha: onyx-armor · Julian: Hypit |
+| 8 | image | 053_copy-the-idea.png | Ingeniería inversa: copia la idea, no la instalación \|\| No todo lo que encuentras hay que instalarlo. Muchas veces basta con que Claude lo lea, te explique cómo funciona por dentro y te ayude a construir tu propia versión, más simple, en tu carpeta. Texto (skills, prompts, plantillas): Claude te escribe tu versión. El proceso de una app: lo armas por etapas, como en la Sesión 2. Código que pide claves o instala cosas: solo se lee, nunca se ejecuta. \|\| La idea la puedes usar. El código, según la licencia. | prompt: "Lee esta carpeta sin ejecutar nada. Explícame paso a paso qué entra, qué hace en cada etapa y qué sale. Después escribe ese proceso como una skill simple para mi carpeta, sin copiar su código." · Luque: anthropics/skills, skills/xlsx · Julian: Hypit por etapas |
+| 9 | image | 054_check-before-install.png | Antes de instalar, revisa \|\| Sé quién lo publica. repo-check dio verde, o entiendo el amarillo. Claude lo leyó y me explicó qué hace. Lo probé en una carpeta de prueba. No le di ninguna clave sin saber para qué. \|\| Cinco revisiones, y GitHub se vuelve tu tienda de herramientas. |  |
+| 10 | image | 055_my-skills.png | Mis skills, para ustedes \|\| Todo lo de hoy, aplicado a algo real: mis skills están en un repo público, las que uso en mi trabajo y con clientes. Primero se lo pasan a repo-check, también a mí: la regla vale para todo el mundo. Después descargan el ZIP y le piden a Claude que instale las que quieran. Empiecen por skill-dashboard: les arma una página con todas las skills que tienen. \|\| Revisar, instalar, y ver todo lo que tienes en un solo lugar. | github.com/carlosacunau/kit-qzlmpt00n3 · repo-check sale amarillo por ser nuevo (0 estrellas, 1 autor), el código está limpio |
 
 ---
 
@@ -64,7 +61,8 @@ después manos a la obra (Bloque GitHub en el guion). La fila de rama y pull req
 ---
 
 ## Change log
-- 261019: Deck creado para la Sesión 3 de Onyx: la lección de GitHub prometida. Sale del
-  storyboard del 261016 (Sección 10 del deck AI Mentoring), en español, sin la fila de
-  rama y pull request, y con la diapositiva de texto vs binario convertida en la regla
-  del hands-on (instrucciones sí, datos no).
+- 261019 v2: Rehecho a pedido de Carlos: práctico en vez de técnico. Fuera el vocabulario
+  (commit, push, diff), el "tú decides cuándo guardar", el texto vs binario y el arranque
+  seguro de publicar. Entran: repo como carpeta, leer un repo en 30 segundos, abrirlo en
+  Claude, ingeniería inversa, checklist antes de instalar y el kit de skills de Carlos.
+- 261019 v1: Deck técnico desde el storyboard del 261016 (ver `INDEX_v1.md`).
