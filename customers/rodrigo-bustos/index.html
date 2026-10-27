@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Control de Gastos BM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column; the flow diagram and the invoice example break wider. Blueprint-paper neutrals, hi-vis orange accent used sparingly. */
+:root {
+  --bg: #f3f5f7;
+  --surface: #ffffff;
+  --ink: #17202b;
+  --muted: #5b6776;
+  --line: #d5dbe2;
+  --accent: #d9480f;
+  --accent-soft: #fde8dc;
+  --paper: #fbfaf6;
+  --ok: #2b8a3e;      --ok-bg: #e3f4e6;
+  --test: #1864ab;    --test-bg: #e2eefa;
+  --build: #b35c00;   --build-bg: #fff0d6;
+  --next: #5b6776;    --next-bg: #e9edf1;
+  --f2: #6741d9;      --f2-bg: #eeeafc;
+  --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --body: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f151c; --surface: #17202b; --ink: #e8edf2; --muted: #9aa7b5; --line: #2c3845;
+    --accent: #ff7a3d; --accent-soft: #3a2216; --paper: #1d2733;
+    --ok: #69db7c; --ok-bg: #18301e; --test: #74c0fc; --test-bg: #15283a;
+    --build: #ffc078; --build-bg: #36270f; --next: #adb5bd; --next-bg: #232d38;
+    --f2: #b197fc; --f2-bg: #261f3d;
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 16px/1.6 var(--body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 64px;
+}
+.wrap { max-width: 1080px; margin: 0 auto; }
+.col { max-width: 720px; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.15; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(2rem, 5vw, 3.1rem); font-weight: 800; letter-spacing: -0.01em; }
+h2 { font-size: clamp(1.4rem, 3vw, 1.9rem); font-weight: 800; }
+h3 { font-size: 1.05rem; font-weight: 700; }
+p { margin: 0; }
+.eyebrow { font: 600 0.75rem/1 var(--body); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+.muted { color: var(--muted); }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+section { padding-block: 56px 0; display: grid; gap: 20px; }
+
+/* Header */
+header { padding-block: 48px 8px; display: grid; gap: 16px; border-bottom: 1px solid var(--line); padding-bottom: 32px; }
+.meta { display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: 0.9rem; color: var(--muted); }
+.lede { font-size: 1.15rem; max-width: 62ch; }
+
+/* Status pills */
+.pill { display: inline-flex; align-items: center; gap: 6px; font: 600 0.72rem/1 var(--body); letter-spacing: 0.04em; text-transform: uppercase; padding: 5px 9px; border-radius: 999px; white-space: nowrap; }
+.pill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.s-ok { color: var(--ok); background: var(--ok-bg); }
+.s-test { color: var(--test); background: var(--test-bg); }
+.s-build { color: var(--build); background: var(--build-bg); }
+.s-next { color: var(--next); background: var(--next-bg); }
+.s-f2 { color: var(--f2); background: var(--f2-bg); }
+.legend { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* Flow diagram */
+.flow-scroll { overflow-x: auto; padding-bottom: 4px; }
+.flow { display: grid; grid-template-columns: repeat(6, minmax(150px, 1fr)); gap: 28px; min-width: 1000px; position: relative; }
+.node { min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: grid; gap: 10px; align-content: start; position: relative; }
+.node:not(:last-child)::after {
+  content: ""; position: absolute; right: -24px; top: 34px; width: 20px; height: 2px; background: var(--muted);
+}
+.node:not(:last-child)::before {
+  content: ""; position: absolute; right: -25px; top: 30px; border: 5px solid transparent; border-left: 7px solid var(--muted); border-right: 0;
+}
+.node .step { font: 500 0.75rem/1 var(--mono); color: var(--muted); }
+.node p { font-size: 0.88rem; color: var(--muted); }
+.node ul { margin: 0; padding-left: 18px; font-size: 0.85rem; color: var(--muted); display: grid; gap: 4px; }
+.node.f2 { border-style: dashed; }
+.node .pill { justify-self: start; }
+.pill.wrap { white-space: normal; line-height: 1.25; }
+.lanes { display: grid; grid-template-columns: repeat(6, minmax(150px, 1fr)); gap: 28px; min-width: 1000px; margin-top: 14px; }
+.lane { border-radius: 8px; padding: 10px 14px; font-size: 0.85rem; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.lane.people { grid-column: 5 / 6; background: var(--accent-soft); color: var(--ink); }
+.lane.cron { grid-column: 1 / 5; background: var(--next-bg); color: var(--ink); }
+.lane strong { font-weight: 600; }
+
+/* Numbers */
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+.stat { border-top: 3px solid var(--ink); padding-top: 12px; display: grid; gap: 4px; }
+.stat b { font: 800 2.2rem/1 var(--display); font-variant-numeric: tabular-nums; }
+.stat span { font-size: 0.9rem; color: var(--muted); }
+
+/* Invoice example */
+.example { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr); gap: 24px; align-items: start; }
+.paper { background: var(--paper); border: 1px solid var(--line); border-radius: 4px; padding: 20px; font: 0.8rem/1.5 var(--mono); position: relative; box-shadow: 0 1px 0 var(--line), 0 6px 18px -12px rgba(0,0,0,.35); }
+.paper .hdr { display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px dashed var(--line); padding-bottom: 10px; margin-bottom: 10px; }
+.paper .circled { position: absolute; top: -14px; right: -10px; width: 58px; height: 58px; border: 2.5px solid #1c4fd8; border-radius: 50%; display: grid; place-items: center; font: 600 1.25rem/1 "Comic Sans MS", "Bradley Hand", cursive; color: #1c4fd8; transform: rotate(-8deg); background: transparent; }
+.paper .ln { display: flex; justify-content: space-between; gap: 10px; }
+.paper .ln span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.paper .tot { border-top: 1px dashed var(--line); margin-top: 10px; padding-top: 8px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: grid; gap: 14px; min-width: 0; }
+.kv { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px 16px; }
+.kv div { display: grid; gap: 2px; }
+.kv dt { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+.kv dd { margin: 0; font: 500 0.95rem/1.3 var(--mono); }
+dl { margin: 0; }
+.tbl-scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 0.85rem; }
+th { text-align: left; font: 600 0.72rem/1.2 var(--body); text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); padding: 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+td { padding: 7px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+td.n { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+td.code { font-family: var(--mono); color: var(--muted); white-space: nowrap; }
+.checks { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; font-size: 0.9rem; }
+.checks li { display: flex; gap: 10px; align-items: baseline; }
+.checks .ok { color: var(--ok); font-weight: 700; }
+.checks .warn { color: var(--build); font-weight: 700; }
+.sheet { font-size: 0.82rem; }
+.sheet th { background: var(--next-bg); color: var(--ink); border: 1px solid var(--line); }
+.sheet td { border: 1px solid var(--line); background: var(--surface); white-space: nowrap; }
+.sheet td.todo { color: var(--muted); font-style: italic; background: var(--bg); }
+.note { font-size: 0.9rem; color: var(--muted); }
+.flag { border-left: 3px solid var(--build); padding: 4px 0 4px 16px; display: grid; gap: 8px; }
+
+/* Roadmap */
+.road { display: grid; gap: 0; }
+.road .row { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 20px; padding: 18px 0; border-top: 1px solid var(--line); }
+.road .when { display: grid; gap: 8px; align-content: start; }
+.road .when b { font: 700 1rem/1.2 var(--display); }
+.road ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+
+/* Asks */
+.asks { counter-reset: a; display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+.asks li { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 12px; align-items: start; }
+.asks li::before { counter-increment: a; content: counter(a); font: 800 1rem/34px var(--display); text-align: center; background: var(--accent); color: #fff; border-radius: 50%; width: 34px; height: 34px; }
+.asks .who { font-size: 0.85rem; color: var(--muted); }
+
+footer { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 0.85rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
+
+@media (max-width: 760px) {
+  .example { grid-template-columns: minmax(0, 1fr); }
+  .road .row { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .paper .circled { right: 6px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Control de gastos por obra</h1>
+  <p class="lede">Cada factura que llega se lee sola, línea por línea, y queda en la planilla de su obra para que Rodrigo o Nelson la confirmen. Esto es lo que ya funciona, con facturas reales de ustedes, y lo que falta para cerrar la Fase 1.</p>
+  <div class="meta"><span>Inversiones BM · Fase 1</span><span>Actualizado el 27 de octubre de 2026</span><span>Fiba Labs · Carlos Acuña</span></div>
+</header>
+
+<section>
+  <h2>El recorrido de una factura</h2>
+  <div class="legend">
+    <span class="pill s-ok">Listo</span>
+    <span class="pill s-test">En prueba</span>
+    <span class="pill s-build">En construcción</span>
+    <span class="pill s-next">Próximo</span>
+    <span class="pill s-f2">Fase 2</span>
+  </div>
+  <div class="flow-scroll" role="region" aria-label="Diagrama del sistema" tabindex="0">
+    <div class="flow">
+      <div class="node">
+        <span class="step">1 · Entrada</span>
+        <h3>Llega la factura</h3>
+        <span class="pill s-test">En prueba</span>
+        <p>El maestro le saca una foto. Rodrigo o Nelson la reenvían al correo de la empresa con el nombre de la obra en el asunto. También sirven los PDF escaneados.</p>
+      </div>
+      <div class="node">
+        <span class="step">2 · Filtro</span>
+        <h3>¿Es una factura?</h3>
+        <span class="pill s-build">En construcción</span>
+        <p>Descarta planos, planillas y fotos que no son facturas antes de leerlas, para no gastar en lo que no sirve.</p>
+      </div>
+      <div class="node">
+        <span class="step">3 · Lectura</span>
+        <h3>Se lee la factura</h3>
+        <span class="pill s-ok">Listo</span>
+        <ul>
+          <li>Proveedor, folio, fecha, forma de pago</li>
+          <li>Neto, IVA y total</li>
+          <li>Cada línea: código, descripción, cantidad, precio</li>
+          <li>El N° que Nelson encierra a mano</li>
+        </ul>
+      </div>
+      <div class="node">
+        <span class="step">4 · Revisión</span>
+        <h3>Se revisa sola</h3>
+        <span class="pill s-ok">Listo</span>
+        <ul>
+          <li>Las líneas suman el neto</li>
+          <li>El IVA es el 19%</li>
+          <li>Viene a nombre de Inversiones BM</li>
+          <li>No es un voucher ni una guía</li>
+        </ul>
+        <span class="pill s-next wrap">Próximo: facturas repetidas</span>
+      </div>
+      <div class="node">
+        <span class="step">5 · Planilla</span>
+        <h3>Queda en la planilla de la obra</h3>
+        <span class="pill s-next">Próximo</span>
+        <p>Primero entra a una bandeja de revisión. Al confirmarla pasa a la pestaña de la obra, con las mismas columnas de MATERIALES que usan hoy.</p>
+      </div>
+      <div class="node f2">
+        <span class="step">6 · Datos</span>
+        <h3>Precios por producto</h3>
+        <span class="pill s-f2">Fase 2</span>
+        <p>Cada línea queda guardada desde el primer día. Con eso se arma la comparación de precios por producto y proveedor.</p>
+      </div>
+    </div>
+    <div class="lanes">
+      <div class="lane cron"><span class="pill s-next">Próximo</span><span><strong>Funciona solo</strong> cada 10 minutos en un servidor en la nube, sin que nadie tenga el computador prendido.</span></div>
+      <div class="lane people"><span><strong>Ustedes deciden</strong> la obra y la partida. El sistema sugiere.</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Probado con facturas reales de tres obras</h2>
+  <p class="col">Nelson subió los escaneos de Mala Mía, Kovacs y Casa MM Colina al Drive. Las leímos todas y comparamos cada resultado con el papel y con la planilla de gastos de cada obra.</p>
+  <div class="stats">
+    <div class="stat"><b>310</b><span>páginas leídas, de 3 obras</span></div>
+    <div class="stat"><b>913</b><span>líneas de productos capturadas una por una</span></div>
+    <div class="stat"><b>105 de 105</b><span>folio y total correctos en Mala Mía y Kovacs</span></div>
+    <div class="stat"><b>≈ 192 de 205</b><span>sin error en Casa MM. Casi todos los errores son folios desteñidos de Construmart</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>Ejemplo real: una factura de Construmart en Casa MM Colina</h2>
+  <div class="example">
+    <div class="paper" aria-label="Factura escaneada (representación)">
+      <div class="circled" aria-label="Número 328 encerrado a mano">328</div>
+      <div class="hdr"><span>CONSTRUMART<br>LOS ÁLAMOS</span><span>FACTURA<br>N° 22928173</span></div>
+      <div>Fecha: 10-08-2026<br>Pago: Tarjeta</div>
+      <div class="tot">
+        <div class="ln"><span>TAB OSB 9,5X1220X2440</span><span>27.882</span></div>
+        <div class="ln"><span>HUINCHA FV JUNTAPRO</span><span>3.848</span></div>
+        <div class="ln"><span>PASTA MURO SIPA 6KG</span><span>8.665</span></div>
+        <div class="ln"><span>COPA DIAMANTADA 100MM</span><span>16.294</span></div>
+        <div class="ln"><span>FRAGUE BEKRON 5KG</span><span>14.353</span></div>
+        <div class="ln"><span>PERMANIT 5MM 1,2X2,4</span><span>29.002</span></div>
+      </div>
+      <div class="tot">
+        <div class="ln"><span>NETO</span><span>100.044</span></div>
+        <div class="ln"><span>IVA 19%</span><span>19.008</span></div>
+        <div class="ln"><b>TOTAL</b><b>119.052</b></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Lo que el sistema leyó</h3>
+      <dl class="kv">
+        <div><dt>Proveedor</dt><dd>Construmart</dd></div>
+        <div><dt>Folio</dt><dd>22928173</dd></div>
+        <div><dt>Fecha</dt><dd>10-08-2026</dd></div>
+        <div><dt>Total</dt><dd>$119.052</dd></div>
+        <div><dt>N° a mano</dt><dd>328</dd></div>
+      </dl>
+      <div class="tbl-scroll">
+        <table>
+          <thead><tr><th>Código</th><th>Descripción</th><th>Cant.</th><th>Precio</th><th>Total</th></tr></thead>
+          <tbody>
+            <tr><td class="code">2500003053013</td><td>TAB OSB ST 9,5X1220X2440MM</td><td class="n">2</td><td class="n">13.941</td><td class="n">27.882</td></tr>
+            <tr><td class="code">7805754000135</td><td>HUINCHA FV JUNTAPRO 50MMX90M VOLCAN</td><td class="n">1</td><td class="n">3.848</td><td class="n">3.848</td></tr>
+            <tr><td class="code">7805362003385</td><td>PASTA MURO ACRILICA EXTERIOR SIPA 6KG</td><td class="n">1</td><td class="n">8.665</td><td class="n">8.665</td></tr>
+            <tr><td class="code">4059952522739</td><td>COPA DIAMANTADA TURBO 100X22,23MM</td><td class="n">1</td><td class="n">16.294</td><td class="n">16.294</td></tr>
+            <tr><td class="code">7805580303052</td><td>FRAGUE STANDARD 5KG GRAY GARZA BEKRON</td><td class="n">2</td><td class="n">7.176</td><td class="n">14.353</td></tr>
+            <tr><td class="code">7809616200100</td><td>PERMANIT ESTANDAR 5MM 1,2X2,4M</td><td class="n">3</td><td class="n">9.667</td><td class="n">29.002</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <ul class="checks">
+        <li><span class="ok">✓</span><span>Las 6 líneas suman el neto: $100.044</span></li>
+        <li><span class="ok">✓</span><span>IVA 19% correcto: $19.008</span></li>
+        <li><span class="ok">✓</span><span>Factura a nombre de Inversiones BM</span></li>
+        <li><span class="ok">✓</span><span>Coincide con la fila 328 de la planilla de Casa MM: mismo proveedor, folio, fecha y total</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 style="margin-top:12px">Así quedaría en la pestaña de la obra</h3>
+  <p class="note">Mismas columnas y orden que MATERIALES en la planilla de hoy. Lo que está en gris lo completan ustedes. Diseño por aprobar.</p>
+  <div class="tbl-scroll">
+    <table class="sheet">
+      <thead><tr><th>N°</th><th>Proveedores</th><th>Nº Factura</th><th>Fecha</th><th>Corresponde a</th><th>Forma de Pago</th><th>Facturas</th><th>BANCO</th><th>ITEM</th><th>Observaciones</th></tr></thead>
+      <tbody><tr>
+        <td class="mono">328</td><td>CONSTRUMART</td><td class="mono">22928173</td><td class="mono">10-08-2026</td><td>OSB-PERMANIT-FRAGUE-COPA</td><td class="todo">TD (confirmar)</td><td class="mono">119.052</td><td class="todo">BCI</td><td class="todo">elegir partida</td><td class="todo"></td>
+      </tr></tbody>
+    </table>
+  </div>
+
+  <div class="flag" style="margin-top:16px">
+    <h3>Cuando algo no cuadra, se avisa</h3>
+    <p class="col">En una factura de Comercial Scanavini las líneas suman $427.517, pero el neto es $367.177. La diferencia es un descuento de $60.340 aplicado al total. El sistema no adivina: la marca para que una persona la mire. Ya estamos enseñándole a reconocer este caso y los redondeos de pocos pesos, para que solo levante la mano cuando hace falta.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Plan hasta el cierre de la Fase 1</h2>
+  <div class="road">
+    <div class="row">
+      <div class="when"><b>Hecho</b><span class="pill s-ok">Octubre</span></div>
+      <ul>
+        <li>Acceso al correo y al Drive de la empresa, con verificación en dos pasos activa.</li>
+        <li>Lectura de facturas probada con 310 páginas reales.</li>
+        <li>Revisiones automáticas de sumas, IVA y RUT del cliente.</li>
+      </ul>
+    </div>
+    <div class="row">
+      <div class="when"><b>Ahora</b><span class="pill s-build">En curso</span></div>
+      <ul>
+        <li>Filtro que descarta lo que no es factura antes de leerlo.</li>
+        <li>Primeras facturas reenviadas por correo, de punta a punta.</li>
+      </ul>
+    </div>
+    <div class="row">
+      <div class="when"><b>Siguiente</b><span class="pill s-next">Noviembre</span></div>
+      <ul>
+        <li>Con el diseño aprobado: la bandeja de revisión y una pestaña por obra en la planilla de Google.</li>
+        <li>Aviso de facturas repetidas (mismo proveedor y folio) y de folios fuera de secuencia.</li>
+        <li>Funcionamiento automático cada 10 minutos.</li>
+      </ul>
+    </div>
+    <div class="row">
+      <div class="when"><b>Cierre</b><span class="pill s-next">Diciembre</span></div>
+      <ul>
+        <li>Pruebas finales con la cuenta de IA de la empresa.</li>
+        <li>Traspaso de todas las cuentas a nombre de Inversiones BM y guía de uso.</li>
+      </ul>
+    </div>
+    <div class="row">
+      <div class="when"><b>Después</b><span class="pill s-f2">Fase 2</span></div>
+      <ul>
+        <li>Base de precios por producto y proveedor, alimentada sola por las facturas de la Fase 1.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Lo que necesitamos de ustedes</h2>
+  <ol class="asks">
+    <li><div><strong>Aprobar el diseño de la planilla.</strong> Es lo que destraba escribir en ella. Lo revisamos juntos en una llamada corta.<div class="who">Rodrigo y Nelson</div></div></li>
+    <li><div><strong>Reenviar 5 a 10 facturas reales al correo de la empresa</strong>, con el nombre de la obra en el asunto.<div class="who">Rodrigo o Nelson</div></div></li>
+    <li><div><strong>Los escaneos que faltan:</strong> Kovacs del 1 al 20 y Casa MM del N° 154 al 200.<div class="who">Nelson</div></div></li>
+    <li><div><strong>Dos preguntas:</strong> ¿los proveedores les mandan el XML del SII junto a la factura? ¿Qué registra la pestaña VENTAS de la planilla de Ford Rancagua?<div class="who">Nelson</div></div></li>
+    <li><div><strong>Al cierre:</strong> una tarjeta de crédito en la cuenta de IA de la empresa, para que el sistema quede funcionando a su nombre.<div class="who">Rodrigo</div></div></li>
+  </ol>
+</section>
+
+<footer>
+  <span>Fiba Labs · Control de gastos por obra, Fase 1</span>
+  <span>27-10-2026</span>
+</footer>
+
+</div>
+</body>
+</html>
