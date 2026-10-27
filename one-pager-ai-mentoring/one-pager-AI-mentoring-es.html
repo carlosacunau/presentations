@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<!-- design-lint: allow ai-color-palette --><!-- design-lint: allow overused-font --><!-- design-lint: allow kicker-above-heading --><!-- Fiba Labs brand palette and fonts; print one-pager sizes -->
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mentoría de IA · Fiba Labs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: #FFFFFF; }
+  body {
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+    color: #1A1A1A; line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .page {
+    width: 210mm; height: 297mm; overflow: hidden; margin: 0 auto;
+    padding: 11mm 14mm 9mm;
+    display: flex; flex-direction: column;
+    background:
+      radial-gradient(900px 420px at 95% -8%, rgba(139,92,246,0.11), transparent 60%),
+      radial-gradient(700px 380px at -8% 108%, rgba(76,45,145,0.08), transparent 62%),
+      #FFFFFF;
+  }
+  h1, h2, .wordmark, .eyebrow, .label, .step-n, .cta-h { font-family: "Space Grotesk", "Inter", sans-serif; }
+
+  .topbar { display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid rgba(76,45,145,0.18); }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand img { width: 30px; height: 30px; display: block; }
+  .wordmark { font-size: 18px; font-weight: 500; letter-spacing: 0.4px; }
+  .eyebrow { font-size: 10px; font-weight: 600; letter-spacing: 2.6px; text-transform: uppercase; color: #8B5CF6; }
+
+  .hero { padding: 12px 0 0; }
+  h1 { font-size: 31px; font-weight: 700; line-height: 1.05; letter-spacing: -0.6px; color: #16121E; }
+  .fromto { font-family: "Space Grotesk", sans-serif; font-size: 15px; font-weight: 500; color: #4C2D91; margin-top: 10px; line-height: 1.35; max-width: 64ch; }
+  .fromto .q { color: #16121E; }
+  .belief { font-size: 12px; color: #4A4754; margin-top: 9px; max-width: 86ch; }
+  .belief b { color: #16121E; font-weight: 600; }
+
+  .label { font-size: 9.5px; font-weight: 700; letter-spacing: 2.2px; text-transform: uppercase; color: #8B5CF6; margin-bottom: 7px; }
+  .row { display: grid; gap: 10px; margin-top: 9px; }
+  .r2 { grid-template-columns: 1fr 1.25fr; }
+  .r3 { grid-template-columns: 1.55fr 1fr; }
+  .r4 { grid-template-columns: 1fr 1fr 1.15fr; }
+
+  .card { background: #FFFFFF; border: 1px solid rgba(76,45,145,0.14); border-radius: 11px; padding: 10px 13px; }
+  .card p { font-size: 11.2px; color: #2E2B38; }
+  .card p b { color: #16121E; font-weight: 600; }
+  .tint { background: rgba(139,92,246,0.06); border: none; border-left: 3px solid #8B5CF6; border-radius: 0 11px 11px 0; }
+
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .step { background: #FFFFFF; border: 1px solid rgba(76,45,145,0.14); border-radius: 11px; padding: 11px 12px; }
+  .step-n { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #8B5CF6; }
+  .step h2.sh { font-family: "Space Grotesk", sans-serif; font-size: 13px; font-weight: 700; color: #16121E; margin: 3px 0 5px; line-height: 1.2; }
+  .step p { font-size: 10.6px; color: #3A3744; }
+
+  table { width: 100%; border-collapse: collapse; }
+  td { font-size: 10.6px; padding: 4px 0; vertical-align: top; border-top: 1px solid rgba(76,45,145,0.10); color: #2E2B38; }
+  tr:first-child td { border-top: none; padding-top: 0; }
+  td.obj { width: 34%; padding-right: 12px; font-weight: 600; color: #4C2D91; font-style: italic; }
+
+  ul { list-style: none; }
+  li { position: relative; padding-left: 14px; margin-bottom: 6px; font-size: 10.8px; color: #2E2B38; }
+  li:last-child { margin-bottom: 0; }
+  li::before { content: ""; position: absolute; left: 0; top: 6px; width: 6px; height: 6px; border-radius: 2px; background: #8B5CF6; }
+  li b { color: #16121E; font-weight: 600; }
+
+  .cta { background: #16121E; color: #FFFFFF; border-radius: 11px; padding: 13px 15px; display: flex; flex-direction: column; }
+  .cta .label { color: #C4B5FD; }
+  .cta-h { font-size: 14.5px; font-weight: 700; line-height: 1.25; }
+  .cta p { font-size: 10.8px; color: #D9D4E8; margin-top: 7px; }
+  .cta .contact { margin-top: auto; padding-top: 9px; font-size: 10.8px; color: #FFFFFF; font-weight: 600; }
+  .cta .contact span { color: #C4B5FD; font-weight: 500; }
+
+  .foot { margin-top: auto; padding-top: 10px; border-top: 1px solid rgba(76,45,145,0.14); display: flex; justify-content: space-between; font-size: 9.5px; color: #6B6777; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="topbar">
+    <div class="brand"><img src="fiba-monogram.png" alt="Fiba Labs"><span class="wordmark">Fiba Labs</span></div>
+    <div class="eyebrow">Mentoría de IA · 1:1 o grupo pequeño</div>
+  </div>
+
+  <div class="hero">
+    <h1>Deja de partir de cero con la IA cada mañana.</h1>
+    <div class="fromto">De <span class="q">&ldquo;cada día hablo con una IA distinta&rdquo;</span> a <span class="q">&ldquo;tengo un sistema que me conoce a mí y a mi trabajo, y lo hace bien cada vez.&rdquo;</span></div>
+    <p class="belief">La mayoría usa la IA como un buscador más listo: pregunta, recibe una respuesta y mañana parte de cero. <b>El problema nunca fue la herramienta. Nadie le explicó cómo haces tu trabajo.</b> Eso es lo que resolvemos, sobre tu trabajo real, en tres sesiones en vivo.</p>
+  </div>
+
+  <div class="row r2">
+    <div class="card tint">
+      <div class="label">Primero: el test de dos minutos</div>
+      <p>Escribe en dos minutos cómo haces una tarea que repites cada semana. Pásaselo a alguien de tu equipo. <b>Donde esa persona se traba, tu IA también se traba.</b> Ahí partimos.</p>
+    </div>
+    <div class="card">
+      <div class="label">El método: Arquitectura de Contexto</div>
+      <p>Cada área de tu trabajo se convierte en una carpeta con sus propias instrucciones. Dentro de esa carpeta, <b>la IA se convierte en el agente de ese trabajo</b>: conoce tus archivos, tus herramientas, tus reglas y tu forma de escribir. Carpetas y archivos tuyos, que cualquier IA puede leer.</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div>
+      <div class="label">Cómo funciona</div>
+      <div class="steps">
+        <div class="step"><div class="step-n">Antes</div><h2 class="sh">Cinco minutos de preguntas</h2><p>Me cuentas cómo trabajas. Preparo tu espacio de trabajo antes de reunirnos.</p></div>
+        <div class="step"><div class="step-n">Sesión 1</div><h2 class="sh">Instalación y un resultado real</h2><p>Se instala tu kit de inicio: un agente por área, más resguardos. Antes de terminar, ya hizo una tarea real con tus datos.</p></div>
+        <div class="step"><div class="step-n">Entre sesiones</div><h2 class="sh">Una misión de menos de una hora</h2><p>Más una entrevista guiada donde la IA aprende cómo trabajas. Si te trabas, me escribes.</p></div>
+        <div class="step"><div class="step-n">Sesiones 2 y 3</div><h2 class="sh">Tu trabajo, hecho a tu manera</h2><p>Lo repetitivo se vuelve un proceso que la IA ejecuta igual cada vez. Conectamos tus herramientas y ajustamos hasta que suene a ti.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row r3">
+    <div class="card">
+      <div class="label">Lo que suele frenar, y cómo se resuelve</div>
+      <table>
+        <tr><td class="obj">&ldquo;No sé por dónde empezar.&rdquo;</td><td>El kit de inicio se instala en la primera sesión. Sales con él funcionando.</td></tr>
+        <tr><td class="obj">&ldquo;Los cursos se quedan en teoría.&rdquo;</td><td>En vivo se practica sobre tu trabajo. La teoría va en videos cortos que ves por tu cuenta (en producción).</td></tr>
+        <tr><td class="obj">&ldquo;No sé de tecnología.&rdquo;</td><td>No hace falta. La IA hace la configuración y yo estoy a tu lado todo el rato.</td></tr>
+        <tr><td class="obj">&ldquo;¿Y mis datos?&rdquo;</td><td>Los resguardos van primero: nunca lee tus contraseñas ni borra archivos, y tú apruebas cada conexión.</td></tr>
+        <tr><td class="obj">&ldquo;En un mes va a estar obsoleto.&rdquo;</td><td>La herramienta va a cambiar. Tus instrucciones no, y son tuyas.</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <div class="label">Lo que otros construyeron</div>
+      <ul>
+        <li><b>Finanzas de una manufacturera:</b> cobranza que corre sola cada viernes, más los informes de cierre de mes.</li>
+        <li><b>Un estudio de abogados:</b> un panel que actualiza las causas cada noche y le muestra a cada rol su vista.</li>
+        <li><b>Una dueña de tienda:</b> revisión diaria de stock entre su tienda online, su reporte de ventas y su planilla.</li>
+        <li><b>Un médico:</b> borradores de respuesta a consultas web, con sus palabras. Él aprueba cada una.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row r4">
+    <div class="card">
+      <div class="label">Te llevas</div>
+      <ul>
+        <li>Un espacio de trabajo que te conoce a ti y a tu trabajo.</li>
+        <li>Tus tareas repetitivas como procesos que corren a tu manera.</li>
+        <li>Criterio para distinguir lo correcto de lo que solo suena bien, y seguir construyendo por tu cuenta.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="label">Para quién es</div>
+      <p>Dueños, líderes y profesionales que sienten que su IA vuelve a cero cada mañana, o que quieren partir bien.</p>
+      <p style="margin-top:6px"><b>No</b> es un curso para mirar ni un bot que cuidar. Tú construyes; yo me siento a tu lado.</p>
+    </div>
+    <div class="cta">
+      <div class="label">Próximo paso</div>
+      <div class="cta-h">Mándame una tarea que repitas todas las semanas.</div>
+      <p>Te digo si calza y qué armaríamos en la primera sesión. Tomo pocas personas a la vez: cada sesión es sobre tu trabajo real.</p>
+      <div class="contact">Carlos Acuña <span>· carlos@fibalabs.com</span></div>
+    </div>
+  </div>
+
+  <div class="foot"><span>Fiba Labs · fibalabs.com</span><span>Lo que aprendes se queda contigo.</span></div>
+
+</div>
+</body>
+</html>
