@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carlos Acuña · Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="src/style.css">
+<script type="importmap">
+{ "imports": { "three": "./lib/three/three.module.js", "three/addons/": "./lib/three/addons/" } }
+</script>
+</head>
+<body>
+<canvas id="gl"></canvas>
+<div id="veil"></div>
+<div id="label" class="label"></div>
+<div id="card" class="card hidden" role="dialog" aria-modal="false">
+  <button class="card-x" aria-label="Close">×</button>
+  <h2 class="card-title"></h2>
+  <p class="card-body"></p>
+</div>
+<button id="sound" class="sound" aria-pressed="false"><span class="dot"></span><span class="txt">Enable sound</span></button>
+<div id="os" class="os hidden" aria-hidden="true"></div>
+<script type="module" src="src/main.js"></script>
+</body>
+</html>
