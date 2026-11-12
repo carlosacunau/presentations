@@ -1,0 +1,47 @@
+<!doctype html>
+<!-- lifecycle: keep -->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carlos Acuña · Fiba Labs</title>
+<style>
+  :root { --bg:#fffdf7; --ink:#1f2937; --muted:#6b7280; --blue:#2563eb; --green:#16a34a; --card:#ffffff; --line:#e5e7eb; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#111827; --ink:#f3f4f6; --muted:#9ca3af; --card:#1f2937; --line:#374151; } }
+  * { box-sizing:border-box; }
+  body { margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center; background:var(--bg); color:var(--ink);
+         font-family: "Avenir Next", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; padding:24px 16px; }
+  main { width:100%; max-width:420px; text-align:center; }
+  h1 { font-size:28px; margin:0 0 4px; }
+  p.sub { color:var(--muted); margin:0 0 16px; }
+  p.ask { font-size:17px; line-height:1.4; margin:0 0 24px; }
+  a.btn { display:flex; align-items:center; justify-content:center; gap:10px; width:100%; padding:18px; margin:0 0 14px; border-radius:16px;
+          font-size:18px; font-weight:700; text-decoration:none; color:#fff; }
+  a.btn svg { width:22px; height:22px; flex:none; }
+  .contact { background:var(--blue); }
+  .mail { background:var(--card); color:var(--ink); border:2px solid var(--line); }
+  .wa { background:var(--green); }
+  footer { color:var(--muted); font-size:13px; margin-top:18px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Carlos Acuña</h1>
+  <p class="sub">Fiba Labs</p>
+  <p class="ask">Escríbeme por correo o WhatsApp y te comparto la presentación.</p>
+  <a class="btn contact" href="carlos-acuna.vcf" download>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+    Guardar contacto
+  </a>
+  <a class="btn mail" href="mailto:carlos@fibalabs.com?subject=Presentaci%C3%B3n%20Claro%20Empresas%20Day&body=Hola%20Carlos%2C%20te%20escribo%20desde%20Claro%20Empresas%20Day.%20%C2%BFMe%20compartes%20la%20presentaci%C3%B3n%3F">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+    Escríbeme un correo
+  </a>
+  <a class="btn wa" href="https://wa.me/56993349744?text=Hola%20Carlos%2C%20te%20escribo%20desde%20Claro%20Empresas%20Day.%20%C2%BFMe%20compartes%20la%20presentaci%C3%B3n%3F">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 1-13.5 7.8L3 21l1.2-4.4A9 9 0 1 1 21 12z"/></svg>
+    Escríbeme por WhatsApp
+  </a>
+  <footer>Claro Empresas Day · 26 de noviembre</footer>
+</main>
+</body>
+</html>
