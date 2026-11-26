@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>La IA, de vuelta a lo fundamental · Claro Empresas Day · Carlos Acuña</title>
+<meta name="description" content="Presentación de Carlos Acuña (Fiba Labs) en Claro Empresas Day, 26 de noviembre de 2026.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Crect width=%27100%27 height=%27100%27 rx=%2712%27 fill=%27%23DA291C%27/%3E%3C/svg%3E">
+<style>
+  html, body { margin: 0; height: 100%; background: #111; color: #ddd; font: 14px/1.4 system-ui, sans-serif; overflow: hidden; }
+  #stage { position: fixed; inset: 0 0 44px 0; display: flex; align-items: center; justify-content: center; }
+  #stage img { max-width: 100%; max-height: 100%; object-fit: contain; background: #fff; user-select: none; -webkit-user-drag: none; }
+  #bar { position: fixed; left: 0; right: 0; bottom: 0; height: 44px; display: flex; align-items: center; justify-content: center; gap: 16px; }
+  #bar button { background: #2a2a2a; color: #eee; border: 0; border-radius: 6px; padding: 8px 16px; font: inherit; cursor: pointer; }
+  #bar button:hover { background: #3a3a3a; }
+  #count { min-width: 70px; text-align: center; font-variant-numeric: tabular-nums; }
+  #progress { position: fixed; left: 0; bottom: 44px; height: 3px; background: #DA291C; transition: width .2s; }
+  #hint { display: none; position: fixed; top: 12px; left: 0; right: 0; text-align: center; color: #999; }
+  @media (orientation: portrait) and (max-width: 700px) { #hint { display: block; } }
+</style>
+</head>
+<body>
+<div id="hint">Gira el teléfono para ver mejor</div>
+<div id="stage"><img id="img" alt=""></div>
+<div id="progress"></div>
+<div id="bar">
+  <button id="prev" aria-label="Anterior">&#8592;</button>
+  <span id="count"></span>
+  <button id="next" aria-label="Siguiente">&#8594;</button>
+  <button id="fs" aria-label="Pantalla completa">&#x26F6;</button>
+</div>
+<script>
+const FRAMES = __FRAMES__;
+const flat = [];
+FRAMES.forEach((list, s) => list.forEach((src, f) => flat.push({ src, s, f })));
+const img = document.getElementById('img');
+let pos = 0;
+function slideStart(s) { return flat.findIndex(x => x.s === s); }
+function show(p) {
+  pos = Math.max(0, Math.min(flat.length - 1, p));
+  const x = flat[pos];
+  img.src = x.src;
+  img.alt = `Diapositiva ${x.s + 1}`;
+  document.getElementById('count').textContent = `${x.s + 1} / ${FRAMES.length}`;
+  document.getElementById('progress').style.width = `${(pos + 1) / flat.length * 100}%`;
+  history.replaceState(null, '', `#${x.s + 1}`);
+  [1, 2].forEach(d => { if (flat[pos + d]) new Image().src = flat[pos + d].src; });
+}
+const next = () => show(pos + 1), prev = () => show(pos - 1);
+document.getElementById('next').onclick = next;
+document.getElementById('prev').onclick = prev;
+document.getElementById('fs').onclick = () => document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.();
+img.onclick = e => (e.offsetX > img.clientWidth / 3 ? next() : prev());
+addEventListener('keydown', e => {
+  if (['ArrowRight', 'ArrowDown', ' ', 'PageDown', 'Enter'].includes(e.key)) { e.preventDefault(); next(); }
+  else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); prev(); }
+  else if (e.key === 'Home') show(0);
+  else if (e.key === 'End') show(flat.length - 1);
+});
+let tx = null;
+addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+addEventListener('touchend', e => {
+  if (tx === null) return;
+  const dx = e.changedTouches[0].clientX - tx; tx = null;
+  if (Math.abs(dx) > 40) (dx < 0 ? next() : prev());
+});
+const h = parseInt(location.hash.slice(1), 10);
+show(h > 0 ? Math.max(0, slideStart(h - 1)) : 0);
+</script>
+</body>
+</html>
