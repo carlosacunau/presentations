@@ -6,7 +6,8 @@ frame per click state, so overlapping images never show stacked.
 
 Run with a Python that has lxml, plus soffice, pdftoppm and magick on PATH:
     python3 -I build-web-from-pptx.py <FINAL.pptx>
-It deletes and recreates presentacion/.
+It deletes and recreates presentacion/. Frames in extra-frames/ (sNN_*.webp) are appended to slide NN;
+_anim files are animated WebPs the viewer restarts on every visit.
 """
 import json, shutil, subprocess, sys, tempfile, zipfile
 from pathlib import Path
@@ -102,6 +103,9 @@ def main(src):
                 frames[i].append(f"frames/{name}")
             print(f"round {k + 1}/{rounds} done", flush=True)
         shutil.rmtree(tmp)
+    for extra in sorted((HERE / "extra-frames").glob("s*_*.webp")):  # hand-made frames, e.g. s10_03_anim.webp
+        shutil.copy(extra, DST / "frames" / extra.name)
+        frames[int(extra.name[1:3]) - 1].append(f"frames/{extra.name}")
     html = (HERE / "presentacion-viewer.html").read_text().replace("__FRAMES__", json.dumps(frames))
     (DST / "index.html").write_text(html)
     (DST / "README.md").write_text(

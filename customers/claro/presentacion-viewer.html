@@ -39,7 +39,7 @@ function slideStart(s) { return flat.findIndex(x => x.s === s); }
 function show(p) {
   pos = Math.max(0, Math.min(flat.length - 1, p));
   const x = flat[pos];
-  img.src = x.src;
+  img.src = x.src.includes('_anim.') ? `${x.src}?r=${Date.now()}` : x.src;  // restart play-once animations
   img.alt = `Diapositiva ${x.s + 1}`;
   document.getElementById('count').textContent = `${x.s + 1} / ${FRAMES.length}`;
   document.getElementById('progress').style.width = `${(pos + 1) / flat.length * 100}%`;
