@@ -7,13 +7,19 @@
 <meta name="description" content="Presentación de Carlos Acuña (Fiba Labs) en Claro Empresas Day, 26 de noviembre de 2026.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Crect width=%27100%27 height=%27100%27 rx=%2712%27 fill=%27%23DA291C%27/%3E%3C/svg%3E">
 <style>
+  :root { --notes: 130px; --below: calc(44px + var(--notes)); }
+  body.no-notes { --notes: 0px; }
+  @media (max-height: 560px) { :root { --notes: 96px; } }
   html, body { margin: 0; height: 100%; background: #111; color: #ddd; font: 14px/1.4 system-ui, sans-serif; overflow: hidden; }
-  #stage { position: fixed; inset: 0 0 44px 0; display: flex; align-items: center; justify-content: center; }
+  #stage { position: fixed; inset: 0 0 var(--below) 0; display: flex; align-items: center; justify-content: center; }
   #stage img { max-width: 100%; max-height: 100%; object-fit: contain; background: #fff; user-select: none; -webkit-user-drag: none; }
   #bar { position: fixed; left: 0; right: 0; bottom: 0; height: 44px; display: flex; align-items: center; justify-content: center; gap: 16px; }
   #bar button { background: #2a2a2a; color: #eee; border: 0; border-radius: 6px; padding: 8px 16px; font: inherit; cursor: pointer; }
   #bar button:hover { background: #3a3a3a; }
   #count { min-width: 70px; text-align: center; font-variant-numeric: tabular-nums; background: #2a2a2a; color: #eee; border: 0; border-radius: 6px; padding: 8px 10px; font: inherit; cursor: pointer; }
+  #notes { position: fixed; left: 0; right: 0; bottom: 47px; height: calc(var(--notes) - 3px); overflow-y: auto; box-sizing: border-box; padding: 12px 20px 8px; border-top: 1px solid #2a2a2a; }
+  #notes p { max-width: 980px; margin: 0 auto; font-size: 16px; line-height: 1.5; color: #e6e6e6; }
+  body.no-notes #notes { display: none; }
   #progress { position: fixed; left: 0; bottom: 44px; height: 3px; background: #DA291C; transition: width .2s; }
   #hint { display: none; position: fixed; top: 12px; left: 0; right: 0; text-align: center; color: #999; }
   @media (orientation: portrait) and (max-width: 700px) { #hint { display: block; } }
@@ -22,15 +28,18 @@
 <body>
 <div id="hint">Gira el teléfono para ver mejor</div>
 <div id="stage"><img id="img" alt=""></div>
+<div id="notes"><p id="note"></p></div>
 <div id="progress"></div>
 <div id="bar">
   <button id="prev" aria-label="Anterior">&#8592;</button>
   <select id="count" aria-label="Ir a la diapositiva"></select>
   <button id="next" aria-label="Siguiente">&#8594;</button>
+  <button id="tn" aria-label="Mostrar u ocultar notas">Notas</button>
   <button id="fs" aria-label="Pantalla completa">&#x26F6;</button>
 </div>
 <script>
 const FRAMES = __FRAMES__;
+const NOTES = __NOTES__;
 const flat = [];
 FRAMES.forEach((list, s) => list.forEach((src, f) => flat.push({ src, s, f })));
 const img = document.getElementById('img');
@@ -42,6 +51,8 @@ function show(p) {
   img.src = x.src.includes('_anim.') ? `${x.src}?r=${Date.now()}` : x.src;  // restart play-once animations
   img.alt = `Diapositiva ${x.s + 1}`;
   count.value = x.s;
+  document.getElementById('note').textContent = NOTES[x.s] || '';
+  document.getElementById('notes').scrollTop = 0;
   document.getElementById('progress').style.width = `${(pos + 1) / flat.length * 100}%`;
   history.replaceState(null, '', `#${x.s + 1}`);
   [1, 2].forEach(d => { if (flat[pos + d]) new Image().src = flat[pos + d].src; });
@@ -52,12 +63,16 @@ count.onchange = () => { show(slideStart(+count.value)); count.blur(); };
 const next = () => show(pos + 1), prev = () => show(pos - 1);
 document.getElementById('next').onclick = next;
 document.getElementById('prev').onclick = prev;
+const toggleNotes = () => { document.body.classList.toggle('no-notes'); localStorage.setItem('claroNotes', document.body.classList.contains('no-notes') ? 'off' : 'on'); };
+if (localStorage.getItem('claroNotes') === 'off') document.body.classList.add('no-notes');
+document.getElementById('tn').onclick = toggleNotes;
 document.getElementById('fs').onclick = () => document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.();
 img.onclick = e => (e.offsetX > img.clientWidth / 3 ? next() : prev());
 addEventListener('keydown', e => {
   if (['ArrowRight', 'ArrowDown', ' ', 'PageDown', 'Enter'].includes(e.key)) { e.preventDefault(); next(); }
   else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); prev(); }
   else if (e.key === 'Home') show(0);
+  else if (e.key === 'n' || e.key === 'N') toggleNotes();
   else if (e.key === 'End') show(flat.length - 1);
 });
 let tx = null;
